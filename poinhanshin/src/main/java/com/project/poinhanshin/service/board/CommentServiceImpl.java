@@ -16,9 +16,9 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDao;
 
     @Autowired
-    public CommentServiceImpl(CommentDao commentDao, BoardMapper boardDao) {
+    public CommentServiceImpl(CommentDao commentDao, BoardMapper boardMapper) {
         this.commentDao = commentDao;
-        this.boardDao = boardDao;
+        this.boardDao = boardMapper;
     }
 
     @Override
