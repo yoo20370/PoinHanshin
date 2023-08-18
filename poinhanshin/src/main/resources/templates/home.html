@@ -51,6 +51,7 @@
           <div class="col-sm-6 lg-12 col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
+<!-- 그래프내부데이터  <script>에서 타임리프변수 참고-->
                 <!--일간그래프 -->
                 <canvas class="" id="myChartDaily" width="400" height="400" ></canvas>
               </div>
@@ -198,7 +199,7 @@ var chart = new Chart(ctxA, {
 
 
 
-var ctxA = document.getElementById("myChartWeek").getContext("2d");
+var ctxA = document.getElementById("myChartFinder").getContext("2d");
 
 var chart = new Chart(ctxA, {
       type: "line",
@@ -221,15 +222,18 @@ var chart = new Chart(ctxA, {
       }
     });
 
-var ctxA = document.getElementById("myChartWeek").getContext("2d");
+var ctxA = document.getElementById("myChartLost").getContext("2d");
 
 var chart = new Chart(ctxA, {
-      type: "line",
+      type: "doughnut",
       data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
+        labels: ["유기견", "유기묘"],
         datasets: [{
           label: "당일",
-          data: finder // [10, 20, 30, 40, 50, 60]
+          data: finder, // [10, 20]
+            borderColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color border
+            backgroundColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color background (Points and Fill)
+            borderWidth: 1 // Specify bar border width
         }]
       },
       options: {
