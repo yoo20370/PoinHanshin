@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>게시물 목록 보기</title>
+  <link rel="stylesheet" type="text/css" href="css/maplist.css">
+</head>
+<body>
+<div class="container">
+  <h2>게시물 보기</h2>
+  <ul class="post-list">
+    {% for post in posts %}
+    <li class="post">
+      <div class="post-header">
+        <strong class="animal-type">{{ post.animal_type }}</strong>
+        <span class="time">{{ post.time }}</span>
+      </div>
+      <div class="post-content">
+        <img src="{{ post.photo }}" alt="{{ post.animal_type }}" class="post-image">
+        <p>{{ post.content }}</p>
+      </div>
+      <div class="post-footer">
+        <span class="location">{{ post.location }}</span>
+        <span class="author-category">{{ post.author_category }}</span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+</body>
+</html>

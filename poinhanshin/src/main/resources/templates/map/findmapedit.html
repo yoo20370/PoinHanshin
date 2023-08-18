@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>상세 게시물 보기</title>
+    <link rel="stylesheet" type="text/css" href="css/mapdetail.css">
+</head>
+<body>
+<div class="container">
+    <h2>게시물 보기</h2>
+    <ul class="post-list">
+        {% for post in posts %}
+        <li class="post">
+            <div class="post-details">
+                <div class="post-header">
+                    <strong class="animal-type">{{ post.animal_type }}</strong>
+                    <span class="time">{{ post.time }}</span>
+                </div>
+                <div class="post-image">
+                    <img src="{{ post.photo }}" alt="{{ post.animal_type }}">
+                </div>
+                <div class="post-content">
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="post-footer">
+                    <div class="footer-left">
+                        <span class="location">{{ post.location }}</span>
+                        <span class="author">{{ post.author }}</span>
+                        <span class="time">{{ post.created_time }}</span>
+                    </div>
+                    <div class="footer-right">
+                        <span class="view-count">조회수: {{ post.view_count }}</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('edit_post', post_id=post.id) }}" class="edit-link">수정하기</a>
+</div>
+</body>
+</html>

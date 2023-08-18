@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글썸네일</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>-->
+    <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
+    <!-- <script
+  src="https://code.jquery.com/jquery-3.7.0.slim.js"
+  integrity="sha256-7GO+jepT9gJe9LB4XFf8snVOjX3iYNb0FHYr5LI1N5c="
+  crossorigin="anonymous"></script> -->
+  <style>
+    .th_id {
+       width: 30px;
+    }
+    .th_title {
+       width: 600px;
+    }
+    .th_author {
+        width: 50px;
+    }
+    .th_count {
+       width: 40px;
+    }
+    .th_date {
+       width: 100px;
+    }
+    .searchbox {
+        width: 400px;
+    }
+    .th_thumbnail {
+        width: 100px;
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        width: 600px;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .page {
+        width: 940px;
+      }
+    }
+    
+    @media (min-width: 1200px) {
+      .page {
+        width: 940px;
+      }
+    }
+  html,body{
+       width: 100%;
+       height: 100%;
+   }
+  .page {
+        margin: 0 auto;
+        height: 100%;
+        padding: 50px;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        border-bottom-width: 2px;
+    }
+
+    .info_table {
+        font-size: 12px
+    }
+    .title_wrapper {
+        padding-bottom: 50px
+    }
+    .title{
+        font-size: 14px
+    }
+    .thumbnail_wrapper{
+        width:150px;
+        height:150px;
+        object-fit:cover;
+        border-radius: 12px;
+    }
+
+
+   </style>
+</head>
+<body layout:fragment="content">
+<div class="page">
+<!--인기글
+상위 3개만 전달 -->
+    <div class="row justify-content-center p-3">
+    <span class="card gap-3" style="width: 15rem;" th:each = "data : ${data}" th:if = "${dataStat.index} < 3">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${.title}">제목</h5>
+          <p class="card-text" th:text="${.content}">내용</p>
+          <p class="card-subtitle sm-1 text-end" th:text="${.likecount}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-heart-fill" viewBox="0 0 16 16">
+                <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353V2ZM8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
+              </svg>
+            5</p>
+        </div>
+      </span>
+    </div>
+
+
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
+        <form name="search-form">
+        <div class="input-group">
+            <div class="input-group-text" id="btnGroupAddon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+            </div>
+            <input type="text" name="keyword" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
+            <input type="button" onclick="getSearchList()" class="btn btn-outline-primary" value="검색">
+        </div>
+        </form>    
+        <div class="btn-group" role="group"aria-label="Basic outlined example">
+            <a role="button" class="btn btn-outline-primary" href="/board/thumbnail">갤러리</a>
+            <a role="button" class="btn btn-outline-primary" href="/board/list">리스트뷰</a>
+            <button type="button" class="btn btn-info">글작성</button>
+        </div>
+    </div>
+   
+      
+    <div>
+        <table border="1" class="table table-bordered table-striped table-hover" id="boardtable">
+            <thead>
+            <tr>
+                <th class="th_title">제목</th>
+                <th class="th_thumbnail">이미지</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="boardDto : ${list}">
+                <td valign="middle">
+                    <div class="title_wrapper">
+                    <span class="title" th:text="${boardDto.title}" th:href="${/board/read(boardno=${boardDto.boardno})}">----제목---</span>
+                    </div>
+                    <div style="vertical-align: bottom;">
+                        <span class="info_table" th:text="| 유저id : ${boardDto.board_users_id}|"> 유저id : 12312314</span>
+                        <span class="info_table" th:text="| 조회수 : ${boardDto.viewcount}|"> 조회수 : 42</span>
+                        <span class="info_table" th:text="| 등록일 : ${boardDto.reg_date}|"> 등록일 : 2019-05-14</span>
+                    </div>
+
+
+                </td>
+                <td valign="middle">
+                    <img class="thumbnail_wrapper" th:if="${boardDto.boardimagepath != null}" th:src="${boardDto.boardimagepath}" th:href="${/board/read(boardno=${boardDto.boardno})}" atl="빈이미지" >
+                    <img class="thumbnail_wrapper" th:unless=${boardDto.boardimagepath != null}" src="/static/img/empty.png">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<!--    <div style=" position:absolute; right:50%; bottom:10px;">-->
+<!--        <div>-->
+<!--            <span th:if="${totalCnt == 0}">게시물이 없습니다.</span>-->
+<!--            <span th:if="${ph.showPrev}">-->
+<!--                <a th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>-->
+<!--            </span>-->
+<!--            <span th:if="${ph.totalCnt != 0}">-->
+<!--                <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">-->
+<!--                <a th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}">-->
+<!--                    <span th:text="${i}"/>-->
+<!--                </a>-->
+<!--            </span>-->
+<!--            </span>-->
+<!--            <span th:if="${ph.showNext}">-->
+<!--                <a th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>-->
+<!--            </span>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <script>
+        function getSearchList(){
+	$.ajax({
+		type: 'GET',
+		url : "/getSearchList",
+		data : $("form[name=search-form]").serialize(),
+		success : function(result){
+			//테이블 초기화
+			$('#boardtable > tbody').empty();
+			if(result.length>=1){
+				result.forEach(function(item){
+					str='<tr>'
+					str += "<td>"+item.boardno+"</td>";
+					str+="<td>"+item.board_users_id+"</td>";
+					str+="<td><a href = '/board/detail?boardno=" + item.boardno + "'>" + item.title + "</a></td>";
+					str+="<td>"+item.reg_date+"</td>";
+					str+="<td>"+item.viewcount+"</td>";
+					str+="</tr>"
+					$('#boardtable').append(str);
+        		})				 
+			}
+		}
+	})
+}
+    </script>
+</div>
+</body>
+</html>
