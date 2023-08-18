@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e3a525a1-38c7-49bd-a4c6-7bb913841c5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
+=======
+    <list default="true" id="e3a525a1-38c7-49bd-a4c6-7bb913841c5e" name="Changes" comment="" />
+>>>>>>> main
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,12 +81,19 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+<<<<<<< HEAD
     "last_opened_file_path": "/Users/yuyeong-u/Documents/GitHub/PoinHanshin",
+=======
+    "last_opened_file_path": "C:/Users/user/OneDrive - hs.ac.kr/문서/GitHub/PoinHanshin",
+>>>>>>> main
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+<<<<<<< HEAD
     "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
+=======
+>>>>>>> main
     "spring.configuration.checksum": "47294b467c1608c815f004a80459b476",
     "vue.rearranger.settings.migration": "true"
   }
@@ -110,7 +121,11 @@
       <workItem from="1692250929415" duration="308000" />
       <workItem from="1692251246945" duration="389000" />
       <workItem from="1692252388388" duration="616000" />
+<<<<<<< HEAD
       <workItem from="1692258241766" duration="809000" />
+=======
+      <workItem from="1692277529630" duration="9000" />
+>>>>>>> main
     </task>
     <servers />
   </component>
