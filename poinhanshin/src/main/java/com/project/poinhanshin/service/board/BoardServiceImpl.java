@@ -13,7 +13,6 @@ import java.util.Map;
 public class BoardServiceImpl implements BoardService{
     private final BoardMapper boardDao;
 
-    
     @Autowired
     public BoardServiceImpl(BoardMapper boardDao) {
         this.boardDao = boardDao;
