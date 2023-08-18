@@ -51,16 +51,16 @@
           <div class="col-sm-6 lg-12 col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
-                <!--월평균 -->
-                <canvas class="" id="myChart" width="400" height="400" ></canvas>
+                <!--일간그래프 -->
+                <canvas class="" id="myChartDaily" width="400" height="400" ></canvas>
               </div>
             </div>
           </div>
           <div class="col-sm-6 lg-12 col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
-                <!--일평균 -->
-                <canvas class="" id="myChartA" width="400" height="400" ></canvas>
+                <!--월간그래프 -->
+                <canvas class="" id="myChartWeek" width="400" height="400" ></canvas>
               </div>
             </div>
           </div>
@@ -69,8 +69,8 @@
           <div class="col-sm-6 lg-12 col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
-                <!--실종신고 동물별 현황-->
-                <canvas class="" id="myChart" width="300" height="300" ></canvas>
+                <!--실종신고 주간 현황-->
+                <canvas class="" id="myChartFinder" width="300" height="300" ></canvas>
               </div>
             </div>
           </div>
@@ -78,8 +78,8 @@
           <div class="col-sm-6 lg-12 col-xxl-6 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
-                <!--유기동물 등록현황-->
-                <canvas class="" id="myChartA" width="300" height="300" ></canvas>
+                <!--유기동물 등록현황 당일-->
+                <canvas class="" id="myChartLost" width="300" height="300" ></canvas>
               </div>
             </div>
           </div>
@@ -146,14 +146,21 @@
         </div>
       </th>
     </table>
-  <script>
-var ctx = document.getElementById("myChart").getContext('2d');
+  <script th:inline="javascript">
+  /*<![CDATA[*/
+var daily = /*[[ ${data_daily} ]]*/[];     // 당일 (api)데이터
+var week = /*[[ ${data_week} ]]*/[];      // 일주일단위 (api)
+var finder = /*[[ ${data_finder} ]]*/[]; // 실종신고 그래프 (일주일)
+var lost = /*[[ ${data_lost} ]]*/[];    // 당일 유기견/묘 등록 현황
+
+var ctx = document.getElementById("myChartDaily").getContext('2d');
+
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
         labels: ["강아지", "고양이", "기타"],
         datasets: [{
-            data: [50, 30 , 11], // Specify the data values array
+            data: daily, // Specify the data values array
 
             borderColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color border
             backgroundColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color background (Points and Fill)
@@ -166,14 +173,15 @@ var myChart = new Chart(ctx, {
 });
 
 
-var ctxA = document.getElementById("myChartA").getContext("2d");
+var ctxA = document.getElementById("myChartWeek").getContext("2d");
+
 var chart = new Chart(ctxA, {
       type: "line",
       data: {
         labels: ["January", "February", "March", "April", "May", "June"],
         datasets: [{
-          label: "My Data",
-          data: [10, 20, 30, 40, 50, 60]
+          label: "주간",
+          data: week // [10, 20, 30, 40, 50, 60]
         }]
       },
       options: {
@@ -187,6 +195,59 @@ var chart = new Chart(ctxA, {
         }
       }
     });
+
+
+
+var ctxA = document.getElementById("myChartWeek").getContext("2d");
+
+var chart = new Chart(ctxA, {
+      type: "line",
+      data: {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [{
+          label: "주간(실종)",
+          data: finder // [10, 20, 30, 40, 50, 60]
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+        title: {
+          text: "My Chart"
+        },
+        tooltips: {
+          enabled: true
+        }
+      }
+    });
+
+var ctxA = document.getElementById("myChartWeek").getContext("2d");
+
+var chart = new Chart(ctxA, {
+      type: "line",
+      data: {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [{
+          label: "당일",
+          data: finder // [10, 20, 30, 40, 50, 60]
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+        title: {
+          text: "My Chart"
+        },
+        tooltips: {
+          enabled: true
+        }
+      }
+    });
+
+
+
+
+    /*]]>*/
   </script>
   </div>
 </div>
