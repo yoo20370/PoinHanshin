@@ -45,7 +45,7 @@ public class BoardController {
             model.addAttribute("ph", pageHandler);
             model.addAttribute("page", page);
             model.addAttribute("pageSize", pageSize);
-            return "boardList";
+            return "board/boardList";
         }
 
         int totalCnt = boardService.getCount();
