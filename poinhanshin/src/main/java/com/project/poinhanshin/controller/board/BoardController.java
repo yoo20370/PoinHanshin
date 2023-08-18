@@ -63,6 +63,41 @@ public class BoardController {
 
         return "boardList";
     }
+    /*@GetMapping("/list")
+    public String board(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model, SearchCondition sc) {
+        model.addAttribute("user", loginUser);
+
+        if (sc.getPage()==null) sc.setPage(1);
+        if (sc.getPageSize()==null) sc.setPageSize(50);
+
+        if (sc.getOption().equals("T") || sc.getOption().equals("W") || sc.getOption().equals("A")) {
+            int totalCnt = boardService.getSearchResultCnt(sc);
+            PageHandler ph = new PageHandler(totalCnt, sc);
+
+            List<BoardDto> list = boardService.getSearchResultPage(sc);
+            Map<String, Integer> map = new HashMap<>();
+            map.put("offset", (sc.getPage() - 1) * sc.getPageSize());
+            map.put("pageSize", sc.getPageSize());
+            model.addAttribute("list", list);
+            model.addAttribute("ph", ph);
+            model.addAttribute("sc",sc);
+            return "board/boardList";
+        }
+
+        int totalCnt = boardService.getCount();
+        PageHandler ph = new PageHandler(totalCnt, sc);
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("offset", (sc.getPage() - 1) * sc.getPageSize());
+        map.put("pageSize", sc.getPageSize());
+
+        List<BoardDto> list = boardService.getPage(map);
+        model.addAttribute("list", list);
+        model.addAttribute("ph", ph);
+        model.addAttribute("sc",sc);
+
+        return "boardList";
+    }*/
 
     @GetMapping("/read")
     public String read(Integer bno, Integer page, Integer pageSize, Model model,

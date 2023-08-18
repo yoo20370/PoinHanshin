@@ -23,7 +23,7 @@
 <center style="padding-left:25%;padding-right:25%">
     <br><div><h1> 보호소 목록 </h1></div><br><br><br>
     <div class ="item" th:each="shelterList :${ShelterList}">
-        <a th:href="@{'/information/ShelterBoard'+${shelterList.queryString}}">
+        <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}">
 
             <table border="1" class="table table-bordered table-striped table-hover">
                 <tr>
@@ -42,9 +42,24 @@
         </a>
     </div>
 </center>
-<div style=" position:absolute; right:50%;">
+<!--<div style=" position:absolute; right:50%;">
     <span th:each="i : ${#numbers.sequence(1,10)}">
-        <a th:href="@{/information/ShelterList(PageNum=${i})}"><span th:text="${i}"></span></a>
+        <a th:href="@{/api/ShelterList(page=${i})}"><span th:text="${i}"></span></a>
+    </span>
+</div>-->
+<div style=" position:absolute; right:40%;">
+    <span th:if="${ph.showPrev}">
+                <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
+    </span>
+    <span th:if="${ph.totalCnt != 0}">
+        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+            <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}">
+                <span th:text="${i}"/>
+            </a>
+        </span>
+    </span>
+    <span th:if="${ph.showNext}">
+                <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
     </span>
 </div>
 </body>
