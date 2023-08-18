@@ -2,12 +2,14 @@ package com.project.poinhanshin.domain.api;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
 
 @Setter
 @Getter
+@ToString
 public class Abandoned_animal {
 
     //유기번호
@@ -98,36 +100,5 @@ public class Abandoned_animal {
     @Override
     public int hashCode() {
         return Objects.hash(desertionNo, filename, happenDt, happenPlace, kindCd, colorCd, age, weight, noticeNo, noticeSdt, noticeEdt, popfile, processState, sexCd, neuterYn, specialMark, careNm, careTel, careAddr, orgNm, chargeNm, officetel, numOfRows, pageNo, totalCount);
-    }
-
-    @Override
-    public String toString() {
-        return "Abandoned_animal{" +
-                "desertionNo='" + desertionNo + '\'' +
-                ", filename='" + filename + '\'' +
-                ", happenDt='" + happenDt + '\'' +
-                ", happenPlace='" + happenPlace + '\'' +
-                ", kindCd='" + kindCd + '\'' +
-                ", colorCd='" + colorCd + '\'' +
-                ", age='" + age + '\'' +
-                ", weight='" + weight + '\'' +
-                ", noticeNo='" + noticeNo + '\'' +
-                ", noticeSdt='" + noticeSdt + '\'' +
-                ", noticeEdt='" + noticeEdt + '\'' +
-                ", popfile='" + popfile + '\'' +
-                ", processState='" + processState + '\'' +
-                ", sexCd='" + sexCd + '\'' +
-                ", neuterYn='" + neuterYn + '\'' +
-                ", specialMark='" + specialMark + '\'' +
-                ", careNm='" + careNm + '\'' +
-                ", careTel='" + careTel + '\'' +
-                ", careAddr='" + careAddr + '\'' +
-                ", orgNm='" + orgNm + '\'' +
-                ", chargeNm='" + chargeNm + '\'' +
-                ", officetel='" + officetel + '\'' +
-                ", numOfRows='" + numOfRows + '\'' +
-                ", pageNo='" + pageNo + '\'' +
-                ", totalCount='" + totalCount + '\'' +
-                '}';
     }
 }

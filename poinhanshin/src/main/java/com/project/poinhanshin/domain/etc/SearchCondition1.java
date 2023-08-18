@@ -2,10 +2,12 @@ package com.project.poinhanshin.domain.etc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Getter
 @Setter
+@ToString
 public class SearchCondition1 {
      private Integer page = 1;
     private Integer pageSize = 10;

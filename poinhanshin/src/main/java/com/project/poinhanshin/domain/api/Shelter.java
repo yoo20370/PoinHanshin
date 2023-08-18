@@ -2,12 +2,14 @@ package com.project.poinhanshin.domain.api;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Objects;
 
 @Getter
 @Setter
+@ToString
 public class Shelter {
 
     /*
@@ -128,39 +130,4 @@ public class Shelter {
         return Objects.hash(careNm, orgNm, divisionNm, saveTrgtAnimal, careAddr, jibunAddr, lat, lng, dsignationDate, weekOprStime, weekOprEtime, weekCellStime, weekCellEtime, weekendOprStime, weekendOprEtime, weekendCellStime, weekendCellEtime, closeDay, vetPersonCnt, specsPersonCnt, medicalCnt, breedCnt, quarabtineCnt, feedCnt, transCarCnt, careTel, dataStdDt, numOfRows, pageNo, totalCount);
     }
 
-    @Override
-    public String toString() {
-        return "Shelter{" +
-                "careNm='" + careNm + '\'' +
-                ", orgNm='" + orgNm + '\'' +
-                ", divisionNm='" + divisionNm + '\'' +
-                ", saveTrgtAnimal='" + saveTrgtAnimal + '\'' +
-                ", careAddr='" + careAddr + '\'' +
-                ", jibunAddr='" + jibunAddr + '\'' +
-                ", lat='" + lat + '\'' +
-                ", lng='" + lng + '\'' +
-                ", dsignationDate='" + dsignationDate + '\'' +
-                ", weekOprStime='" + weekOprStime + '\'' +
-                ", weekOprEtime='" + weekOprEtime + '\'' +
-                ", weekCellStime='" + weekCellStime + '\'' +
-                ", weekCellEtime='" + weekCellEtime + '\'' +
-                ", weekendOprStime='" + weekendOprStime + '\'' +
-                ", weekendOprEtime='" + weekendOprEtime + '\'' +
-                ", weekendCellStime='" + weekendCellStime + '\'' +
-                ", weekendCellEtime='" + weekendCellEtime + '\'' +
-                ", closeDay='" + closeDay + '\'' +
-                ", vetPersonCnt='" + vetPersonCnt + '\'' +
-                ", specsPersonCnt='" + specsPersonCnt + '\'' +
-                ", medicalCnt='" + medicalCnt + '\'' +
-                ", breedCnt='" + breedCnt + '\'' +
-                ", quarabtineCnt='" + quarabtineCnt + '\'' +
-                ", feedCnt='" + feedCnt + '\'' +
-                ", transCarCnt='" + transCarCnt + '\'' +
-                ", careTel='" + careTel + '\'' +
-                ", dataStdDt='" + dataStdDt + '\'' +
-                ", numOfRows='" + numOfRows + '\'' +
-                ", pageNo='" + pageNo + '\'' +
-                ", totalCount='" + totalCount + '\'' +
-                '}';
-    }
 }

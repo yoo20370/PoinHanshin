@@ -63,7 +63,7 @@ public class ApiController {
         m.addAttribute("shelter",  shelter);
         return "api/ShelterBoard";
     }
-    @GetMapping("/MBTI")
+    /*@GetMapping("/MBTI")
     public String MBTIMain(Model m) throws IOException, ParseException {
         m.addAttribute("AAArr",apiExplorer.SearchAnimalList("","","","","","","","","","1","4"));
         return "mbti/MBTIMain";
@@ -76,5 +76,5 @@ public class ApiController {
     public String MBTIResult(Model m){
         return "mbti/MBTIResult";
     }
-
+*/
 }

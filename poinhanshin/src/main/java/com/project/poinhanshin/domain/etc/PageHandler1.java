@@ -2,9 +2,11 @@ package com.project.poinhanshin.domain.etc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class PageHandler1 {
     private SearchCondition1 sc; // page , pageSize , keyword , option , offset
     private int totalCnt;
@@ -33,17 +35,4 @@ public class PageHandler1 {
     }
 
 
-    @Override
-    public String toString() {
-        return "PageHandler{" +
-                "sc=" + sc +
-                ", totalCnt=" + totalCnt +
-                ", totalPage=" + totalPage +
-                ", naveSize=" + naveSize +
-                ", beginPage=" + beginPage +
-                ", endPage=" + endPage +
-                ", showPrev=" + showPrev +
-                ", showNext=" + showNext +
-                '}';
-    }
 }
