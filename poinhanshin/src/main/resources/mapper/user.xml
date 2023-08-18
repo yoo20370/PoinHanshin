@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.board.repository.UserDao">
+<mapper namespace="com.project.poinhanshin.mapper.login.UserDao">
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.project.poinhanshin.domain.etc.User">
         insert into user(login_id, password, name, birth)
