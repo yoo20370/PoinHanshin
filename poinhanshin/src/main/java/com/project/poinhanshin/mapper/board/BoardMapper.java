@@ -33,4 +33,5 @@ public interface BoardMapper {
     int searchResultCnt(SearchCondition sc);
 
     int updateCommentCnt(@Param("bno") Integer bno, @Param("cnt") int cnt);
+
 }
