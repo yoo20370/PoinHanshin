@@ -14,8 +14,8 @@ public class BoardDaoImpl implements BoardMapper {
     private final BoardMapper boardDao;
 
     @Autowired
-    public BoardDaoImpl(BoardMapper boardDao) {
-        this.boardDao = boardDao;
+    public BoardDaoImpl(BoardMapper boardMapper) {
+        this.boardDao = boardMapper;
     }
 
     @Override
