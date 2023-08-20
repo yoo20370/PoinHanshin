@@ -90,7 +90,7 @@
 
         <div class="row row-cols-1 row-cols-md-4 g-4">
             <div class="col">
-                <th:block th:if="${list !=null}" th:each="protectDto : ${list}" >
+               <!-- <th:block th:if="${list !=null}" th:each="protectDto : ${list}" >
                     <div class="card" >
                         <a th:href="${/board/read(protectboardno=${protectDto.protectboardno})}">
                         <img th:if="${protectDto.protectimagepath != null}" src="/static/img/empty.png" class="card-img-top">
@@ -106,10 +106,42 @@
                     </div>
 
                 </th:block>
-                <div th:unless="${list != null}">게시물이 없습니다.</div>
+                <div th:unless="${list != null}">게시물이 없습니다.</div>-->
+                <table>
+                    <tr th:each="protectDto : ${list}">
+                        <div class="card" >
+
+                            <a th:href="@{/protectboard/read(protectboardno=${protectDto.protectboardno})}">
+                                <img th:if="${protectDto.protectimagepath != null}" src="/static/img/empty.png" class="card-img-top">
+                                <img th:unless="${protectDto.protectimagepath != null}" th:src="${protectDto.protectimagepath}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <span class="badge rounded-pill text-bg-primary card-text" th:value="${protectDto.breeds}">강아지</span>
+                                    <span th:if="${#bools.isTrue(protectDto.status)}" class="badge rounded-pill text-bg-success ">완료</span>
+                                    <span th:if="${#bools.isFalse(protectDto.status)}" class="badge rounded-pill text-bg-info ">공고중</span>
+                                    <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${protectDto.deadline}|"> 남은날짜 : </span>
+                                    <p class="card-text" th:value="${protectDto.content}">내용</p>
+                                </div>
+                            </a>
+                        </div>
+                    </tr>
+                </table>
             </div>
         </div>
-
+    <div style=" position:absolute; right:40%;">
+    <span th:if="${ph.showPrev}">
+                <a th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
+    </span>
+        <span th:if="${ph.totalCnt != 0}">
+        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+            <a th:href="@{'/protectboard/list'+${ph.sc.getQueryString(i)}}">
+                <span th:text="${i}"/>
+            </a>
+        </span>
+    </span>
+        <span th:if="${ph.showNext}">
+                <a th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
+    </span>
+    </div>
     <script>
 
     </script>
