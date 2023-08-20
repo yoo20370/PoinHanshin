@@ -1,10 +1,12 @@
 package com.project.poinhanshin.mapper.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.board.LikeDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +35,11 @@ public interface BoardMapper {
     int searchResultCnt(SearchCondition sc);
 
     int updateCommentCnt(@Param("bno") Integer bno, @Param("cnt") int cnt);
+
+    int likeCheck(HashMap hashMap);
+
+    int addLike(String userno , LikeDto likeDto );
+
+    int deleteLike(String userno , LikeDto likeDto );
 
 }

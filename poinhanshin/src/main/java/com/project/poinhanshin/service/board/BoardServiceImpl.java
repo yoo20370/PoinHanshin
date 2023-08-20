@@ -1,11 +1,13 @@
 package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.board.LikeDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.mapper.board.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +72,25 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public int getSearchResultCnt(SearchCondition sc) {
         return boardDao.searchResultCnt(sc);
+    }
+
+    @Override
+    public int likeCheck(Integer bno , Integer uno) {
+        HashMap<String , Integer> hashMap = new HashMap<String , Integer>();
+        hashMap.put("like_boardno",bno);
+        hashMap.put("like_userno", uno);
+
+        return 0;
+    }
+
+    @Override
+    public int addLike(String userno, LikeDto likeDto) {
+        return 0;
+    }
+
+    @Override
+    public int deleteLike(String userno, LikeDto likeDto) {
+        return 0;
     }
 
 }

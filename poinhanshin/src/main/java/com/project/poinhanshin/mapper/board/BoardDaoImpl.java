@@ -1,10 +1,12 @@
 package com.project.poinhanshin.mapper.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.board.LikeDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +78,21 @@ public class BoardDaoImpl implements BoardMapper {
     @Override
     public int updateCommentCnt(Integer bno, int cnt) {
         return boardDao.updateCommentCnt(bno, cnt);
+    }
+
+    @Override
+    public int likeCheck(HashMap hashMap) {
+        return 0;
+    }
+
+    @Override
+    public int addLike(String userno, LikeDto likeDto) {
+        return 0;
+    }
+
+    @Override
+    public int deleteLike(String userno, LikeDto likeDto) {
+        return 0;
     }
 
 
