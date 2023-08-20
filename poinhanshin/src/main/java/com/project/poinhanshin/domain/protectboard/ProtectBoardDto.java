@@ -14,7 +14,6 @@ import java.sql.Date;
 @EqualsAndHashCode
 public class ProtectBoardDto {
 
-
     // 임보자 게시물 작성 아이디
     private String protectboard_id;
 

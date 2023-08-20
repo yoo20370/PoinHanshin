@@ -67,8 +67,10 @@
    </style>
 </head>
 <body layout:fragment="content">
+<script th:if="${msg} == 'NO_LOGIN'">
+    alert("로그인이 필요합니다.")
+</script>
 <div class="page">
-
         <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
             <form name="search-form">
                 <div class="input-group">
@@ -83,7 +85,10 @@
             </form>
             <div class="btn-group" role="group"aria-label="Basic outlined example">
 
-                <button type="button" class="btn btn-dark">글작성</button>
+                <button type="button" class="btn btn-dark"
+                        th:onclick="|location.href='@{/protectboard/write(page = ${page} , pageSize = ${pageSize} )}'|">
+                    글작성
+                </button>
             </div>
         </div>
 

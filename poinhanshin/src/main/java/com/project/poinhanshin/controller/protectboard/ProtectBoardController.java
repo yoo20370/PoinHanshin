@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,9 +32,11 @@ public class ProtectBoardController {
         List<ProtectBoardDto> list = protectBoardService.bringBoardList();
         int totalCnt = protectBoardService.searchListCnt();
         System.out.println(list.toString());
-        System.out.println("실행됨3");
+
         m.addAttribute("list",list);
         m.addAttribute("totalCnt",totalCnt);
+        m.addAttribute("page", sc.getPage());
+        m.addAttribute("pageSize", sc.getPageSize());
         m.addAttribute(m.addAttribute("ph" , ph));
         return "protect/protecterlist";
     }
@@ -52,17 +55,28 @@ public class ProtectBoardController {
         m.addAttribute("protectDto" , protectBoardDto);
         m.addAttribute("page",sc.getPage());
         m.addAttribute("pageSize",sc.getPageSize());
-
         return "protect/protecter";
     }
 
     // 임보자 공고 작성화면
     @GetMapping("/write")
-    public String ProtectBoardWritePage(){
+    public String ProtectBoardWritePage(SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes){
+        String LoginId = "하리보";
+
+        m.addAttribute("page", sc.getPage());
+        m.addAttribute("pageSize", sc.getPageSize());
+        if(LoginId == null) {
+            redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            return "redirect:/protectboard/list";
+        }
+
+        m.addAttribute("LoginId" ,LoginId);
         return "protect/protecterreg";
     }
     @PostMapping("/write")
-    public String ProtectBoardWrite(){
+    public String ProtectBoardWrite(ProtectBoardDto protectBoardDto,  Model m){
+        System.out.println(protectBoardDto);
+
         return "redirect:/protectboard/write";
     }
     @GetMapping("/modify")

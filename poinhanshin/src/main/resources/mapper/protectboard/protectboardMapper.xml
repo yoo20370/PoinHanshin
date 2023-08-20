@@ -15,4 +15,9 @@
         FROM protectboard
         WHERE protectboardno = #{protectboardno}
     </select>
+    <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
+        INSERT INTO protectboard
+            (protectboard_id , protectboardno , content , protectimagepath , breeds , ani_category , writedate , status ,)
+        VALUES
+    </insert>
 </mapper>
