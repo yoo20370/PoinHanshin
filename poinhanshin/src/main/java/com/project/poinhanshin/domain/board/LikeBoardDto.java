@@ -17,6 +17,4 @@ public class LikeBoardDto {
         this.likeboard_userno = likeboard_userno;
         this.likeno = likeboardno;
     }
-
-
 }
