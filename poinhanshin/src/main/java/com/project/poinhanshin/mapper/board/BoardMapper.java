@@ -36,10 +36,4 @@ public interface BoardMapper {
 
     int updateCommentCnt(@Param("bno") Integer bno, @Param("cnt") int cnt);
 
-    int likeCheck(HashMap hashMap);
-
-    int addLike(String userno , LikeDto likeDto );
-
-    int deleteLike(String userno , LikeDto likeDto );
-
 }

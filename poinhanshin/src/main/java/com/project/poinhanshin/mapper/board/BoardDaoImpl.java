@@ -80,20 +80,4 @@ public class BoardDaoImpl implements BoardMapper {
         return boardDao.updateCommentCnt(bno, cnt);
     }
 
-    @Override
-    public int likeCheck(HashMap hashMap) {
-        return 0;
-    }
-
-    @Override
-    public int addLike(String userno, LikeDto likeDto) {
-        return 0;
-    }
-
-    @Override
-    public int deleteLike(String userno, LikeDto likeDto) {
-        return 0;
-    }
-
-
 }

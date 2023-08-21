@@ -97,17 +97,5 @@
         SET comment_cnt = comment_cnt + #{cnt}
         WHERE bno = #{bno}
     </update>
-    <select id="likeCheck" resultType="int" parameterType="Map">
-        SELECT COUNT(*)
-        FROM likeboard
-        WHERE like_boardno = #{like_boardno} and like_userno = ${like_userno}
-    </select>
-    <insert id="addLike" parameterType="com.project.poinhanshin.domain.board.LikeDto">
-        INSERT INTO likeboard (like_boardno , like_userno)
-        VALUES (#{like_boardno} , #{like_userno})
-    </insert>
-    <delete id="deleteLike" parameterType="Map">
-        DELETE FROM likeboard
-        WHERE like_boardno = #{like_boardno} and like_userno = ${like_userno}
-    </delete>
+
 </mapper>
