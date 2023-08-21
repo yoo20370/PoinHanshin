@@ -2,6 +2,7 @@ package com.project.poinhanshin.controller.protectboard;
 
 import com.project.poinhanshin.domain.etc.PageHandler1;
 import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.protectboard.ProtectBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

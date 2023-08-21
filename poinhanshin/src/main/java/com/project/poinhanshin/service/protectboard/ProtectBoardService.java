@@ -1,6 +1,7 @@
 package com.project.poinhanshin.service.protectboard;
 
 import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 
 import java.util.List;
 
