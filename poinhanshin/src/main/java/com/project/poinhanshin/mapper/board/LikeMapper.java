@@ -1,5 +1,4 @@
 package com.project.poinhanshin.mapper.board;
-
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -12,6 +11,5 @@ public interface LikeMapper {
     int deleteLike(Integer LoginId , Integer bno);
 
     int updateLikeCnt(Integer bno , Integer num);
-
 
 }
