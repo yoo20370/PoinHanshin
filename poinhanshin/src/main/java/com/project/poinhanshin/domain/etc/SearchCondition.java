@@ -2,9 +2,11 @@ package com.project.poinhanshin.domain.etc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class SearchCondition {
     private Integer page = 1;
     private Integer pageSize = 50;

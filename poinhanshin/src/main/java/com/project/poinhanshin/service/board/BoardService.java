@@ -1,8 +1,10 @@
 package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.board.LikeDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +28,10 @@ public interface BoardService {
     List<BoardDto> getSearchResultPage(SearchCondition sc);
 
     int getSearchResultCnt(SearchCondition sc);
+
+    int likeCheck(Integer bno , Integer uno);
+
+    int addLike(String userno , LikeDto likeDto );
+
+    int deleteLike(String userno , LikeDto likeDto );
 }
