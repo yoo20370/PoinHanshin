@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-// 지역
+
 public class LocationDto {
     private Integer locationno; // PK, 지역번호
     private String location;    // 지역

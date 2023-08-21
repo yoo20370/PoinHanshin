@@ -3,14 +3,16 @@ package com.project.poinhanshin.domain.map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import java.math.BigDecimal;
 import java.sql.Date;
+
 
 @Getter
 @Setter
 @ToString
+
 // 실종/발견신고지도
+
 public class MapBoardDto {
     private Integer mapboard_userno;    // FK, 회원번호
     private Integer mapboardno;         // PK, 게시물내용

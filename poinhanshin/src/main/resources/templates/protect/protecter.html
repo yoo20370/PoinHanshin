@@ -43,6 +43,37 @@
     }
 
 </style>
+<!--
+key :: protectDto
+
+// 임보자 게시물 작성 아이디
+    private String protectboard_id;
+
+    // 임보자 게시물 번호
+    private String protectboardno;
+
+    // 내용
+    private String content;
+
+    // 임보자 게시물 이미지 경로
+    private byte[] protectimagepath;
+
+    // 품종
+    private String breeds;
+
+    // 동물 카테고리 강아지/고양이
+    private Boolean ani_category;
+
+    // 게시물 등록일
+    private java.sql.Date writedate;
+
+    // 공고 여부
+    private Boolean status;
+
+    // Deadline
+    private Date deadline;
+-->
+
 <body layout:fragment="content">
 <div class="page">
     <span th:if="${protectDto.breeds != null}" class="badge text-bg-primary" th:value="${protectDto.breeds}">품종</span>
@@ -54,31 +85,32 @@
             <input type="text" readonly class="form-control-plaintext"
                    id="floatingEmptyPlaintextInput"
                    placeholder="boardtitle"
-                   th:value="${boardDto.title}">
-            <label for="floatingEmptyPlaintextInput">제목</label>
+                   th:value="${protectDto.breeds}">
+            <label for="floatingEmptyPlaintextInput">품종</label>
         </div>
     </div>
 
     <div class="row">
         <div class="col-mb-3">
-            <div class="col-sm-6" th:each="img:${protectimagepath}" th:if="${protectimagepath != null} or ${list.size() != 0}">
+           <!-- <div class="col-sm-6" th:each="img:${protectDto.getProtectimagepath()}" th:if="${{protectDto.getProtectimagepath() != null} or ${list.size() != 0}">
                 <img src="${img.protectimagepath}" class="img-fluid" alt="">
-            </div>
+            </div>-->
             <textarea
                     type="text"
                     name="content"
                     class="form-control"
                     id="inputContent"
-                    th:value="${boardDto.content}"
+                    th:value="${protectDto.content}"
                     readonly="readonly"
                     style="height: 300px;border:none"
             >임시내용</textarea>
         </div>
     </div>
     <div class="col">
-        <span th:text="| 작성일 : ${boardDto.reg_date}|">작성일:</span>
-        <span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>
-        <span th:text="| 작성자 : ${boardDto.board_users_id}">작성자</span>
+        <span th:text="| 작성일 : ${protectDto.writedate}|">작성일:</span>
+        <!--<span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>-->
+        <span th:text="| 작성일 : ${protectDto.protectboard_id}|">작성일:</span>
+
     </div>
 
     <!--댓글-->
@@ -94,13 +126,13 @@
 
     <div>
         <form th:unless="${session.isEmpty()}"
-              th:action="@{}" th:object="${dto}" method="post">
+              th:action="@{}" th:object="" method="post">
             <div class="input-group" style="width:auto">
 
                 <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                <input type="text" th:field="*{content}" class="form-control" id="content" name="content"
+                <input type="text" th:field="*{protectDto.content}" class="form-control" id="content" name="content"
                        placeholder="1자에서 100자 이내로 입력해주세요.">
-                <div class="field-error" th:errors="*{content}">
+                <div class="field-error" th:errors="*{protectDto.content}">
                     오류2
                 </div>
                 <button type="submit" class="btn btn-outline-dark">작성</button>
@@ -109,71 +141,19 @@
         </form>
 
 
-        <div class="col-5 p-3">
-            <button type="button" class="btn btn-secondary">수정</button>
-            <button type="button" class="btn btn-danger">삭제</button>
 
+        <div class="col-5 p-3" >
+            <span th:if="${Mode} == 'WRITER'">
+                <button type="button" class="btn btn-secondary">수정</button>
+                <button type="button" class="btn btn-danger">삭제</button>
+            </span>
+            <button type="button" class="btn btn-secondary"
+                    th:onclick="|location.href='@{/protectboard/list(page = ${page} , pageSize = ${pageSize} )}'|">목록
+            </button>
         </div>
 
     </div>
 </div>
-    <script th:inline="javascript">
-/*<![CDATA[*/
-
-        window.onload = () => {
-        findAllComment();
-    }
-
-
-       // 전체 댓글 조회
-
-function findAllComment() {
-
-    const postId = /*[[ ${boardDto.boardno} ]]*/
-
-    $.ajax({
-        url : `/posts/${postId}/comments`,
-        type : 'get',
-        dataType : 'json',
-        async : false,
-        success : function (response) {
-
-            // 1. 조회된 데이터가 없는 경우
-            if ( !response.length ) {
-                document.querySelector('.cm_list').innerHTML = '<div class="cm_none"><p>등록된 댓글이 없습니다.</p></div>';
-                return false;
-            }
-
-            // 2. 렌더링 할 HTML을 저장할 변수
-            let commentHtml = '';
-
-            // 3. 댓글 HTML 추가
-            response.forEach(row => {
-                commentHtml += `
-                    <div>
-                       <p class="writer">
-                            <em>${row.writer}</em>
-                            <span class="date">${dayjs(row.createdDate).format('YYYY-MM-DD HH:mm')}</span>
-                        </p>
-                        <div class="cont"><div class="txt_con">${row.content}</div></div>
-                        <p class="func_btns">
-                            <button type="button" class="btns"><span class="icons icon_modify">수정</span></button>
-                            <button type="button" class="btns"><span class="icons icon_del">삭제</span></button>
-                        </p>
-                    </div>
-                `;
-            })
-
-            // 4. class가 "cm_list"인 요소를 찾아 HTML을 렌더링
-            document.querySelector('.cm_list').innerHTML = commentHtml;
-        },
-        error : function (request, status, error) {
-            console.log(error)
-        }
-    })
-}
-/*]]>*/
-</script>
 
 </body>
 </html>
