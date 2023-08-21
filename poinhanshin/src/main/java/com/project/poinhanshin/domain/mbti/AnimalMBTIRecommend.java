@@ -8,6 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 // MBTI 별 동물
+
 public class AnimalMBTIRecommend {
     private Integer AnimalMBTIrecommend_MBTI;   // FK, mbti번호
     private Integer animalno;           // PK, 동물번호

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-// 관심지역
+
 public class AreaofinterestDto {
     private Integer areaofinterset_userno;  // FK, 회원번호
     private Integer areaofinterset_locationno;     // FK, 지역번호

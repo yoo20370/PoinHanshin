@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-// MBTI
+//MBTI
 public class MBTIDto {
     private Integer MBTI;           // PK, mbit 번호
     private String MBTIcategory;    // mbti 이름

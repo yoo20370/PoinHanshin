@@ -2,9 +2,11 @@ package com.project.poinhanshin.domain.etc;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class PageHandler {
     private int totalCnt; // 총 게시물 개수
     private int pageSize; // 한 페이지의 크기
@@ -49,19 +51,5 @@ public class PageHandler {
         System.out.println(showNext ? " [NEXT]": "");
     }
 
-    @Override
-    public String toString() {
-        return "PageHandler{" +
-                "totalCnt=" + totalCnt +
-                ", pageSize=" + pageSize +
-                ", naviSize=" + navSize +
-                ", totalPage=" + totalPage +
-                ", page=" + page +
-                ", beginPage=" + beginPage +
-                ", endPage=" + endPage +
-                ", showPrev=" + showPrev +
-                ", showNext=" + showNext +
-                '}';
-    }
 
 }

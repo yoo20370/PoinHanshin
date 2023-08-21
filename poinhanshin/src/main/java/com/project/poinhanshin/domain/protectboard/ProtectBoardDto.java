@@ -1,5 +1,6 @@
 package com.project.poinhanshin.domain.protectboard;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +10,8 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
+
 public class ProtectBoardDto {
      private Integer protectboard_userno;   // FK, 회원번호
      private Integer protectboardno;    // PK, 임보자공고 게시물 번호
@@ -32,5 +35,7 @@ public class ProtectBoardDto {
           this.deadline = deadline;
      }
 }
+
+
 
 
