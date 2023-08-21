@@ -7,6 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+// 마이페이지_즐겨찾기 확인 & 개인정보 확인 페이지
 public class MyPageDto {
      private Integer mypage_userno; // FK, 회원 번호
      private Integer mypage_boardno;    // FK, 게시판 게시물 번호
