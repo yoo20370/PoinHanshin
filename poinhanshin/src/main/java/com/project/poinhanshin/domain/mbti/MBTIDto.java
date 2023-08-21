@@ -6,4 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MBTIDto {
+    private integer MBTI;   // PK
+    private varchar MBTIcategory;
 }
