@@ -35,7 +35,7 @@
     <br><div><h1> 보호중인 유기동물 목록 </h1></div><br><br><br>
     <div class="item">
         <div th:each="Ab_ani : ${AAArr}">
-            <a th:href="@{'/information/AnimalBoard'+${Ab_ani.queryString}}">
+            <a th:href="@{'/api/AnimalBoard'+${Ab_ani.queryString}}">
                 <table border="1" class="table table-bordered table-striped table-hover"  >
                     <tr>
                         <th>유기번호</th>
@@ -54,9 +54,25 @@
         </div>
     </div>
 </center>
-<div style=" position:absolute; right:50%;">
+<!--<div style=" position:absolute; right:50%;">
     <span th:each="i : ${#numbers.sequence(1,10)}">
         <a th:href="@{/information/AnimalList(PageNum=${i})}"><span th:text="${i}"></span></a>
+    </span>
+</div>-->
+
+<div style=" position:absolute; right:40%;">
+    <span th:if="${ph.showPrev}">
+                <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
+    </span>
+    <span th:if="${ph.totalCnt != 0}">
+        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+            <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(i)}}">
+                <span th:text="${i}"/>
+            </a>
+        </span>
+    </span>
+    <span th:if="${ph.showNext}">
+                <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
     </span>
 </div>
 
