@@ -29,8 +29,8 @@ public class ProtectBoardController {
     @GetMapping("/list")
     public String ProtectBoardList(PageHandler1 ph , SearchCondition1 sc , Model m){
 
-        List<ProtectBoardDto> list = protectBoardService.bringBoardList();
-        int totalCnt = protectBoardService.searchListCnt();
+        List<ProtectBoardDto> list = protectBoardService.bringBoardList(sc);
+        int totalCnt = protectBoardService.countListAll();
         System.out.println(list.toString());
 
         m.addAttribute("list",list);
@@ -43,7 +43,7 @@ public class ProtectBoardController {
 
     // 임보자 공고 상세화면
     @GetMapping("/read")
-    public String ProtectBoardRead(String protectboardno , SearchCondition1 sc , Model m){
+    public String ProtectBoardRead(Integer protectboardno , SearchCondition1 sc , Model m){
         // 임시 로그인
         String LoginId = "하리보";
 

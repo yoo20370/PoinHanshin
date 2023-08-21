@@ -9,14 +9,14 @@ import java.util.List;
 @Mapper
 public interface ProtectBoardMapper {
 
-    // 게시물 목록 개수를 가져온다.
-    int count();
+    // 모든 게시물 개수를 가져온다.
+    int countAll();
 
     // 임보자 게시물 전체를 가져온다.
     List<ProtectBoardDto> selectContentAll();
 
     // 특정 임보자 게시물 하나를 가져온다.
-    ProtectBoardDto SelectContentOne(String protectboardno);
+    ProtectBoardDto SelectContentOne(Integer protectboardno);
 
     // 임보자 게시물을 등록한다.
     int insertContent(ProtectBoardDto protectBoardDto);
@@ -27,7 +27,7 @@ public interface ProtectBoardMapper {
     // 임보자 게시물을 삭제한다.( 사용자 )
     int deleteContent(ProtectBoardDto protectBoardDto , String writer);
 
-    // 검색된 임보자 개수 카운팅
+    // 검색된 임보자 게시물 개수 카운팅
     int selectResultCnt(SearchCondition1 sc );
 
     // 임보자 게시물 클릭시

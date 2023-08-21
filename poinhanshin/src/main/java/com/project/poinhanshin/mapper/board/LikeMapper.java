@@ -13,7 +13,5 @@ public interface LikeMapper {
 
     int updateLikeCnt(Integer bno , Integer num);
 
-    //int LikeCntUp(Integer bno);
 
-    //int LikeCntDown(Integer bno);
 }

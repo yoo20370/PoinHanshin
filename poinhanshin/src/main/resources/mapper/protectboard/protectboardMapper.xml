@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper">
-    <select id="count" resultType="int">
+    <select id="countAll" resultType="int">
         Select count(*) FROM protectboard
     </select>
     <select id="selectContentAll" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
@@ -17,7 +17,16 @@
     </select>
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         INSERT INTO protectboard
-            (protectboard_id , protectboardno , content , protectimagepath , breeds , ani_category , writedate , status ,)
-        VALUES
+            (protectboard_id , protectboardno , content , protectimagepath , breeds , ani_category , writedate , status , deadline)
+        VALUES (#{protectboard_id} , #{protectboardno} , #{content} , #{protectimagepath} , #{breeds} ,  #{ani_category} ,#{writedate} , #{status} ,#{deadline}  )
     </insert>
+    <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
+        UPDATE protectboard
+        SET content = #{content} , protectimagepath = #{protectimagepath} , breeds = #{breeds} , ani_category = #{ani_category}
+        WHERE protectboard_id = #{protectboard_id} and protectboardno = #{protectboardno}
+    </update>
+    <delete id="deleteContent" parameterMap="map">
+        DELETE FROM protectboard
+        WHERE protectboard_id = #{protectboard_id} and protectboardno = #{protectboardno}
+    </delete>
 </mapper>

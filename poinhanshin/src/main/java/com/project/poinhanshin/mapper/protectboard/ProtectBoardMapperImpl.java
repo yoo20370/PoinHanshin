@@ -1,8 +1,9 @@
-/*
 package com.project.poinhanshin.mapper.protectboard;
 
 import com.project.poinhanshin.domain.etc.SearchCondition1;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
+import org.apache.ibatis.session.SqlSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,31 +12,34 @@ import java.util.List;
 @Repository
 public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
-    private final ProtectBoardMapper protectBoardMapperImpl;
+
+    SqlSession sqlSession;
 
     @Autowired
-    public ProtectBoardMapperImpl(ProtectBoardMapper protectBoardMapperImpl) {
-        this.protectBoardMapperImpl = protectBoardMapperImpl;
+    public ProtectBoardMapperImpl(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
     }
 
+    private String namespace = "com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper.";
+
     @Override
-    public int count() {
-        return 0;
+    public int countAll() {
+        return sqlSession.selectOne(namespace+"countAll");
     }
 
     @Override
     public List<ProtectBoardDto> selectContentAll() {
-        return null;
+        return sqlSession.selectList(namespace+"selectContentAll");
     }
 
     @Override
     public ProtectBoardDto SelectContentOne(Integer protectboardno) {
-        return null;
+        return sqlSession.selectOne(namespace+"SelectContentOne", protectboardno);
     }
 
     @Override
     public int insertContent(ProtectBoardDto protectBoardDto) {
-        return 0;
+        return sqlSession.insert(namespace+"insertContent" , protectBoardDto);
     }
 
     @Override
@@ -55,8 +59,8 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
     @Override
     public int increaseViewCnt(Integer protectboardno) {
-
-        return ;
+        return 0;
     }
+
+
 }
-*/
