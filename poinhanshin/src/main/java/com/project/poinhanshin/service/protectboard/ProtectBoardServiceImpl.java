@@ -1,9 +1,7 @@
 package com.project.poinhanshin.service.protectboard;
 
 import com.project.poinhanshin.domain.etc.SearchCondition1;
-import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

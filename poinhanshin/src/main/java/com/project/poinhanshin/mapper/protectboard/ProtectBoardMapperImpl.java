@@ -1,7 +1,6 @@
 package com.project.poinhanshin.mapper.protectboard;
 
 import com.project.poinhanshin.domain.etc.SearchCondition1;
-import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import org.apache.ibatis.session.SqlSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
