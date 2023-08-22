@@ -156,49 +156,53 @@
             </tbody>
         </table>
     </div>
-<!--    <div style=" position:absolute; right:50%; bottom:10px;">-->
-<!--        <div>-->
-<!--            <span th:if="${totalCnt == 0}">게시물이 없습니다.</span>-->
-<!--            <span th:if="${ph.showPrev}">-->
-<!--                <a th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>-->
-<!--            </span>-->
-<!--            <span th:if="${ph.totalCnt != 0}">-->
-<!--                <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">-->
-<!--                <a th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}">-->
-<!--                    <span th:text="${i}"/>-->
-<!--                </a>-->
-<!--            </span>-->
-<!--            </span>-->
-<!--            <span th:if="${ph.showNext}">-->
-<!--                <a th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>-->
-<!--            </span>-->
-<!--        </div>-->
-<!--    </div>-->
 
-    <script>
-        function getSearchList(){
+
+
+    <div style=" position:absolute; right:50%; bottom:10px;">
+        <div>
+            <span th:if="${totalCnt == 0}">게시물이 없습니다.</span>
+            <span th:if="${ph.showPrev}">
+                <a th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
+            </span>
+            <span th:if="${ph.totalCnt != 0}">
+                <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+                <a th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}">
+                    <span th:text="${i}"/>
+                </a>
+            </span>
+            </span>
+            <span th:if="${ph.showNext}">
+                <a th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
+            </span>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+     /*<![CDATA[*/
+
+
+
+
+             function getSearchList(){
 	$.ajax({
 		type: 'GET',
-		url : "/getSearchList",
+		url : "/board/Search",
 		data : $("form[name=search-form]").serialize(),
 		success : function(result){
 			//테이블 초기화
 			$('#boardtable > tbody').empty();
 			if(result.length>=1){
 				result.forEach(function(item){
-					str='<tr>'
-					str += "<td>"+item.boardno+"</td>";
-					str+="<td>"+item.board_users_id+"</td>";
-					str+="<td><a href = '/board/detail?boardno=" + item.boardno + "'>" + item.title + "</a></td>";
-					str+="<td>"+item.reg_date+"</td>";
-					str+="<td>"+item.viewcount+"</td>";
-					str+="</tr>"
-					$('#boardtable').append(str);
-        		})				 
+                       //결과창
+        		})
 			}
 		}
 	})
 }
+
+
+    /*]]>*/
     </script>
 </div>
 </body>

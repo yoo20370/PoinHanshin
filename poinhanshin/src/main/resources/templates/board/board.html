@@ -97,7 +97,7 @@
     <div id="commentTable">
         <th:block th:each="commentDto:${commentList}">
         <div>
-            <form th:action="@{/comments(bno=${boardDto.boardno})}"   method="get" >
+            <form th:action="@{/comments/{cno}(cno=${commentDto.commentno})}"   method="post" >
                 <div class="commentbox" th:if="${#strings.isEmpty(commentDto.parcommentno)}">
                     <input type="hidden" id="commentno" name="commentno" th:value="${commentDto.commentno}">
                     <div>
@@ -143,7 +143,7 @@
         </div>
 
         <div>
-            <form th:unless="${session.isEmpty()}" th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentDto}" method="post">
+            <form th:unless="${session.isEmpty()}" th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentVO}" method="post">
                 <div class="input-group" style="width:auto">
 
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
@@ -174,7 +174,7 @@
 
 //게시글삭제
  function removePost() {
-                const id = [[ ${boardDto.boardno} ]];
+                const id = /*[[ ${boardDto.boardno} ]]*/;
 
                 if ( !confirm(id + '번 게시글을 삭제할까요?') ) {
                     return false;
