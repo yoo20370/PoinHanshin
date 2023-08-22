@@ -32,12 +32,16 @@ public class SearchCondition1 {
                 .queryParam("option" , option)
                 .build().toString();
     }
+    public int getOffset() {
+        return (page - 1) * pageSize;
+    }
 
     @Override
     public String toString() {
         return "SearchCondition{" +
                 "page=" + page +
                 ", pageSize=" + pageSize +
+                ", offset =" + getOffset() +
                 ", keyword='" + keyword + '\'' +
                 ", option='" + option + '\'' +
                 '}';

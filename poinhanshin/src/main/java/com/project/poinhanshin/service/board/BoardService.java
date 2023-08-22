@@ -1,7 +1,7 @@
 package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
-import com.project.poinhanshin.domain.board.LikeDto;
+import com.project.poinhanshin.domain.board.LikeBoardDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public interface BoardService {
 
     int likeCheck(Integer bno , Integer uno);
 
-    int addLike(String userno , LikeDto likeDto );
+    int addLike(String userno , LikeBoardDto likeDto );
 
-    int deleteLike(String userno , LikeDto likeDto );
+    int deleteLike(String userno , LikeBoardDto likeDto );
 }

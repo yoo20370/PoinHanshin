@@ -45,11 +45,11 @@ public class ProtectBoardController {
     @GetMapping("/read")
     public String ProtectBoardRead(Integer protectboardno , SearchCondition1 sc , Model m){
         // 임시 로그인
-        String LoginId = "하리보";
+        Integer LoginId = 1;
 
         ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
-        System.out.println(protectBoardDto.getProtectboard_id());
-        if(LoginId.equals(protectBoardDto.getProtectboard_id()))
+
+        if(LoginId.equals(protectBoardDto.getProtectboard_userno()))
             m.addAttribute("Mode", "WRITER");
 
         m.addAttribute("protectDto" , protectBoardDto);
@@ -92,5 +92,18 @@ public class ProtectBoardController {
     @PostMapping("/remove")
     public String ProtectBoardRemove(){
         return "";
+    }
+
+    @GetMapping("test")
+    public String test(){
+       //protectBoardService.test();
+        byte[] array = null;
+        ProtectBoardDto protectBoardDto2 = new ProtectBoardDto(1, "공고 테스트 수정" , array , "고양이" , true , true );
+
+        //protectBoardService.updateProductBoard(protectBoardDto2 , 2);
+
+        // 테스트 O
+        protectBoardService.deleteProductBoard(11 , 2);
+        return "/test/protectTest";
     }
 }

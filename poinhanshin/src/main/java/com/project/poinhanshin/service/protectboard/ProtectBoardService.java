@@ -17,5 +17,11 @@ public interface ProtectBoardService {
 
     int insertProductBoard(ProtectBoardDto protectBoardDto);
 
+    int updateProductBoard(ProtectBoardDto protectBoardDto , Integer LoginId);
+
+    int deleteProductBoard(Integer bno , Integer LoginId);
+
+    int test();
+
 
 }

@@ -1,7 +1,8 @@
 package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
-import com.project.poinhanshin.domain.board.LikeDto;
+import com.project.poinhanshin.domain.board.LikeBoardDto;
+
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.mapper.board.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,12 +85,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public int addLike(String userno, LikeDto likeDto) {
+    public int addLike(String userno, LikeBoardDto likeDto) {
         return 0;
     }
 
     @Override
-    public int deleteLike(String userno, LikeDto likeDto) {
+    public int deleteLike(String userno, LikeBoardDto likeDto) {
         return 0;
     }
 

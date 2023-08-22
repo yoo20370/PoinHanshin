@@ -19,6 +19,7 @@ public class AreaofinterestDto {
         3 / 유저 2번 / 1(영등포)
         4 / 유저 3번 / 1(권선)
     */
+    public AreaofinterestDto(){}
 
     public AreaofinterestDto(Integer areaofinterset_userno, Integer locationno, Integer locationarr) {
         this.areaofinterset_userno = areaofinterset_userno;
