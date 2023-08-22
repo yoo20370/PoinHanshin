@@ -25,6 +25,11 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return protectBoardMapper.selectContentAll(sc);
     }
 
+    @Override
+    public List<ProtectBoardDto> bringanimalFilterList(SearchCondition1 sc) {
+        return protectBoardMapper.animalFilterList(sc);
+    }
+
     // 게시물 하나만 가져온다.
     @Override
     public ProtectBoardDto bringBoardOne(Integer protectboardno) {

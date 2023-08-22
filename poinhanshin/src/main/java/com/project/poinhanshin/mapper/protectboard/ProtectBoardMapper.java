@@ -12,8 +12,11 @@ public interface ProtectBoardMapper {
     // 모든 게시물 개수를 가져온다.
     int countAll();
 
-    // 임보자 게시물 전체를 가져온다.
+    // 임보자 게시물 전체 리스트를 가져온다.
     List<ProtectBoardDto> selectContentAll(SearchCondition1 sc);
+
+    // 임보자 게시물 중 특정 동물의 게시물 리스트를 가져온다.
+    List<ProtectBoardDto> animalFilterList(SearchCondition1 sc);
 
     // 특정 임보자 게시물 하나를 가져온다.
     ProtectBoardDto selectContentOne(Integer protectboardno);

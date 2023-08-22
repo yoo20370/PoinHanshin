@@ -3,7 +3,7 @@ package com.project.poinhanshin.controller.board;
 import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.PageHandler;
 import com.project.poinhanshin.domain.etc.SearchCondition;
-import com.project.poinhanshin.domain.etc.User;
+import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.service.board.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

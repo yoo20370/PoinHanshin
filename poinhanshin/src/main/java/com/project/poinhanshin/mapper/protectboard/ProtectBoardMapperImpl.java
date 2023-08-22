@@ -32,7 +32,12 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
     // 임보자 게시물 전체를 가져온다.
     @Override
     public List<ProtectBoardDto> selectContentAll(SearchCondition1 sc) {
-        return sqlSession.selectList(namespace+"selectContentAll");
+        return sqlSession.selectList(namespace+"selectContentAll",sc);
+    }
+
+    @Override
+    public List<ProtectBoardDto> animalFilterList(SearchCondition1 sc ) {
+        return sqlSession.selectList(namespace+"animalFilterList",sc);
     }
 
     // 특정 임보자 게시물 하나를 가져온다.
