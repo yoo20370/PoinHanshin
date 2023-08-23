@@ -55,8 +55,9 @@
 <body layout:fragment="content">
 <div class="page">
 <span class="fs-6">태그</span>
-<span th:if="${boardDto.ani_category == 2}" class="badge text-bg-primary">고양이</span>
-<span th:if="${boardDto.ani_category == 1}" class="badge rounded-pill text-bg-secondary">강아지</span>    
+<!--    고양이=1(true), 강아지=0(false)-->
+<span th:if="${boardDto.ani_category}" class="badge text-bg-primary">고양이</span>
+<span th:unless="${boardDto.ani_category}" class="badge rounded-pill text-bg-secondary">강아지</span>
 
 
     <div class="row">
@@ -70,8 +71,8 @@
 
     <div class="row">
         <div class="col-mb-3">
-                  <div class="col-sm-6" th:each="img:${boardDtoImg}" th:if="${boardDtoImg != null}">
-                    <img src="${img.boardimagepath}" class="img-fluid" alt="빈이미지">
+                  <div class="col-sm-6" th:each="imagePath:${boardDto.board_imagepath}" th:if="${boardDto.board_imagepath != null}">
+                    <img th:src="${imagePath}" class="img-fluid" alt="빈이미지">
                   </div>
             <textarea
                 type="text"
@@ -92,11 +93,12 @@
     </div>
 
 <!--댓글출력-->
+<!--${commentList} 댓글리스트-->
     <div id="commentTable">
         <th:block th:each="commentDto:${commentList}">
         <div>
-            <form th:action="@{/comments(bno=${boardDto.boardno})}"   method="get" >
-                <div class="commentbox">
+            <form th:action="@{/comments/{cno}(cno=${commentDto.commentno})}"   method="post" >
+                <div class="commentbox" th:if="${#strings.isEmpty(commentDto.parcommentno)}">
                     <input type="hidden" id="commentno" name="commentno" th:value="${commentDto.commentno}">
                     <div>
                         <input type="button" class="btn p-0 btn-md" name="comment_userno" th:value="${commentDto.boardcomment_userno}" />유저id
@@ -108,29 +110,28 @@
                         <span><button type="submit" class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button></span>
                     </span>
                 </div>
-            </form>
-<!--대댓글-->
 
-                    <div th:each="relpy : ${parcommentno}" th:if="${parcommentno != null}">
-                        <div class="relpybox">
+<!--대댓글-->
+<!--이중반복문으로 commentList를 돌려서 '댓글번호==부모댓글번호'로 대댓글을 구분-->
+                    <div th:each="commentDto:${commentList}" >
+                        <div class="relpybox" th:if="${#strings.equals(commentDto.commentno, commentDto.parcommentno)">
                             <i class="bi bi-arrow-90deg-up"></i>
-                            <input type="hidden" id="replyno" name="relpyno" th:value="${relpy.commentno}">
+                            <input type="hidden" id="replyno" name="relpyno" th:value="${relpyDto.commentno}">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
                                 </svg>
-                                <input type="button" class="btn p-0 btn-md" name="comment_userno" th:value="${relpy.boardcomment_userno}"/>유저id
+                                <input type="button" class="btn p-0 btn-md" name="comment_userno" th:value="${relpyDto.boardcomment_userno}"/>유저id
                                 <small th:text="${#strings.substring(commentDto.reg_date,0,19)}"> 2010-11-11 10:51:03 (ex)</small>
                             </div>
-                            <span th:text="${relpy.comment}">대댓글내용</span>
-                            <span class="text-right" th:if="${relpy.boardcomment_userno == users.userno}">
+                            <span th:text="${relpyDto.comment}">대댓글내용</span>
+                            <span class="text-right" th:if="${relpyDto.boardcomment_userno == users.userno}">
                                 <span><button type="submit" class="btn btn-outline-primary btn-sm" name="submit" value="update">수정</button></span>
                                 <span><button type="submit" class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button></span>
                             </span>
                         </div>
                     </div>
-
-
+            </form>
         </div>
         </th:block>
     </div>
@@ -142,7 +143,7 @@
         </div>
 
         <div>
-            <form th:unless="${session.isEmpty()}" th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentDto}" method="post">
+            <form th:unless="${session.isEmpty()}" th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentVO}" method="post">
                 <div class="input-group" style="width:auto">
 
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
@@ -157,13 +158,12 @@
             </form>
         </div>
     </div>
-
+        <form>
         <div class="col-7 p-3">
-            <button type="button" class="btn btn-secondary">수정</button>
-            <button type="button" class="btn btn-danger">삭제</button>
-
+            <button type="button" th:onclick="|location.href='@{/board/modify}'|" class="btn btn-secondary">수정</button>
+            <button type="button" onclick="removePost();" class="btn btn-danger">삭제</button>
         </div>
-
+        </form>
 
 <script th:inline="javascript">
 /*<![CDATA[*/
@@ -172,10 +172,30 @@
         findAllComment();
     }
 
+//게시글삭제
+ function removePost() {
+                const id = /*[[ ${boardDto.boardno} ]]*/;
 
-       // 전체 댓글 조회
+                if ( !confirm(id + '번 게시글을 삭제할까요?') ) {
+                    return false;
+                }
+
+                const formHtml = `
+                    <form id="deleteForm" action="/board/remove" method="post">
+                        <input type="hidden" id="id" name="id" value="${id}" />
+                    </form>
+                `;
+                const doc = new DOMParser().parseFromString(formHtml, 'text/html');
+                const form = doc.body.firstChild;
+                document.body.append(form);
+                document.getElementById('deleteForm').submit();
+            }
+
+
+
+       // 댓글 조회 ajax 임시
        
-function findAllComment() {
+//function findAllComment() {
 
     const postId = /*[[ ${boardDto.boardno} ]]*/
 
