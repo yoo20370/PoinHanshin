@@ -173,25 +173,4 @@ public class ProtectBoardController {
         return "redirect:/protectboard/list";
     }
 
-    @GetMapping("/test")
-    public String test(){
-       //protectBoardService.test();
-        byte[] array = null;
-        //ProtectBoardDto protectBoardDto2 = new ProtectBoardDto(1, "공고 테스트 수정" , array , "고양이" , true , true );
-
-        //protectBoardService.updateProductBoard(protectBoardDto2 , 2);
-
-        // 삭제 테스트 O
-        //protectBoardService.deleteProductBoard(11 , 2);
-
-        // 전체 리스트 , 카테고리 리스트 테스트 O
-        SearchCondition1 sc = new SearchCondition1();
-        sc.setProtectboard_ani_category(false);
-        System.out.println(sc);
-        System.out.println(sc.getOffset());
-        //System.out.println(protectBoardService.bringanimalFilterList(sc));
-        //System.out.println(protectBoardService.bringBoardList(sc));
-
-        return "/test/protectTest";
-    }
 }

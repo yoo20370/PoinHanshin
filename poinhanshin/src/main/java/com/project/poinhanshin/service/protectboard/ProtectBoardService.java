@@ -27,7 +27,7 @@ public interface ProtectBoardService {
 
     int readWritedBoardno(Integer protectboard_userno);
 
-    int test();
+
 
 
 }

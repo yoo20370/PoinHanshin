@@ -81,6 +81,7 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
         return sqlSession.selectList(namespace+"searchResultList", sc);
     }
 
+    // 가장 최근에 등록한 자신 게시물을 읽어온다.
     @Override
     public int selectRecentBoardno(Integer protectboard_userno) {
         return sqlSession.selectOne(namespace+"selectRecentBoardno" , protectboard_userno);

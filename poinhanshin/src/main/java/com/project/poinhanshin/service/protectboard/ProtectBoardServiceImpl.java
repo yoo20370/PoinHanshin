@@ -64,34 +64,5 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     }
 
 
-    @Override
-    public int test() {
-        // 게시물 전체 개수 테스트 O
-        System.out.println(protectBoardMapper.countAll());
-
-        // selectContentALL 테스트 O
-        SearchCondition1 sc = new SearchCondition1();
-        List<ProtectBoardDto> list = protectBoardMapper.selectContentAll(sc);
-        System.out.println(list.toString());
-
-        // selectContentAll 테스트 O
-        System.out.println(protectBoardMapper.selectContentOne(1));
-
-        // insertContent 테스트 O
-        byte[] array = null;
-        //ProtectBoardDto protectBoardDto = new ProtectBoardDto(1, "공고 테스트" , array , "강아지" , true , true );
-        //protectBoardMapper.insertContent(protectBoardDto);
-
-        // updateContent 테스트 O
-        //ProtectBoardDto protectBoardDto2 = new ProtectBoardDto(1, "공고 테스트 수정" , array , "강아지" , false , false );
-        //protectBoardDto2.setProtectboardno(6);
-        //protectBoardMapper.updateContent(protectBoardDto2);
-
-        // deleteContent 테스트 X
-
-
-        return 1;
-    }
-
 }
 
