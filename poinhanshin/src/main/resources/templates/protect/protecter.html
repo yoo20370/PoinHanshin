@@ -48,40 +48,41 @@
 <body layout:fragment="content">
 <script th:if="${msg} == 'FAIL_REMOVE'">alert("게시글을 삭제하지 못했습니다.")</script>
 <div class="page">
+
+    <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:value="${protectboard.breeds}">품종</span>
+    <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
+    <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
+    <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${protectboard.deadline}|"> 남은날짜 : </span>
+    <div class="row">
+        <div class="form-floating">
+            <input type="text" readonly class="form-control-plaintext"
+                   id="floatingEmptyPlaintextInput"
+                   placeholder="boardtitle"
+                   th:value="${protectboard.breeds}">
+            <label for="floatingEmptyPlaintextInput">품종</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-mb-3">
+            <!-- <div class="col-sm-6" th:each="img:${protectboard.getProtectimagepath()}" th:if="${{protectboard.getProtectimagepath() != null} or ${list.size() != 0}">
+                   <img src="${img.protectimagepath}" class="img-fluid" alt="">
+            </div>-->
+            <textarea
+                    type="text"
+                    name="content"
+                    class="form-control"
+                    id="inputContent"
+                    th:value="${protectboard.protectboard_content}"
+                    readonly="readonly"
+                    style="height: 300px;border:none">임시내용</textarea>
+        </div>
+    </div>
+    <div class="col">
+        <span th:text="| 작성일 : ${protectboard.protectboard_reg_date}|" >작성일:</span>
+        <!--<span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>-->
+        <span th:text="| 작성자 : ${protectboard.protectboard_userno}|">작성자:</span>
+    </div>
     <form id="form"action="" method="post">
-        <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:value="${protectboard.breeds}">품종</span>
-        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
-        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
-        <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${protectboard.deadline}|"> 남은날짜 : </span>
-        <div class="row">
-            <div class="form-floating">
-                <input type="text" readonly class="form-control-plaintext"
-                       id="floatingEmptyPlaintextInput"
-                       placeholder="boardtitle"
-                       th:value="${protectboard.breeds}">
-                <label for="floatingEmptyPlaintextInput">품종</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-mb-3">
-                <!-- <div class="col-sm-6" th:each="img:${protectboard.getProtectimagepath()}" th:if="${{protectboard.getProtectimagepath() != null} or ${list.size() != 0}">
-                    <img src="${img.protectimagepath}" class="img-fluid" alt="">
-                </div>-->
-                <textarea
-                        type="text"
-                        name="content"
-                        class="form-control"
-                        id="inputContent"
-                        th:value="${protectboard.protectboard_content}"
-                        readonly="readonly"
-                        style="height: 300px;border:none">임시내용</textarea>
-            </div>
-        </div>
-        <div class="col">
-            <span th:text="| 작성일 : ${protectboard.protectboard_reg_date}|" >작성일:</span>
-            <!--<span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>-->
-            <span th:text="| 작성자 : ${protectboard.protectboard_userno}|">작성자:</span>
-        </div>
         <div class="input-group" style="width:auto">
 
             <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
@@ -95,7 +96,7 @@
         </div>
         <div class="col-5 p-3" >
             <span th:if="${WriterCheck} == 'OK'">
-                <button type="button" class="btn btn-secondary">수정</button>
+                <button type="button" class="btn btn-secondary" id="modifyBtn">수정</button>
                 <button type="button" class="btn btn-danger" id="removeBtn">삭제</button>
             </span>
             <button type="button" class="btn btn-secondary"
@@ -105,6 +106,9 @@
     </form>
 </div>
 <script>
+    $("#modifyBtn").on("click",function(){
+
+    });
     $("#removeBtn").on("click",function(){
         if(!confirm("정말로 삭제하시겠습니까 ?")) return;
         let form = $('#form');
