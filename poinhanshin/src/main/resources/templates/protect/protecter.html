@@ -84,6 +84,8 @@
             </div>
         </div>
         <div class="col-5 p-3" >
+            <input type="hidden" name="page" th:value="${page}">
+            <input type="hidden" name="pageSize" th:value="${pageSize}">
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}">
             <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}" >
             <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}">
@@ -108,7 +110,7 @@
     </form>
 </div>
 <script>
-    $("#modifyBtn").on("click",function(){
+    /*$("#modifyBtn").on("click",function(){
         let form = $('#form');
         let readonly = $("#inputContent").attr("readonly");
 
@@ -125,7 +127,13 @@
         form.attr("method" , "post");
         form.submit();
 
-
+    });*/
+    $("#modifyBtn").on("click",function(){
+        if(!confirm("수정하시겠습니까 ?")) return;
+        let form = $('#form');
+        form.attr("action" , "[[@{/protectboard/modify}]]");
+        form.attr("method" , "get");
+        form.submit();
 
     });
     $("#removeBtn").on("click",function(){

@@ -84,7 +84,8 @@ public class ProtectBoardController {
         m.addAttribute("pageSize", sc.getPageSize());
         m.addAttribute("LoginId", LoginId);
         m.addAttribute("msg" , msg);
-        return "protect/protecterreg";
+        m.addAttribute("mode","WRITE");
+        return "protect/protecteredit";
     }
     @PostMapping("/write")
     public String ProtectBoardWrite(ProtectBoardDto protectBoardDto, SearchCondition1 sc ,  RedirectAttributes redirectAttributes
@@ -103,6 +104,27 @@ public class ProtectBoardController {
         redirectAttributes.addAttribute("protectboardno",protectBoardService.readWritedBoardno(protectBoardDto.getProtectboard_userno()));
         // 자신이 등록한 게시물 내용을 가져오기 위해서 최근 자신의 글을 읽어온다.
         return "redirect:/protectboard/read";
+    }
+    @GetMapping("/modify")
+    public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes){
+
+        // 임시 로그인
+        Integer LoginId = 1;
+
+        // 로그인 확인
+        if(LoginId == null) {
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+            redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            return "redirect:/protectboard/list";
+        }
+
+        m.addAttribute("LoginId" ,LoginId);
+        m.addAttribute("protectboard" , protectBoardDto);
+        m.addAttribute("page" , sc.getPage());
+        m.addAttribute("pageSize" , sc.getPageSize());
+        m.addAttribute("mode" , "MODIFY");
+        return "/protect/protecteredit";
     }
     // 임보자 게시물 수정
     @PostMapping("/modify")
