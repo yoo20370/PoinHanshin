@@ -1,6 +1,6 @@
 package com.project.poinhanshin.controller;
 
-import com.project.poinhanshin.domain.etc.User;
+import com.project.poinhanshin.domain.member.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

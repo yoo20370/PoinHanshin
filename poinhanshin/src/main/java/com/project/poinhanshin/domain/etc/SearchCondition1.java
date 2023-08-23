@@ -13,9 +13,10 @@ public class SearchCondition1 {
     private Integer pageSize = 10;
     private String keyword = "";
     private String option = "";
+    private boolean protectboard_ani_category = true;
 
     public SearchCondition1(){}
-    public SearchCondition1(Integer page, Integer pageSize, String keyword, String option) {
+    public SearchCondition1(Integer page, Integer pageSize, String keyword, String option ) {
         this.page = page;
         this.pageSize = pageSize;
         this.keyword = keyword;
@@ -30,7 +31,11 @@ public class SearchCondition1 {
                 .queryParam("pageSize" , pageSize)
                 .queryParam("keyword" , keyword)
                 .queryParam("option" , option)
+                .queryParam("protectboard_ani_category" , protectboard_ani_category)
                 .build().toString();
+    }
+    public int getOffset() {
+        return (page - 1) * pageSize;
     }
 
     @Override
@@ -38,8 +43,10 @@ public class SearchCondition1 {
         return "SearchCondition{" +
                 "page=" + page +
                 ", pageSize=" + pageSize +
+                ", offset=" + getOffset() +
                 ", keyword='" + keyword + '\'' +
                 ", option='" + option + '\'' +
+                ", protectboard_ani_category='" + protectboard_ani_category + '\'' +
                 '}';
     }
 }

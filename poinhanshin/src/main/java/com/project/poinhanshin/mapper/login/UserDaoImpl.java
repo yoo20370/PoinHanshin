@@ -1,6 +1,6 @@
 package com.project.poinhanshin.mapper.login;
 
-import com.project.poinhanshin.domain.etc.User;
+import com.project.poinhanshin.domain.member.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

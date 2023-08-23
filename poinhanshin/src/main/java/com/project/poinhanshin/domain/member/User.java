@@ -1,4 +1,4 @@
-package com.project.poinhanshin.domain.etc;
+package com.project.poinhanshin.domain.member;
 
 import lombok.Data;
 

@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.login.UserDao">
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.project.poinhanshin.domain.etc.User">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.project.poinhanshin.domain.member.User">
         insert into user(login_id, password, name, birth)
         values (#{loginId}, #{password}, #{name}, #{birth});
     </insert>
 
-    <select id="findByLoginId" parameterType="com.project.poinhanshin.domain.etc.User" resultType="com.project.poinhanshin.domain.etc.User">
+    <select id="findByLoginId" parameterType="com.project.poinhanshin.domain.member.User" resultType="com.project.poinhanshin.domain.member.User">
         select * from user where login_id = #{loginId};
     </select>
 
-    <select id="login" parameterType="com.project.poinhanshin.domain.etc.User" resultType="com.project.poinhanshin.domain.etc.User">
+    <select id="login" parameterType="com.project.poinhanshin.domain.member.User" resultType="com.project.poinhanshin.domain.member.User">
         select * from user where login_id = #{loginId} and password = #{password};
     </select>
 </mapper>
