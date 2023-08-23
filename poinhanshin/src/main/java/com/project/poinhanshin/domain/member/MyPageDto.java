@@ -22,6 +22,7 @@ public class MyPageDto {
        4/이재우/null/null/m13
       */
 
+     public MyPageDto(){}
      public MyPageDto(Integer mypage_userno, Integer mypage_boardno, Integer mypage_protectboardno, Integer mypage_mapboardno, Integer favorites) {
           this.mypage_userno = mypage_userno;
           this.mypage_boardno = mypage_boardno;

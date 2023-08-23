@@ -51,14 +51,19 @@
         border-bottom-width: 2px;
     }
 </style>
+<script th:if="${msg} == 'NO_INSERT'">alert("게시글을 등록하지 못했습니다.")</script>
+<script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록 실패했습니다.")</script>
 <body layout:fragment="content">
 <div class="page">
-    <form th:action="@{/protectboard/write}" method="post" th:object="ProtectBoardDto" enctype="multipart/form-data">
+    <form th:action="@{/protectboard/write}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="put" />
-        <input type="hidden" name="protectboard_id" th:value="${LoginId}" />
+        <input type="hidden" name="page" th:value="${page}" />
+        <input type="hidden" name="pageSize" th:value="${pageSize}" />
+        <input type="hidden" name="protectboard_userno" th:value="${LoginId}" />
+        <input type="hidden" name="protectboard_ani_category" value="false">
+        <input type="hidden" name="protectstatus" value="false">
 
         <section class="container">
-          <form class="row">
               <div class="row">
                 <label for="date" class="col-sm-2 col-form-label"></label>
                   <div class="col">
@@ -75,32 +80,17 @@
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
-                      <input type="text" class="form-control" id="date" name="writedate" placeholder="날짜를 선택해주세요"/>
+                      <input type="text" class="form-control" id="date" name="deadline" placeholder="날짜를 선택해주세요"/>
                     </div>
                   </div>
               </div>
-          </form>
         </section>
- 
-        <!--<div class="form-group row p-2">
-            <label for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
-            <div class="col-sm-10">
-                <input
-                        type="text"
-                        name="title"
-                        class="form-control"
-                        id="inputTitle"
-                        th:value="${protectDto.title}"
-                />
-            </div>
-        </div>-->
-
         <div class="form-group row p-2">
             <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
           <textarea
                   type="text"
-                  name="content"
+                  name="protectboard_content"
                   class="form-control"
                   id="inputContent"
                   style="height: 300px;"
@@ -120,10 +110,12 @@
         <div class="row p-5">
             <div class="col-auto mr-auto"></div>
             <div class="d-grid col-5 mx-auto">
-                <input class="btn btn-primary" type="submit" role="button" value="수정" />
-               <!-- <button id="writeBtn" name="writeBtn">등록</button>-->
+                <input class="btn btn-primary" type="submit" role="button" value="등록" />
             </div>
         </div>
+        <button type="button" class="btn btn-secondary"
+                th:onclick="|location.href='@{/protectboard/list(page = ${page} , pageSize = ${pageSize} )}'|">목록
+        </button>
     </form>
 </div>
 
@@ -132,6 +124,7 @@ var submitted = false;
 
 $(document).ready(function() {
   $("form").submit(function() {
+
     submitted = true;
   });
 

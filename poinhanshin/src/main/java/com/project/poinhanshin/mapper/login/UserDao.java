@@ -1,7 +1,7 @@
 package com.project.poinhanshin.mapper.login;
 
 
-import com.project.poinhanshin.domain.etc.User;
+import com.project.poinhanshin.domain.member.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

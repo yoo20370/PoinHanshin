@@ -27,7 +27,10 @@ public class MapBoardDto {
     private boolean mapboard_ani_category;       // 강아지 0, 고양이 1
     private boolean writertype;         // 신고자 0, 발견자 1
 
+    public MapBoardDto(){}
+
     public MapBoardDto(Integer mapboard_userno, Integer mapboardno, String mapboard_content, byte[] mapboard_mapimagepath, Date missingtime, String missingaddress, BigDecimal latitude, BigDecimal longitude, Date mapboard_reg_date, Integer mapboard_viewcount, boolean mapboard_ani_category, boolean writertype) {
+
         this.mapboard_userno = mapboard_userno;
         this.mapboardno = mapboardno;
         this.mapboard_content = mapboard_content;

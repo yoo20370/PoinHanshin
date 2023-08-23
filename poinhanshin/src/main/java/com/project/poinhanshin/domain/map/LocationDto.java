@@ -19,6 +19,8 @@ public class LocationDto {
      * 4 / 권선동
      */
 
+    public LocationDto(){}
+
     public LocationDto(Integer locationno, String location) {
         this.location = location;
         this.locationno = locationno;

@@ -1,7 +1,7 @@
 package com.project.poinhanshin.controller.login;
 
 
-import com.project.poinhanshin.domain.etc.User;
+import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.mapper.login.UserDao;
 import com.project.poinhanshin.mapper.login.UserDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
