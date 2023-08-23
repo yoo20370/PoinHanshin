@@ -14,6 +14,9 @@ public class AnimalMBTIRecommend {
     private Integer animalno;           // PK, 동물번호
     private String animalname;          // sqltyoe : varchar, 강아지/고양이 종 이름
 
+
+    public AnimalMBTIRecommend(){}
+
     public AnimalMBTIRecommend(Integer MBTI, Integer animalno, String animalname) {
         this.AnimalMBTIrecommend_MBTI = MBTI;
         this.animalno = animalno;

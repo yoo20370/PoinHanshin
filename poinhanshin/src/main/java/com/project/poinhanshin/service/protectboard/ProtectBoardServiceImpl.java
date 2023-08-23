@@ -21,14 +21,18 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 모든 게시물 리스트를 가져온다.
     @Override
     public List<ProtectBoardDto> bringBoardList(SearchCondition1 sc) {
-        System.out.println("실행됨1");
-        return protectBoardMapper.selectContentAll();
+        return protectBoardMapper.selectContentAll(sc);
+    }
+
+    @Override
+    public List<ProtectBoardDto> bringanimalFilterList(SearchCondition1 sc) {
+        return protectBoardMapper.animalFilterList(sc);
     }
 
     // 게시물 하나만 가져온다.
     @Override
     public ProtectBoardDto bringBoardOne(Integer protectboardno) {
-        return protectBoardMapper.SelectContentOne(protectboardno);
+        return protectBoardMapper.selectContentOne(protectboardno);
     }
 
     // 모든 게시물의 개수를 구한다.
@@ -42,6 +46,23 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     public int insertProductBoard(ProtectBoardDto protectBoardDto) {
         return protectBoardMapper.insertContent(protectBoardDto);
     }
+
+    @Override
+    public int updateProductBoard(ProtectBoardDto protectBoardDto, Integer LoginId) {
+        protectBoardDto.setProtectboard_userno(LoginId);
+        return protectBoardMapper.updateContent(protectBoardDto);
+    }
+
+    @Override
+    public int deleteProductBoard(Integer bno, Integer LoginId) {
+        return protectBoardMapper.deleteContent(bno ,LoginId);
+    }
+
+    @Override
+    public int readWritedBoardno(Integer protectboard_userno) {
+        return protectBoardMapper.selectRecentBoardno(protectboard_userno);
+    }
+
 
 }
 
