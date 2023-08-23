@@ -25,6 +25,8 @@ public interface ProtectBoardService {
 
     int deleteProductBoard(Integer bno , Integer LoginId);
 
+    int readWritedBoardno(Integer protectboard_userno);
+
     int test();
 
 

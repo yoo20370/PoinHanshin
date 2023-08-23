@@ -59,6 +59,11 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return protectBoardMapper.deleteContent(bno ,LoginId);
     }
 
+    @Override
+    public int readWritedBoardno(Integer protectboard_userno) {
+        return protectBoardMapper.selectRecentBoardno(protectboard_userno);
+    }
+
 
     @Override
     public int test() {
@@ -75,12 +80,12 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
 
         // insertContent 테스트 O
         byte[] array = null;
-        ProtectBoardDto protectBoardDto = new ProtectBoardDto(1, "공고 테스트" , array , "강아지" , true , true );
+        //ProtectBoardDto protectBoardDto = new ProtectBoardDto(1, "공고 테스트" , array , "강아지" , true , true );
         //protectBoardMapper.insertContent(protectBoardDto);
 
         // updateContent 테스트 O
-        ProtectBoardDto protectBoardDto2 = new ProtectBoardDto(1, "공고 테스트 수정" , array , "강아지" , false , false );
-        protectBoardDto2.setProtectboardno(6);
+        //ProtectBoardDto protectBoardDto2 = new ProtectBoardDto(1, "공고 테스트 수정" , array , "강아지" , false , false );
+        //protectBoardDto2.setProtectboardno(6);
         //protectBoardMapper.updateContent(protectBoardDto2);
 
         // deleteContent 테스트 X

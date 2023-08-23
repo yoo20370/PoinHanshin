@@ -12,21 +12,21 @@
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="animalFilterList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline
         FROM protectboard
         WHERE protectboard_ani_category = #{protectboard_ani_category}
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>
-    <select id="selectContentOne" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto" parameterType="int" >
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , deadline
+    <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
+        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline
         FROM protectboard
         WHERE protectboardno = #{protectboardno}
     </select>
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         INSERT INTO protectboard
             (protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline)
-        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , now()  )
+        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , #{deadline}  )
     </insert>
     <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         UPDATE protectboard
@@ -64,6 +64,13 @@
             </when>
         </choose>
         ORDER BY deadline ASC , protectboardno ASC
+    </select>
+    <select id="selectRecentBoardno" resultType="int" parameterType="int">
+        SELECT protectboardno
+        FROM protectboard
+        WHERE protectboard_userno = #{protectboard_userno}
+        ORDER BY protectboardno DESC
+        LIMIT 1
     </select>
 
 

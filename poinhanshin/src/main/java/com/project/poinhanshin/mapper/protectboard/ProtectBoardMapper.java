@@ -36,6 +36,8 @@ public interface ProtectBoardMapper {
     // 검색 창을 이용하여 특정 임보자 게시물을 검색할 때 사용하는 메서드
     List<ProtectBoardDto> searchResultList(SearchCondition1 sc);
 
+    int selectRecentBoardno(Integer protectboardno);
+
 
 
 

@@ -43,7 +43,7 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
     // 특정 임보자 게시물 하나를 가져온다.
     @Override
     public ProtectBoardDto selectContentOne(Integer protectboardno) {
-        return sqlSession.selectOne(namespace+"SelectContentOne", protectboardno);
+        return sqlSession.selectOne(namespace+"selectContentOne", protectboardno);
     }
 
     // 임보자 게시물을 등록한다.
@@ -79,6 +79,11 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
     @Override
     public List<ProtectBoardDto> searchResultList(SearchCondition1 sc) {
         return sqlSession.selectList(namespace+"searchResultList", sc);
+    }
+
+    @Override
+    public int selectRecentBoardno(Integer protectboard_userno) {
+        return sqlSession.selectOne(namespace+"selectRecentBoardno" , protectboard_userno);
     }
 
 
