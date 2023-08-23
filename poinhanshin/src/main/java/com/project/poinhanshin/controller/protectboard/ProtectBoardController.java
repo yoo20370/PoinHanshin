@@ -62,7 +62,7 @@ public class ProtectBoardController {
         m.addAttribute("page",sc.getPage());
         m.addAttribute("pageSize",sc.getPageSize());
         m.addAttribute("msg" , msg);
-        return "protect/protecter";
+        return "/protect/protecter";
     }
 
     // 임보자 공고 작성화면
