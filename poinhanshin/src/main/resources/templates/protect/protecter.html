@@ -46,53 +46,23 @@
 </style>
 
 <body layout:fragment="content">
+<script th:if="${msg} == 'SUCCESS_UPDATE'">alert("게시글을 수정했습니다.")</script>
+<script th:if="${msg} == 'FAIL_UPDATE'">alert("게시글을 수정하지 못했습니다.")</script>
 <script th:if="${msg} == 'FAIL_REMOVE'">alert("게시글을 삭제하지 못했습니다.")</script>
+<script th:if="${msg} == 'SUCCESS_INSERT'">alert("게시글을 등록했습니다.")</script>
 <div class="page">
 
-    <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:value="${protectboard.breeds}">품종</span>
-    <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
-    <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
-    <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${protectboard.deadline}|"> 남은날짜 : </span>
-    <div class="row">
-        <div class="form-floating">
-            <input type="text" readonly class="form-control-plaintext"
-                   id="floatingEmptyPlaintextInput"
-                   placeholder="boardtitle"
-                   th:value="${protectboard.breeds}">
-            <label for="floatingEmptyPlaintextInput">품종</label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-mb-3">
-            <!-- <div class="col-sm-6" th:each="img:${protectboard.getProtectimagepath()}" th:if="${{protectboard.getProtectimagepath() != null} or ${list.size() != 0}">
-                   <img src="${img.protectimagepath}" class="img-fluid" alt="">
-            </div>-->
-            <textarea
-                    type="text"
-                    name="content"
-                    class="form-control"
-                    id="inputContent"
-                    th:value="${protectboard.protectboard_content}"
-                    readonly="readonly"
-                    style="height: 300px;border:none">임시내용</textarea>
-        </div>
-    </div>
-    <div class="col">
-        <span th:text="| 작성일 : ${protectboard.protectboard_reg_date}|" >작성일:</span>
-        <!--<span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>-->
-        <span th:text="| 작성자 : ${protectboard.protectboard_userno}|">작성자:</span>
-    </div>
-    <form id="form"action="" method="post">
-        <div class="input-group" style="width:auto">
-
-            <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-            <input type="text" th:field="*{protectboard.protectboard_content}" class="form-control" id="content" name="content"
-                   placeholder="1자에서 100자 이내로 입력해주세요.">
-            <div class="field-error" th:errors="*{protectboard.protectboard_content}">
-                오류2
-            </div>
-            <button type="submit" class="btn btn-outline-dark">작성</button>
-            <br>
+    <form id="form" action="" method="post">
+        <div class="col-5 p-3">
+            <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}">
+            <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}">
+            Content<textarea name="protectboard_content" id="inputContent" th:text="${protectboard.protectboard_content}" readonly="readonly"></textarea>
+            imgPath<input type="File" name="protectboard_imagepath" th:value="${protectboard.protectboard_imagepath}">
+            <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}">
+            reg_Date<input type="date" name="protectboard_reg_date" th:value="${protectboard.protectboard_reg_date}" id="reg_date" readonly="readonly">
+            <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}">
+            deadLine<input type="date" name="deadline" th:value="${protectboard.deadline}"id="deadline" readonly="readonly">
+            breeds<input type="text" name="breeds" th:value="${protectboard.breeds}" id="breeds" readonly="readonly">
         </div>
         <div class="col-5 p-3" >
             <span th:if="${WriterCheck} == 'OK'">
@@ -107,6 +77,23 @@
 </div>
 <script>
     $("#modifyBtn").on("click",function(){
+        let form = $('#form');
+        let readonly = $("#inputContent").attr("readonly");
+
+        if(readonly != undefined){
+            $("#modifyBtn").html("등록");
+            $("#inputContent").attr("readonly",false);
+            $("#breeds").attr("readonly",false);
+            $("#reg_date").attr("readonly",false);
+            $("#deadline").attr("readonly",false);
+            return;
+        }
+        if(!confirm("정말로 수정하시겠습니까 ?")) return;
+        form.attr("action" , "[[@{/protectboard/modify}]]");
+        form.attr("method" , "post");
+        form.submit();
+
+
 
     });
     $("#removeBtn").on("click",function(){

@@ -21,7 +21,6 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 모든 게시물 리스트를 가져온다.
     @Override
     public List<ProtectBoardDto> bringBoardList(SearchCondition1 sc) {
-        System.out.println("실행됨1");
         return protectBoardMapper.selectContentAll(sc);
     }
 

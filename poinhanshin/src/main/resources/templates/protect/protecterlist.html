@@ -68,8 +68,6 @@
 </head>
 <body layout:fragment="content">
 <script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
-<script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록하지 못했습니다.")</script>
-<script th:if="${msg} == 'SUCCESS_INSERT'">alert("게시글을 등록했습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <div class="page">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">

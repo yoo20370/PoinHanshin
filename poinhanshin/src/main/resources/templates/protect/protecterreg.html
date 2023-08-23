@@ -52,7 +52,7 @@
     }
 </style>
 <script th:if="${msg} == 'NO_INSERT'">alert("게시글을 등록하지 못했습니다.")</script>
-<script th:if="${msg} == 'YES_INSERT'">alert("게시글을 등록했습니다.")</script>
+<script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록 실패했습니다.")</script>
 <body layout:fragment="content">
 <div class="page">
     <form th:action="@{/protectboard/write}" method="post" enctype="multipart/form-data">
