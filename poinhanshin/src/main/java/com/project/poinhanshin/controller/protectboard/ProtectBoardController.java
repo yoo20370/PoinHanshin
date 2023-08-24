@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -40,8 +41,7 @@ public class ProtectBoardController {
 
         // 임보자 리스트
         m.addAttribute("list",list);
-        m.addAttribute("page", sc.getPage());
-        m.addAttribute("pageSize", sc.getPageSize());
+        m.addAttribute("sc",sc);
         m.addAttribute(m.addAttribute("ph" , ph));
         m.addAttribute("msg", msg);
         return "protect/protecterlist";
@@ -66,8 +66,7 @@ public class ProtectBoardController {
             m.addAttribute("WriterCheck", "OK");
 
         m.addAttribute("protectboard" , protectBoardDto);
-        m.addAttribute("page",sc.getPage());
-        m.addAttribute("pageSize",sc.getPageSize());
+        m.addAttribute("sc",sc);
         m.addAttribute("msg" , msg);
         return "/protect/protecter";
     }
@@ -92,8 +91,7 @@ public class ProtectBoardController {
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/protectboard/list";
         }
-        m.addAttribute("page", sc.getPage());
-        m.addAttribute("pageSize", sc.getPageSize());
+        m.addAttribute("sc",sc);
         m.addAttribute("LoginId", LoginId);
         m.addAttribute("msg" , msg);
         m.addAttribute("mode","WRITE");
@@ -103,6 +101,9 @@ public class ProtectBoardController {
     public String ProtectBoardWrite(ProtectBoardDto protectBoardDto, SearchCondition1 sc ,  RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+        System.out.println(protectBoardDto);
+        System.out.println(sc);
+
         redirectAttributes.addAttribute("page" , sc.getPage());
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
 
@@ -115,6 +116,8 @@ public class ProtectBoardController {
         redirectAttributes.addFlashAttribute("msg", "SUCCESS_INSERT");
         redirectAttributes.addAttribute("protectboardno",protectBoardService.readWritedBoardno(protectBoardDto.getProtectboard_userno()));
         // 자신이 등록한 게시물 내용을 가져오기 위해서 최근 자신의 글을 읽어온다.
+
+        System.out.println("실행됨");
         return "redirect:/protectboard/read";
     }
     @GetMapping("/modify")
@@ -137,8 +140,7 @@ public class ProtectBoardController {
 
         m.addAttribute("LoginId" ,LoginId);
         m.addAttribute("protectboard" , protectBoardDto);
-        m.addAttribute("page" , sc.getPage());
-        m.addAttribute("pageSize" , sc.getPageSize());
+        m.addAttribute("sc",sc);
         m.addAttribute("mode" , "MODIFY");
         return "/protect/protecteredit";
     }
@@ -147,12 +149,13 @@ public class ProtectBoardController {
     public String ProtectBoardModify(ProtectBoardDto protectBoardDto , SearchCondition1 sc , RedirectAttributes redirectAttributes){
 
         System.out.println(protectBoardDto);
-
+        System.out.println(sc);
         // 임시 로그인
         Integer LoginId = 1;
 
         redirectAttributes.addAttribute("page" , sc.getPage());
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+
 
         if(protectBoardService.updateProductBoard(protectBoardDto, LoginId) != 1){
             redirectAttributes.addFlashAttribute("msg" , "FAIL_UPDATE");
@@ -191,5 +194,14 @@ public class ProtectBoardController {
         redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
         return "redirect:/protectboard/list";
     }
+
+    /*@GetMapping("/addBoard")
+    public String addBoard(){
+        for(int i = 1 ; i <= 100; i++){
+            ProtectBoardDto pbd = new ProtectBoardDto(1, i ,"테스트"+i , null, "강아지" , false , null , false , new Date(1));
+            protectBoardService.insertProductBoard(pbd);
+        }
+        return "test/protectTest";
+    }*/
 
 }
