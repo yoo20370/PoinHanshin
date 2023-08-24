@@ -27,15 +27,18 @@ public class ProtectBoardController {
 
     // 임보자 공고 리스트
     @GetMapping("/list")
-    public String ProtectBoardList(PageHandler1 ph , SearchCondition1 sc , Model m , String msg){
+    public String ProtectBoardList (SearchCondition1 sc , Model m , String msg
+    //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+    ){
 
         // 모든 임보자 게시물을 읽어온다.
         List<ProtectBoardDto> list = protectBoardService.bringBoardList(sc);
         int totalCnt = protectBoardService.countListAll();
 
+        PageHandler1 ph = new PageHandler1(totalCnt ,sc);
 
+        // 임보자 리스트
         m.addAttribute("list",list);
-        m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("page", sc.getPage());
         m.addAttribute("pageSize", sc.getPageSize());
         m.addAttribute(m.addAttribute("ph" , ph));
@@ -46,8 +49,11 @@ public class ProtectBoardController {
     // 임보자 공고 상세화면
     @GetMapping("/read")
     public String ProtectBoardRead(Integer protectboardno , SearchCondition1 sc , Model m ,  String msg
-            //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+    //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+        // 로그인
+        //Integer LoginId = loginUser.id;
+
         // 임시 로그인
         Integer LoginId = 1;
 
@@ -70,9 +76,14 @@ public class ProtectBoardController {
     public String ProtectBoardWritePage(SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes , String msg
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+
+        // 로그인
+        //Integer LoginId = loginUser.id;
+
         // 임시 로그인
         Integer LoginId = 1;
 
+        // 로그인 확인 (나중에 loginUser == null로 변경
         // 로그인이 안 된 경우 임보자 게시물 리스트로 이동 ( 로그인 페이지로 이동시키면 좋을 것 )
         if(LoginId == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
@@ -106,12 +117,16 @@ public class ProtectBoardController {
         return "redirect:/protectboard/read";
     }
     @GetMapping("/modify")
-    public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes){
+    public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes
+    //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+    ){
+        // 로그인
+        //Integer LoginId = loginUser.id;
 
         // 임시 로그인
         Integer LoginId = 1;
 
-        // 로그인 확인
+        // 로그인 확인 (나중에 loginUser == null로 변경
         if(LoginId == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
@@ -150,7 +165,7 @@ public class ProtectBoardController {
     }
 
     @PostMapping("/remove")
-    public String ProtectBoardRemove(Integer protectboardno , RedirectAttributes redirectAttributes
+    public String ProtectBoardRemove(Integer protectboardno ,SearchCondition1 sc , RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
         // 임시 로그인
@@ -163,6 +178,9 @@ public class ProtectBoardController {
         }
         // 삭제 실패했을 때
         if(protectBoardService.deleteProductBoard(protectboardno , LoginId) != 1){
+
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("protectboardno",protectboardno);
             redirectAttributes.addAttribute("msg", "FAIL_REMOVE");
             return "redirect:/protectboard/read";

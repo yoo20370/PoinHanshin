@@ -115,7 +115,7 @@
                     <tr th:each="protectboard : ${list}">
                         <div class="card" >
 
-                            <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno})}">
+                            <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno}, page=${page} , pageSize=${pageSize})}">
                                 <img th:if="${protectboard.protectboard_imagepath != null}" src="/static/img/empty.png" class="card-img-top">
                                 <img th:unless="${protectboard.protectboard_imagepath != null}" th:src="${protectboard.protectboard_imagepath}" class="card-img-top" alt="...">
                                 <div class="card-body">
