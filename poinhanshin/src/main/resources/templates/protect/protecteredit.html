@@ -62,6 +62,7 @@
         <input type="hidden" name="page" th:value="${page}" />
         <input type="hidden" name="pageSize" th:value="${pageSize}" />
         <input type="hidden" name="protectboard_userno" th:value="${LoginId}" />
+        <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.getProtectboardno()}"/>
 
 
         <div th:if="${mode} == 'MODIFY'">

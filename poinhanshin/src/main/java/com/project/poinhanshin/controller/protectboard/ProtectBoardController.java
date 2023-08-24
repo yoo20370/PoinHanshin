@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,7 +28,7 @@ public class ProtectBoardController {
 
     // 임보자 공고 리스트
     @GetMapping("/list")
-    public String ProtectBoardList (SearchCondition1 sc , Model m , String msg
+    public String ProtectBoardList (SearchCondition1 sc , Model m , @ModelAttribute("msg") String msg
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
 
@@ -48,7 +49,7 @@ public class ProtectBoardController {
 
     // 임보자 공고 상세화면
     @GetMapping("/read")
-    public String ProtectBoardRead(Integer protectboardno , SearchCondition1 sc , Model m ,  String msg
+    public String ProtectBoardRead(Integer protectboardno , SearchCondition1 sc , Model m , @ModelAttribute("msg")  String msg
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
         // 로그인
@@ -73,7 +74,7 @@ public class ProtectBoardController {
 
     // 임보자 공고 작성화면
     @GetMapping("/write")
-    public String ProtectBoardWritePage(SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes , String msg
+    public String ProtectBoardWritePage(SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes , @ModelAttribute("msg") String msg
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
 
@@ -107,11 +108,11 @@ public class ProtectBoardController {
 
         // 정상적으로 글이 등록되지 않은 경우 작성 페이지로 다시 이동
         if( protectBoardService.insertProductBoard(protectBoardDto) != 1){
-            redirectAttributes.addAttribute("msg", "FAIL_INSERT");
+            redirectAttributes.addFlashAttribute("msg", "FAIL_INSERT");
             return "redirect:/protectboard/write";
         }
 
-        redirectAttributes.addAttribute("msg", "SUCCESS_INSERT");
+        redirectAttributes.addFlashAttribute("msg", "SUCCESS_INSERT");
         redirectAttributes.addAttribute("protectboardno",protectBoardService.readWritedBoardno(protectBoardDto.getProtectboard_userno()));
         // 자신이 등록한 게시물 내용을 가져오기 위해서 최근 자신의 글을 읽어온다.
         return "redirect:/protectboard/read";
@@ -154,10 +155,10 @@ public class ProtectBoardController {
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
 
         if(protectBoardService.updateProductBoard(protectBoardDto, LoginId) != 1){
-            redirectAttributes.addAttribute("msg" , "FAIL_UPDATE");
+            redirectAttributes.addFlashAttribute("msg" , "FAIL_UPDATE");
         }
         else{
-            redirectAttributes.addAttribute("msg" , "SUCCESS_UPDATE");
+            redirectAttributes.addFlashAttribute("msg" , "SUCCESS_UPDATE");
         }
 
         redirectAttributes.addAttribute("protectboardno" , protectBoardDto.getProtectboardno());
@@ -173,7 +174,7 @@ public class ProtectBoardController {
 
         // 로그인 여부 확인
         if(LoginId == null) {
-            redirectAttributes.addAttribute("msg", "NO_LOGIN");
+            redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/protectboard/list";
         }
         // 삭제 실패했을 때
@@ -182,12 +183,12 @@ public class ProtectBoardController {
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("protectboardno",protectboardno);
-            redirectAttributes.addAttribute("msg", "FAIL_REMOVE");
+            redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
             return "redirect:/protectboard/read";
         }
 
         // 삭제 성공
-        redirectAttributes.addAttribute("msg", "SUCCESS_REMOVE");
+        redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
         return "redirect:/protectboard/list";
     }
 
