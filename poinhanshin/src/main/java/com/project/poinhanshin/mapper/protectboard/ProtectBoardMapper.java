@@ -31,12 +31,14 @@ public interface ProtectBoardMapper {
     int deleteContent(Integer protectboardno, Integer protectboard_userno);
 
     // 검색된 임보자 게시물 개수 카운팅
-    int selectResultCnt(SearchCondition1 sc);
+    int searchResultCnt(SearchCondition1 sc);
 
     // 검색 창을 이용하여 특정 임보자 게시물을 검색할 때 사용하는 메서드
     List<ProtectBoardDto> searchResultList(SearchCondition1 sc);
 
     int selectRecentBoardno(Integer protectboardno);
+
+
 
 
 

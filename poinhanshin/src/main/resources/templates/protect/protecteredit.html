@@ -61,6 +61,7 @@
         <!--페이지 정보 및 아이디-->
         <input type="hidden" name="page" th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
+        <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="protectboard_userno" th:value="${LoginId}" />
         <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.getProtectboardno()}"/>
 
@@ -150,7 +151,7 @@
             </div>
         </div>
         <button type="button" class="btn btn-secondary"
-                th:onclick="|location.href='@{/protectboard/list(page = ${sc.getPage} , pageSize = ${sc.getPageSize} )}'|">목록
+                th:onclick="|location.href='@{/protectboard/list(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword})}'|">목록
         </button>
     </form>
 </div>

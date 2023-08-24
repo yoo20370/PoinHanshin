@@ -38,32 +38,16 @@
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </delete>
     <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="int">
-    SELECT count(*)
-    FROM protectboard
-    WHERE TRUE
-      <choose>
-            <when test='option == "C"'>
-                AND ( protectboard_content LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <when test='option == "W"'>
-                AND ( protectboard_userno LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-      </choose>
-
+        SELECT count(*)
+        FROM protectboard
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%')
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , deadline
         FROM protectboard
-        WHERE TRUE
-        <choose>
-            <when test='option == "C"'>
-                AND ( protectboard_content LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <when test='option == "W"'>
-                AND ( protectboard_userno LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-        </choose>
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%')
         ORDER BY deadline ASC , protectboardno ASC
+        LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectRecentBoardno" resultType="int" parameterType="int">
         SELECT protectboardno

@@ -63,6 +63,16 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return protectBoardMapper.selectRecentBoardno(protectboard_userno);
     }
 
+    @Override
+    public int searchResultCnt(SearchCondition1 sc) {
+        return protectBoardMapper.searchResultCnt(sc);
+    }
+
+    @Override
+    public List<ProtectBoardDto> searchResultList(SearchCondition1 sc) {
+        return protectBoardMapper.searchResultList(sc);
+    }
+
 
 }
 

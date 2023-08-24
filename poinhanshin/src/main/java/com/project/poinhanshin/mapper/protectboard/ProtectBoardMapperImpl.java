@@ -70,7 +70,7 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
     // 검색된 임보자 게시물 수를 가져온다.
     @Override
-    public int selectResultCnt(SearchCondition1 sc) {
+    public int searchResultCnt(SearchCondition1 sc) {
 
         return sqlSession.selectOne(namespace+"searchResultCnt",sc);
     }

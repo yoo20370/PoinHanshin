@@ -27,6 +27,9 @@ public interface ProtectBoardService {
 
     int readWritedBoardno(Integer protectboard_userno);
 
+    int searchResultCnt(SearchCondition1 sc);
+
+    List<ProtectBoardDto> searchResultList(SearchCondition1 sc);
 
 
 

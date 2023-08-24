@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <head>
     <meta charset="UTF-8">
     <title>게시글리스트</title>
@@ -71,21 +72,23 @@
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <div class="page">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
-            <form name="search-form">
+            <form action="/protectboard/list" method="get" name="searchForm" id="searchForm">
                 <div class="input-group">
                     <div class="input-group-text" id="btnGroupAddon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>
                     </div>
+                    <input type="hidden" name="page" th:value="${sc.getPage()}"/>
+                    <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
                     <input type="text" name="keyword" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-                    <input type="button" onclick="getSearchList()" class="btn btn-outline-primary" value="검색">
+                    <input type="button" id="searchBtn" class="btn btn-outline-primary" value="검색">
                 </div>
             </form>
             <div class="btn-group" role="group"aria-label="Basic outlined example">
 
                 <button type="button" class="btn btn-dark"
-                        th:onclick="|location.href='@{/protectboard/write(page = ${sc.getPage} , pageSize = ${sc.getPageSize} )}'|">
+                        th:onclick="|location.href='@{/protectboard/write(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword})}'|">
                     글작성
                 </button>
             </div>
@@ -115,7 +118,7 @@
                     <tr th:each="protectboard : ${list}">
                         <div class="card" >
 
-                            <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()})}">
+                            <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">
                                 <img th:if="${protectboard.protectboard_imagepath != null}" src="/static/img/empty.png" class="card-img-top">
                                 <img th:unless="${protectboard.protectboard_imagepath != null}" th:src="${protectboard.protectboard_imagepath}" class="card-img-top" alt="...">
                                 <div class="card-body">
@@ -147,7 +150,10 @@
     </span>
     </div>
     <script>
-
+        $('#searchBtn').on("click",function(){
+            let form = $('#searchForm');
+            form.submit();
+        });
     </script>
 </div>
 </body>
