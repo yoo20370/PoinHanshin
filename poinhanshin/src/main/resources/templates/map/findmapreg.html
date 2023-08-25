@@ -9,27 +9,27 @@
 <div class="container">
   <h2>게시물 등록</h2>
   <form method="POST" action="{{ url_for('create_post') }}">
-    <label for="animal_type">동물 카테고리 선택:</label>
-    <select name="animal_type" required>
+    <label for="mapboard_ani_category">동물 카테고리 선택:</label>
+    <select name="mapboard_ani_category" required>
       <option value="강아지">강아지</option>
       <option value="고양이">고양이</option>
       <option value="기타">기타</option>
     </select>
 
-    <label for="photo">사진:</label>
-    <input type="text" name="photo" required>
+    <label for="mapboard_mapimagepath">사진:</label>
+    <input type="file" name="photo" required>
 
-    <label for="content">내용:</label>
+    <label for="mapboard_content">내용:</label>
     <textarea name="content" required></textarea>
 
-    <label for="time">시간:</label>
-    <input type="datetime-local" name="time" required>
+    <label for="missingtime">발견/ 실종 시간:</label>
+    <input type="missingtime" name="time" required>
 
-    <label for="location">장소:</label>
-    <input type="text" name="location" required>
+    <label for="missingaddress">장소:</label>
+    <input type="text" name="missingaddress" required>
 
-    <label for="author_category">작성자 카테고리 선택:</label>
-    <select name="author_category" required>
+    <label for="writertype">작성자 카테고리 선택:</label>
+    <select name="writertype" required>
       <option value="보호자">보호자</option>
       <option value="발견자">발견자</option>
     </select>
