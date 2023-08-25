@@ -56,7 +56,6 @@
 <body layout:fragment="content">
 <div class="page">
     <form th:action="@{/protectboard/write}" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="put" />
         <input type="hidden" name="page" th:value="${page}" />
         <input type="hidden" name="pageSize" th:value="${pageSize}" />
         <input type="hidden" name="protectboard_userno" th:value="${LoginId}" />
@@ -119,6 +118,9 @@
     </form>
 </div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="bootstrap-datepicker.ko.js"></script>
 <script type="text/javascript">
 var submitted = false;
 
@@ -136,6 +138,8 @@ $(document).ready(function() {
   }
 });
 
+
+//데이터픽커
 $(function(){
   $('#datepicker').datepicker({
     format:"yyyy-mm-dd",

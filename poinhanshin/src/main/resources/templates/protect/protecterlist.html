@@ -70,6 +70,7 @@
 <script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <div class="page">
+
         <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
             <form name="search-form">
                 <div class="input-group">
@@ -131,21 +132,17 @@
                 </table>
             </div>
         </div>
-    <div style=" position:absolute; right:40%;">
-    <span th:if="${ph.showPrev}">
-                <a th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
-    </span>
-        <span th:if="${ph.totalCnt != 0}">
-        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-            <a th:href="@{'/protectboard/list'+${ph.sc.getQueryString(i)}}">
-                <span th:text="${i}"/>
-            </a>
-        </span>
-    </span>
-        <span th:if="${ph.showNext}">
-                <a th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
-    </span>
+
+    <div class="btn-toolbar position-absolute top-100 start-50 translate-middle" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group me-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><<</button>
+            <th:block th:if="${ph.totalCnt != 0}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+                <button type="button" class="btn btn-secondary" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(i)}}" th:text="${i}"></button>
+            </th:block>
+            <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>
+        </div>
     </div>
+
     <script>
 
     </script>
