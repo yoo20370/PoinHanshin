@@ -13,6 +13,7 @@
   src="https://code.jquery.com/jquery-3.7.0.slim.js"
   integrity="sha256-7GO+jepT9gJe9LB4XFf8snVOjX3iYNb0FHYr5LI1N5c="
   crossorigin="anonymous"></script> -->
+    <link href="/css/commonstyle.css" rel="stylesheet">
   <style>
     .th_id {
        width: 30px;
@@ -41,13 +42,13 @@
         width: 600px;
       }
     }
-    
+
     @media (min-width: 992px) {
       .page {
         width: 940px;
       }
     }
-    
+
     @media (min-width: 1200px) {
       .page {
         width: 940px;
@@ -57,13 +58,16 @@
        width: 100%;
        height: 100%;
    }
-  .page {
+.page {
         margin: 0 auto;
         height: 100%;
         padding: 50px;
+        height: auto;
+        min-height: 100%;
         border-left: 1px solid black;
         border-right: 1px solid black;
         border-bottom-width: 2px;
+        padding-bottom: 20px
     }
 
     .info_table {
@@ -146,19 +150,21 @@
 
                 </td>
                 <td valign="middle">
-                    <img class="thumbnail_wrapper" th:if="${boardDto.boardimagepath != null}" th:src="'data:image/jpeg;base64,'+${boardDto.boardimagepath}" th:href="${/board/read(boardno=${boardDto.boardno})}" atl="빈이미지" >
-                    <img class="thumbnail_wrapper" th:unless=${boardDto.boardimagepath != null}" src="/static/img/empty.png">
+                    <img class="thumbnail_wrapper" th:if="${#strings.isEmpty(boardDto.boardimagepath)}" src="/img/empty.png">
+                    <img class="thumbnail_wrapper" th:unless="${#strings.isEmpty(boardDto.boardimagepath)}" th:src="'data:image/jpeg;base64,'+${boardDto.boardimagepath}"
+                         th:href="${/board/read(boardno=${boardDto.boardno})}" atl="빈이미지" >
+
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <span th:if="${totalCnt == 0}">게시물이 없습니다.</span>
+    <span th:if="${#strings.isEmpty(totalCnt)}">게시물이 없습니다.</span>
     <div class="btn-toolbar position-absolute top-100 start-50 translate-middle" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group me-2" role="group" aria-label="First group">
             <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><<</button>
-            <th:block th:if="${ph.totalCnt != 0}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+            <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
                 <button type="button" class="btn btn-secondary" th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}" th:text="${i}"></button>
             </th:block>
             <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>

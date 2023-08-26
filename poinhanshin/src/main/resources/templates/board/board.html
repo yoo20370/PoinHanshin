@@ -32,11 +32,16 @@
       }
     }
 
-  .page {
+.page {
         margin: 0 auto;
+        height: 100%;
         padding: 50px;
+        height: auto;
+        min-height: 100%;
         border-left: 1px solid black;
         border-right: 1px solid black;
+        border-bottom-width: 2px;
+        padding-bottom: 20px
     }
   .commentbox {
         padding : 20px;
@@ -72,7 +77,7 @@
     <div class="row">
         <div class="col-mb-3">
 <!--  이미지     -->
-                  <div class="col-sm-6" th:each="image:${boardDto.board_imagepath}" th:if="${boardDto.board_imagepath != null}">
+                  <div class="col-sm-6" th:each="image:${boardDto.board_imagepath}" th:if="${#strings.isEmpty(protectboard.protectboard_imagepath)}">
                     <img th:src="'data:image/jpeg;base64,'+${image}" class="img-fluid" alt="빈이미지">
                   </div>
             <textarea
@@ -173,7 +178,7 @@
                         </div>
                     </div>
 
-            
+
                         <!--        답글 작성창      -->
                         <div class="collapse" th:id="r + ${commentDto.commentno}">
                             <form  th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentVO}" method="post">
