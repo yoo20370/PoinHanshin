@@ -40,16 +40,16 @@
     <div class="page">
 
         <form action="/board/reg" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="_method" value="put" />
-          <input type="hidden" name="id" th:value="${boardDto.boardno}" />
-    
-          <div class="col-sm-2">
-          <select class="form-select" name="${boardDto.ani_category}">
-            <option value="1">고양이</option>
-            <option value="2">강아지</option>
-            <option value="0">기타동물</option>
-          </select>
-          </div>
+            <input type="hidden" name="board_userno" th:value="${user.userno}" />
+            <input type="hidden" name="board_userno" th:value="${user.userno}" />
+            <input type="hidden" name="ani_category" th:value="${boardDto.ani_category}" />
+
+            <div class="col-sm-2">
+                <select class="form-select" th:value="${boardDto.ani_category}">
+                    <option th:selected="${#bools.isTrue(boardDto.ani_category)}" value="true">고양이</option>
+                    <option th:selected="${#bools.isFalse(boardDto.ani_category)}" value="false">강아지</option>
+                </select>
+            </div>
     
           <div class="form-group row p-2">
             <label for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
@@ -96,6 +96,9 @@
       </div>
 
       <script>
+
+
+
     var submitted = false;
     
     $(document).ready(function() {

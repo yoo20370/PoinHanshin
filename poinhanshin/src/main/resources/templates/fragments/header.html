@@ -6,56 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
     <style>
-    .th_id {
-       width: 30px;
-    }
-    .th_title {
-       width: 400px;
-    }
-    .th_author {
-        width: 50px;
-    }
-    .th_count {
-       width: 40px;
-    }
-    .th_date {
-       width: 100px;
-    }
-    .searchbox {
-        width: 400px;
-    }
 
-   @media (min-width: 768px) {
-      .page {
-        width: 600px;
-      }
-    }
-
-    @media (min-width: 992px) {
-      .page {
-        width: 940px;
-      }
-    }
-
-    @media (min-width: 1200px) {
-      .page {
-        width: 940px;
-      }
-    }
-
-  html,body{
-       width: 100%;
-       height: 100%;
-   }
-  .page {
-        margin: 0 auto;
-        height: 100%;
-        padding: 50px;
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-        border-bottom-width: 2px;
-        border-collapse: collapse;
-    }
    </style>
 </head>
 
@@ -65,7 +16,7 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
-                    <img src="/static/img/pawinhanshinLogo.png" alt="logo" width="130" height="40" class ="d-inline-block align-text-top"></a>
+                    <img src="/img/pawinhanshinLogo.png" alt="logo" width="130" height="40" class ="d-inline-block align-text-top"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -78,9 +29,9 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/board/list">게시판</a></li>
-                                <li><a class="dropdown-item" href="/board/protecterlist">임시보호자</a></li>
-                                <li><a class="dropdown-item" href="/information/ShelterList">동물병원</a></li>
-                                <li><a class="dropdown-item" href="/information/ShelterList">보호소</a></li>
+                                <li><a class="dropdown-item" href="/protectboard/list">임시보호자</a></li>
+                                <li><a class="dropdown-item" href="/api/ShelterList">동물병원</a></li>
+                                <li><a class="dropdown-item" href="/api/ShelterList">보호소</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
