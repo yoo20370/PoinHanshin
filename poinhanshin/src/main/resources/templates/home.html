@@ -39,10 +39,29 @@
         border-right: 1px solid black;
         border-bottom-width: 2px;
     }
+
+    /*jongha css (UI에 맞게 수정바람)*/
+   h1 {
+       text-align: center;
+   }
+
+   li {
+       list-style-type: none;
+       display: inline-block;
+       width: 70px;
+       position: relative;
+       left: 1200px;
+   }
     </style>
 </head>
-
 <body layout:fragment="content">
+<h1>포인한신</h1>
+<div>
+    <ul>
+        <li><a th:href="@{/login}">로그인</a></li>
+        <li><a th:href="@{/register}">회원가입</a></li>
+    </ul>
+</div>
 <div class="page">
 <div class="container-fluid p-5">
   <div class="d-flex justify-content-center">
@@ -133,7 +152,7 @@
           <button class="w-100 btn btn-dark btn-lg"
                   onclick="location.href='items.html'"
                   th:onclick="|location.href='@{/information/MBTI}'|" type="button">
-            MBTI
+            MBTI 매칭
           </button>
         </div>
       </th>
@@ -142,7 +161,7 @@
           <button class="w-100 btn btn-dark btn-lg"
                   onclick="location.href='items.html'"
                   th:onclick="|location.href='@{/information/AnimalList}'|" type="button">
-            유기동물보호리스트
+            실종신고 / 등록 맵
           </button>
         </div>
       </th>

@@ -27,19 +27,19 @@ public class LoginController {
         this.userDao = userDaoImpl;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/register")
     public String addForm(@ModelAttribute("user") User user) {
-        return "add";
+        return "login/registerForm";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/register")
     public String add(@Validated User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "add";
-        User findUser = userDao.findByLoginId(user.getLoginId());
+            return "login/registerForm";
+        User findUser = userDao.findByLoginId(user.getId());
         if (findUser != null) {
             bindingResult.reject("exist", "이 아이디는 사용중입니다.");
-            return "add";
+            return "login/registerForm";
         }
         userDao.save(user);
         return "redirect:/";
@@ -47,12 +47,12 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("user") User user) {
-        return "login";
+        return "login/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(User user, BindingResult bindingResult, HttpServletRequest request) {
-        User findUser = userDao.login(user.getLoginId(), user.getPassword());
+    public String login(@Validated User user, BindingResult bindingResult, HttpServletRequest request) {
+        User findUser = userDao.login(user.getId(), user.getPassword());
         if (findUser == null) {
             bindingResult.reject("none", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "login";
