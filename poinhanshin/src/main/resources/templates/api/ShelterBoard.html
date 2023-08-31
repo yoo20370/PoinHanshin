@@ -99,7 +99,7 @@
                     <div class="card text-bg-warning mb-3 mx-auto" style="max-width: 25rem;">
                         <div class="card-header">지도</div>
                         <div class="card-body">
-                            <div class="map">
+                            <div id="map">
 
                             </div>
                         </div>
@@ -142,5 +142,19 @@
 <!--    <p th:text="'전화번호 : '+${shelter.careTel}"></p>-->
 <!--    <p th:text="'데이터기준일자 : '+${shelter.dataStdDt}"></p>-->
 </fieldset>
+
+<script type="text/javascript">
+
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng([[${shelter.lat}]], [[${shelter.lng}]]), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+
+</script>
 </body>
 </html>
