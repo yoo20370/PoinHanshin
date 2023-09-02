@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,14 +77,22 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated User user, BindingResult bindingResult, HttpServletRequest request) {
-        User findUser = userDao.login(user.getId(), user.getPassword());
-        if (findUser == null) {
+    public String login(User user, BindingResult bindingResult, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        if (user.getId().trim().length() == 0) {
+            bindingResult.reject("id_null", "아이디를 입력하세요");
+            return "login/loginForm";
+        } else if (String.valueOf(user.getPassword()).trim().length() == 0) {
+            bindingResult.reject("pw_null", "비밀번호를 입력하세요");
+            return "login/loginForm";
+        }
+        User loginUser = userDao.login(user.getId(), user.getPassword());
+        if (loginUser == null) {
             bindingResult.reject("none", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "login";
+            return "login/loginForm";
         }
         HttpSession session = request.getSession();
-        session.setAttribute("loginUser", findUser);
+        session.setAttribute("loginUser", loginUser);
+        redirectAttributes.addFlashAttribute("msg", "LOGIN_OK");
         return "redirect:/";
     }
 

@@ -54,12 +54,22 @@
    }
     </style>
 </head>
+<script th:inline="javascript">
+    const msg = [[${#httpServletRequest.getAttribute('msg')}]];
+    if (msg === "LOGIN_OK") alert("환영합니다");
+</script>
 <body layout:fragment="content">
 <h1>포인한신</h1>
 <div>
     <ul>
-        <li><a th:href="@{/login}">로그인</a></li>
-        <li><a th:href="@{/register}">회원가입</a></li>
+        <div th:if="${loginUser==null}">
+            <li><a th:href="@{/login}">로그인</a></li>
+            <li><a th:href="@{/register}">회원가입</a></li>
+        </div>
+        <div th:if="${loginUser!=null}">
+            <li><a th:href="@{/login}">[[${loginUser.getName}]]님</a></li>
+            <li><a th:href="@{/register}">로그아웃</a></li>
+        </div>
     </ul>
 </div>
 <div class="page">

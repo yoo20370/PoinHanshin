@@ -2,9 +2,6 @@ package com.project.poinhanshin.domain.member;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-
-
 @Data
 public class User {
 
