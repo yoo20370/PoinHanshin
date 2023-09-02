@@ -3,7 +3,6 @@ package com.project.poinhanshin.controller.login;
 
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.mapper.login.UserDao;
-import com.project.poinhanshin.mapper.login.UserDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +22,8 @@ public class LoginController {
     private final UserDao userDao;
 
     @Autowired
-    public LoginController(UserDaoImpl userDaoImpl) {
-        this.userDao = userDaoImpl;
+    public LoginController(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @GetMapping("/register")
@@ -33,9 +32,35 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String add(@Validated User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
+    public String add(User user, BindingResult bindingResult) {
+        if (user.getId().trim().length() == 0) {
+            bindingResult.reject("id_null", "아이디를 입력하세요");
             return "login/registerForm";
+        }
+        else if (user.getPassword().trim().length() == 0) {
+            bindingResult.reject("pw_null", "비밀번호를 입력하세요");
+            return "login/registerForm";
+        }
+        else if (user.getName().trim().length() == 0) {
+            bindingResult.reject("name_null", "이름을 입력하세요");
+            return "login/registerForm";
+        }
+        else if (String.valueOf(user.getAge()).trim().length() == 0) {
+            bindingResult.reject("age_null", "나이를 입력하세요");
+            return "login/registerForm";
+        }
+        else if (user.getPhnum().trim().length() == 0) {
+            bindingResult.reject("ph_null", "전화번호를 입력하세요");
+            return "login/registerForm";
+        }
+        else if (user.getMail().trim().length() == 0) {
+            bindingResult.reject("mail_null", "이메일을 입력하세요");
+            return "login/registerForm";
+        }
+        else if (user.getAddress().trim().length() == 0) {
+            bindingResult.reject("add_null", "주소를 입력하세요");
+            return "login/registerForm";
+        }
         User findUser = userDao.findByLoginId(user.getId());
         if (findUser != null) {
             bindingResult.reject("exist", "이 아이디는 사용중입니다.");
@@ -70,4 +95,6 @@ public class LoginController {
         }
         return "redirect:/";
     }
+
+
 }
