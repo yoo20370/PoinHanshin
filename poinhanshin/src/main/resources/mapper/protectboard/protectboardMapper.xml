@@ -31,12 +31,30 @@
     <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="int">
         SELECT count(*)
         FROM protectboard
-        WHERE breeds LIKE concat('%' , #{keyword} ,'%')
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+        <choose>
+            <when test="ani_category == 1">
+                protectboard_ani_category = 0
+            </when>
+            <when test="ani_category == 2">
+                protectboard_ani_category = 1
+            </when>
+            <otherwise> TRUE </otherwise>
+        </choose>
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline
         FROM protectboard
-        WHERE breeds LIKE concat('%' , #{keyword} ,'%')
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+              <choose>
+                  <when test="ani_category == 1">
+                      protectboard_ani_category = 0
+                  </when>
+                  <when test="ani_category == 2">
+                      protectboard_ani_category = 1
+                  </when>
+                  <otherwise> TRUE </otherwise>
+              </choose>
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>

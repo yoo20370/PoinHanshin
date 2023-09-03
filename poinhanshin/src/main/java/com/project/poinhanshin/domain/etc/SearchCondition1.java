@@ -13,6 +13,7 @@ public class SearchCondition1 {
     private Integer pageSize = 10;
     private String keyword = "";
     private String option = "";
+    // 0 - 모두 , 1 - 고양이, 2 - 강아지
     private Integer ani_category = 0;
 
     public SearchCondition1(){}

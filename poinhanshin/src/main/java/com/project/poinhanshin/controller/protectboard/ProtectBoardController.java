@@ -89,6 +89,7 @@ public class ProtectBoardController {
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/protectboard/list";
         }
@@ -107,6 +108,7 @@ public class ProtectBoardController {
         redirectAttributes.addAttribute("page" , sc.getPage());
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
         redirectAttributes.addAttribute("keyword", sc.getKeyword());
+        redirectAttributes.addAttribute("ani_category", sc.getAni_category());
 
         // 정상적으로 글이 등록되지 않은 경우 작성 페이지로 다시 이동
         if( protectBoardService.insertProductBoard(protectBoardDto) != 1){
@@ -138,6 +140,7 @@ public class ProtectBoardController {
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/protectboard/list";
         }
@@ -159,6 +162,7 @@ public class ProtectBoardController {
         redirectAttributes.addAttribute("page" , sc.getPage());
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
         redirectAttributes.addAttribute("keyword", sc.getKeyword());
+        redirectAttributes.addAttribute("ani_category", sc.getAni_category());
 
 
         if(protectBoardService.updateProductBoard(protectBoardDto, LoginId) != 1){
@@ -191,6 +195,7 @@ public class ProtectBoardController {
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addAttribute("protectboardno",protectboardno);
             redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
             return "redirect:/protectboard/read";
