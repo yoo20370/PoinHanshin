@@ -3,21 +3,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper">
     <select id="animalFilterList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline
         FROM protectboard
         WHERE protectboard_ani_category = #{protectboard_ani_category}
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline
         FROM protectboard
         WHERE protectboardno = #{protectboardno}
     </select>
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         INSERT INTO protectboard
-            (protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline)
-        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , #{deadline}  )
+            (protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline)
+        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , now() ,#{deadline}  )
     </insert>
     <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         UPDATE protectboard
@@ -34,7 +34,7 @@
         WHERE breeds LIKE concat('%' , #{keyword} ,'%')
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline
         FROM protectboard
         WHERE breeds LIKE concat('%' , #{keyword} ,'%')
         ORDER BY deadline ASC , protectboardno ASC

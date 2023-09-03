@@ -99,7 +99,9 @@
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="modifyStartDate" name="starttime" placeholder="날짜를 선택해주세요" th:value="${protectboard.starttime}"/>
                         <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="modifyDate" name="deadline" placeholder="날짜를 선택해주세요" th:value="${protectboard.deadline}"/>
+                        <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="writeStartDate" name="starttime" placeholder="날짜를 선택해주세요"/>
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="writeDate" name="deadline" placeholder="날짜를 선택해주세요"/>
                     </div>
                 </div>
