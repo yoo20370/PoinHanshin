@@ -1,41 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
   <title>상세 게시물 보기</title>
   <link rel="stylesheet" type="text/css" href="css/mapdetail.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-  <h2>게시물 보기</h2>
-  <ul class="post-list">
-    {% for post in posts %}
-    <li class="post">
-      <div class="post-details">
-        <div class="post-header">
-          <strong class="animal-type">{{ post.animal_type }}</strong>
-          <span class="time">{{ post.time }}</span>
+<body layout:fragment="content">
+ <div class="container">
+  <div class="post-list">
+    <div class="post" th:each="post : ${mapboard}">
+      <div class="post-header">
+        <div class="header-left">
+        <div style="display: flex; flex-direction: row;">
+    <span class="animal-type">
+        <!-- 고양이=1(true), 강아지=0(false) -->
+        <span th:if="${mapboard.mapboard_ani_category}" class="badge text-bg-primary">고양이</span>
+        <span th:unless="${mapboard.mapboard_ani_category}" class="badge rounded-pill text-bg-secondary">강아지</span>
+    </span>
+          <span class="writertype">
+        <span th:if="${mapboard.writertype}" class="badge text-bg-danger">신고자</span>
+        <span th:unless="${mapboard.writertype}" class="badge rounded-pill text-bg-secondary">발견자</span>
+    </span>
         </div>
-        <div class="post-image">
-          <img src="{{ post.photo }}" alt="{{ post.animal_type }}">
-        </div>
-        <div class="post-content">
-          <p>{{ post.content }}</p>
-        </div>
-        <div class="post-footer">
-          <div class="footer-left">
-            <span class="location">{{ post.location }}</span>
-            <span class="author">{{ post.author }}</span>
-            <span class="time">{{ post.created_time }}</span>
-          </div>
-          <div class="footer-right">
-            <span class="view-count">조회수: {{ post.view_count }}</span>
+          <!-- 즐겨찾기/ 신고하기 아이콘 버튼-->
+          <div class="header-right">
+          <button class="icon-btn" data-toggle="tooltip" data-placement="top" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></button>
+          <button class="icon-btn" data-toggle="tooltip" data-placement="top" title="신고하기"><i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #ff0000;"></i></button>
           </div>
         </div>
+<!--        <strong class="animal-type" th:text="${mapboard.mapboard_ani_category}"></strong>-->
+        <div class="row">
+          <div class="form-floating">
+            <input type="text" readonly class="form-control-plaintext"
+                   id="floatingEmptyPlaintextInput"
+                   th:value="${mapboard.title}">
+            <label for="floatingEmptyPlaintextInput">제목</label>
+          </div>
+        </div>
+<!--        <span class="title" th:text="'제목: ' + ${mapboard.missingaddress}">제목: </span>-->
+        <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
+        <span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingtime}">실종/발견 날짜 및 시간: </span>
       </div>
-    </li>
-    {% endfor %}
-  </ul>
+      <div class="post-image">
+        <img th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">
+        <img src="../mbti/img/image-0.png" alt="Dog">
+      </div>
+      <div class="post-content">
+        <p th:text="${mapboard.mapboard_content}">
+          Woo woo woo woo</p>
+      </div>
+      <div class="footer-left">
+        <span class="mapboard_userno" th:text="'작성자: ' +${mapboard.mapboard_userno}">작성자: </span>
+        <span class="reg_date" th:text="'작성일: ' +${mapboard.mapboard_reg_date}">작성일: </span>
+      </div>
+      <div class="footer-right">
+        <span class="view-count" th:text="'조회수: ' + ${mapboard.mapboard_viewcount}">조회수: </span>
+      </div>
+      <div class="post-buttons">
+          <button class="go-button" type="submit" value="update" onclick="location.href='findmaplist.html'">목록</button>
+        <button class="edit-button" type="submit" value="update" onclick="location.href='findmapedit.html'">수정</button>
+<!--        th:onclick="'javascript:location.href=\'/findmapedit?id=\' + ${mapboard.mapboard_userno}'-->
+        <button class="delete-button" type="submit" value="delete">삭제</button>
+      </div>
+    </div>
+  </div>
 </div>
+ <script>
+   document.querySelector('.delete-button').addEventListener('click', function () {
+     if (confirm('삭제하시겠습니까?')) {
+       alert('삭제 버튼이 클릭되었습니다.');
+       // 실제 삭제 기능을 여기에 추가
+     }
+   });
+ </script>
 </body>
 </html>
