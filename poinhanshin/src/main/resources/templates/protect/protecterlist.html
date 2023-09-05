@@ -126,7 +126,9 @@
                                     <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
                                     <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
                                     <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${protectboard.deadline}|"> 남은날짜 : </span>
+                                    <p class="card-text" th:value="${protectboard.protectboard_title}">제목</p>
                                     <p class="card-text" th:value="${protectboard.protectboard_content}">내용</p>
+
                                 </div>
                             </a>
                         </div>

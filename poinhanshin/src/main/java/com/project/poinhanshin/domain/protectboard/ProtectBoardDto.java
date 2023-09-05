@@ -16,6 +16,7 @@ import java.util.Date;
 public class ProtectBoardDto {
      private Integer protectboard_userno;   // FK, 회원번호
      private Integer protectboardno;    // PK, 임보자공고 게시물 번호
+     private String protectboard_title; // 임보자 게시물 제목
      private String protectboard_content;   // sqltype : varchar, 공고내용
      private byte[] protectboard_imagepath; // sqltype : longblob, 이미지 경로
      private String breeds;    // sqltype : varchar, 품종
@@ -28,9 +29,10 @@ public class ProtectBoardDto {
      @DateTimeFormat(pattern = "yyyy-mm-dd")
      private Date deadline; // util.Date : date, 마감날짜
 
-     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_content, byte[] protectboard_imagepath, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline) {
+     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, byte[] protectboard_imagepath, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline) {
           this.protectboard_userno = protectboard_userno;
           this.protectboardno = protectboardno;
+          this.protectboard_title = protectboard_title;
           this.protectboard_content = protectboard_content;
           this.protectboard_imagepath = protectboard_imagepath;
           this.breeds = breeds;
