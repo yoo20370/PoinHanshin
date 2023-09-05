@@ -8,61 +8,82 @@
   <title>findmap</title>
 <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
   <link rel="stylesheet" type="text/css" href="css/mapmain.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
 </head>
-<body>
+<body layout:fragment="content">
 <div class="container">
-  <div class="header">
-    <h1>실종 및 발견 동물 게시판</h1>
-  </div>
-  <div class="nav">
-    <a href="findmapreg.html">게시물 등록</a>
-    <a href="findmaplist.html">게시물 보기</a>
+<div class="post-header">
+  <div class="header-right">
+    <button class="icon-btn" onclick="location.href='findmapmain.html'" data-toggle="tooltip" data-placement="top" title="지도">
+      <i class="fa-solid fa-map fa-2xl" style="color: #7605ff;"></i>
+    </button>
+    <button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
+      <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
+    </button>
+    <button class="icon-btn" onclick="location.href='findmapreg.html'" data-toggle="tooltip" data-placement="top" title="글 작성하기">
+      <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
+    </button>
   </div>
 </div>
 
 <!-- 지도를 표시할 div 입니다 -->
 <div id="content">
-  <div id="category">
-    <select class="category-selector">
-      <option value="강아지">강아지</option>
-      <option value="고양이">고양이</option>
+</div>
+<div id="map"></div>
+<div class="header-left" style="display: flex; flex-direction: row;">
+  <!-- 드롭다운 필터 -->
+  <div class="filter-container">
+    <label for="animal-filter">동물 선택:</label>
+    <select id="animal-filter">
+      <option value="0">전체</option>
+      <option value="1">고양이</option>
+      <option value="2">강아지</option>
     </select>
-    <select class="category-selector">
+  </div>
+
+  <!-- 신고자/발견자 선택 드롭다운 필터 -->
+  <div class="filter-container">
+    <label for="author-filter">신고자/발견자 선택:</label>
+    <select id="author-filter">
+      <option value="all">전체</option>
       <option value="신고자">신고자</option>
       <option value="발견자">발견자</option>
     </select>
   </div>
-</div>
-<div id="map"></div>
-<div id="wishlist">
-  <h2>위시리스트 목록</h2>
-  <ul id="placesList">
-    <!-- 위시리스트 항목이 여기에 동적으로 추가될 예정 -->
-  </ul>
-  <div>
-    <input type="text" id="newPlaceName" placeholder="장소명">
-    <input type="text" id="newPlaceLat" placeholder="위도">
-    <input type="text" id="newPlaceLng" placeholder="경도">
-    <button id="addPlaceButton">추가</button>
+
+  <!-- 지역 선택 드롭다운 필터 -->
+  <div class="filter-container">
+    <label for="locatin-filter">지역 선택:</label>
+    <select id="locatin-filter">
+      <option value="all">전체</option>
+      <option value="강남">신고자</option>
+      <option value="발견자">발견자</option>
+    </select>
   </div>
 </div>
+  <div class="favorites-container">
+    <h2>즐겨찾기 목록</h2>
+    <div class="favorites-list">
+      <ul id="favoritesList">
+        <!-- 여기에 즐겨찾기 아이템을 추가하세요 -->
+        <li>즐겨찾기 아이템 1</li>
+        <li>즐겨찾기 아이템 2</li>
+        <li>즐겨찾기 아이템 2</li>
+        <li>즐겨찾기 아이템 2</li>
+        <!-- 추가적인 아이템들 -->
+      </ul>
+    </div>
+    <div class="find-route-button">
+      <button>경로 찾기</button>
+    </div>
+  </div>
 </div>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script>
-  var places = [
-    {
-      name: '카페 A',
-      latlng: new kakao.maps.LatLng(37.5665, 126.9780), // 예시 좌표
-      description: '카페 A는 아늑한 분위기의 커피 전문점입니다.'
-    },
-    {
-      name: '레스토랑 B',
-      latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
-      description: '레스토랑 B는 현지 식재료를 사용한 다양한 요리를 제공합니다.'
-    },
-    // 추가적인 장소 정보 추가
-  ];
-
   var mapContainer = document.getElementById('map');
   var mapOption = {
     center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울)
@@ -104,115 +125,6 @@
     });
 
     return marker;
-  }
-
-  // 위시리스트에 있는 장소 목록과 마커 생성
-  function renderPlaces() {
-    placesList.innerHTML = '';
-    for (var i = 0; i < places.length; i++) {
-      var listItem = document.createElement('li');
-      listItem.textContent = places[i].name;
-      listItem.addEventListener('click', function() {
-        var index = Array.from(placesList.children).indexOf(this);
-        map.setCenter(places[index].latlng);
-      });
-      placesList.appendChild(listItem);
-
-      createMarkerAndPopup(places[i]);
-    }
-  }
-
-  // 초기 위시리스트 렌더링
-  renderPlaces();
-
-  // 장소 추가 버튼 클릭 시 실행
-  addPlaceButton.addEventListener('click', function() {
-    var newName = newPlaceName.value;
-    var newLat = parseFloat(newPlaceLat.value);
-    var newLng = parseFloat(newPlaceLng.value);
-    if (newName && !isNaN(newLat) && !isNaN(newLng)) {
-      var newLatlng = new kakao.maps.LatLng(newLat, newLng);
-      places.push({ name: newName, latlng: newLatlng });
-      newPlaceName.value = '';
-      newPlaceLat.value = '';
-      newPlaceLng.value = '';
-      renderPlaces();
-    } else {
-      alert('올바른 값을 입력하세요.');
-    }
-  });
-
-  // 지도 클릭 시 실행
-  kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-    var latlng = mouseEvent.latLng;
-    var placeName = prompt('추가할 장소의 이름을 입력하세요:');
-    if (placeName) {
-      places.push({ name: placeName, latlng: latlng });
-      renderPlaces();
-    }
-  });
-
-
-  // 장소 검색 기능 추가
-  var searchInput = document.createElement('input');
-  searchInput.type = 'text';
-  searchInput.id = 'searchInput';
-  searchInput.style.position = 'relative';
-  searchInput.style.padding = '8px';
-  searchInput.style.width = '25%';
-  searchInput.style.marginBottom = '10px';
-  searchInput.style.border = '1px soild #ccc';
-  searchInput.placeholder = '장소를 검색하세요';
-  mapContainer.parentNode.insertBefore(searchInput, mapContainer);
-
-  var placesService = new kakao.maps.services.Places();
-
-  var searchResults = document.createElement('ul');
-  searchResults.id = 'searchResults';
-  searchResults.style.listStyle = 'none';
-  searchResults.style.padding = '0';
-  searchResults.style.marginTop = '10px';
-  searchResults.style.border = '1px solid #ccc';
-  searchResults.style.backgroundColor = '#fff';
-  searchResults.style.maxHeight = '150px';
-  searchResults.style.overflowY = 'auto';
-  searchResults.style.padding = '10px';
-  searchResults.style.position = 'absolute';
-  searchResults.style.zIndex = '1000';
-  searchResults.style.width = '250px';
-  searchResults.style.display = 'none';
-  mapContainer.parentNode.insertBefore(searchResults, mapContainer);
-
-  searchInput.addEventListener('input', function() {
-    var keyword = searchInput.value;
-    if (keyword) {
-      placesService.keywordSearch(keyword, function(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          displaySearchResults(result);
-        }
-      });
-    } else {
-      searchResults.style.display = 'none';
-    }
-  });
-
-  function displaySearchResults(results) {
-    searchResults.innerHTML = '';
-    for (var i = 0; i < results.length; i++) {
-      var resultItem = document.createElement('li');
-      resultItem.textContent = results[i].place_name;
-      resultItem.style.cursor = 'pointer';
-      resultItem.addEventListener('click', function() {
-        var index = Array.from(searchResults.children).indexOf(this);
-        var selectedPlace = results[index];
-        var latlng = new kakao.maps.LatLng(selectedPlace.y, selectedPlace.x);
-        places.push({ name: selectedPlace.place_name, latlng: latlng });
-        renderPlaces();
-        searchResults.style.display = 'none';
-      });
-      searchResults.appendChild(resultItem);
-    }
-    searchResults.style.display = 'block';
   }
 </script>
 </body>

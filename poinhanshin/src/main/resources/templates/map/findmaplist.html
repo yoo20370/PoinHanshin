@@ -1,31 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
   <title>게시물 목록 보기</title>
   <link rel="stylesheet" type="text/css" href="css/maplist.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
 </head>
-<body>
+<body layout:fragment="content">
 <div class="container">
-  <h2>게시물 보기</h2>
+  <div class="row">
+    <div class="col-md-2">
+      <!-- 드롭다운 필터 -->
+      <div class="mb-3">
+        <label class="form-label" for="animal-filter">동물 선택:</label>
+        <select class="form-select" id="animal-filter">
+          <option value="0">전체</option>
+          <option value="1">고양이</option>
+          <option value="2">강아지</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <!-- 신고자/발견자 선택 드롭다운 필터 -->
+      <div class="mb-3">
+        <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
+        <select class="form-select" id="author-filter">
+          <option value="all">전체</option>
+          <option value="신고자">신고자</option>
+          <option value="발견자">발견자</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <!-- 지역 선택 드롭다운 필터 -->
+      <div class="mb-3">
+        <label class="form-label" for="locatin-filter">지역 선택:</label>
+        <select class="form-select" id="locatin-filter">
+          <option value="all">전체</option>
+          <option value="강남">신고자</option>
+          <option value="발견자">발견자</option>
+        </select>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" onclick="location.href='findmapmain.html'" data-toggle="tooltip" data-placement="top" title="지도">
+        <i class="fa-solid fa-map fa-2xl" style="color: #7605ff;"></i>
+      </button>
+      <button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
+        <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
+      </button>
+      <button class="icon-btn" onclick="location.href='findmapreg.html'" data-toggle="tooltip" data-placement="top" title="글 작성하기">
+        <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
+      </button>
+    </div>
+  </div>
   <ul class="post-list">
-    {% for post in posts %}
     <li class="post">
       <div class="post-header">
-        <strong class="animal-type">{{ post.animal_type }}</strong>
-        <span class="time">{{ post.time }}</span>
+        <strong class="animal-type" th:text="'품종:'${mapboard.mapboard_ani_category}">품종: </strong>
       </div>
       <div class="post-content">
-        <img src="{{ post.photo }}" alt="{{ post.animal_type }}" class="post-image">
-        <p>{{ post.content }}</p>
+        <div class="header-right">
+          <img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">
+          <img class="post-image" src="../mbti/img/image-0.png" alt="Dog">
+        </div>
       </div>
-      <div class="post-footer">
-        <span class="location">{{ post.location }}</span>
-        <span class="author-category">{{ post.author_category }}</span>
+      <div class="post-footer" style="display: flex; flex-direction: column">
+        <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
+        <span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingtime}">실종/발견 날짜 및 시간: </span>
+      </div>
+      <div class="header-right">
+        <span class="mapboard_userno" th:text="'작성자: ' +${mapboard.mapboard_userno}">작성자: </span>
       </div>
     </li>
-    {% endfor %}
   </ul>
 </div>
+<!--text="${boardDto.boardno}"-->
+<script>
+  let posts = [
+    {
+      mapboard_ani_category :'강아지' ,
+      time: '2023-09-03',
+      photo: '강아지사진.jpg',
+      content: '이 강아지를 발견했습니다.',
+      location: '서울',
+      author_category: '발견자'
+    },
+    {
+      animal_type: '고양이',
+      time: '2023-09-02',
+      photo: '고양이사진.jpg',
+      content: '이 고양이를 찾습니다.',
+      location: '부산',
+      author_category: '신고자'
+    },
+    // 다른 게시물 정보 추가
+  ];
+  // JavaScript로 동적으로 게시물 생성
+  const postList = document.querySelector('.post-list');
+  for (const post of posts) {
+    const li = document.createElement('li');
+    li.classList.add('post');
+
+    const postHeader = document.createElement('div');
+    postHeader.classList.add('post-header');
+    postHeader.innerHTML = `<strong class="animal-type">${post.mapboard_ani_category }</strong><span class="time">${post.time}</span>`;
+
+    const postContent = document.createElement('div');
+    postContent.classList.add('post-content');
+    postContent.innerHTML = `<img src="${post.photo}" alt="${post.mapboard_ani_category }" class="post-image"><p>${post.content}</p>`;
+
+    const postFooter = document.createElement('div');
+    postFooter.classList.add('post-footer');
+    postFooter.innerHTML = `<span class="location">${post.location}</span><span class="mapboard_userno">${post.author_category}</span>`;
+
+    li.appendChild(postHeader);
+    li.appendChild(postContent);
+    li.appendChild(postFooter);
+
+    postList.appendChild(li);
+  }
+
+  let posts = [
+    // 게시물 정보
+  ];
+
+  // JavaScript로 동적으로 게시물 생성
+  const postList = document.querySelector('.post-list');
+  const animalFilter = document.getElementById('animal-filter');
+  const authorFilter = document.getElementById('author-filter');
+
+  // 드롭다운 필터 변경 이벤트 처리
+  animalFilter.addEventListener('change', filterPosts);
+  authorFilter.addEventListener('change', filterPosts);
+
+  // 게시물 필터링 함수
+  function filterPosts() {
+    const selectedAnimal = animalFilter.value;
+    const selectedAuthor = authorFilter.value;
+
+    // 게시물 목록 초기화
+    postList.innerHTML = '';
+
+    // 선택한 동물과 신고자/발견자에 따라 게시물 생성
+    for (const post of posts) {
+      if (
+              (selectedAnimal === 'all' || selectedAnimal === post.mapboard_ani_category) &&
+              (selectedAuthor === 'all' || selectedAuthor === post.author_category)
+      ) {
+        const li = document.createElement('li');
+        li.classList.add('post');
+
+        // 게시물 내용 생성 코드
+
+        postList.appendChild(li);
+      }
+    }
+  }
+
+  // 초기에 전체 게시물 목록 생성
+  for (const post of posts) {
+    const li = document.createElement('li');
+    li.classList.add('post');
+
+    // 게시물 내용 생성 코드
+
+    postList.appendChild(li);
+  }
+</script>
 </body>
 </html>
