@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.poinhanshin.mapper.map.MapMapper">
+    <select id="selectMapCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="int">
+        SELECT COUNT(*)
+        FROM mapboard
+        WHERE TRUE
+        and
+        <include refid="writeTypeChoose"/>
+        and
+        <include refid="aniCategoryChoose"/>
+    </select>
+    <select id="selectMapList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
+        SELECT mapboard_userno , mapboardno , mapboard_content , mapboard_imagepath , missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype
+        FROM mapboard
+        WHERE TRUE
+        and
+        <include refid="writeTypeChoose"/>
+        and
+        <include refid="aniCategoryChoose"/>
+        ORDER BY mapboardno DESC
+        LIMIT #{offset} , #{pageSize}
+    </select>
+    <select id="selectMapBoardOne" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
+        SELECT mapboard_userno , mapboardno , mapboard_content , mapboard_imagepath , missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype
+        FROM mapboard
+        WHERE mapboardno = #{mapboardno}
+    </select>
+    <insert id="insertMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
+        INSERT INTO mapboard
+            (mapboard_userno ,  mapboard_content , mapboard_imagepath , missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype)
+        VALUES (#{mapboard_userno} , #{mapboard_content} , #{mapboard_mapimagepath} , #{missingtime} , #{missingaddress} , #{latitude} , #{longitude} , now() , #{mapboard_viewcount} , #{mapboard_ani_category} , #{writertype})
+    </insert>
+    <update id="updateMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
+        UPDATE mapboard
+        SET mapboard_imagepath = #{mapboard_imagepath} , missingtime = #{missingtime} , missingaddress = #{missingaddress} , latitude = #{latitude} , longitude = #{longitude} , mapboard_ani_category = #{mapboard_ani_category} , writertype = #{writertype}
+        WHERE mapboard_userno = #{mapboard_userno} and mapboardno = #{mapboardno}
+    </update>
+    <delete id="deleteMapBoard" parameterType="map">
+        DELETE FROM mapboard
+        WHERE mapboard_userno = #{mapboard_userno} and mapboardno = #{mapboardno}
+    </delete>
+    <sql id="writeTypeChoose">
+        <choose>
+            <when test="writeType == 0">
+                writetype = 0
+            </when>
+            <when test="writeType == 1">
+                writeType = 1
+            </when>
+            <otherwise>
+                TRUE
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="aniCategoryChoose">
+        <choose>
+            <when test="ani_category == 0">
+                mapboard_ani_category = 0
+            </when>
+            <when test="ani_category == 1">
+                mapboard_ani_category = 1
+            </when>
+            <otherwise>
+                TRUE
+            </otherwise>
+        </choose>
+    </sql>
+</mapper>
