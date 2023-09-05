@@ -37,19 +37,6 @@
     if (msg === "LOGIN_OK") alert("환영합니다");
 </script>
 <body layout:fragment="content">
-<h1>포인한신</h1>
-<div>
-    <ul>
-        <div th:if="${loginUser==null}">
-            <li><a th:href="@{/login}">로그인</a></li>
-            <li><a th:href="@{/register}">회원가입</a></li>
-        </div>
-        <div th:if="${loginUser!=null}">
-            <li><a th:href="@{/myPage}">[[${loginUser.getName}]]님</a></li>
-            <li><a th:href="@{/logout}">로그아웃</a></li>
-        </div>
-    </ul>
-</div>
 <div class="page">
 <div class="container-fluid p-5">
   <div class="d-flex justify-content-center">
