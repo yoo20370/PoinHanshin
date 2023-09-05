@@ -1,7 +1,7 @@
 package com.project.poinhanshin.mapper.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
-import com.project.poinhanshin.domain.board.LikeDto;
+import com.project.poinhanshin.domain.board.LikeBoardDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

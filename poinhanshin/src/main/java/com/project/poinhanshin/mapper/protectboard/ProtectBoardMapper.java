@@ -9,11 +9,6 @@ import java.util.List;
 @Mapper
 public interface ProtectBoardMapper {
 
-    // 모든 게시물 개수를 가져온다.
-    int countAll();
-
-    // 임보자 게시물 전체 리스트를 가져온다.
-    List<ProtectBoardDto> selectContentAll(SearchCondition1 sc);
 
     // 임보자 게시물 중 특정 동물의 게시물 리스트를 가져온다.
     List<ProtectBoardDto> animalFilterList(SearchCondition1 sc);
@@ -31,12 +26,15 @@ public interface ProtectBoardMapper {
     int deleteContent(Integer protectboardno, Integer protectboard_userno);
 
     // 검색된 임보자 게시물 개수 카운팅
-    int selectResultCnt(SearchCondition1 sc);
+    int searchResultCnt(SearchCondition1 sc);
 
     // 검색 창을 이용하여 특정 임보자 게시물을 검색할 때 사용하는 메서드
     List<ProtectBoardDto> searchResultList(SearchCondition1 sc);
 
+    // 최근 자신이 등록한 게시물 번호를 읽어온다.
     int selectRecentBoardno(Integer protectboardno);
+
+
 
 
 

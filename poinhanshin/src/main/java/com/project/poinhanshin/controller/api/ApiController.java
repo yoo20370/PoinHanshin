@@ -30,6 +30,7 @@ public class ApiController {
         if(sc.getPage() == null) sc.setPage(1);
         if(kind == null) kind = "";
         Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","",kind,"","","","","",sc.getPage().toString(),"8");
+
         int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());
         PageHandler1 ph = new PageHandler1(totalCnt , sc);
         m.addAttribute("totalCnt",totalCnt);
@@ -41,8 +42,11 @@ public class ApiController {
 
     @GetMapping("/ShelterList")
     public String ShelterList(SearchCondition1 sc, Model m) throws IOException, ParseException {
+        System.out.println(sc.toString());
+        if(sc.getKeyword() == null) sc.setKeyword("");
+        if(sc.getPage() == null) sc.setPage(1);
 
-        Shelter shelterList[] = apiExplorer.SearchShelterList("","","10", sc.getPage().toString());
+        Shelter shelterList[] = apiExplorer.SearchShelterList("",sc.getKeyword(),"10", sc.getPage().toString());
         int totalCnt = Integer.parseInt(shelterList[0].getTotalCount());
         PageHandler1 ph = new PageHandler1(totalCnt , sc);
         m.addAttribute("totalCnt",totalCnt);

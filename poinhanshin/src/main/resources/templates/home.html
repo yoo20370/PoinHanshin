@@ -11,10 +11,45 @@
     <link href="/css/commonstyle.css" rel="stylesheet">
     <style>
 
+    @media (min-width: 1200px) {
+      .page {
+        width: 940px;
+      }
+    }
+
+  html,body{
+       width: 100%;
+       height: 100%;
+   }
+  .page {
+        margin: 0 auto;
+        height: 100%;
+        padding: 50px;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        border-bottom-width: 2px;
+    }
+
     </style>
 </head>
-
+<script th:inline="javascript">
+    const msg = [[${#httpServletRequest.getAttribute('msg')}]];
+    if (msg === "LOGIN_OK") alert("환영합니다");
+</script>
 <body layout:fragment="content">
+<h1>포인한신</h1>
+<div>
+    <ul>
+        <div th:if="${loginUser==null}">
+            <li><a th:href="@{/login}">로그인</a></li>
+            <li><a th:href="@{/register}">회원가입</a></li>
+        </div>
+        <div th:if="${loginUser!=null}">
+            <li><a th:href="@{/myPage}">[[${loginUser.getName}]]님</a></li>
+            <li><a th:href="@{/logout}">로그아웃</a></li>
+        </div>
+    </ul>
+</div>
 <div class="page">
 <div class="container-fluid p-5">
   <div class="d-flex justify-content-center">
@@ -105,7 +140,7 @@
           <button class="w-100 btn btn-dark btn-lg"
                   onclick="location.href='items.html'"
                   th:onclick="|location.href='@{/information/MBTI}'|" type="button">
-            MBTI
+            MBTI 매칭
           </button>
         </div>
       </th>
@@ -113,8 +148,10 @@
         <div class="col">
           <button class="w-100 btn btn-dark btn-lg"
                   onclick="location.href='items.html'"
+
                   th:onclick="|location.href='@{/api/AnimalList}'|" type="button">
             유기동물보호리스트
+
           </button>
         </div>
       </th>

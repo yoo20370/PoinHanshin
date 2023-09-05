@@ -23,18 +23,8 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
     private String namespace = "com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper.";
 
-    // 모든 게시물 개수를 가져온다.
-    @Override
-    public int countAll() {
-        return sqlSession.selectOne(namespace+"countAll");
-    }
 
-    // 임보자 게시물 전체를 가져온다.
-    @Override
-    public List<ProtectBoardDto> selectContentAll(SearchCondition1 sc) {
-        return sqlSession.selectList(namespace+"selectContentAll",sc);
-    }
-
+    // 동물 카테고리 선택시
     @Override
     public List<ProtectBoardDto> animalFilterList(SearchCondition1 sc ) {
         return sqlSession.selectList(namespace+"animalFilterList",sc);
@@ -70,7 +60,7 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
     // 검색된 임보자 게시물 수를 가져온다.
     @Override
-    public int selectResultCnt(SearchCondition1 sc) {
+    public int searchResultCnt(SearchCondition1 sc) {
 
         return sqlSession.selectOne(namespace+"searchResultCnt",sc);
     }
