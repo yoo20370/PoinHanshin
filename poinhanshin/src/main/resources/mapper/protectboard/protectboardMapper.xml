@@ -2,35 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper">
-    <select id="countAll" resultType="int">
-        Select count(*) FROM protectboard
-    </select>
-    <select id="selectContentAll" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        Select protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , deadline
-        FROM protectboard
-        ORDER BY deadline ASC , protectboardno ASC
-        LIMIT #{offset} , #{pageSize}
-    </select>
     <select id="animalFilterList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno ,  protectboard_title , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline
         FROM protectboard
         WHERE protectboard_ani_category = #{protectboard_ani_category}
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno , protectboard_title ,protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline
         FROM protectboard
         WHERE protectboardno = #{protectboardno}
     </select>
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         INSERT INTO protectboard
-            (protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , deadline)
-        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , #{deadline}  )
+            (protectboard_userno , protectboardno , protectboard_title , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline)
+        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_title} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , now() ,#{deadline}  )
     </insert>
     <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         UPDATE protectboard
-        SET protectboard_content = #{protectboard_content} , protectboard_imagepath = #{protectboard_imagepath} , breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus}
+        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} , protectboard_imagepath = #{protectboard_imagepath} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus}
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </update>
     <delete id="deleteContent" parameterType="map">
@@ -38,32 +29,26 @@
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </delete>
     <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="int">
-    SELECT count(*)
-    FROM protectboard
-    WHERE TRUE
-      <choose>
-            <when test='option == "C"'>
-                AND ( protectboard_content LIKE concat('%' , #{keyword} ,'%') )
+        SELECT count(*)
+        FROM protectboard
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+        <choose>
+            <when test="ani_category == 0">
+                protectboard_ani_category = 0
             </when>
-            <when test='option == "W"'>
-                AND ( protectboard_userno LIKE concat('%' , #{keyword} ,'%') )
+            <when test="ani_category == 1">
+                protectboard_ani_category = 1
             </when>
-      </choose>
-
+            <otherwise> TRUE </otherwise>
+        </choose>
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , deadline
+        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline
         FROM protectboard
-        WHERE TRUE
-        <choose>
-            <when test='option == "C"'>
-                AND ( protectboard_content LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <when test='option == "W"'>
-                AND ( protectboard_userno LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-        </choose>
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+              <include refid="aniCategoryChoose"/>
         ORDER BY deadline ASC , protectboardno ASC
+        LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectRecentBoardno" resultType="int" parameterType="int">
         SELECT protectboardno
@@ -72,6 +57,15 @@
         ORDER BY protectboardno DESC
         LIMIT 1
     </select>
-
-
+    <sql id="aniCategoryChoose">
+        <choose>
+            <when test="ani_category == 0">
+                protectboard_ani_category = 0
+            </when>
+            <when test="ani_category == 1">
+                protectboard_ani_category = 1
+            </when>
+            <otherwise> TRUE </otherwise>
+        </choose>
+    </sql>
 </mapper>

@@ -59,21 +59,24 @@
         <input type="hidden" name="_method" value="put" />
 
         <!--페이지 정보 및 아이디-->
-        <input type="hidden" name="page" th:value="${page}" />
-        <input type="hidden" name="pageSize" th:value="${pageSize}" />
+        <input type="hidden" name="page" th:value="${sc.getPage()}" />
+        <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
+        <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="protectboard_userno" th:value="${LoginId}" />
+        <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.getProtectboardno()}"/>
 
 
         <div th:if="${mode} == 'MODIFY'">
             <!--글 수정-->
-            <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}">
-            <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}">
+            <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
+            <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
+            <input type="date" name="protectboard_reg_date" th:value="${protectboard.getProtectboard_reg_date()}" hidden="hidden"/>
         </div>
 
         <div th:if="${mode} == 'WRITE'">
             <!--글 작성-->
-            <input type="hidden" name="protectboard_ani_category" value="false">
-            <input type="hidden" name="protectstatus" value="false">
+            <input type="hidden" name="protectboard_ani_category" value="false"/>
+            <input type="hidden" name="protectstatus" value="false"/>
         </div>
 
         <section class="container">
@@ -96,7 +99,9 @@
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="modifyStartDate" name="starttime" placeholder="날짜를 선택해주세요" th:value="${protectboard.starttime}"/>
                         <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="modifyDate" name="deadline" placeholder="날짜를 선택해주세요" th:value="${protectboard.deadline}"/>
+                        <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="writeStartDate" name="starttime" placeholder="날짜를 선택해주세요"/>
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="writeDate" name="deadline" placeholder="날짜를 선택해주세요"/>
                     </div>
                 </div>
@@ -148,7 +153,7 @@
             </div>
         </div>
         <button type="button" class="btn btn-secondary"
-                th:onclick="|location.href='@{/protectboard/list(page = ${page} , pageSize = ${pageSize} )}'|">목록
+                th:onclick="|location.href='@{/protectboard/list(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword})}'|">목록
         </button>
     </form>
 </div>

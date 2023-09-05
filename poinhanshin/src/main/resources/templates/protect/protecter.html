@@ -67,6 +67,7 @@
                 <label for="floatingEmptyPlaintextInput">품종</label>
             </div>
         </div>
+        <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}">
         <div class="row">
             <div class="col-mb-3">
                 <!-- 오류 -->
@@ -85,17 +86,19 @@
         </div>
         <div class="col-5 p-3" >
             <!-- 페이지 정보 및 게시물 번호 , 작성자 form input-->
-            <input type="hidden" name="page" th:value="${page}">
-            <input type="hidden" name="pageSize" th:value="${pageSize}">
+            <input type="hidden" name="page" th:value="${sc.getPage()}"/>
+            <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
+            <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
             <input type="hidden" name="protectboard_userno" th:value="${LoginId}"/>
-            <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}">
-            <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}">
+            <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}"/>
+            <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
 
             <!-- 동물 카테고리 , 작성일 , 마감일 form input  -->
             <!-- 프론트가 수정 필요 -->
-            <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}">
-            <input type="date" name="protectboard_reg_date" th:value="${protectboard.protectboard_reg_date}" id="reg_date" readonly="readonly " hidden="hidden">
-            <input type="date" name="deadline" th:value="${protectboard.deadline}"id="deadline" readonly="readonly" hidden="hidden">
+            <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
+            <input type="date" name="protectboard_reg_date" th:value="${protectboard.protectboard_reg_date}" id="reg_date" readonly="readonly " hidden="hidden"/>
+            <input type="date" name="deadline" th:value="${protectboard.starttime}"id="starttime" readonly="readonly" hidden="hidden"/>
+            <input type="date" name="deadline" th:value="${protectboard.deadline}"id="deadline" readonly="readonly" hidden="hidden"/>
         </div>
 
         <!-- 작성자 및 작성일 표시 -->
@@ -105,7 +108,7 @@
         </div>
         <div class="col-5 p-3" >
             <button type="button" class="btn btn-secondary"
-                    th:onclick="|location.href='@{/protectboard/list(page = ${page} , pageSize = ${pageSize} )}'|">목록
+                    th:onclick="|location.href='@{/protectboard/list(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} )}'|">목록
             </button>
 
             <!-- 로그인 사용자와 게시물 작성자가 일치할 경우 삭제 , 수정 버튼 표  -->
@@ -131,7 +134,7 @@
     $("#removeBtn").on("click",function(){
         if(!confirm("정말로 삭제하시겠습니까 ?")) return;
         let form = $('#form');
-        form.attr("action", "[[@{/protectboard/remove(protectboardno=${protectboard.protectboardno})}]]");
+        form.attr("action", "[[@{/protectboard/remove}]]");
         form.attr("method", "post");
         form.submit();
     });
