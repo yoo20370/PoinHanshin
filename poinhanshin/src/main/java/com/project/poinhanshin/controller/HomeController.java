@@ -13,7 +13,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
-        model.addAttribute("user", loginUser);
+        model.addAttribute("loginUser", loginUser);
         return "home";
     }
 
