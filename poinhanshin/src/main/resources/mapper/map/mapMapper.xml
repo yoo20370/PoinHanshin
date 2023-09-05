@@ -6,37 +6,19 @@
         SELECT COUNT(*)
         FROM mapboard
         WHERE TRUE
-        <choose>
-            <when test='option == "T"'>
-                AND ( title LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <when test='option == "W"'>
-                AND ( writer LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <otherwise>
-                AND ( title LIKE concat('%' , #{keyword} ,'%')
-                OR ( content LIKE concat('%' , #{keyword} , '%'))
-                )
-            </otherwise>
-        </choose>
+        and
+        <include refid="writeTypeChoose"/>
+        and
+        <include refid="aniCategoryChoose"/>
     </select>
     <select id="selectMapList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
         SELECT mapboard_userno , mapboardno , mapboard_content , mapboard_imagepath , missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype
         FROM mapboard
         WHERE TRUE
-        <choose>
-            <when test='option == "T"'>
-                AND ( title LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <when test='option == "W"'>
-                AND ( writer LIKE concat('%' , #{keyword} ,'%') )
-            </when>
-            <otherwise>
-                AND ( title LIKE concat('%' , #{keyword} ,'%')
-                OR ( content LIKE concat('%' , #{keyword} , '%'))
-                )
-            </otherwise>
-        </choose>
+        and
+        <include refid="writeTypeChoose"/>
+        and
+        <include refid="aniCategoryChoose"/>
         ORDER BY mapboardno DESC
         LIMIT #{offset} , #{pageSize}
     </select>
@@ -59,4 +41,30 @@
         DELETE FROM mapboard
         WHERE mapboard_userno = #{mapboard_userno} and mapboardno = #{mapboardno}
     </delete>
+    <sql id="writeTypeChoose">
+        <choose>
+            <when test="userType == 1">
+                writetype = 0
+            </when>
+            <when test="userType == 2">
+                writeType = 1
+            </when>
+            <otherwise>
+                TRUE
+            </otherwise>
+        </choose>
+    </sql>
+    <sql id="aniCategoryChoose">
+        <choose>
+            <when test="ani_category == 1">
+                mapboard_ani_category = 0
+            </when>
+            <when test="ani_category == 2">
+                mapboard_ani_category = 1
+            </when>
+            <otherwise>
+                TRUE
+            </otherwise>
+        </choose>
+    </sql>
 </mapper>
