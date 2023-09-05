@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -22,12 +21,12 @@ public class ProtectBoardDto {
      private String breeds;    // sqltype : varchar, 품종
      boolean protectboard_ani_category;  // 강아지 0 or 고양이 1
      @DateTimeFormat(pattern = "yyyy-mm-dd")
-     private Date protectboard_reg_date;    // sqltype : date, 임보자 게시물 작성날짜
+     private Date protectboard_reg_date;    // util.Date : date, 임보자 게시물 작성날짜
      boolean protectstatus;    // 공고중 확인, 공고중 0 or 공고완료 1
      @DateTimeFormat(pattern = "yyyy-mm-dd")
-     private Date starttime;
+     private Date starttime; // util.Date : date, 공고 시작일
      @DateTimeFormat(pattern = "yyyy-mm-dd")
-     private Date deadline; // sqltype : date, 마감날짜
+     private Date deadline; // util.Date : date, 마감날짜
 
      public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_content, byte[] protectboard_imagepath, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline) {
           this.protectboard_userno = protectboard_userno;

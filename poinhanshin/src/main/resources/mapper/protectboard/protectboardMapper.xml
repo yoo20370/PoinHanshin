@@ -46,15 +46,7 @@
         SELECT protectboard_userno , protectboardno , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline
         FROM protectboard
         WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
-              <choose>
-                  <when test="ani_category == 0">
-                      protectboard_ani_category = 0
-                  </when>
-                  <when test="ani_category == 1">
-                      protectboard_ani_category = 1
-                  </when>
-                  <otherwise> TRUE </otherwise>
-              </choose>
+              <include refid="aniCategoryChoose"/>
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>
@@ -65,4 +57,15 @@
         ORDER BY protectboardno DESC
         LIMIT 1
     </select>
+    <sql id="aniCategoryChoose">
+        <choose>
+            <when test="ani_category == 0">
+                protectboard_ani_category = 0
+            </when>
+            <when test="ani_category == 1">
+                protectboard_ani_category = 1
+            </when>
+            <otherwise> TRUE </otherwise>
+        </choose>
+    </sql>
 </mapper>
