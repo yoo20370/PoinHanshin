@@ -74,7 +74,7 @@
                         <p th:text="'평일운영종료시각 : '+${shelter.weekOprEtime}">평일운영종료시각 : </p>
                         <p th:text="'평일분양시작시간 : '+${shelter.weekCellStime}">평일분양시작시간 :</p>
                         <p th:text="'평일분양종료시간 : '+${shelter.weekCellEtime}">평일분양종료시간 :</p>
-                        <p>----------------------------</p>
+                        <br>
                         <p th:text="'주말운영시작시간 : '+${shelter.weekendOprStime}">주말운영시작시간 :</p>
                         <p th:text="'주말운영종료시간 : '+${shelter.weekendOprEtime}">주말운영종료시간 :</p>
                         <p th:text="'주말분양시작시간 : '+${shelter.weekendCellStime}">주말분양시작시간 :</p>
@@ -96,10 +96,9 @@
                      </div>
                     </div>
 
-                    <div class="card text-bg-warning mb-3 mx-auto" style="max-width: 25rem;">
-                        <div class="card-header">지도</div>
+                    <div class="card text-bg-Light mb-3 mx-auto" style="max-width: 25rem;">
                         <div class="card-body">
-                            <div class="map">
+                            <div id="map" style="width:100%;height:350px;">
 
                             </div>
                         </div>
@@ -142,5 +141,56 @@
 <!--    <p th:text="'전화번호 : '+${shelter.careTel}"></p>-->
 <!--    <p th:text="'데이터기준일자 : '+${shelter.dataStdDt}"></p>-->
 </fieldset>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9812c9a3072003e9084347785d8c83a0"></script>
+<script th:inline="javascript">
+
+const data_lat = [[${shelter.lat}]];
+const data_lng = [[${shelter.lng}]];
+console.log(data_lat);
+console.log(data_lng);
+
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(data_lat, data_lng), // 지도의 중심좌표
+        level: 1 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+
+var markerPosition  = new kakao.maps.LatLng(data_lat, data_lng);
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+
+marker.setMap(map);
+
+var iwContent = '<div style="padding:5px;">클릭시 이동합니다.</div>';//마우스커서 오버시 인포윈도우 생성
+
+var infowindow = new kakao.maps.InfoWindow({
+    content : iwContent
+});
+
+
+// 마커 마우스오버 이벤트
+kakao.maps.event.addListener(marker, 'mouseover', function() {
+  // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+    infowindow.open(map, marker);
+});
+// 마커 마우스아웃 이벤트
+kakao.maps.event.addListener(marker, 'mouseout', function() {
+    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+    infowindow.close();
+});
+//마커 클릭 이벤트
+kakao.maps.event.addListener(marker, 'click', function() {
+      location.href="https://map.kakao.com/link/map/data_lat,data_lng"
+});
+
+<!--console.log(markerPosition);-->
+<!--console.log(marker);-->
+
+</script>
 </body>
 </html>

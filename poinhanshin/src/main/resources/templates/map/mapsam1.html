@@ -314,6 +314,37 @@
     }
     searchResults.style.display = 'block';
   }
+
+  function createMarkerAndPopup(place) {
+    var marker = new kakao.maps.Marker({
+      map: map,
+      position: place.latlng,
+      title: place.name
+    });
+
+    var infowindow = new kakao.maps.InfoWindow({
+      content: `
+      <div style="padding:10px;">
+        <h3>${place.name}</h3>
+        <p>${place.description}</p>
+      </div>
+    `
+    });
+
+    kakao.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map, marker);
+
+      // 마커 클릭 시 게시물 정보를 표시하거나 이동하는 코드를 추가합니다.
+      // 여기에서는 간단히 alert로 게시물 정보를 표시하는 예제를 제공합니다.
+      alert('게시물 이름: ' + place.name + '\n게시물 설명: ' + place.description);
+    });
+
+    kakao.maps.event.addListener(map, 'click', function() {
+      infowindow.close();
+    });
+
+    return marker;
+  }
 </script>
 </body>
 </html>
