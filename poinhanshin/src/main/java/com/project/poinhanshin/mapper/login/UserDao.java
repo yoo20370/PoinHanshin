@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserDao {
     void save(User user);
-    User findByLoginId(String loginId);
-    User login(@Param("loginId") String loginId, @Param("password") String password);
+    User findByLoginId(String id);
+    User login(@Param("id") String id, @Param("password") String password);
 }
