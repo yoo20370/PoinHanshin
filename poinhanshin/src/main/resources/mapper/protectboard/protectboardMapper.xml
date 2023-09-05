@@ -33,10 +33,10 @@
         FROM protectboard
         WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
         <choose>
-            <when test="ani_category == 1">
+            <when test="ani_category == 0">
                 protectboard_ani_category = 0
             </when>
-            <when test="ani_category == 2">
+            <when test="ani_category == 1">
                 protectboard_ani_category = 1
             </when>
             <otherwise> TRUE </otherwise>
@@ -47,10 +47,10 @@
         FROM protectboard
         WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
               <choose>
-                  <when test="ani_category == 1">
+                  <when test="ani_category == 0">
                       protectboard_ani_category = 0
                   </when>
-                  <when test="ani_category == 2">
+                  <when test="ani_category == 1">
                       protectboard_ani_category = 1
                   </when>
                   <otherwise> TRUE </otherwise>
@@ -65,6 +65,4 @@
         ORDER BY protectboardno DESC
         LIMIT 1
     </select>
-
-
 </mapper>

@@ -13,22 +13,22 @@ public class SearchCondition1 {
     private Integer pageSize = 10;
     private String keyword = "";
     private String option = "";
-    // 0 - 모두 , 1 - 고양이, 2 - 강아지
-    private Integer ani_category = 0;
-    // 사용자 타입 0 - 모두 , 1 - 신고자 , 2 - 발견자
-    private Integer userType = 0;
+    // 동물필터 0 - 강아지 , 1 - 고양이, 2 - 모두
+    private Integer ani_category = 2;
+    // 사용자 타입 0 - 신고자 , 1 - 발견자 , 2 - 모두
+    private Integer writeType = 2;
     // 지역
-    // private String city = "";
+    // private String region = "";
 
     public SearchCondition1(){}
 
-    public SearchCondition1(Integer page, Integer pageSize, String keyword, String option, Integer ani_category, Integer userType) {
+    public SearchCondition1(Integer page, Integer pageSize, String keyword, String option, Integer ani_category, Integer writeType) {
         this.page = page;
         this.pageSize = pageSize;
         this.keyword = keyword;
         this.option = option;
         this.ani_category = ani_category;
-        this.userType = userType;
+        this.writeType = writeType;
     }
 
     public String getQueryString(){
@@ -41,7 +41,7 @@ public class SearchCondition1 {
                 .queryParam("keyword" , keyword)
                 .queryParam("option" , option)
                 .queryParam("ani_category" , ani_category)
-                .queryParam("userType" , userType)
+                .queryParam("writeType" , writeType)
                 .build().toString();
     }
     public int getOffset() {

@@ -43,10 +43,10 @@
     </delete>
     <sql id="writeTypeChoose">
         <choose>
-            <when test="userType == 1">
+            <when test="writeType == 0">
                 writetype = 0
             </when>
-            <when test="userType == 2">
+            <when test="writeType == 1">
                 writeType = 1
             </when>
             <otherwise>
@@ -56,10 +56,10 @@
     </sql>
     <sql id="aniCategoryChoose">
         <choose>
-            <when test="ani_category == 1">
+            <when test="ani_category == 0">
                 mapboard_ani_category = 0
             </when>
-            <when test="ani_category == 2">
+            <when test="ani_category == 1">
                 mapboard_ani_category = 1
             </when>
             <otherwise>
