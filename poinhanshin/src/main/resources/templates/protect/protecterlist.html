@@ -50,7 +50,7 @@
 
         <div class="row row-cols-1 row-cols-md-4 g-4">
             <div class="col" th:each="protectboard : ${list}">
-                        <div class="card" >
+                        <div class="card" id="pcard">
                             <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">
                                 <img th:if="${#strings.isEmpty(protectboard.protectboard_imagepath)}" src="/static/img/empty.png" class="card-img-top">
                                 <img th:id="${protectboard.protectboardno}"  th:unless="${#strings.isEmpty(protectboard.protectboard_imagepath)}" th:src="'data:image/jpeg;base64,'+${protectboard.protectboard_imagepath}" class="card-img-top" alt="...">
@@ -59,7 +59,7 @@
                                     <span class="badge rounded-pill text-bg-primary card-text" th:text="${protectboard.breeds}">강아지</span>
                                     <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
                                     <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
-                                    <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 : ${#strings.substring(protectboard.deadline,6,10)}|"> 남은날짜 : 2023-08-01</span>
+                                    <span class="badge rounded-pill text-bg-warning" th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}"> 남은날짜 : 2023-08-01</span>
                                     <p class="card-text" th:value="${protectboard.protectboard_title}">제목</p>
                                     <p class="card-text" th:value="${protectboard.protectboard_content}">내용</p>
 
@@ -81,11 +81,43 @@
     </div>
 
     <script th:inline="javascript">
+    /*<![CDATA[*/
         $('#searchBtn').on("click",function(){
             let form = $('#searchForm');
             form.submit();
         });
 
+
+
+
+
+
+function leftDay(date){
+
+
+    const end_date= new Date(date);
+
+    const now = new Date(); //현재시간 추출용
+    const formattedDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;//yyyy-MM-dd 형식
+    const today_date = new Date(formattedDate);//Date로 변환
+
+    const diff = end_date.getTime() - today_date.getTime();
+
+    console.log(today_date);
+
+    let diffDay = Math.floor(diff / (1000*60*60*24));
+
+    //남은 날짜가 음수인경우 0
+        if(diffDay < 0) {
+            diffDay = "0";
+            return ${diffDay};
+        }else{
+            return ${diffDay};
+        }
+    console.log(diffDay);
+    }
+
+    /*]]>*/
     </script>
 </div>
 </body>
