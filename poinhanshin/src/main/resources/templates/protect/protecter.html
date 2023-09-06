@@ -45,7 +45,7 @@
         <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:value="${protectboard.breeds}" >품종</span>
         <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
         <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
-        <span class="badge rounded-pill text-bg-warning"th:text="|마감일 :${#dates.format(protectboard.deadline, 'dd/MMM/yyyy HH:mm')}|" name="deadline"> 마감일 : </span>
+        <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'dd/MMM/yyyy HH:mm')}|" id="lefttime"  name="deadline"> 남은날짜 : </span>
         <div class="row">
             <div class="form-floating">
                 <input type="text" readonly="readonly" class="form-control-plaintext"
@@ -114,6 +114,26 @@
         form.submit();
     });
 
+
+//날짜계산
+const left_time = document.querySelector("#lefttime");
+
+    function leftDay() {
+    //계산용 date객체 생성
+    const start_date= new date([[${#temporals.createDate(protectboard.starttime,'yyyyMMdd')}]]);
+    const end_date= new date([[${#temporals.createDate(protectboard.deadline,'yyyyMMdd')}]]);
+    const today_date= new date();
+
+    const diff = end_date - today_date;
+
+    const diffDay = Math.floor(diff / (1000*60*60*24));
+    const diffHour = Math.floor((diff / (1000*60*60)) % 24);
+    const diffMin = Math.floor((diff / (1000*60)) % 60);
+    const diffSec = Math.floor(diff / 1000 % 60);
+
+    left_time.innerText = `남은날짜 : ${diffday}일`;
+}
+    leftDay();
 </script>
 </body>
 </html>
