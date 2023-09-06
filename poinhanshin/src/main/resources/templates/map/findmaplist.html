@@ -21,9 +21,9 @@
       <div class="mb-3">
         <label class="form-label" for="animal-filter">동물 선택:</label>
         <select class="form-select" id="animal-filter">
-          <option value="0">전체</option>
+          <option value="2">전체</option>
           <option value="1">고양이</option>
-          <option value="2">강아지</option>
+          <option value="0">강아지</option>
         </select>
       </div>
     </div>
@@ -32,9 +32,9 @@
       <div class="mb-3">
         <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
         <select class="form-select" id="author-filter">
-          <option value="all">전체</option>
-          <option value="신고자">신고자</option>
-          <option value="발견자">발견자</option>
+          <option value="2">전체</option>
+          <option value="0">신고자</option>
+          <option value="1">발견자</option>
         </select>
       </div>
     </div>
@@ -43,9 +43,9 @@
       <div class="mb-3">
         <label class="form-label" for="locatin-filter">지역 선택:</label>
         <select class="form-select" id="locatin-filter">
-          <option value="all">전체</option>
-          <option value="강남">신고자</option>
-          <option value="발견자">발견자</option>
+          <option value="2">전체</option>
+          <option value="0">서울</option>
+          <option value="1">경기도</option>
         </select>
       </div>
     </div>
@@ -73,10 +73,12 @@
         </div>
       </div>
       <div class="post-footer" style="display: flex; flex-direction: column">
+        <span class="writertype" th:text="'실종/발견자: ' + ${mapboard.writertype}">실종/발견자: </span>
         <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
-        <span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingtime}">실종/발견 날짜 및 시간: </span>
+        <span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingdatetime}">실종/발견 날짜 및 시간: </span>
       </div>
       <div class="header-right">
+        <span class="mapboard_reg_date" th:text="'작성일: ' +${mapboard.mapboard_reg_date}">작성일: </span>
         <span class="mapboard_userno" th:text="'작성자: ' +${mapboard.mapboard_userno}">작성자: </span>
       </div>
     </li>
