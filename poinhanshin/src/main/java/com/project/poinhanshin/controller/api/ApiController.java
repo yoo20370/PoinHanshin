@@ -26,15 +26,9 @@ public class ApiController {
     }
 
     @GetMapping("/AnimalList")
-    public String AnimalList(SearchCondition1 sc , String kind , Model m) throws IOException, ParseException {
-        if(sc.getPage() == null) sc.setPage(1);
-        if(kind == null) kind = "";
-        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","",kind,"","","","","",sc.getPage().toString(),"8");
+    public String AnimalList(Model m) throws IOException, ParseException {
+        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","","","","","","","","1","8");
 
-        int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());
-        PageHandler1 ph = new PageHandler1(totalCnt , sc);
-        m.addAttribute("totalCnt",totalCnt);
-        m.addAttribute("ph",ph);
         m.addAttribute("AAArr",abandoned_animal);
 
         return "api/AnimalList";

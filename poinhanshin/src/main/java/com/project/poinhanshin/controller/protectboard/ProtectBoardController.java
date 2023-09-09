@@ -66,6 +66,7 @@ public class ProtectBoardController {
         if(LoginId.equals(protectBoardDto.getProtectboard_userno()))
             m.addAttribute("WriterCheck", "OK");
 
+        m.addAttribute("LoginId", LoginId);
         m.addAttribute("protectboard" , protectBoardDto);
         m.addAttribute("sc",sc);
         m.addAttribute("msg" , msg);
@@ -134,7 +135,7 @@ public class ProtectBoardController {
 
         // 임시 로그인
         Integer LoginId = 1;
-
+        System.out.println(protectBoardDto);
         // 로그인 확인 (나중에 loginUser == null로 변경
         if(LoginId == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
@@ -156,6 +157,7 @@ public class ProtectBoardController {
     @PostMapping("/modify")
     public String ProtectBoardModify(ProtectBoardDto protectBoardDto , SearchCondition1 sc , RedirectAttributes redirectAttributes){
 
+        System.out.println(protectBoardDto);
         // 임시 로그인
         Integer LoginId = 1;
 

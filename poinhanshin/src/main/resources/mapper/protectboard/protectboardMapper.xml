@@ -3,14 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper">
     <select id="animalFilterList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno ,  protectboard_title , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline
+        SELECT *
         FROM protectboard
         WHERE protectboard_ani_category = #{protectboard_ani_category}
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_title ,protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline
+        SELECT *
         FROM protectboard
         WHERE protectboardno = #{protectboardno}
     </select>
@@ -21,7 +21,7 @@
     </insert>
     <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         UPDATE protectboard
-        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} , protectboard_imagepath = #{protectboard_imagepath} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus}
+        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} , protectboard_imagepath = #{protectboard_imagepath} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus} , starttime = #{starttime} , deadline = #{deadline}
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </update>
     <delete id="deleteContent" parameterType="map">

@@ -29,16 +29,16 @@
             <input type="hidden" name="page" th:value="${sc.getPage()}"/>
             <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
             <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
-            <input type="hidden" name="protectboard_userno" th:value="${LoginId}"/>
+            <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}"/>
             <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}"/>
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
           
             <!-- 동물 카테고리 , 작성일 , 마감일 form input  -->
             <!-- 프론트가 수정 필요 -->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
-            <input type="date" name="protectboard_reg_date" th:value="${protectboard.protectboard_reg_date}" id="reg_date" readonly="readonly " hidden="hidden"/>
-            <input type="date" name="starttime" th:value="${protectboard.starttime}"id="starttime" readonly="readonly" hidden="hidden"/>
-            <input type="date" name="deadline" th:value="${protectboard.deadline}"id="deadline" readonly="readonly" hidden="hidden"/>
+            <input type="text" name="protectboard_reg_date" th:value="${#dates.format(protectboard.getProtectboard_reg_date(), 'yyyy-MM-dd HH:mm:ss')}" id="reg_date" readonly="readonly " hidden="hidden"/>
+            <input type="text" name="starttime" th:value="${#dates.format(protectboard.getStarttime(), 'dd.M.yyyy HH:mm')}" id="starttime" readonly="readonly" hidden="hidden"/>
+            <input type="text" name="deadline" th:value="${#dates.format(protectboard.getDeadline(),'dd.M.yyyy HH:mm')}" id="deadline" readonly="readonly" hidden="hidden"/>
            
         </div>
         <!--태그-->
@@ -78,7 +78,7 @@
 
         <!-- 작성자 및 작성일 표시 -->
         <div class="col">
-            <span th:text="| 작성일 : ${protectboard.protectboard_reg_date}|" >작성일:</span>
+            <span th:text="| 작성일 : ${#dates.format(protectboard.protectboard_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}|" >작성일:</span>
             <span th:text="| 작성자 : ${protectboard.protectboard_userno}|">작성자:</span>
         </div>
         <div class="col-5 p-3" >
