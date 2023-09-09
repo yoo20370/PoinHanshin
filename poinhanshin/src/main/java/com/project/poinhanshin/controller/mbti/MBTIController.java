@@ -27,7 +27,7 @@ public class MBTIController {
 
     @GetMapping("/main")
     public String mbti(Model m) throws IOException, ParseException {
-        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","","","","","","","","1","4");
+        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","","","","","","","","1","6");
 
         m.addAttribute("AAArr",abandoned_animal);
         return "mbti/mbti_main";
@@ -42,4 +42,6 @@ public class MBTIController {
     public String mbtiSearch(){
         return "mbti/mbti_result";
     }
+
+
 }

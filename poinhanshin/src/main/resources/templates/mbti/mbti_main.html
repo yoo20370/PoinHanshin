@@ -87,7 +87,7 @@
   <section id="main" class="mx-auto my-5 py-5 px-3">
     <div class="search-bar mx-auto my-3" >
       <form id="form" action="" metho="">
-        <input type="text" id="searchInput" placeholder="mbti를 입력하세요...">
+        <input type="text" id="searchInput" name="mbti"  placeholder="mbti를 입력하세요...">
         <button type="submit" class="btn btn-outline-primary" onclick="location.href='mbti_result.html'" id="searchButton">검색</button>
       </form>
     </div>
@@ -153,9 +153,15 @@
   <script src="js/start.js" charset="utf-8"></script>
   <script src="js/share.js" charset="utf-8"></script>
   <script>
+    let checkForm = function(){
+      $('#searchInput').val()
+    }
+
     $('#searchButton').on("click",function(){
         let form = $('#form');
-        form.attr("action" , "[[@{/mbti/}]]")
+        form.attr("action" , "[[@{/MBTI/search}]]");
+        form.attr("method","get");
+        form.submit();
     });
     document.addEventListener("DOMContentLoaded", function () {
       // 검색 버튼 클릭 시 이벤트 리스너 추가
