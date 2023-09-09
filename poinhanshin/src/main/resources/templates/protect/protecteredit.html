@@ -20,8 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
     <!-- datepicker Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>-->
     <script src="bootstrap-datepicker.ko.js"></script>
     <!-- datetimepicker Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
@@ -70,31 +69,52 @@
                         </div>
                     </div>
                 </label>
-
-                <div class="col">
+            </div>
+            <div class="row">
                     <div class="input-group date">
                         <span class="input-group-append">
                             <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
-
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:value="${protectboard.starttime}"/>
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
                         <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
-                            </span>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:value="${protectboard.deadline}"/>
-                        <input th:if="${mode} == 'WRITE'" type='text' class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
+                        </span>
+                        <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
+
 
                     </div>
                 </div>
 
-            </div>
+
         </section>
 
         <div class="form-group row p-2">
+            <label class="col-sm-2 col-form-label"><strong>제목</strong></label>
+            <div class="col-sm-10">
+                <textarea
+                        th:if="${mode} == 'MODIFY'"
+                        type="text"
+                        name="protectboard_title"
+                        class="form-control"
+                        id="modifyTitle"
+                        th:text="${protectboard.protectboard_title}"
+                        >
+                </textarea>
 
+                <textarea
+                        th:if="${mode} == 'WRITE'"
+                        type="text"
+                        name="protectboard_title"
+                        class="form-control"
+                        id="writeTitle"
+                        >
+                  </textarea>
+                </label>
+            </div>
             <label class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
                 <textarea
@@ -144,6 +164,7 @@
 
 
 <script type="text/javascript">
+/*<![CDATA[*/
 
     // 수정 버튼 클릭시
     $("#modifyBtn").on("click",function(){
@@ -190,7 +211,7 @@
         var $endDate = $('#endDate');
         $startDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -201,7 +222,7 @@
         });
         $endDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -216,7 +237,7 @@
         var $endDate = $('#endDate2');
         $startDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -227,7 +248,7 @@
         });
         $endDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -341,6 +362,9 @@ $.datetimepicker.setLocale('ko');
             }
         }
     )('att_zone', 'btnAtt')
+
+
+    /*]]>*/
 </script>
 </body>
 </html>

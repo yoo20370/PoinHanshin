@@ -36,6 +36,7 @@
                     </div>
                     <input type="hidden" name="page" th:value="${sc.getPage()}"/>
                     <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
+
                     <input type="text" name="keyword" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
                     <input type="button" id="searchBtn" class="btn btn-outline-primary" value="검색">
                 </div>
@@ -50,36 +51,40 @@
         </div>
 
 
-        <div class="row row-cols-1 row-cols-md-4 g-4">
-            <div class="col" th:each="protectboard : ${list}">
+        <div class="row">
+            <div class="col-md-4 p-2" th:each="protectboard : ${list}">
                         <div class="card" id="pcard">
                             <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">
-                                <img th:if="${#strings.isEmpty(protectboard.protectboard_imagepath)}" src="/static/img/empty.png" class="card-img-top">
-                                <img  th:unless="${#strings.isEmpty(protectboard.protectboard_imagepath)}" th:src="'data:image/jpeg;base64,'+${protectboard.protectboard_imagepath}" class="card-img-top" alt="테스트이미지">
+                                <div class="card-header">
+                                    <img th:if="${#strings.isEmpty(protectboard.protectboard_imagepath)}" src="/img/empty.png" class="card-img-top">
+                                    <img  th:unless="${#strings.isEmpty(protectboard.protectboard_imagepath)}" src="/img/empty.png" class="card-img-top">
+<!--                                    <img  th:unless="${#strings.isEmpty(protectboard.protectboard_imagepath)}" th:src="'data:image/jpeg;base64,'+${protectboard.protectboard_imagepath}" class="card-img-top" alt="테스트이미지">-->
+                                </div>
 
                                 <div class="card-body">
                                     <span class="badge rounded-pill text-bg-primary card-text" th:text="${protectboard.breeds}">강아지</span>
                                     <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
                                     <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
                                     <span class="badge rounded-pill text-bg-warning" th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}"> 남은날짜 : 2023-08-01</span>
-                                    <span class="badge rounded-pill text-bg-warning" th:id="D + ${protectboard.protectboardno}">D-1일</span>
-                                    <p class="card-text" th:text="${protectboard.protectboard_title}">제목</p>
+                                    <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}">D-1일</span>
+                                    <p class="card-text" th:text="|${#strings.substring(protectboard.protectboard_title,0,10)}...|">제목</p>
 <!--                                    <p class="card-text" th:text="${protectboard.protectboard_content}">내용</p>-->
-
                                 </div>
+
                             </a>
                         </div>
 
             </div>
+
         </div>
 
     <div class="btn-toolbar position-absolute top-100 start-50 translate-middle" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group me-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><<</button>
+            <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><</button>
             <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
                 <button type="button" class="btn btn-secondary" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(i)}}" th:text="${i}"></button>
             </th:block>
-            <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>
+            <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">></button>
         </div>
     </div>
 
@@ -105,7 +110,7 @@ boardList.forEach(function(board){
        const deadline = board.deadline;
        const count_id = board.protectboardno;
 
-        const left_time = document.querySelector(`#D${count_id}`);
+        const d_day = document.querySelector(`#D${count_id}`);
 
         const formatted_End_Date = deadline.slice(0,10);//ISO 8601타입 뒷부분 자르기용
         const end_date = new Date(formatted_End_Date);
@@ -126,9 +131,9 @@ boardList.forEach(function(board){
         //남은 날짜가 음수인경우 0
             if(diffDay < 0) {
                 diffDay = "0";
-                left_time.innerText=`D-${diffDay}일`;
+                d_day.innerText=`D-${diffDay}일`;
             }else{
-                left_time.innerText=`D-${diffDay}일`;
+                d_day.innerText=`D-${diffDay}일`;
             }
 
 <!--            console.log(deadline.slice(0,10));-->
