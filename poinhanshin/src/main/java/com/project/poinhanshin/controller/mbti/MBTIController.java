@@ -1,9 +1,7 @@
 package com.project.poinhanshin.controller.mbti;
 
 import com.project.poinhanshin.domain.api.Abandoned_animal;
-import com.project.poinhanshin.domain.etc.PageHandler1;
-import com.project.poinhanshin.domain.etc.SearchCondition;
-import com.project.poinhanshin.domain.etc.SearchCondition1;
+
 import com.project.poinhanshin.etc.ApiExplorer;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,9 @@ public class MBTIController {
         return "mbti/mbti";
     }
 
-    @GetMapping("/search")
-    public String mbtiSearch(){
+    @GetMapping("/result")
+    public String mbtiSearch(String mbti , Model m){
+        m.addAttribute("mbti",mbti);
         return "mbti/mbti_result";
     }
 
