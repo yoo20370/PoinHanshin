@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/MBTI")
 public class MBTIController {
 
     ApiExplorer apiExplorer;
@@ -25,21 +25,21 @@ public class MBTIController {
         this.apiExplorer = apiExplorer;
     }
 
-    @GetMapping("/MBTI")
-    public String mbti(SearchCondition1 sc, Model m) throws IOException, ParseException {
-        if(sc.getPage() == null); sc.setPage(1);
-        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","","","","","","","",sc.getPage().toString(),"8");
+    @GetMapping("/main")
+    public String mbti(Model m) throws IOException, ParseException {
+        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","","","","","","","","1","4");
 
-        int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());
-        PageHandler1 ph = new PageHandler1(totalCnt , sc);
-        m.addAttribute("totalCnt",totalCnt);
-        m.addAttribute("ph",ph);
         m.addAttribute("AAArr",abandoned_animal);
         return "mbti/mbti_main";
     }
 
-    @GetMapping("/MBTI/start")
+    @GetMapping("/start")
     public String mbtiStart() {
         return "mbti/mbti";
+    }
+
+    @GetMapping("/search")
+    public String mbtiSearch(){
+        return "mbti/mbti_result";
     }
 }
