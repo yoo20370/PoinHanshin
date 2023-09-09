@@ -45,7 +45,7 @@
         <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
         <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
         <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}|" name="deadline"> 남은날짜 : </span>
-        <span class="badge rounded-pill text-bg-warning" id="leftTime" text="남은일"></span>
+        <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
         <div class="row">
             <div class="form-floating">
                 <input type="text" readonly="readonly" class="form-control-plaintext"
@@ -61,14 +61,13 @@
         <div class="row">
             <div class="col-mb-3">
                 <!-- 이미지 UrlResoure 처리하는 컨트롤러 필요 -->
-                <th:block th:each="image:${image_list}">
-                <div class="col-sm-6"  th:unless="${#strings.isEmpty(protectboard.protectboard_imagepath)}">
-<!--&lt;!&ndash;                      <img th:src="@{/protect/board/image/${img.protectboard_imagepath}}" class="img-fluid" alt="">&ndash;&gt;-->
-<!--                    <img th:src="'data:image/jpeg;base64,'+${image}" class="img-fluid" />-->
-<!--                    테스트용-->
-                    <span th:text="${protectboard.protectboard_imagepath}"></span>
-                    </div>
-                </th:block>
+
+                <div class="col-sm-6">
+
+                    <img th:src="'data:image/jpeg;base64,'+${protectboard.protectboard_imagepath}" class="img-fluid" />
+
+                </div>
+
                 <textarea
                         type="text"
                         name="protectboard_content"
@@ -101,8 +100,9 @@
 </div>
 <script th:inline="javascript">
 /*<![CDATA[*/
-const left_time = document.querySelector('#leftTime');
 
+const list = [[${protectboard}]];
+console.log(list);
 
     // 수정 버튼 클릭시 수정 페이지로 이동
     $("#modifyBtn").on("click",function(){
@@ -126,8 +126,10 @@ const left_time = document.querySelector('#leftTime');
 
 //날짜계산
 
+const d_day = document.querySelector('#D_day');
+function D-Day(){
 
-function leftDay(){
+
     const start_date= new Date([[${#dates.format(protectboard.starttime, 'yyyy-MM-dd')}]]);
     const end_date= new Date([[${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}]]);
 
@@ -146,13 +148,13 @@ function leftDay(){
     //남은 날짜가 음수인경우 0
         if(diffDay < 0) {
             diffDay = "0";
-            left_time.innerText=`D-${diffDay}일`;
+            d_day.innerText=`D-${diffDay}일`;
         }else{
-            left_time.innerText=`D-${diffDay}일`;
+            d_day.innerText=`D-${diffDay}일`;
         }
     console.log(diffDay);
     }
-    leftDay();
+    D-Day();
 
 /*]]>*/
 </script>

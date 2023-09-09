@@ -37,6 +37,9 @@
   .header{
    height : 60px
   }
+  a {
+    text-decoration-line: none;
+    }
 
 /* boardlist */
     .info_table {
