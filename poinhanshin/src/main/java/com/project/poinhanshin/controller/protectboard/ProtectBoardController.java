@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +63,11 @@ public class ProtectBoardController {
 
         // 임보자 게시물 하나를 가져온다.
         ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
+        if(protectBoardDto.getFileAttached() == 1)
+        {
+            String savePath = "file:/Users/yuyeong-u/fileStorage/protectboard/";
+            m.addAttribute("img" , savePath);
+        }
 
         // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
         if(LoginId.equals(protectBoardDto.getProtectboard_userno()))
@@ -105,7 +112,9 @@ public class ProtectBoardController {
     @PostMapping("/write")
     public String ProtectBoardWrite(ProtectBoardDto protectBoardDto, SearchCondition1 sc ,  RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
-    ){
+    ) throws IOException {
+        System.out.println("실행됨");
+
         redirectAttributes.addAttribute("page" , sc.getPage());
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
         redirectAttributes.addAttribute("keyword", sc.getKeyword());

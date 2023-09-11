@@ -10,18 +10,18 @@
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT *
+        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
         FROM protectboard
         WHERE protectboardno = #{protectboardno}
     </select>
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         INSERT INTO protectboard
-            (protectboard_userno , protectboardno , protectboard_title , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline)
-        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_title} , #{protectboard_content} , #{protectboard_imagepath} , #{breeds} ,  #{protectboard_ani_category} , now() , #{protectstatus} , now() ,#{deadline}  )
+            (protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline ,  fileAttached)
+        VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_title} , #{protectboard_content} , #{breeds} , #{protectboard_ani_category}  , now() , #{protectstatus} , now() ,#{deadline} ,  #{fileAttached}  )
     </insert>
     <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         UPDATE protectboard
-        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} , protectboard_imagepath = #{protectboard_imagepath} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus} , starttime = #{starttime} , deadline = #{deadline}
+        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} , fileAttached = #{fileAttached} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus} , starttime = #{starttime} , deadline = #{deadline}
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </update>
     <delete id="deleteContent" parameterType="map">
@@ -32,21 +32,13 @@
         SELECT count(*)
         FROM protectboard
         WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
-        <choose>
-            <when test="ani_category == 0">
-                protectboard_ani_category = 0
-            </when>
-            <when test="ani_category == 1">
-                protectboard_ani_category = 1
-            </when>
-            <otherwise> TRUE </otherwise>
-        </choose>
+        <include refid="aniCategoryChoose"/>
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , protectboard_imagepath , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline
+        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
         FROM protectboard
         WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
-              <include refid="aniCategoryChoose"/>
+        <include refid="aniCategoryChoose"/>
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>

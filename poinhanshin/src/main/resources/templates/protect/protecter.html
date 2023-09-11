@@ -57,13 +57,19 @@
             </div>
         </div>
         <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly">
+
+        <!-- 이미지 출력 -->
+        <div th:if="${protectboard.fileAttached == 1}">
+            <img th:src="@{|/upload/${protectboard.storedFileName}|}" alt="이미지 없음" />
+        </div>
+        
         <div class="row">
             <div class="col-mb-3">
                 <!-- 이미지 UrlResoure 처리하는 컨트롤러 필요 -->
-                <div class="col-sm-6" th:each="image:${protectboard.protectboard_imagepath}" th:if="${not #strings.isEmpty(protectboard.protectboard_imagepath)}">
-<!--                      <img th:src="@{/protect/board/image/${img.protectboard_imagepath}}" class="img-fluid" alt="">-->
+                <!--<div class="col-sm-6" th:each="image:${protectboard.protectboard_imagepath}" th:if="${not #strings.isEmpty(protectboard.protectboard_imagepath)}">
+          <img th:src="@{/protect/board/image/${img.protectboard_imagepath}}" class="img-fluid" alt="">
                     <img th:src="'data:image/jpeg;base64,'+${image}" class="img-fluid" />
-                    </div>
+                    </div>-->
                 <textarea
                         type="text"
                         name="protectboard_content"
