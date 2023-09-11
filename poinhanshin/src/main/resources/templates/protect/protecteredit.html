@@ -124,7 +124,7 @@
         <div id="image_preview">
             <div class="input-group mb-3 p-2">
                 <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple" />
-                <input type="text" name="fileAttached" value="1"/>
+                <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             </div>
         </div>
 
