@@ -75,7 +75,6 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         if(protectBoardDto.getProtectboardFile().isEmpty()){
             // 첨부 파일 없음
             protectBoardDto.setFileAttached(0);
-            return protectBoardMapper.insertContent(protectBoardDto);
         } else {
             // 첨부 파일 있음 , 첨부 파일이 없으므로 값 1로 설정
             protectBoardDto.setFileAttached(1);
@@ -103,15 +102,9 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
 
                 // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
                 ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , currentProtectboardno );
-
-                // DB에 저장
-                protectBoardFileMapper.insertFiles(protectBoardFileDto);
             }
-
-
-
-            return 1;
         }
+        return protectBoardMapper.insertContent(protectBoardDto);
     }
 
 
@@ -120,6 +113,10 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     @Override
     public int updateProductBoard(ProtectBoardDto protectBoardDto, Integer LoginId) {
         protectBoardDto.setProtectboard_userno(LoginId);
+        if(protectBoardDto.getFileAttached() == 1){
+            // 파일 있음
+
+        }
         return protectBoardMapper.updateContent(protectBoardDto);
     }
 

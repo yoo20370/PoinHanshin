@@ -11,4 +11,8 @@
         INSERT INTO protectboardFile ( reg_date , original_file_name , stored_file_name , protectboardno)
         VALUES( now() , #{original_file_name} , #{stored_file_name} , #{protectboardno} )
     </insert>
+    <delete id="deleteFile" parameterType="string">
+        DELETE FROM protectboardFile
+        WHERE stored_File_Name = #{stored_File_Name}
+    </delete>
 </mapper>
