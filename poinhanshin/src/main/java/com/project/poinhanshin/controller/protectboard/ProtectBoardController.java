@@ -139,6 +139,7 @@ public class ProtectBoardController {
     public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+        System.out.println(protectBoardDto);
         // 로그인
         //Integer LoginId = loginUser.id;
 

@@ -25,7 +25,9 @@
     <form id="form" action="" method="post">
 
         <div class="col-5 p-3" >
+            <!-- input 태그는 수정 페이지로 데이터를 넘겨주기 위해 작성 , 이거 안 해주면 DB에서 불러와야 함 -->
             <!-- 페이지 정보 및 게시물 번호 , 작성자 form input-->
+
             <input type="hidden" name="page" th:value="${sc.getPage()}"/>
             <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
             <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
@@ -39,8 +41,8 @@
             <input type="text" name="protectboard_reg_date" th:value="${#dates.format(protectboard.getProtectboard_reg_date(), 'yyyy-MM-dd HH:mm:ss')}" id="reg_date" readonly="readonly " hidden="hidden"/>
             <input type="text" name="starttime" th:value="${#dates.format(protectboard.getStarttime(), 'dd.M.yyyy HH:mm')}" id="starttime" readonly="readonly" hidden="hidden"/>
             <input type="text" name="deadline" th:value="${#dates.format(protectboard.getDeadline(),'dd.M.yyyy HH:mm')}" id="deadline" readonly="readonly" hidden="hidden"/>
-            <!-- 이미지 파일 존재 여부 -->
-            <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
+
+
            
         </div>
         <!--태그-->
@@ -62,8 +64,12 @@
 
         <!-- 이미지 출력 -->
         <div th:if="${protectboard.fileAttached == 1}">
+            <!-- 이미지 파일 존재 여부 -->
+            <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             <span th:each="fileName: ${protectboard.storedFileName}">
                 <img th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
+                <!-- 수정으로 이미지 정보 넘겨주기 위해 추가  -->
+                <input type="hidden" name="storedFileName" th:value="${fileName}"/>
             </span>
         </div>
 

@@ -28,4 +28,9 @@ public class ProtectBoardFileMapperImpl implements ProtectBoardFileMapper{
     public int insertFiles(ProtectBoardFileDto protectBoardFileDto) {
         return sqlSession.insert(namespace+"insertFiles" , protectBoardFileDto);
     }
+
+    @Override
+    public int deleteFile(String stored_File_Name) {
+        return sqlSession.delete(namespace+"deleteFile" , stored_File_Name);
+    }
 }

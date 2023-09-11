@@ -25,8 +25,9 @@
     <script src="bootstrap-datepicker.ko.js"></script>
     <!-- datetimepicker Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 </head>
+
 <style>
 
 </style>
@@ -127,6 +128,19 @@
                 <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             </div>
         </div>
+        <!-- 첨부파일 목록  -->
+        <div id="imgDiv"th:if="${protectboard.fileAttached == 1}">
+            <table id="attachTable">
+                <span th:each="fileName: ${protectboard.storedFileName}">
+                    <td>
+                        <img width="100px" height="100px" th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
+                    </td>
+                    <td>
+                        <button type="button" name="">삭제</button>
+                    </td>
+                </span>
+            </table>
+        </div>
 
         <div id='att_zone'>
         </div>
@@ -147,27 +161,87 @@
 
 <script type="text/javascript">
 
-    // 수정 버튼 클릭시
-    $("#modifyBtn").on("click",function(){
-        if(!confirm("수정하시겠습니까 ?")) return;
-        let form = $('#form');
-        form.attr("action", "[[@{/protectboard/modify}]]");
-        form.attr("method","post");
-        form.submit();
-    });
+    // document ready start
+    $(document).ready(function(){
+        // 수정 버튼 클릭시
+        $("#modifyBtn").on("click",function(){
+            if(!confirm("수정하시겠습니까 ?")) return;
+            let form = $('#form');
+            form.attr("action", "[[@{/protectboard/modify}]]");
+            form.attr("method","post");
+            form.submit();
+        });
 
-    // 등록 버튼 클릭시
-    $("#writeBtn").on("click",function(){
-        if(!confirm("등록하시겠습니까 ?")) return;
-        let form = $('#form');
-        form.attr("action" , "[[@{/protectboard/write}]]");
-        form.attr("method","post");
-        form.submit();
-    });
+        // 등록 버튼 클릭시
+        $("#writeBtn").on("click",function(){
+            if(!confirm("등록하시겠습니까 ?")) return;
+            let form = $('#form');
+            form.attr("action" , "[[@{/protectboard/write}]]");
+            form.attr("method","post");
+            form.submit();
+        });
+
+        let toHtml = function(storedFileNameList){
+            let tmp = '';
+            storedFileNameList.forEach(function(storedFileName){
+                tmp += '<span>';
+                tmp += '<td>';
+                tmp += '<img width="100px" height="100px" src="/upload/'+storedFileName+'" alt="이미지 없음 />';
+                tmp += '</td>';
+                tmp += '<td>';
+                tmp += '<button type="button"';
+                tmp += 'data-storedFileName='+ storedFileName;
+                tmp += '">삭제</button>';
+                tmp += '</td>';
+                tmp += '</span>'
+            });
+            return tmp;
+        }
+
+        // 임보자 게시물 번호
+        let protectboardno = [[${protectboard.protectboardno}]];
+
+
+
+        // 첨부 파일 삭제 후 다시 보여주기 위함
+        let showImgList = function(){
+            $.ajax({
+                type : 'GET',
+                url : '/protectboard/file?protectboardno='+protectboardno,
+                dataType : 'json',
+                success : function(storedFileNameList){
+                    $('#attachTable').html("");
+                    $('#attachTable').html(toHtml(storedFileNameList))
+                },
+                error : function(){
+                    alert("ERROR");
+                }
+            });
+        }
+
+        // 첨부 파일 삭제 버튼 클릭시 수행
+        $('').on("click", function(){
+            $.ajax({
+                type : 'DELETE',
+                url : '/protectboard/file?stored_file_name='+stored_file_name,
+                success : function(){},
+                error : function(){
+                    alert("ERROR");
+                }
+            })
+        });
+
+        showImgList();
+    })
+
+    // document ready end
+
+
 
     var submitted = false;
 
     $(document).ready(function() {
+
         $("form").submit(function() {
 
             submitted = true;
