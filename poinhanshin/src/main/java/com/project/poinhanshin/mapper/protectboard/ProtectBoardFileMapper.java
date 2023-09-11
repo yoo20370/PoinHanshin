@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProtectBoardFileMapper {
 
     // 임보자 게시물에 해당하는 이미지들을 가져오는 메서드
-    ProtectBoardFileDto selectFiles(Integer protectboardno);
+    List<ProtectBoardFileDto> selectFiles(Integer protectboardno);
 
     int insertFiles(ProtectBoardFileDto protectBoardFileDto);
 

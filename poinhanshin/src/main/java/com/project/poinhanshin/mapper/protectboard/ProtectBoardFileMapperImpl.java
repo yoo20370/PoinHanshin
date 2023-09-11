@@ -20,7 +20,7 @@ public class ProtectBoardFileMapperImpl implements ProtectBoardFileMapper{
     private String namespace = "com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper.";
 
     @Override
-    public ProtectBoardFileDto selectFiles(Integer protectboardno) {
+    public List<ProtectBoardFileDto> selectFiles(Integer protectboardno) {
         return sqlSession.selectOne(namespace+"selectFiles" , protectboardno);
     }
 

@@ -60,9 +60,11 @@
 
         <!-- 이미지 출력 -->
         <div th:if="${protectboard.fileAttached == 1}">
-            <img th:src="@{|/upload/${protectboard.storedFileName}|}" alt="이미지 없음" />
+            <span th:each="fileName: ${protectboard.storedFileName}">
+                <img th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
+            </span>
         </div>
-        
+
         <div class="row">
             <div class="col-mb-3">
                 <!-- 이미지 UrlResoure 처리하는 컨트롤러 필요 -->

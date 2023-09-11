@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -32,11 +33,11 @@ public class ProtectBoardDto {
 
      // 이미지 저장 관련 멤버변수
      // html -> Controller 파일 담는 용도
-     private MultipartFile protectboardFile = null;
+     private List<MultipartFile> protectboardFile = null;
      // 원본 파일 이름
-     private String originalFileName = "";
+     private List<String> originalFileName;
      // 서버 저장용 파일 이름
-     private String storedFileName = "";
+     private List<String> storedFileName;
      // 파일 첨부 여부(첨부 1,  미첨부 0) , boolean로 할 경우 엔티티(DB)에서 손이 많이 가게 됨
      private int fileAttached = 1;
 
