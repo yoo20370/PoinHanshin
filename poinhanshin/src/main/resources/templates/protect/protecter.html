@@ -7,8 +7,12 @@
     <meta charset="UTF-8">
     <title>임보자상세페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <link href="/css/commonstyle.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
 </head>
 <style>
 
@@ -40,12 +44,21 @@
 <!--            <input type="date" name="starttime" th:value="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:mm:ss')}"id="starttime" readonly="readonly" hidden="hidden"/>-->
 <!--            <input type="date" name="deadline" th:value="${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}"id="deadline" readonly="readonly" hidden="hidden"/>-->
         </div>
+
         <!--태그-->
         <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:text="${protectboard.breeds}" >품종</span>
         <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
         <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
         <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}|" name="deadline"> 남은날짜 : </span>
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
+
+        <div class="row ms-auto">
+            <div class="col">
+            <span><a href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
+            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #ff0000;"></i></a></span>
+            </div>
+        </div>
+
         <div class="row">
             <div class="form-floating">
                 <input type="text" readonly="readonly" class="form-control-plaintext"
