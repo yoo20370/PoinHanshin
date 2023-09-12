@@ -39,6 +39,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     @Transactional(rollbackFor = Exception.class)
     public ProtectBoardDto bringBoardOne(Integer protectboardno) {
             ProtectBoardDto protectBoard =  protectBoardMapper.selectContentOne(protectboardno);
+        System.out.println(protectBoard);
             if(protectBoard.getFileAttached() == 0){
                 // 파일 없음
                 return protectBoard;
@@ -62,6 +63,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
                 // 게시물 객체에 원본 파일 이름 , 서버 저장 파일 이름 리스트를 저장
                 protectBoard.setOriginalFileName(originalFileNameList);
                 protectBoard.setStoredFileName(storedFileNameList);
+
 
                 return protectBoard;
             }
@@ -99,12 +101,15 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
 
                 // protectboardFile 테이블에 데이터 저장하기 위해 부모의 protectboardno 값을 가져온다.
                 // Integer currentProtectboardno = protectBoardDto.getProtectboardno();
-
+                System.out.println("실행됨 2");
                 // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
                 ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , currentProtectboardno );
+                protectBoardFileMapper.insertFiles(protectBoardFileDto);
             }
+
         }
-        return protectBoardMapper.insertContent(protectBoardDto);
+        return 1;
+        //return protectBoardMapper.insertContent(protectBoardDto);
     }
 
 

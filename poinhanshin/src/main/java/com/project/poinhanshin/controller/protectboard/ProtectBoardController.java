@@ -63,11 +63,6 @@ public class ProtectBoardController {
 
         // 임보자 게시물 하나를 가져온다.
         ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
-        if(protectBoardDto.getFileAttached() == 1)
-        {
-            String savePath = "file:/Users/yuyeong-u/fileStorage/protectboard/";
-            m.addAttribute("img" , savePath);
-        }
 
         // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
         if(LoginId.equals(protectBoardDto.getProtectboard_userno()))

@@ -46,7 +46,7 @@
 
         <input type="hidden" name="fileAttached" th:if="${mode} == 'WRITE'" value="0"/>
         <input type="hidden" name="fileAttached" th:if="${mode} == 'MODIFY'" th:value="${protectboard.fileAttached}">
-        
+
         <div th:if="${mode} == 'MODIFY'">
             <!--글 수정-->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
@@ -195,7 +195,7 @@
                     tmp += '<img width="100px" height="100px" src="/upload/'+protectBoardFileDto.stored_file_name+'" alt="이미지 없음" />';
                     tmp += '</td>';
                     tmp += '<td data-protectboardfileno='+ protectBoardFileDto.protectboardfileno + ' >';
-                    tmp += '<button class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
+                    tmp += '<button type="button" class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
                     tmp += '</td>';
                     tmp += '</span>';
                 });
@@ -220,27 +220,24 @@
                 });
             }
 
-            // 첨부 파일 삭제 버튼 클릭시 수행
-            $(document).on("click",".removeBtn" ,function(){
-                let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
-                $.ajax({
-                    type : 'DELETE',
-                    url : '/protectboard/file?protectboardfileno='+protectboardfileno,
-                    success : function(str){
-                        alert(str);
-                        showImgList();
-                        return;
-                    },
-                    error : function(){
-                        alert("ERROR");
-                    }
-                })
-
-            });
-
-            showImgList();
-        }
-    })
+            $(document).on("click", ".removeBtn" ,function(){
+                    let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
+                    $.ajax({
+                        type : 'DELETE',
+                        url : '/protectboard/file/'+protectboardfileno,
+                        success : function(str){
+                            alert(str);
+                            showImgList();
+                            return;
+                        },
+                        error : function(){
+                            alert("ERROR");
+                        }
+                    })
+                });
+                showImgList();
+            }
+    });
 
     // document ready end
 

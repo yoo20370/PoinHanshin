@@ -47,9 +47,9 @@ public class ProtectBoardFileController {
     }
 
     // 첨부 파일 삭제
-    @DeleteMapping("/protectboard/file") // /protectboard/file/{stored_file_name}?=Hello.jpg;
+    @DeleteMapping("/protectboard/file/{protectboardfileno}") // /protectboard/file/{stored_file_name}?=Hello.jpg;
     @ResponseBody
-    public ResponseEntity<String> remove(Integer protectboardfileno) {
+    public ResponseEntity<String> remove(@PathVariable Integer protectboardfileno) {
 
         try{
             if( protectBoardFileService.deleteFile(protectboardfileno) != 1 )
@@ -57,7 +57,7 @@ public class ProtectBoardFileController {
 
             // 첨부 파일 모두 삭제시 fileAttached 값 0으로 수정 
             if(protectBoardFileService.selectCnt(protectboardfileno) == 0){
-                protectBoardService.updateFileAttached(protectboardfileno , 0);
+                //protectBoardService.updateFileAttached(protectboardfileno , 0);
             }
             return new ResponseEntity<String>("Remove_OK" , HttpStatus.OK);
         } catch(Exception e){
