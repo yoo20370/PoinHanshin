@@ -143,7 +143,7 @@
 </fieldset>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9812c9a3072003e9084347785d8c83a0"></script>
 <script th:inline="javascript">
-
+const data_name = [[${shelter.careNm}]];
 const data_lat = [[${shelter.lat}]];
 const data_lng = [[${shelter.lng}]];
 console.log(data_lat);
@@ -166,7 +166,9 @@ var marker = new kakao.maps.Marker({
 
 marker.setMap(map);
 
-var iwContent = '<div style="padding:5px;">클릭시 이동합니다.</div>';//마우스커서 오버시 인포윈도우 생성
+var iwContent = '<div style="padding:5px;">길찾기로 이동합니다.</div>';
+
+//마우스커서 오버시 인포윈도우 생성
 
 var infowindow = new kakao.maps.InfoWindow({
     content : iwContent
@@ -185,7 +187,7 @@ kakao.maps.event.addListener(marker, 'mouseout', function() {
 });
 //마커 클릭 이벤트
 kakao.maps.event.addListener(marker, 'click', function() {
-      location.href="https://map.kakao.com/link/map/data_lat,data_lng"
+      location.href="https://map.kakao.com/link/to/"+data_name+","+data_lat+","+data_lng;
 });
 
 <!--console.log(markerPosition);-->

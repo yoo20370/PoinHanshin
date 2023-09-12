@@ -8,6 +8,7 @@
     <title>임보자게시글 등록</title>
     <!-- css로드 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="/css/commonstyle.css" rel="stylesheet">
     <!-- datepicker css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
@@ -20,20 +21,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
     <!-- datepicker Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>-->
     <script src="bootstrap-datepicker.ko.js"></script>
     <!-- datetimepicker Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 </head>
-
-<style>
-
-</style>
 <script th:if="${msg} == 'NO_INSERT'">alert("게시글을 등록하지 못했습니다.")</script>
 <script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록 실패했습니다.")</script>
+<style>
+    #att_zone{
+    outline: 2px dashed #92b0b3 ;
+    outline-offset:-10px;
+    text-align: center;
+    transition: all .15s ease-in-out;
+    width: 100%;
+    height: 200px;
+}
+</style>
+
 <body layout:fragment="content">
-<div class="page">
+<div class="page" id="page">
     <form id="form" action="" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="put" />
 
@@ -73,8 +80,8 @@
                         </div>
                     </div>
                 </label>
-
-                <div class="col">
+            </div>
+            <div class="row">
                     <div class="input-group date">
                         <span class="input-group-append">
                             <span class="input-group-text bg-light d-block">
@@ -83,21 +90,45 @@
                         </span>
 
                         <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:value="${#dates.format(protectboard.getStarttime() , 'dd.M.yyyy HH:mm')}"/>
+
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
                         <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
-                            </span>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:value="${#dates.format(protectboard.getDeadline(),'dd.M.yyyy HH:mm')}"/>
-                        <input th:if="${mode} == 'WRITE'" type='text' class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
+
+                        </span>
+                        <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
+
 
                     </div>
                 </div>
 
-            </div>
         </section>
 
         <div class="form-group row p-2">
+            <label class="col-sm-2 col-form-label"><strong>제목</strong></label>
+            <div class="col-sm-10">
+                <textarea
+                        th:if="${mode} == 'MODIFY'"
+                        type="text"
+                        name="protectboard_title"
+                        class="form-control"
+                        id="modifyTitle"
+                        th:text="${protectboard.protectboard_title}"
+                        >
+                </textarea>
 
+                <textarea
+                        th:if="${mode} == 'WRITE'"
+                        type="text"
+                        name="protectboard_title"
+                        class="form-control"
+                        id="writeTitle"
+                        >
+                  </textarea>
+                </label>
+            </div>
             <label class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
                 <textarea
@@ -145,8 +176,7 @@
             </table>
             </span>
 
-        </div>
-        <div id='att_zone'>
+        <div id='att_zone' class="w-100 p-3">
         </div>
 
         <div class="row p-5">
@@ -161,9 +191,12 @@
         </button>
     </form>
 </div>
+<style>
 
+</style>
 
 <script type="text/javascript">
+/*<![CDATA[*/
 
     // document ready start
     $(document).ready(function(){
@@ -270,7 +303,7 @@
         var $endDate = $('#endDate');
         $startDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -281,7 +314,7 @@
         });
         $endDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -296,7 +329,7 @@
         var $endDate = $('#endDate2');
         $startDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -307,7 +340,7 @@
         });
         $endDate.datetimepicker({
             lang: 'ko',
-            format: 'd.m.Y H:i',
+            format: 'Y-m-d H:i',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -322,21 +355,25 @@
 
 
 
-    // 첨부파일 이미지 뷰
+
+// 첨부파일 이미지 뷰
     (/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
         imageView = function imageView(att_zone, btn){
             var attZone = document.getElementById(att_zone);
-            var btnAtt = document.getElementById(btn)
+            var btnAtt = document.getElementById(btn);
+            var page= document.getElementById(page);
             var sel_files = [];
 
 // 이미지와 체크 박스를 감싸고 있는 div 속성
             var div_style = 'display:inline-block;position:relative;'
-                + 'width:150px;height:120px;margin:5px;border:1px solid #8b00ff;z-index:1';
+                + 'width:150px;height:120px;margin:5px;border:none ;z-index:1';
 // 미리보기 이미지 속성
-            var img_style = 'width:100%;height:100%;z-index:none';
+            var img_style = 'width:100%;height:100%;z-index:none;border-radius: 10px';
+
 // 이미지안에 표시되는 체크박스의 속성
-            var chk_style = 'width:30px;height:30px;position:absolute;font-size:20px;'
+            var chk_style = 'width:30px;height:30px;position:absolute;font-size:20px;border:none;'
                 + 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+            var icon_style = 'width:28px;height:32px;position:absolute;'+'right:0px;bottom:-18px;background-color:rgba(255,255,255,0.1);color:#f00';
 
             btnAtt.onchange = function(e){
                 var files = e.target.files;
@@ -389,14 +426,19 @@
 
             /*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
             makeDiv = function(img, file){
-                var div = document.createElement('div')
-                div.setAttribute('style', div_style)
+                var div = document.createElement('div');
+                div.setAttribute('style', div_style);
+                var btn = document.createElement('input');
+                btn.setAttribute('type', 'button');
 
-                var btn = document.createElement('input')
-                btn.setAttribute('type', 'button')
-                btn.setAttribute('value', 'x')
                 btn.setAttribute('delFile', file.name);
                 btn.setAttribute('style', chk_style);
+
+                var icon = document.createElement('i');
+                icon.setAttribute('class','fa-solid fa-square-minus fa-2xl');
+                icon.setAttribute('style', icon_style);
+
+
                 btn.onclick = function(ev){
                     var ele = ev.srcElement;
                     var delFile = ele.getAttribute('delFile');
@@ -415,12 +457,17 @@
                     var p = ele.parentNode;
                     attZone.removeChild(p)
                 }
-                div.appendChild(img)
-                div.appendChild(btn)
-                return div
+
+                div.appendChild(img);
+                div.appendChild(btn);
+                div.appendChild(icon);
+                return div;
             }
         }
     )('att_zone', 'btnAtt')
+
+
+    /*]]>*/
 </script>
 </body>
 </html>

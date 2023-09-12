@@ -26,9 +26,11 @@ public class ProtectBoardDto {
      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
      private Date protectboard_reg_date;    // util.Date : date, 임보자 게시물 작성날짜
      boolean protectstatus;    // 공고중 확인, 공고중 0 or 공고완료 1
-     @DateTimeFormat(pattern = "dd.M.yyyy HH:mm")
+
+     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
      private Date starttime; // util.Date : date, 공고 시작일
-     @DateTimeFormat(pattern = "dd.M.yyyy HH:mm")
+     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+
      private Date deadline; // util.Date : date, 마감날짜
 
      // 이미지 저장 관련 멤버변수
