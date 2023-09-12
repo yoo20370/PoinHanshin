@@ -125,12 +125,14 @@
         <div id="image_preview">
             <div class="input-group mb-3 p-2">
                 <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple"  />
-                <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
+
             </div>
         </div>
         <!-- 이전에 첨부한 첨부파일 목록  -->
-        <div id="imgDiv"th:if="${protectboard.fileAttached == 1}">
-            <table id="attachTable">
+        <div th:if="${mode == 'MODIFY'}">
+            <input type="hidden" th:value="${protectboard.fileAttached}">
+            <span id="imgDiv"th:if="${protectboard.fileAttached == 1}">
+                <table id="attachTable">
                 <!--<span th:each="fileName: ${protectboard.storedFileName}">
                     <td>
                         <img width="100px" height="100px" th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
@@ -140,6 +142,8 @@
                     </td>
                 </span>-->
             </table>
+            </span>
+
         </div>
         <div id='att_zone'>
         </div>
@@ -180,60 +184,61 @@
             form.submit();
         });
 
-        let toHtml = function(protectBoardFileDtoList){
-            let tmp = '';
-            protectBoardFileDtoList.forEach(function(protectBoardFileDto){
-                tmp += '<span>';
-                tmp += '<td>';
-                tmp += '<img width="100px" height="100px" src="/upload/'+protectBoardFileDto.stored_file_name+'" alt="이미지 없음" />';
-                tmp += '</td>';
-                tmp += '<td data-protectboardfileno='+ protectBoardFileDto.protectboardfileno + ' >';
-                tmp += '<button class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
-                tmp += '</td>';
-                tmp += '</span>';
+
+        if( [[${mode == 'MODIFY'}]] == true){
+            let toHtml = function(protectBoardFileDtoList){
+                let tmp = '';
+                protectBoardFileDtoList.forEach(function(protectBoardFileDto){
+                    tmp += '<span>';
+                    tmp += '<td>';
+                    tmp += '<img width="100px" height="100px" src="/upload/'+protectBoardFileDto.stored_file_name+'" alt="이미지 없음" />';
+                    tmp += '</td>';
+                    tmp += '<td data-protectboardfileno='+ protectBoardFileDto.protectboardfileno + ' >';
+                    tmp += '<button class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
+                    tmp += '</td>';
+                    tmp += '</span>';
+                });
+                return tmp;
+            }
+
+            // 수정시 게시판 번호 가져오기
+            let protectboardno = $('input[name=protectboardno]').val();
+
+            // 첨부 파일 삭제 후 다시 보여주기 위함
+            let showImgList = function(){
+                $.ajax({
+                    type : 'GET',
+                    url : '/protectboard/file?protectboardno='+protectboardno,
+                    dataType : 'json',
+                    success : function(protectBoardFileDtoList){
+                        $('#attachTable').html(toHtml(protectBoardFileDtoList));
+                    },
+                    error : function(){
+                        alert("ERROR");
+                    }
+                });
+            }
+
+            // 첨부 파일 삭제 버튼 클릭시 수행
+            $(document).on("click",".removeBtn" ,function(){
+                let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
+                $.ajax({
+                    type : 'DELETE',
+                    url : '/protectboard/file?protectboardfileno='+protectboardfileno,
+                    success : function(str){
+                        alert(str);
+                        showImgList();
+                        return;
+                    },
+                    error : function(){
+                        alert("ERROR");
+                    }
+                })
+
             });
-            return tmp;
-        }
 
-        // 임보자 게시물 번호
-        let protectboardno = [[${protectboard.protectboardno}]];
-
-        // 첨부 파일 삭제 후 다시 보여주기 위함
-        let showImgList = function(){
-            $.ajax({
-                type : 'GET',
-                url : '/protectboard/file?protectboardno='+protectboardno,
-                dataType : 'json',
-                success : function(protectBoardFileDtoList){
-                    $('#attachTable').html(toHtml(protectBoardFileDtoList));
-                },
-                error : function(){
-                    alert("ERROR");
-                }
-            });
-        }
-
-        // 첨부 파일 삭제 버튼 클릭시 수행
-        $(document).on("click",".removeBtn" ,function(){
-            let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
-            $.ajax({
-                type : 'DELETE',
-                url : '/protectboard/file?protectboardfileno='+protectboardfileno,
-                success : function(str){
-                    alert(str);
-                    showImgList();
-                    return;
-                },
-                error : function(){
-                    alert("ERROR");
-                }
-            })
-
-        });
-        if([[${mode}]] == "MODIFY"){
             showImgList();
         }
-
     })
 
     // document ready end
