@@ -3,6 +3,8 @@ package com.project.poinhanshin.etc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.poinhanshin.domain.api.Abandoned_animal;
 import com.project.poinhanshin.domain.api.Shelter;
+import com.project.poinhanshin.domain.api.KindDto;
+import org.apache.groovy.util.Arrays;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,25 +14,17 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.net.HttpURLConnection;
+
 import java.net.URL;
 import java.net.URLEncoder;
 
 @Component
 public class ApiExplorer {
 
-    public Shelter[] SearchShelterList(
-            String care_reg_no , String care_nm , String numOfRows , String pageNo
-    ) throws IOException, ParseException {
-
-        // OpenAPI 요청 주소 제작 및 요청 후 데이터 JSON으로 받는 부분 ##시작
-        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=cRuWOhJ88ti%2BpxoS0eWhj8wzd9nGK8dQdRxM%2F%2B6Z1iYtVGdJ2d27uc4xMwZfCKiBGG4TYsbW%2Fdf5sOex8slQYA%3D%3D"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("care_reg_no","UTF-8") + "=" + URLEncoder.encode(care_reg_no, "UTF-8")); /*보호센터등록번호*/
-        urlBuilder.append("&" + URLEncoder.encode("care_nm","UTF-8") + "=" + URLEncoder.encode(care_nm, "UTF-8")); /*동물보호센터명*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /*한 페이지 결과 수 (1,000 이하)*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
-        urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*xml(기본값) 또는 json*/
+    // API 서버에 URL을 보내고 API 서버에서 JSON 파일을 받아 이를 String으로 변환하는 메서드
+    private static String getJSONToString(StringBuilder urlBuilder) throws IOException {
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -49,10 +43,26 @@ public class ApiExplorer {
         }
         rd.close();
         conn.disconnect();
-        System.out.println(sb.toString());
+
         // OpenAPI 요청 주소 제작 및 요청 후 데이터 JSON으로 받는 부분 ##끝
 
-        String result = sb.toString();
+        return sb.toString();
+    }
+
+    public Shelter[] SearchShelterList(
+            String care_reg_no , String care_nm , String numOfRows , String pageNo
+    ) throws IOException, ParseException {
+
+        // OpenAPI 요청 주소 제작 및 요청 후 데이터 JSON으로 받는 부분 ##시작
+        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=cRuWOhJ88ti%2BpxoS0eWhj8wzd9nGK8dQdRxM%2F%2B6Z1iYtVGdJ2d27uc4xMwZfCKiBGG4TYsbW%2Fdf5sOex8slQYA%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("care_reg_no","UTF-8") + "=" + URLEncoder.encode(care_reg_no, "UTF-8")); /*보호센터등록번호*/
+        urlBuilder.append("&" + URLEncoder.encode("care_nm","UTF-8") + "=" + URLEncoder.encode(care_nm, "UTF-8")); /*동물보호센터명*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /*한 페이지 결과 수 (1,000 이하)*/
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지 번호*/
+        urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*xml(기본값) 또는 json*/
+
+        String result = getJSONToString(urlBuilder);
 
         JSONParser parser = new JSONParser();
 
@@ -87,6 +97,11 @@ public class ApiExplorer {
         // 변환된 객체 배열을 반환
         return shelterArr;
     }
+
+
+
+
+
     public Abandoned_animal[] SearchAnimalList(
             String bgnde , String endde , String upkind , String kind , String upr_cd , String org_cd , String care_reg_no,
             String state , String neuter_yn , String pageNo , String numOfRows
@@ -109,27 +124,7 @@ public class ApiExplorer {
         urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("JSON" , "UTF-8")); /*xml(기본값) 또는 json*/
 
         // 유기동물 조회 끝
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
-        BufferedReader rd;
-        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-        rd.close();
-        conn.disconnect();
-        //System.out.println(sb.toString());
-
-        String result = sb.toString();
+        String result = getJSONToString(urlBuilder);
 
         try{
             JSONParser parser = new JSONParser();
@@ -168,6 +163,48 @@ public class ApiExplorer {
             // 에러시 null 반환
             return null;
         }
+    }
+
+    public KindDto[] getKind() throws IOException, ParseException {
+
+        String up_kind_cd_dog = "417000";
+        String up_kind_cd_cat = "422400";
+
+        KindDto[] KindDtoList1 = getKindDto(up_kind_cd_dog);
+        KindDto[] KindDtoList2 = getKindDto(up_kind_cd_cat);
+        return Arrays.concat(KindDtoList1, KindDtoList2);
+    }
+
+    private static KindDto[] getKindDto(String up_kind_cd) throws IOException, ParseException {
+        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/kind"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=cRuWOhJ88ti%2BpxoS0eWhj8wzd9nGK8dQdRxM%2F%2B6Z1iYtVGdJ2d27uc4xMwZfCKiBGG4TYsbW%2Fdf5sOex8slQYA%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("up_kind_cd", "UTF-8") + "=" + URLEncoder.encode(up_kind_cd, "UTF-8")); /*축종코드*/
+        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("JSON" , "UTF-8")); /*xml(기본값) 또는 json*/
+
+        String result = getJSONToString(urlBuilder);
+
+        JSONParser parser = new JSONParser();
+
+        JSONObject obj = (JSONObject) parser.parse(result);
+
+        JSONObject responseResult = (JSONObject)obj.get("response");
+        JSONObject bodyResult = (JSONObject)responseResult.get("body");
+        JSONObject itemsResult = (JSONObject)bodyResult.get("items");
+        JSONArray itemResult = (JSONArray) itemsResult.get("item");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JSONObject objArr [] = new JSONObject[itemResult.size()];
+        for(int i = 0 ; i < itemResult.size(); i++){
+            objArr[i] = (JSONObject) itemResult.get(i);
+        }
+
+        KindDto[] KindDtoList = new KindDto[itemResult.size()];
+
+        for(int i = 0 ; i < itemResult.size(); i++){
+            KindDtoList[i] = objectMapper.readValue(objArr[i].toJSONString() , KindDto.class);
+        }
+        return KindDtoList;
     }
 
 

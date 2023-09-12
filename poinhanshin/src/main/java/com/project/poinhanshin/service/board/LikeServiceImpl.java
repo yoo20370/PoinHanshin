@@ -1,6 +1,7 @@
 package com.project.poinhanshin.service.board;
 
-import com.project.poinhanshin.mapper.board.LikeDaoImpl;
+import com.project.poinhanshin.mapper.board.LikeMapper;
+import com.project.poinhanshin.mapper.board.LikeMapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class LikeServiceImpl implements LikeService {
 
-    LikeDaoImpl likeDaoImpl;
+    LikeMapper likeMapperImpl;
 
     @Autowired
-    public LikeServiceImpl(LikeDaoImpl likeDaoImpl) {
-        this.likeDaoImpl = likeDaoImpl;
+    public LikeServiceImpl(LikeMapper likeMapperImpl) {
+        this.likeMapperImpl = likeMapperImpl;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -21,18 +22,18 @@ public class LikeServiceImpl implements LikeService {
         // 메시지 담을 변수
         String msg = "";
 
-        int check = likeDaoImpl.likeCheck(userNo , bno);
+        int check = likeMapperImpl.likeCheck(userNo , bno);
         if(check != 1){
             // likeboard 테이블에 튜플 추가
-            likeDaoImpl.addLike(userNo , bno);
+            likeMapperImpl.addLike(userNo , bno);
             // borad 테이블의 likecount 속성의 값을 1증가시킨다.
-            likeDaoImpl.updateLikeCnt(bno , 1);
+            likeMapperImpl.updateLikeCnt(bno , 1);
             msg = "좋아요 버튼을 활성화 합니다.";
         }else{
             // likeboard 테이블에서 튜플 제거
-            likeDaoImpl.deleteLike(userNo , bno);
+            likeMapperImpl.deleteLike(userNo , bno);
             // board 테이블의 likecount 속성 값을 1 감소시킨다.
-            likeDaoImpl.updateLikeCnt(bno,-1);
+            likeMapperImpl.updateLikeCnt(bno,-1);
 
             msg = "좋아요 버튼을 비활성화 합니다.";
         }

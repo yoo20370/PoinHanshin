@@ -25,7 +25,6 @@
     <script src="bootstrap-datepicker.ko.js"></script>
     <!-- datetimepicker Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-
 </head>
 <script th:if="${msg} == 'NO_INSERT'">alert("게시글을 등록하지 못했습니다.")</script>
 <script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록 실패했습니다.")</script>
@@ -50,14 +49,17 @@
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="protectboard_userno" th:value="${LoginId}" />
-        <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.getProtectboardno()}"/>
 
+
+        <input type="hidden" name="fileAttached" th:if="${mode} == 'WRITE'" value="0"/>
+        <input type="hidden" name="fileAttached" th:if="${mode} == 'MODIFY'" th:value="${protectboard.fileAttached}">
 
         <div th:if="${mode} == 'MODIFY'">
             <!--글 수정-->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
             <input type="date" name="protectboard_reg_date" th:value="${protectboard.getProtectboard_reg_date()}" hidden="hidden"/>
+            <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.getProtectboardno()}"/>
         </div>
 
         <div th:if="${mode} == 'WRITE'">
@@ -65,7 +67,7 @@
             <input type="hidden" name="protectboard_ani_category" value="false"/>
             <input type="hidden" name="protectstatus" value="false"/>
         </div>
-
+        <input type="text" name="protectboard_title" value="test"/>
         <section class="container">
             <div class="row">
 
@@ -86,10 +88,14 @@
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
+
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:value="${#dates.format(protectboard.getStarttime() , 'dd.M.yyyy HH:mm')}"/>
+
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
                         <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
                         <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
+
                         </span>
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
                         <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
@@ -148,15 +154,31 @@
 
         </div>
 
+        <!--이미지 첨부 input type file-->
         <div id="image_preview">
             <div class="input-group mb-3 p-2">
-                <input type="file" id="btnAtt" class="form-control" name="files[]" multiple="multiple" />
+                <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple"  />
+
             </div>
         </div>
+        <!-- 이전에 첨부한 첨부파일 목록  -->
+        <div th:if="${mode == 'MODIFY'}">
+            <span id="imgDiv"th:if="${protectboard.fileAttached == 1}">
+                <table id="attachTable">
+                <!--<span th:each="fileName: ${protectboard.storedFileName}">
+                    <td>
+                        <img width="100px" height="100px" th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
+                    </td>
+                    <td>
+                        <button type="button" name="">삭제</button>
+                    </td>
+                </span>-->
+            </table>
+            </span>
 
         <div id='att_zone' class="w-100 p-3">
-
         </div>
+
         <div class="row p-5">
             <div class="col-auto mr-auto"></div>
             <div class="d-grid col-1 mx-auto">
@@ -176,23 +198,83 @@
 <script type="text/javascript">
 /*<![CDATA[*/
 
-    // 수정 버튼 클릭시
-    $("#modifyBtn").on("click",function(){
-        if(!confirm("수정하시겠습니까 ?")) return;
-        let form = $('#form');
-        form.attr("action", "[[@{/protectboard/modify}]]");
-        form.attr("method","post");
-        form.submit();
+    // document ready start
+    $(document).ready(function(){
+        // 수정 버튼 클릭시
+        $("#modifyBtn").on("click",function(){
+            if(!confirm("수정하시겠습니까 ?")) return;
+            let form = $('#form');
+            form.attr("action", "[[@{/protectboard/modify}]]");
+            form.attr("method","post");
+            form.submit();
+        });
+
+        // 등록 버튼 클릭시
+        $("#writeBtn").on("click",function(){
+            if(!confirm("등록하시겠습니까 ?")) return;
+            let form = $('#form');
+            form.attr("action" , "[[@{/protectboard/write}]]");
+            form.attr("method","post");
+            form.submit();
+        });
+
+
+        if( [[${mode == 'MODIFY'}]] == true){
+            let toHtml = function(protectBoardFileDtoList){
+                let tmp = '';
+                protectBoardFileDtoList.forEach(function(protectBoardFileDto){
+                    tmp += '<span>';
+                    tmp += '<td>';
+                    tmp += '<img width="100px" height="100px" src="/upload/'+protectBoardFileDto.stored_file_name+'" alt="이미지 없음" />';
+                    tmp += '</td>';
+                    tmp += '<td data-protectboardfileno='+ protectBoardFileDto.protectboardfileno + ' >';
+                    tmp += '<button type="button" class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
+                    tmp += '</td>';
+                    tmp += '</span>';
+                });
+                return tmp;
+            }
+
+            // 수정시 게시판 번호 가져오기
+            let protectboardno = $('input[name=protectboardno]').val();
+
+            // 첨부 파일 삭제 후 다시 보여주기 위함
+            let showImgList = function(){
+                $.ajax({
+                    type : 'GET',
+                    url : '/protectboard/file?protectboardno='+protectboardno,
+                    dataType : 'json',
+                    success : function(protectBoardFileDtoList){
+                        $('#attachTable').html(toHtml(protectBoardFileDtoList));
+                    },
+                    error : function(){
+                        alert("ERROR");
+                    }
+                });
+            }
+
+            $(document).on("click", ".removeBtn" ,function(){
+                    let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
+                    $.ajax({
+                        type : 'DELETE',
+                        url : '/protectboard/file/'+protectboardfileno,
+                        success : function(str){
+                            alert(str);
+                            showImgList();
+                            return;
+                        },
+                        error : function(){
+                            alert("ERROR");
+                        }
+                    })
+                });
+                showImgList();
+            }
     });
 
-    // 등록 버튼 클릭시
-    $("#writeBtn").on("click",function(){
-        if(!confirm("등록하시겠습니까 ?")) return;
-        let form = $('#form');
-        form.attr("action" , "[[@{/protectboard/write}]]");
-        form.attr("method","post");
-        form.submit();
-    });
+    // document ready end
+
+
 
     var submitted = false;
 
@@ -210,13 +292,13 @@
         }
     });
 
-  //date-time-picker
-        $(document).ready(function() {
+    //date-time-picker
+    $(document).ready(function() {
         range_date();
         range_date2();
     })
 
-     function range_date(){
+    function range_date(){
         var $startDate = $('#startDate');
         var $endDate = $('#endDate');
         $startDate.datetimepicker({
@@ -269,11 +351,10 @@
         });
     }
 
-$.datetimepicker.setLocale('ko');
+    $.datetimepicker.setLocale('ko');
 
 
 
-//첨부파일
 
 // 첨부파일 이미지 뷰
     (/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
