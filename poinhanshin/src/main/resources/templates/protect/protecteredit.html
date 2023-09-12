@@ -175,8 +175,7 @@
             </span>
         </div>
 
-        <div class="dropzone" id="my-dropzone">
-        </div>
+    <div class="dropzone" id="my-dropzone"></div>
 
         <div class="row p-5">
             <div class="col-auto mr-auto"></div>
@@ -191,11 +190,11 @@
     </form>
 </div>
 <script type="text/javascript" src="/js/date-time-picker.js"></script>
-<script type="text/javascript" src="/js/Dnd_upload_images.js"></script>
+<script type="text/javascript" src="/js/image-drop-zone.js" defer></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 
-
+const mode = [[${mode}]];
 
 
     // document ready start
@@ -204,7 +203,7 @@
         $("#modifyBtn").on("click",function(){
             if(!confirm("수정하시겠습니까 ?")) return;
             let form = $('#form');
-            form.attr("action", "[[@{/protectboard/modify}]]");
+            form.attr("action", [[@{/protectboard/modify}]]);
             form.attr("method","post");
             form.submit();
         });
@@ -213,7 +212,7 @@
         $("#writeBtn").on("click",function(){
             if(!confirm("등록하시겠습니까 ?")) return;
             let form = $('#form');
-            form.attr("action" , "[[@{/protectboard/write}]]");
+            form.attr("action" , [[@{/protectboard/write}]]);
             form.attr("method","post");
             form.submit();
         });

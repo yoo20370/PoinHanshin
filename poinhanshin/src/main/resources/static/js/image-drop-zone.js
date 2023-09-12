@@ -1,8 +1,8 @@
+ Dropzone.autoDiscover = false; // deprecated 된 옵션. false로 해놓는걸 공식문서에서 명시
 
-Dropzone.autoDiscover = false; // deprecated 된 옵션. false로 해놓는걸 공식문서에서 명시
-const dropzone = new Dropzone('div.my-dropzone', {
+const dropzone = new Dropzone('#my-dropzone', {
 
-   url: '/protectboard/file?protectboardno='+protectboardno, // 파일을 업로드할 서버 주소 url.
+   url: "https://httpbin.org/post", // 파일을 업로드할 서버 주소 url.
    method: 'post', // 기본 post로 request 감. put으로도 할수있음
 
    autoProcessQueue: false, // 자동으로 보내기. true : 파일 업로드 되자마자 서버로 요청, false : 서버에는 올라가지 않은 상태. 따로 this.processQueue() 호출시 전송
@@ -13,9 +13,9 @@ const dropzone = new Dropzone('div.my-dropzone', {
    thumbnailHeight: 120, // Upload icon size
    thumbnailWidth: 120, // Upload icon size
 
-   maxFiles: 1, // 업로드 파일수
+   maxFiles: 10, // 업로드 파일수
    maxFilesize: 10, // 최대업로드용량 : 100MB
-   paramName: 'image', // 서버에서 사용할 formdata 이름 설정 (default는 file)
+   paramName: 'protectboardFile', // 서버에서 사용할 formdata 이름 설정 (default는 file)
    parallelUploads: 2, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 넘긴다.)
    uploadMultiple: false, // 다중업로드 기능
    timeout: 300000, //커넥션 타임아웃 설정 -> 데이터가 클 경우 꼭 넉넉히 설정해주자
@@ -29,25 +29,33 @@ const dropzone = new Dropzone('div.my-dropzone', {
       console.log('최초 실행');
       let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
          //기존에 업로드된 서버파일이 있는 경우,
+         if(mode == 'MODIFY'){
+         let protectboardno = $('input[name=protectboardno]').val();
                     $.ajax({
-                         url: '/protectboard/file',
-                         type: 'post',
-                         dataType: 'json',
+                         url: '/protectboard/file?protectboardno='+protectboardno,
+                         type: 'GET',
+                         dataType : 'json',
                          success: function(response){
-
+                              console.log(response);
                              $.each(response, function(key,value) {
-                                 var mockFile = { name: value.original_file_name};
+                                 var mockFile = {
+                                 name: value.original_file_name,
+                                 code: value.protectboardfileno,
+                                 path: "/upload/'+value.stored_file_name'"};
 
                                  myDropzone.emit("addedfile", mockFile);
-                                 myDropzone.emit("thumbnail", mockFile);
+                                 myDropzone.emit("thumbnail", mockFile, mockFile.path);
                                  myDropzone.emit("complete", mockFile);
-
+                                 myDropzone.protectboardFile.push(mockFile);
                              });
 
                          }
                      });
+
+         }
+
       // 서버에 제출 submit 버튼 이벤트 등록
-      $("$writeBtn").on('click', function () {
+      $("#writeBtn").on('click', function () {
          console.log('업로드');
 
          // 거부된 파일이 있다면
@@ -61,28 +69,6 @@ const dropzone = new Dropzone('div.my-dropzone', {
       });
 
       // 파일이 업로드되면 실행
-      this.on('addedfile', function (file) {
-         // 중복된 파일의 제거
-         if (this.files.length) {
-            // -1 to exclude current file
-            var hasFile = false;
-            for (var i = 0; i < this.files.length - 1; i++) {
-               if (
-                  this.files[i].name === file.name &&
-                  this.files[i].size === file.size &&
-                  this.files[i].lastModifiedDate.toString() === file.lastModifiedDate.toString()
-               ) {
-                  hasFile = true;
-                  this.removeFile(file);
-               }
-            }
-            if (!hasFile) {
-               addedFiles.push(file);
-            }
-         } else {
-            addedFiles.push(file);
-         }
-      });
 
       // 업로드한 파일을 서버에 요청하는 동안 호출 실행
       this.on('sending', function (file, xhr, formData) {
