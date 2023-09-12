@@ -34,7 +34,7 @@ public interface ProtectBoardMapper {
     // 최근 자신이 등록한 게시물 번호를 읽어온다.
     int selectRecentBoardno(Integer protectboardno);
 
-
+    int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
 
 

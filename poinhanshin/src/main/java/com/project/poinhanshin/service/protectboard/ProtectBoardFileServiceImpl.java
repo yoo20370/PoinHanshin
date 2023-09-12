@@ -25,7 +25,14 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
 
     // 이미지 첨부 파일 삭제
     @Override
-    public int deleteFile(String stored_File_Name) {
-        return protectBoardFileMapper.deleteFile(stored_File_Name);
+    public int deleteFile(Integer protectboardfileno) {
+        return protectBoardFileMapper.deleteFile(protectboardfileno);
     }
+
+    @Override
+    public int selectCnt(Integer protectboardfileno) {
+        return protectBoardFileMapper.selectCnt(protectboardfileno);
+    }
+
+
 }

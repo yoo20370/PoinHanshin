@@ -30,7 +30,12 @@ public class ProtectBoardFileMapperImpl implements ProtectBoardFileMapper{
     }
 
     @Override
-    public int deleteFile(String stored_File_Name) {
-        return sqlSession.delete(namespace+"deleteFile" , stored_File_Name);
+    public int deleteFile(Integer protectboardfileno) {
+        return sqlSession.delete(namespace+"deleteFile" , protectboardfileno);
+    }
+
+    @Override
+    public int selectCnt(Integer protectboardfileno) {
+        return sqlSession.selectOne(namespace+"selectCnt",protectboardfileno );
     }
 }

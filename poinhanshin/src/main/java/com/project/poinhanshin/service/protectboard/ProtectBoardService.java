@@ -34,6 +34,8 @@ public interface ProtectBoardService {
     // 최근 자신이 등록한 임보자 게시물의 번호를 가져온다.
     int readWritedBoardno(Integer protectboard_userno);
 
+    int updateFileAttached(Integer protectboardno , Integer fileAttached);
+
 
 
 }

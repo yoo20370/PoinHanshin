@@ -49,6 +49,11 @@
         ORDER BY protectboardno DESC
         LIMIT 1
     </select>
+    <select id="updateFileAttached" parameterType="map">
+        UPDATE protectboard
+        SET fileAttached = #{fileAttached}
+        WHERE protectboardno = #{protectboardno}
+    </select>
     <sql id="aniCategoryChoose">
         <choose>
             <when test="ani_category == 0">

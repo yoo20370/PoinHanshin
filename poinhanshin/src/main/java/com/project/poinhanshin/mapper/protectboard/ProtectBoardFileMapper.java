@@ -13,6 +13,8 @@ public interface ProtectBoardFileMapper {
 
     int insertFiles(ProtectBoardFileDto protectBoardFileDto);
 
-    int deleteFile(String stored_File_Name);
+    int deleteFile(Integer protectboardfileno );
+
+    int selectCnt(Integer protectboardfileno);
 
 }

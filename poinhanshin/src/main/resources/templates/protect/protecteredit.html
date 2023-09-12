@@ -121,27 +121,26 @@
 
         </div>
 
-        <!--이미지 첨부-->
+        <!--이미지 첨부 input type file-->
         <div id="image_preview">
             <div class="input-group mb-3 p-2">
-                <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple" th:value="${protectboard.storedFileName}" />
+                <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple"  />
                 <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             </div>
         </div>
-        <!-- 첨부파일 목록  -->
+        <!-- 이전에 첨부한 첨부파일 목록  -->
         <div id="imgDiv"th:if="${protectboard.fileAttached == 1}">
             <table id="attachTable">
-                <span th:each="fileName: ${protectboard.storedFileName}">
+                <!--<span th:each="fileName: ${protectboard.storedFileName}">
                     <td>
                         <img width="100px" height="100px" th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
                     </td>
                     <td>
                         <button type="button" name="">삭제</button>
                     </td>
-                </span>
+                </span>-->
             </table>
         </div>
-
         <div id='att_zone'>
         </div>
 
@@ -181,19 +180,17 @@
             form.submit();
         });
 
-        let toHtml = function(storedFileNameList){
+        let toHtml = function(protectBoardFileDtoList){
             let tmp = '';
-            storedFileNameList.forEach(function(storedFileName){
+            protectBoardFileDtoList.forEach(function(protectBoardFileDto){
                 tmp += '<span>';
                 tmp += '<td>';
-                tmp += '<img width="100px" height="100px" src="/upload/'+storedFileName+'" alt="이미지 없음 />';
+                tmp += '<img width="100px" height="100px" src="/upload/'+protectBoardFileDto.stored_file_name+'" alt="이미지 없음" />';
                 tmp += '</td>';
-                tmp += '<td>';
-                tmp += '<button type="button"';
-                tmp += 'data-storedFileName='+ storedFileName;
-                tmp += '">삭제</button>';
+                tmp += '<td data-protectboardfileno='+ protectBoardFileDto.protectboardfileno + ' >';
+                tmp += '<button class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
                 tmp += '</td>';
-                tmp += '</span>'
+                tmp += '</span>';
             });
             return tmp;
         }
@@ -201,17 +198,14 @@
         // 임보자 게시물 번호
         let protectboardno = [[${protectboard.protectboardno}]];
 
-
-
         // 첨부 파일 삭제 후 다시 보여주기 위함
         let showImgList = function(){
             $.ajax({
                 type : 'GET',
                 url : '/protectboard/file?protectboardno='+protectboardno,
                 dataType : 'json',
-                success : function(storedFileNameList){
-                    $('#attachTable').html("");
-                    $('#attachTable').html(toHtml(storedFileNameList))
+                success : function(protectBoardFileDtoList){
+                    $('#attachTable').html(toHtml(protectBoardFileDtoList));
                 },
                 error : function(){
                     alert("ERROR");
@@ -220,18 +214,26 @@
         }
 
         // 첨부 파일 삭제 버튼 클릭시 수행
-        $('').on("click", function(){
+        $(document).on("click",".removeBtn" ,function(){
+            let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
             $.ajax({
                 type : 'DELETE',
-                url : '/protectboard/file?stored_file_name='+stored_file_name,
-                success : function(){},
+                url : '/protectboard/file?protectboardfileno='+protectboardfileno,
+                success : function(str){
+                    alert(str);
+                    showImgList();
+                    return;
+                },
                 error : function(){
                     alert("ERROR");
                 }
             })
-        });
 
-        showImgList();
+        });
+        if([[${mode}]] == "MODIFY"){
+            showImgList();
+        }
+
     })
 
     // document ready end

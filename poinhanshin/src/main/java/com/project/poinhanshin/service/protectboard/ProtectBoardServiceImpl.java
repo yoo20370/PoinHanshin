@@ -144,6 +144,10 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return protectBoardMapper.selectRecentBoardno(protectboard_userno);
     }
 
+    @Override
+    public int updateFileAttached(Integer protectboardno, Integer fileAttached) {
+        return protectBoardMapper.updateFileAttached(protectboardno,fileAttached);
+    }
 
 
 }
