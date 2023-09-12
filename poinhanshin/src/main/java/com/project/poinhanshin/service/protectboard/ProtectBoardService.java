@@ -3,6 +3,7 @@ package com.project.poinhanshin.service.protectboard;
 import com.project.poinhanshin.domain.etc.SearchCondition1;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProtectBoardService {
@@ -16,7 +17,7 @@ public interface ProtectBoardService {
     ProtectBoardDto bringBoardOne(Integer protectboardno);
 
     // 임보자 게시물을 등록한다.
-    int insertProductBoard(ProtectBoardDto protectBoardDto);
+    int insertProductBoard(ProtectBoardDto protectBoardDto) throws IOException;
 
     // 임보자 게시물의 내용을 수정한다.
     int updateProductBoard(ProtectBoardDto protectBoardDto , Integer LoginId);
@@ -32,6 +33,8 @@ public interface ProtectBoardService {
 
     // 최근 자신이 등록한 임보자 게시물의 번호를 가져온다.
     int readWritedBoardno(Integer protectboard_userno);
+
+    int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
 
 

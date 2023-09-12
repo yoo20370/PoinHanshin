@@ -10,7 +10,7 @@ import lombok.ToString;
 
 public class AreaofinterestDto {
     private Integer areaofinterset_userno;  // FK, 회원번호
-    private Integer areaofinterset_locationno;     // FK, 지역번호
+    private Integer location;     // FK, 지역번호
     private Integer locationarr;    // PK
 
     /* AreaofinterestDto table
@@ -21,9 +21,9 @@ public class AreaofinterestDto {
     */
     public AreaofinterestDto(){}
 
-    public AreaofinterestDto(Integer areaofinterset_userno, Integer locationno, Integer locationarr) {
+    public AreaofinterestDto(Integer areaofinterset_userno, Integer location, Integer locationarr) {
         this.areaofinterset_userno = areaofinterset_userno;
-        this.areaofinterset_locationno = locationno;
+        this.location = location;
         this.locationarr = locationarr;
     }
 }
