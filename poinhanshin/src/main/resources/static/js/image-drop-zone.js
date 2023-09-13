@@ -1,8 +1,8 @@
  Dropzone.autoDiscover = false; // deprecated 된 옵션. false로 해놓는걸 공식문서에서 명시
 
 const dropzone = new Dropzone('#my-dropzone', {
-
-   url: "https://httpbin.org/post", // 파일을 업로드할 서버 주소 url.
+    let protectboardno = $('input[name=protectboardno]').val();
+   url: "/upload/", // 파일을 업로드할 서버 주소 url.
    method: 'post', // 기본 post로 request 감. put으로도 할수있음
 
    autoProcessQueue: false, // 자동으로 보내기. true : 파일 업로드 되자마자 서버로 요청, false : 서버에는 올라가지 않은 상태. 따로 this.processQueue() 호출시 전송
@@ -30,7 +30,7 @@ const dropzone = new Dropzone('#my-dropzone', {
       let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
          //기존에 업로드된 서버파일이 있는 경우,
          if(mode == 'MODIFY'){
-         let protectboardno = $('input[name=protectboardno]').val();
+
                     $.ajax({
                          url: '/protectboard/file?protectboardno='+protectboardno,
                          type: 'GET',
@@ -39,9 +39,9 @@ const dropzone = new Dropzone('#my-dropzone', {
                               console.log(response);
                              $.each(response, function(key,value) {
                                  var mockFile = {
-                                 name: value.original_file_name,
-                                 code: value.protectboardfileno,
-                                 path: "/upload/'+value.stored_file_name'"};
+                                 name: ${value.original_file_name},
+                                 code: ${value.protectboardfileno},
+                                 path: "/upload/'+value.stored_file_name'"};//이미지 파일경로
 
                                  myDropzone.emit("addedfile", mockFile);
                                  myDropzone.emit("thumbnail", mockFile, mockFile.path);
@@ -54,21 +54,9 @@ const dropzone = new Dropzone('#my-dropzone', {
 
          }
 
-      // 서버에 제출 submit 버튼 이벤트 등록
-      $("#writeBtn").on('click', function () {
-         console.log('업로드');
-
-         // 거부된 파일이 있다면
-         if (myDropzone.getRejectedFiles().length > 0) {
-            let files = myDropzone.getRejectedFiles();
-            console.log('거부된 파일이 있습니다.', files);
-            return;
-         }
-
          myDropzone.processQueue(); // autoProcessQueue: false로 해주었기 때문에, 메소드 api로 파일을 서버로 제출
       });
 
-      // 파일이 업로드되면 실행
 
       // 업로드한 파일을 서버에 요청하는 동안 호출 실행
       this.on('sending', function (file, xhr, formData) {
@@ -85,5 +73,22 @@ const dropzone = new Dropzone('#my-dropzone', {
             alert(errorMessage);
          });
       },
+      removedfile: function(file) {
+          // 파일 삭제 시
+           var code = file.code == undefined ? file.temp : file.code; // 파일 업로드시 return 받은 code값
+          console.log('삭제');
+            $.ajax({
+                type: 'DELETE',
+                url: '/protectboard/file/'+protectboardfileno', // 파일 삭제할 url
+                data: {protectboardfileno: code},
+                success: function(data) {
+                    console.log('success: ' + data);
+                }
+            });
+          var _ref;
+        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+      }
+
 
    });
