@@ -1,7 +1,8 @@
  Dropzone.autoDiscover = false; // deprecated 된 옵션. false로 해놓는걸 공식문서에서 명시
 
+
+
 const dropzone = new Dropzone('#my-dropzone', {
-    let protectboardno = $('input[name=protectboardno]').val();
    url: "/upload/", // 파일을 업로드할 서버 주소 url.
    method: 'post', // 기본 post로 request 감. put으로도 할수있음
 
@@ -26,21 +27,23 @@ const dropzone = new Dropzone('#my-dropzone', {
 
    init: function () {
       // 최초 dropzone 설정시 init을 통해 호출
+      var ajaxdata = {"protectboardno":$('input[name=protectboardno]').val()};
       console.log('최초 실행');
       let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
          //기존에 업로드된 서버파일이 있는 경우,
          if(mode == 'MODIFY'){
 
                     $.ajax({
-                         url: '/protectboard/file?protectboardno='+protectboardno,
+                         url: '/protectboard/file',
                          type: 'GET',
+                         data: ajaxdata,
                          dataType : 'json',
                          success: function(response){
                               console.log(response);
                              $.each(response, function(key,value) {
                                  var mockFile = {
-                                 name: ${value.original_file_name},
-                                 code: ${value.protectboardfileno},
+                                 name: "${value.original_file_name}",
+                                 code: "${value.protectboardfileno}",
                                  path: "/upload/'+value.stored_file_name'"};//이미지 파일경로
 
                                  myDropzone.emit("addedfile", mockFile);
@@ -52,34 +55,18 @@ const dropzone = new Dropzone('#my-dropzone', {
                          }
                      });
 
-         }
+         };
 
          myDropzone.processQueue(); // autoProcessQueue: false로 해주었기 때문에, 메소드 api로 파일을 서버로 제출
-      });
-
-
-      // 업로드한 파일을 서버에 요청하는 동안 호출 실행
-      this.on('sending', function (file, xhr, formData) {
-         console.log('보내는중');
-      });
-
-      // 서버로 파일이 성공적으로 전송되면 실행
-      this.on('success', function (file, responseText) {
-         console.log('성공');
-      });
-
-         // 업로드 에러 처리
-         this.on('error', function (file, errorMessage) {
-            alert(errorMessage);
-         });
       },
+
       removedfile: function(file) {
           // 파일 삭제 시
            var code = file.code == undefined ? file.temp : file.code; // 파일 업로드시 return 받은 code값
           console.log('삭제');
             $.ajax({
                 type: 'DELETE',
-                url: '/protectboard/file/'+protectboardfileno', // 파일 삭제할 url
+                url: '/protectboard/file/', // 파일 삭제할 url
                 data: {protectboardfileno: code},
                 success: function(data) {
                     console.log('success: ' + data);

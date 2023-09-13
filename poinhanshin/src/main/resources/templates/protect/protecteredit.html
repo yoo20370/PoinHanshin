@@ -214,6 +214,10 @@ const mode = [[${mode}]];
             let form = $('#form');
             form.attr("action" , [[@{/protectboard/write}]]);
             form.attr("method","post");
+                //로그 확인용
+              console.log( $( this ).serializeArray() );
+              event.preventDefault();
+
             form.submit();
         });
 
@@ -290,6 +294,8 @@ const mode = [[${mode}]];
 
         };
     });
+
+
 
     /*]]>*/
 </script>
