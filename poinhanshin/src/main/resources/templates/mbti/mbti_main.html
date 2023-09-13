@@ -12,7 +12,6 @@
           content="나랑 잘 맞는 성향을 가진 동물을 MBTI 기반으로 추천해주는 사이트"
   />
 
-  <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">-->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
@@ -39,7 +38,6 @@
     .table-container table {
       border-collapse: collapse;
       width: 100%;
-      max-width: 800px;
       border: 1px solid #ddd;
     }
 
@@ -86,11 +84,12 @@
 <div class="container">
   <section id="main" class="mx-auto my-5 py-5 px-3">
     <div class="search-bar mx-auto my-3">
+
+
       <form id="form" action="" method="">
         <input type="text" name="mbti" id="searchInput" placeholder="mbti를 입력하세요...">
         <button type="button" class="btn btn-outline-primary" id="searchButton">검색</button>
       </form>
-
 
     </div>
     <div class="col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
@@ -149,28 +148,18 @@
     <button type="button" class="gohome mt-3 py-2 px-3 mx-auto" onclick="moveHome()">나도 참여하기</button>
     <button type="button" class="kakao mt-3 py-2 px-3" onclick="">공유하기</button>
   </section>
-  <script src="/js/mbti/data.js" charset="utf-8"></script>
-  <script src="/js/mbti/start.js" charset="utf-8"></script>
-  <script src="/js/mbti/share.js" charset="utf-8"></script>
-  <script>
-    $('#searchButton').on("click",function(){
+
+</div>
+<script src="/js/mbti/data.js" charset="utf-8"></script>
+<script src="/js/mbti/start.js" charset="utf-8"></script>
+<script src="/js/mbti/share.js" charset="utf-8"></script>
+<script>
+  $('#searchButton').on("click",function(){
       let form = $('#form');
       form.attr("action" ,"/MBTI/result");
       form.attr("method" ,"get");
       form.submit();
     });
-    document.addEventListener("DOMContentLoaded", function () {
-      // 검색 버튼 클릭 시 이벤트 리스너 추가
-      /*document.getElementById("searchButton").addEventListener("click", function () {
-        // MBTI 입력값 가져오기
-        var mbtiInput = document.getElementById("searchInput").value;
-
-        // 검색 페이지로 이동
-        window.location.href = "/MBTI/result";
-      });*/
-    });
-  </script>
-</div>
+</script>
 </body>
-
 </html>
