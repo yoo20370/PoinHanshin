@@ -39,7 +39,6 @@
 <body layout:fragment="content">
 <div class="page">
     <form th:action="@{'/edit/' + ${boardDto.id}}" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="_method" value="put" />
       <input type="hidden" name="boardno" th:value="${boardDto.boardno}" />
       <input type="hidden" name="ani_category" th:value="${boardDto.ani_category}"/>
 
@@ -84,7 +83,7 @@
       <div class="row p-5">
         <div class="col-auto mr-auto"></div>
         <div class="d-grid col-5 mx-auto">
-          <input class="btn btn-primary" type="submit" role="button" value="수정" />
+          <button class="btn btn-primary" type="submit">수정</button>
         </div>
       </div>
 

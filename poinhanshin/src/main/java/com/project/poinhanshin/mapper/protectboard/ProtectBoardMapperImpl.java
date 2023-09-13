@@ -77,5 +77,13 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
         return sqlSession.selectOne(namespace+"selectRecentBoardno" , protectboard_userno);
     }
 
+    @Override
+    public int updateFileAttached(Integer protectboardno, Integer fileAttached) {
+        HashMap<String ,Integer> hashMap = new HashMap<>();
+        hashMap.put("protectboardno" , protectboardno);
+        hashMap.put("fileAttached" , fileAttached);
+        return sqlSession.update(namespace+"updateFileAttached", hashMap);
+    }
+
 
 }

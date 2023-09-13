@@ -1,7 +1,6 @@
 package com.project.poinhanshin.mapper.board;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -9,12 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class LikeDaoImpl implements LikeMapper {
+public class LikeMapperImpl implements LikeMapper {
 
     SqlSession sqlSession;
 
     @Autowired
-    public LikeDaoImpl(SqlSession sqlSession) {
+    public LikeMapperImpl(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 

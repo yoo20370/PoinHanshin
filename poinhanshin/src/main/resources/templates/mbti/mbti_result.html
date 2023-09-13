@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800">
-    <link rel="stylesheet" href="./css/default.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/qna.css">
-    <link rel="stylesheet" href="./css/act.css">
-    <link rel="stylesheet" href="./css/result.css">
+    <link rel="stylesheet" href="/css/mbti/default.css">
+    <link rel="stylesheet" href="/css/mbti/main.css">
+    <link rel="stylesheet" href="/css/mbti/qna.css">
+    <link rel="stylesheet" href="/css/mbti/act.css">
+    <link rel="stylesheet" href="/css/mbti/result.css">
     <title>MBTI 검색 페이지</title>
     <style>
         /* 추가 스타일링은 여기에 추가할 수 있습니다. */
@@ -46,9 +46,9 @@
 <body>
 <div class="container">
     <section id="main" style="min-height: 60vh" class="mx-auto my-5 py-5 px-3">
-    <span>회원님의 MBTI는 <span class="bold" th:text="${MBTI.MBTI}">ENTJ</span> 입니다.</span>
+    <span>회원님의 MBTI는 <span class="bold" th:text="${MBTI}">ENTJ</span> 입니다.</span>
         <span><li></li><li></li><li></li></span>
-    <span>회원님과 잘 맞는 강아지/고양이는 <span class="highlight" th:text="${MBTI.MBTI}">골든리트리버</span> 입니다.</span>
+    <span>회원님과 잘 맞는 강아지/고양이는 <span class="highlight" th:text="${MBTI}">골든리트리버</span> 입니다.</span>
         <span><li></li><li></li><li></li></span>
     <br><span>원하는 보호소 아이들을 소개받으시려면 파란색 글자를 눌러주세요.</span>
     </section>

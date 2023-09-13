@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -66,6 +68,7 @@ public class ProtectBoardController {
         if(LoginId.equals(protectBoardDto.getProtectboard_userno()))
             m.addAttribute("WriterCheck", "OK");
 
+        m.addAttribute("LoginId", LoginId);
         m.addAttribute("protectboard" , protectBoardDto);
         m.addAttribute("sc",sc);
         m.addAttribute("msg" , msg);
@@ -104,7 +107,9 @@ public class ProtectBoardController {
     @PostMapping("/write")
     public String ProtectBoardWrite(ProtectBoardDto protectBoardDto, SearchCondition1 sc ,  RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
-    ){
+    ) throws IOException {
+        System.out.println("실행됨");
+
         redirectAttributes.addAttribute("page" , sc.getPage());
         redirectAttributes.addAttribute("pageSize", sc.getPageSize());
         redirectAttributes.addAttribute("keyword", sc.getKeyword());
@@ -129,12 +134,13 @@ public class ProtectBoardController {
     public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+        System.out.println(protectBoardDto);
         // 로그인
         //Integer LoginId = loginUser.id;
 
         // 임시 로그인
         Integer LoginId = 1;
-
+        System.out.println(protectBoardDto);
         // 로그인 확인 (나중에 loginUser == null로 변경
         if(LoginId == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
@@ -156,6 +162,7 @@ public class ProtectBoardController {
     @PostMapping("/modify")
     public String ProtectBoardModify(ProtectBoardDto protectBoardDto , SearchCondition1 sc , RedirectAttributes redirectAttributes){
 
+        System.out.println(protectBoardDto);
         // 임시 로그인
         Integer LoginId = 1;
 
