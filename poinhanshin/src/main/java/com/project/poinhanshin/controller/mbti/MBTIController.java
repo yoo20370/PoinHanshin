@@ -38,7 +38,7 @@ public class MBTIController {
 
     @GetMapping("/result")
     public String mbtiSearch(String mbti , Model m){
-        m.addAttribute("mbti",mbti);
+        m.addAttribute("MBTI",mbti);
         return "mbti/mbti_result";
     }
 
