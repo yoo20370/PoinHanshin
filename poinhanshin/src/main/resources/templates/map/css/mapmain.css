@@ -12,40 +12,35 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: 800px;
-    min-height: 80vh;
     margin: 0 auto;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 .favorites-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 30px;
-    min-width: 70vh;
-    max-height: 300px;
-    overflow-y: auto;
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-top: 50px;
 }
 
 .favorites-list {
-    max-height: 100%;
-    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    /*flex-grow: 1;*/
 }
 
 #favoritesList {
+    overflow-y: auto;
     list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.find-route-button {
-    margin-left: 20px; /* 버튼과 즐겨찾기 목록 사이에 여백을 줍니다. */
-    align-self: flex-start; /* 버튼을 위로 정렬합니다. */
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 #map {
@@ -64,7 +59,8 @@ li {
     cursor: pointer;
     padding: 5px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(204, 204, 204, 0.55);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
 }
 li:hover {
@@ -119,4 +115,16 @@ select option:checked {
     background-color: rgba(255, 255, 255, 0);
     border-color: rgba(0, 0, 0, 0);
     margin-right: 3px
+}
+
+.post-footer {
+    display: flex;
+    flex-direction: column;
+}
+
+.popupbox {
+    position:relative;width:400%;height:150%;
+    padding:10px; display: flex; flex-direction: column;
+    overflow-x: auto; overflow-y: auto;
+    font-family: "Nanum Gothic Coding";
 }
