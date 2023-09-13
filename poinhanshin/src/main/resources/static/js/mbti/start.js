@@ -1,3 +1,4 @@
+
 const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
@@ -29,7 +30,7 @@ function setResult(){
 
     var resultImg = document.createElement('img');
     const imgDiv = document.querySelector('#resultImg');
-    var imgURL = 'img/image-' + point + '.png';
+    var imgURL = '/img/mbti/image-' + point + '.png';
     resultImg.src = imgURL;
     resultImg.alt = point;
     resultImg.classList.add('img-fluid');
@@ -117,4 +118,5 @@ function begin(){
 
 function moveHome(){
     location.href = "../mbti/mbti_main.html";
+
 }
