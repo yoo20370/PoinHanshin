@@ -107,6 +107,7 @@
 
             <span th:text="| 작성자 : ${protectboard.protectboard_userno}|">작성자:</span>
         </div>
+
         <div class="col-5 p-3" >
             <button type="button" class="btn btn-secondary"
                     th:onclick="|location.href='@{/protectboard/list(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} )}'|">목록

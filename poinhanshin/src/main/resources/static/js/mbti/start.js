@@ -1,3 +1,4 @@
+
 const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
@@ -116,5 +117,6 @@ function begin(){
 }
 
 function moveHome(){
-    location.href = "/MBTI/main";
+    location.href = "../mbti/mbti_main.html";
+
 }
