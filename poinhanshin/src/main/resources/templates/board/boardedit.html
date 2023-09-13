@@ -38,15 +38,14 @@
 </style>
 <body layout:fragment="content">
 <div class="page">
-    <form th:action="@{'/edit/' + ${boardDto.id}}" method="put" enctype="multipart/form-data">
-      <input type="hidden" name="_method" value="put" />
-      <input type="hidden" name="id" th:value="${boardDto.boardno}" />
+    <form th:action="@{'/edit/' + ${boardDto.id}}" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="boardno" th:value="${boardDto.boardno}" />
+      <input type="hidden" name="ani_category" th:value="${boardDto.ani_category}"/>
 
       <div class="col-sm-2">
-        <select class="form-select" name="${boardDto.ani_category}">
-          <option th:selected="${boardDto.ani_category}=='1'" value="1">고양이</option>
-          <option th:selected="${boardDto.ani_category}=='2'" value="2">강아지</option>
-          <option th:selected="${boardDto.ani_category}=='0'" value="0">기타동물</option>
+        <select class="form-select" name="ani_category" th:value="${boardDto.ani_category}">
+          <option th:selected="${#bools.isTrue(boardDto.ani_category)}" value="true">고양이</option>
+          <option th:selected="${#bools.isFalse(boardDto.ani_category)}" value="false">강아지</option>
         </select>
       </div>
 
@@ -84,7 +83,7 @@
       <div class="row p-5">
         <div class="col-auto mr-auto"></div>
         <div class="d-grid col-5 mx-auto">
-          <input class="btn btn-primary" type="submit" role="button" value="수정" />
+          <button class="btn btn-primary" type="submit">수정</button>
         </div>
       </div>
 
