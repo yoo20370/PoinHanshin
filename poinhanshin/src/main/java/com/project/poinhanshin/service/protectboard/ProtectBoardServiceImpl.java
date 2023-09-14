@@ -95,7 +95,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
                 // 서버 저장용 이름 // System.currentTimeMillis - 현재 몇 밀리초가 지났는지 - 겹치면 안 되기 때문
                 String storedFileName = System.currentTimeMillis() + "_" +originalFileName;
                 // 서버 컴퓨터 파일 저장 위치
-                String savePath = "/Users/gkdlr/fileStorage/protectboard/" + storedFileName;
+                String savePath = "/Users/yuyeong-u/fileStorage/protectboard" + storedFileName;
                 // java.io.File; // 지정된 경로로 파일을 넘긴다.
                 protectboardFile.transferTo(new File(savePath));
 

@@ -2,6 +2,7 @@ package com.project.poinhanshin.service.protectboard;
 
 import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface ProtectBoardFileService {
     int selectCnt(Integer protectboardfileno);
 
 
+    int insetFile(MultipartFile[] multipartFile, Integer protectboardno);
 }

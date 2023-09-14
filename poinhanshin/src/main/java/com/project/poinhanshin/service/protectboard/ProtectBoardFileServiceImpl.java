@@ -2,9 +2,9 @@ package com.project.poinhanshin.service.protectboard;
 
 import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,5 +34,21 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
         return protectBoardFileMapper.selectCnt(protectboardfileno);
     }
 
+    @Override
+    public int insetFile(MultipartFile[] multipartFile, Integer protectboardno){
+        if(multipartFile == null)
+            return 0;
+        for(int i = 0 ; i < multipartFile.length; i++){
 
+            String originalFileName = multipartFile[i].getOriginalFilename();
+
+            String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+            String savePath = "/Users/yuyeong-u/fileStorage/protectboard/" + storedFileName;
+
+            ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , protectboardno );
+            protectBoardFileMapper.insertFiles(protectBoardFileDto);
+        }
+        return 1;
+    }
 }

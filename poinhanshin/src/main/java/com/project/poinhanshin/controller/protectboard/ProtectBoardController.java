@@ -5,12 +5,11 @@ import com.project.poinhanshin.domain.etc.SearchCondition1;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.protectboard.ProtectBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/protectboard")
@@ -101,6 +101,18 @@ public class ProtectBoardController {
         m.addAttribute("msg" , msg);
         m.addAttribute("mode","WRITE");
         return "protect/protecteredit";
+    }
+
+    // 임보자 공고 등록
+    // ajax로 등록
+    @PostMapping("/regi")
+    @ResponseBody
+    public ResponseEntity<Integer> regi(@RequestBody ProtectBoardDto protectBoardDto
+    ){
+        System.out.println(protectBoardDto);
+
+
+        return new ResponseEntity<Integer>( 1, HttpStatus.OK);
     }
 
     // 임보자 공고 등록

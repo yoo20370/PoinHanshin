@@ -3,17 +3,20 @@ package com.project.poinhanshin.controller.protectboard;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import com.project.poinhanshin.service.protectboard.ProtectBoardFileService;
 import com.project.poinhanshin.service.protectboard.ProtectBoardServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@Slf4j
+@RestController
 public class ProtectBoardFileController {
 
 
@@ -26,6 +29,13 @@ public class ProtectBoardFileController {
         this.protectBoardFileService = protectBoardFileService;
     }
 
+
+    @PostMapping("/protectboard/uploadFile")
+    @ResponseBody
+    public int uploadFile(@RequestParam MultipartFile[] multipartFile ){
+        System.out.println(Arrays.toString(multipartFile));
+        return 0;
+    }
     // 첨부 파일 읽어오기
     @GetMapping("/protectboard/file")   // /protectboard/file?protectboardno=100;
     @ResponseBody
