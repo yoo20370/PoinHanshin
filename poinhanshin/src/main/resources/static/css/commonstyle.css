@@ -26,7 +26,7 @@
         height: 100%;
         padding: 50px;
         height: auto;
-        min-height: (100% -127px);
+        min-height: (100% -140px);
         border-left: 1px solid black;
         border-right: 1px solid black;
         border-bottom-width: 2px;
@@ -38,7 +38,8 @@
   background-color: #6F61C0;
    border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    padding:20px;
+    padding-left:20px;
+    padding-right:20px;
   }
   #navbar-board{
   background-color: #A084E8;
@@ -54,7 +55,7 @@
     height : 60px
   }
   .header{
-   height :67px
+   height :80px
   }
   a {
     text-decoration-line: none;
