@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
-   <!--dropZone-->
+    <!--dropZone-->
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js" defer></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 
@@ -29,13 +29,13 @@
 <script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록 실패했습니다.")</script>
 <style>
     #att_zone{
-    outline: 2px dashed #92b0b3 ;
-    outline-offset:-10px;
-    text-align: center;
-    transition: all .15s ease-in-out;
-    width: 100%;
-    height: 200px;
-}
+        outline: 2px dashed #92b0b3 ;
+        outline-offset:-10px;
+        text-align: center;
+        transition: all .15s ease-in-out;
+        width: 100%;
+        height: 200px;
+    }
 </style>
 
 <body layout:fragment="content">
@@ -72,35 +72,35 @@
             <div class="row">
 
                 <label class="col-sm-2 col-form-label"></label>
-                    <div class="col">
-                        <div class="input-group">
-                            <span class="input-group-text" id="inputGroup-sizing-sm">품종</span>
-                            <input th:if="${mode} == 'MODIFY'"   type="text" name="breeds" class="form-control" id="modifyBreeds" placeholder="품종을 입력해주세요" th:value="${protectboard.breeds}" >
-                            <input th:if="${mode} == 'WRITE'" type="text" name="breeds" class="form-control" id="writeBreeds" placeholder="품종을 입력해주세요" >
-                        </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">품종</span>
+                        <input th:if="${mode} == 'MODIFY'"   type="text" name="breeds" class="form-control" id="modifyBreeds" placeholder="품종을 입력해주세요" th:value="${protectboard.breeds}" >
+                        <input th:if="${mode} == 'WRITE'" type="text" name="breeds" class="form-control" id="writeBreeds" placeholder="품종을 입력해주세요" >
                     </div>
+                </div>
                 </label>
             </div>
             <div class="row">
-                    <div class="input-group date">
+                <div class="input-group date">
                         <span class="input-group-append">
                             <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
 
-                        <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
-                        <span class="input-group-text bg-light d-block">
+                    <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
+                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
+                    <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
 
                         </span>
-                        <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
+                    <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
+                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
 
 
-                    </div>
                 </div>
+            </div>
 
         </section>
 
@@ -114,7 +114,7 @@
                         class="form-control"
                         id="modifyTitle"
                         th:text="${protectboard.protectboard_title}"
-                        >
+                >
                 </textarea>
 
                 <textarea
@@ -123,7 +123,7 @@
                         name="protectboard_title"
                         class="form-control"
                         id="writeTitle"
-                        >
+                >
                   </textarea>
                 </label>
             </div>
@@ -174,7 +174,7 @@
             </span>
         </div>
 
-    <div class="dropzone" id="my-dropzone" ></div>
+        <div class="dropzone" id="my-dropzone" ></div>
         <div class="row p-5">
             <div class="col-auto mr-auto"></div>
             <div class="d-grid col-1 mx-auto">
@@ -190,10 +190,11 @@
 <script type="text/javascript" src="/js/date-time-picker.js"></script>
 <script type="text/javascript" src="/js/image-drop-zone.js" defer></script>
 <script>
+    var dropzone;
     document.addEventListener("DOMContentLoaded" ,function(){
         Dropzone.autoDiscover = false; // deprecated 된 옵션. false로 해놓는걸 공식문서에서 명시
 
-        const dropzone = new Dropzone('#my-dropzone', {
+        dropzone = new Dropzone('#my-dropzone', {
 
             url: 'http://localhost:8080/protectboard/uploadFile', // 파일을 업로드할 서버 주소 url.
             method: 'post', // 기본 post로 request 감. put으로도 할수있음
@@ -227,19 +228,15 @@
                     console.log('업로드');
 
                     // 거부된 파일이 있다면
-                    if (myDropzone.getRejectedFiles().length > 0) {
-                        let files = myDropzone.getRejectedFiles();
-                        console.log('거부된 파일이 있습니다.', files);
-                        return;
-                    }
-                    let files = myDropzone.getAcceptedFiles()
+
+                    /*let files = myDropzone.getAcceptedFiles()
                     let formData = new FormData();
 
                     for(let i = 0 ; i < files.length ; i++){
                         formData.append("multipartFile" , files[i]);
-                    }
+                    }*/
 
-                    $.ajax({
+                    /*$.ajax({
                         type : 'POST',
                         url : '/protectboard/uploadFile',
                         data : formData,
@@ -249,7 +246,7 @@
                         contentType : false,
                         success :function(){},
                         error : function(){}
-                    })
+                    })*/
 
                     //myDropzone.processQueue(); // autoProcessQueue: false로 해주었기 때문에, 메소드 api로 파일을 서버로 제출
                 });
@@ -275,9 +272,9 @@
     })
 </script>
 <script th:inline="javascript">
-/*<![CDATA[*/
+    /*<![CDATA[*/
 
-const mode = [[${mode}]];
+    const mode = [[${mode}]];
 
 
     // document ready start
@@ -344,13 +341,32 @@ const mode = [[${mode}]];
                 error : function(){}
             })
 
+            if (dropzone.getRejectedFiles().length > 0) {
+                let file = dropzone.getRejectedFiles();
+                console.log('거부된 파일이 있습니다.', file);
+                return;
+            }
 
-            /*$.ajax({
+
+            let files = dropzone.getAcceptedFiles();
+            let formData = new FormData();
+
+            for(let i = 0 ; i < files.length ; i++){
+                formData.append("multipartFile" , files[i]);
+            }
+            formData.append("protectboard_userno" , protectboard_userno);
+
+            $.ajax({
                 type : 'POST',
-                url : 'protectboard/uploadFile',
-                headers : {"content-type" : "application/json"},
-                data :JSON.stringify()
-            })*/
+                url : '/protectboard/uploadFile',
+                data : formData,
+                async : true,
+                enctype: "multipart/form-data",
+                processData : false,
+                contentType : false,
+                success :function(){},
+                error : function(){}
+            });
         });
 
 
@@ -391,22 +407,22 @@ const mode = [[${mode}]];
             }
 
             $(document).on("click", ".removeBtn" ,function(){
-                    let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
-                    $.ajax({
-                        type : 'DELETE',
-                        url : '/protectboard/file/'+protectboardfileno,
-                        success : function(str){
-                            alert(str);
-                            showImgList();
-                            return;
-                        },
-                        error : function(){
-                            alert("ERROR");
-                        }
-                    })
-                });
-                showImgList();
-            }
+                let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
+                $.ajax({
+                    type : 'DELETE',
+                    url : '/protectboard/file/'+protectboardfileno,
+                    success : function(str){
+                        alert(str);
+                        showImgList();
+                        return;
+                    },
+                    error : function(){
+                        alert("ERROR");
+                    }
+                })
+            });
+            showImgList();
+        }
     });
 
 

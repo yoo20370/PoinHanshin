@@ -32,8 +32,9 @@ public class ProtectBoardFileController {
 
     @PostMapping("/protectboard/uploadFile")
     @ResponseBody
-    public int uploadFile(@RequestParam MultipartFile[] multipartFile ){
+    public int uploadFile(@RequestParam MultipartFile[] multipartFile, @RequestParam Integer protectboard_userno){
         System.out.println(Arrays.toString(multipartFile));
+        System.out.println("uploadFile "+protectboard_userno);
         return 0;
     }
     // 첨부 파일 읽어오기
