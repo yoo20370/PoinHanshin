@@ -2,6 +2,7 @@ package com.project.poinhanshin.service.protectboard;
 
 import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper;
+import com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,11 +13,15 @@ import java.util.List;
 public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
     
     ProtectBoardFileMapper protectBoardFileMapper;
+    ProtectBoardMapper protectBoardMapper;
 
     @Autowired
-    public ProtectBoardFileServiceImpl(ProtectBoardFileMapper protectBoardFileMapper) {
+    public ProtectBoardFileServiceImpl(ProtectBoardFileMapper protectBoardFileMapper, ProtectBoardMapper protectBoardMapper) {
         this.protectBoardFileMapper = protectBoardFileMapper;
+        this.protectBoardMapper = protectBoardMapper;
     }
+
+
     // 이미지 첨부 파일 불러오기
     @Override
     public List<ProtectBoardFileDto> selectFiles(Integer protectboardno) {
@@ -35,9 +40,12 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
     }
 
     @Override
-    public int insetFile(MultipartFile[] multipartFile, Integer protectboardno){
+    public int insetFile(MultipartFile[] multipartFile, Integer protectboard_userno){
         if(multipartFile == null)
             return 0;
+        // 등록한 게시물의 번호 가져오기
+        int protectboardno = protectBoardMapper.selectRecentBoardno(protectboard_userno);
+
         for(int i = 0 ; i < multipartFile.length; i++){
 
             String originalFileName = multipartFile[i].getOriginalFilename();

@@ -72,44 +72,8 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 게시물을 등록한다.
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertProductBoard(ProtectBoardDto protectBoardDto) throws IOException {
-        // 파일 첨부 여부에 따라 로직 분리
-        if(protectBoardDto.getProtectboardFile().isEmpty()){
-            // 첨부 파일 없음
-            protectBoardDto.setFileAttached(0);
-        } else {
-            // 첨부 파일 있음 , 첨부 파일이 없으므로 값 1로 설정
-            protectBoardDto.setFileAttached(1);
-
-            // protectboard 테이블에 데이터 저장 (부모)
-            protectBoardMapper.insertContent(protectBoardDto);
-
-            // 매개변수 protectBoardDto를 사용할 수 없는 이유 - 아직 protectboardno 값이 설정되지 않았기 때문
-            Integer currentProtectboardno = protectBoardMapper.selectRecentBoardno(protectBoardDto.getProtectboard_userno());
-
-            // 다중 파일이기 때문
-            for(MultipartFile protectboardFile : protectBoardDto.getProtectboardFile() ){
-
-                // 파일 이름 저장 (서버 이름 X)
-                String originalFileName = protectboardFile.getOriginalFilename();
-                // 서버 저장용 이름 // System.currentTimeMillis - 현재 몇 밀리초가 지났는지 - 겹치면 안 되기 때문
-                String storedFileName = System.currentTimeMillis() + "_" +originalFileName;
-                // 서버 컴퓨터 파일 저장 위치
-                String savePath = "/Users/yuyeong-u/fileStorage/protectboard" + storedFileName;
-                // java.io.File; // 지정된 경로로 파일을 넘긴다.
-                protectboardFile.transferTo(new File(savePath));
-
-                // protectboardFile 테이블에 데이터 저장하기 위해 부모의 protectboardno 값을 가져온다.
-                // Integer currentProtectboardno = protectBoardDto.getProtectboardno();
-                System.out.println("실행됨 2");
-                // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
-                ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , currentProtectboardno );
-                protectBoardFileMapper.insertFiles(protectBoardFileDto);
-            }
-
-        }
-        return 1;
-        //return protectBoardMapper.insertContent(protectBoardDto);
+    public int insertProductBoard(ProtectBoardDto protectBoardDto) {
+        return protectBoardMapper.insertContent(protectBoardDto);
     }
 
 

@@ -20,5 +20,5 @@ public interface ProtectBoardFileService {
     int selectCnt(Integer protectboardfileno);
 
 
-    int insetFile(MultipartFile[] multipartFile, Integer protectboardno);
+    int insetFile(MultipartFile[] multipartFile, Integer protectboard_userno);
 }

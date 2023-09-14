@@ -107,12 +107,9 @@ public class ProtectBoardController {
     // ajax로 등록
     @PostMapping("/regi")
     @ResponseBody
-    public ResponseEntity<Integer> regi(@RequestBody ProtectBoardDto protectBoardDto
-    ){
-        System.out.println(protectBoardDto);
-
-
-        return new ResponseEntity<Integer>( 1, HttpStatus.OK);
+    public ResponseEntity<Integer> regi(@RequestBody ProtectBoardDto protectBoardDto){
+        protectBoardService.insertProductBoard(protectBoardDto);
+        return new ResponseEntity<Integer>( protectBoardService.readWritedBoardno(protectBoardDto.getProtectboard_userno()), HttpStatus.OK);
     }
 
     // 임보자 공고 등록

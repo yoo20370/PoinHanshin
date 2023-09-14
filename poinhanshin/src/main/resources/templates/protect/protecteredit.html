@@ -336,10 +336,13 @@
                 url : '/protectboard/regi',
                 headers : {"content-type" : "application/json"},
                 data : JSON.stringify(ProtectBoardDto),
+                async : false,
                 success : function(){
                 },
                 error : function(){}
             })
+
+
 
             if (dropzone.getRejectedFiles().length > 0) {
                 let file = dropzone.getRejectedFiles();
@@ -347,26 +350,27 @@
                 return;
             }
 
+            let files = dropzone.files
+            if(files.length != 0){
+                let formData = new FormData();
 
-            let files = dropzone.getAcceptedFiles();
-            let formData = new FormData();
+                for(let i = 0 ; i < files.length ; i++){
+                    formData.append("multipartFile" , files[i]);
+                }
+                formData.append("protectboard_userno" , protectboard_userno);
 
-            for(let i = 0 ; i < files.length ; i++){
-                formData.append("multipartFile" , files[i]);
+                $.ajax({
+                    type : 'POST',
+                    url : '/protectboard/uploadFile',
+                    data : formData,
+                    async : true,
+                    enctype: "multipart/form-data",
+                    processData : false,
+                    contentType : false,
+                    success :function(){},
+                    error : function(){}
+                });
             }
-            formData.append("protectboard_userno" , protectboard_userno);
-
-            $.ajax({
-                type : 'POST',
-                url : '/protectboard/uploadFile',
-                data : formData,
-                async : true,
-                enctype: "multipart/form-data",
-                processData : false,
-                contentType : false,
-                success :function(){},
-                error : function(){}
-            });
         });
 
 
