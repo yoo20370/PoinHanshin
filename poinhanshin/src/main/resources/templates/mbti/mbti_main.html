@@ -24,62 +24,44 @@
   <link rel="stylesheet" href="/css/mbti/act.css">
   <link rel="stylesheet" href="/css/mbti/result.css">
   <title>mbti 메인 홈페이지</title>
-  <style>
-
-    table{
-      padding:10px;
-    }
-
+ <!-- <style>
     .table-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 50px;
-    }
-
-    .table-container table {
-      border-collapse: collapse;
       width: 100%;
       max-width: 800px;
+      margin: 0 auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
       border: 1px solid #ddd;
     }
 
-    .table-container th, .table-container td {
-      border: 1px solid #ddd;
+    th, td {
       padding: 8px;
-      text-align: center;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
 
-    .table-container th {
+    th {
       background-color: #f2f2f2;
     }
 
-    .table-container img {
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    img {
       max-width: 100px;
-      max-height: 100px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
-    .item{
-      display:grid;
-      grid-template-columns: repeat(2 , 400px);
-      grid-template-rows: repeat(2,350px);
+    a {
+      text-decoration: none;
     }
-    .btn1 {
-      position: absolute;
-      top: 700px;
-      left : 390px;
-      border: 2px;
-      border-radius: 10px;
-      width: auto;
-      height: 60px;
-      font-size : 30px;
-    }
-
-    #thum{
-      position : relative;
-      width: 1000px;
-      height: 1300px;
-    }
-  </style>
+  </style> -->
 </head>
 
 <body layout:fragment="content">
@@ -105,17 +87,21 @@
     <div class="table-container">
       <div th:each="Ab_ani : ${AAArr}">
         <a th:href="@{'/information/AnimalBoard'+${Ab_ani.queryString}}">
-          <table class="table table-bordered table-striped table-hover">
+          <table>
             <tr>
-              <th>유기번호</th>
-              <th>이미지</th>
-              <th>품종</th>
-              <th>성별</th>
+              <td>유기번호</td>
+              <td th:text="${Ab_ani.desertionNo}"></td>
             </tr>
             <tr>
-              <td th:text="${Ab_ani.desertionNo}"></td>
+              <td>이미지</td>
               <td><img th:src="${Ab_ani.filename}" alt="Animal Image"></td>
+            </tr>
+            <tr>
+              <td>품종</td>
               <td th:text="${Ab_ani.kindCd}"></td>
+            </tr>
+            <tr>
+              <td>성별</td>
               <td th:text="${Ab_ani.sexCd}"></td>
             </tr>
           </table>
