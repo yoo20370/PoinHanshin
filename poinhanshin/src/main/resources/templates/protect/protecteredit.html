@@ -91,13 +91,13 @@
                         </span>
 
                     <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
-                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
+                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}"/>
                     <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
 
                         </span>
                     <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
-                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
+                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}"/>
 
 
                 </div>
@@ -243,6 +243,7 @@
                 this.on('error', function (file, errorMessage) {
                     alert(errorMessage);
                 });
+
             },
 
         });
@@ -251,10 +252,56 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
 
-    const mode = [[${mode}]];
+    let pageMode = [[${mode}]];
 
+    if(pageMode == "MODIFY"){
+        let currentFileAttached = $('input[name=fileAttached]').val();
+        let protectbn = $('input[name=protectboardno]').val();
+        let protectBFDL;
+        let showImgList = function () {
+            $.ajax({
+                type: 'GET',
+                url: '/protectboard/file?protectboardno=' + protectbn,
+                dataType: 'json',
+                success: function (protectBoardFileDtoList) {
+                    //$('#attachTable').html(toHtml(protectBoardFileDtoList));
+                    displayImg(protectBoardFileDtoList)
+                    },
+                error: function () {alert("ERROR"); }
+            });
+        }
+
+        /*let toHtml = function (protectBoardFileDtoList) {
+            let tmp = '';
+            protectBoardFileDtoList.forEach(function (protectBoardFileDto) {
+                tmp += '<span>';
+                tmp += '<td>';
+                tmp += '<img width="100px" height="100px" data-size=""+protectboardFileDto.fileSize id="img' + protectBoardFileDto.protectboardfileno + '" src="/upload/' + protectBoardFileDto.stored_file_name + '" alt="이미지 없음" />';
+                tmp += '</td>';
+                tmp += '</span>';
+            });
+            return tmp;
+        }*/
+
+        let displayImg = function(protectBoardFileDtoList){
+            protectBoardFileDtoList.forEach(function(protectBoardFileDto){
+                let mockFile = {name: protectBoardFileDto.storedFileName , size : protectBoardFileDto.fileSize}
+                dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/'+protectBoardFileDto.stored_file_name);
+            });
+        }
+        showImgList()
+
+
+
+    }
     // document ready start
     $(document).ready(function(){
+
+
+
+
+
+
         // 수정 버튼 클릭시
         $("#modifyBtn").on("click",function(){
             if(!confirm("수정하시겠습니까 ?")) return;
@@ -338,23 +385,9 @@
             form.submit();
 
 
-
         });
-        if( [[${mode == 'MODIFY'}]] == true) {
-            let toHtml = function (protectBoardFileDtoList) {
-                let tmp = '';
-                protectBoardFileDtoList.forEach(function (protectBoardFileDto) {
-                    tmp += '<span>';
-                    tmp += '<td>';
-                    tmp += '<img width="100px" height="100px" src="/upload/' + protectBoardFileDto.stored_file_name + '" alt="이미지 없음" />';
-                    tmp += '</td>';
-                    tmp += '<td data-protectboardfileno=' + protectBoardFileDto.protectboardfileno + ' >';
-                    tmp += '<button type="button" class="removeBtn" id="btn' + protectBoardFileDto.protectboardfileno + '">삭제</button>';
-                    tmp += '</td>';
-                    tmp += '</span>';
-                });
-                return tmp;
-            }
+       /* if( [[${mode == 'MODIFY'}]] == true) {
+
 
             // 수정시 게시판 번호 가져오기
             let protectboardno = $('input[name=protectboardno]').val();
@@ -374,7 +407,7 @@
                 });
             }
 
-            // 댓글 삭제 버튼 클리시 ( dropzone 이전에 만든 것 )
+            // 이미지 삭제 버튼 클리시 ( dropzone 이전에 만든 것 )
             $(document).on("click", ".removeBtn", function () {
                 let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
                 $.ajax({
@@ -390,8 +423,8 @@
                     }
                 })
             });
-            showImgList();
-        }
+            showImgList();*
+        }*/
     // document ready end
     var submitted = false;
 

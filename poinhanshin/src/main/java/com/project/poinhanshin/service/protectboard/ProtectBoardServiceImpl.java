@@ -95,7 +95,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
                 protectboardFile.transferTo(new File(savePath));
 
                 // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
-                ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null, null, originalFileName, storedFileName, currentProtectboardno);
+                ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null, null, originalFileName, storedFileName, currentProtectboardno , protectboardFile.getSize());
                 protectBoardFileMapper.insertFiles(protectBoardFileDto);
             }
         }

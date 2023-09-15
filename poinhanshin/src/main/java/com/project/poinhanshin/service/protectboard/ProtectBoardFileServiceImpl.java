@@ -58,7 +58,7 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
 
             multipartFile[i].transferTo(new File(savePath));
 
-            ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , protectboardno );
+            ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , protectboardno , multipartFile[i].getSize());
             protectBoardFileMapper.insertFiles(protectBoardFileDto);
         }
         return 1;

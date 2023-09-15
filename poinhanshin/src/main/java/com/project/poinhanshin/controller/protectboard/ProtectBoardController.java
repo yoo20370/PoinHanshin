@@ -155,18 +155,47 @@ public class ProtectBoardController {
         return "redirect:/protectboard/read";
     }
 
-    // 임보자 게시물 상세화면
+    @GetMapping("/modify")
+    public String ProtectBoardModifyMove(Integer protectboardno , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes
+                                         //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+    ){
+        //Integer LoginId = loginUser.id;
+
+        // 임시 로그인
+        Integer LoginId = 1;
+
+        // 로그인 확인 (나중에 loginUser == null로 변경
+        if(LoginId == null) {
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            return "redirect:/protectboard/list";
+        }
+
+        ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
+
+        System.out.println(protectBoardDto);
+        m.addAttribute("LoginId" ,LoginId);
+        m.addAttribute("protectboard" , protectBoardDto);
+        m.addAttribute("sc",sc);
+        m.addAttribute("mode" , "MODIFY");
+        return "/protect/protecteredit";
+    }
+
+    /*// 임보자 게시물 상세화면
     @GetMapping("/modify")
     public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes
     //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
-        System.out.println(protectBoardDto);
+        System.out.println(protectBoardDto+"modify Get");
         // 로그인
         //Integer LoginId = loginUser.id;
 
         // 임시 로그인
         Integer LoginId = 1;
-        System.out.println(protectBoardDto);
+
         // 로그인 확인 (나중에 loginUser == null로 변경
         if(LoginId == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
@@ -183,7 +212,7 @@ public class ProtectBoardController {
         m.addAttribute("mode" , "MODIFY");
         return "/protect/protecteredit";
     }
-
+*/
     // 임보자 게시물 수정
     @PostMapping("/modify")
     public String ProtectBoardModify(ProtectBoardDto protectBoardDto , SearchCondition1 sc , RedirectAttributes redirectAttributes){
