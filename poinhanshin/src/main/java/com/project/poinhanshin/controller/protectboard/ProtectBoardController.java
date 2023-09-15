@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
@@ -105,11 +106,27 @@ public class ProtectBoardController {
 
     // 임보자 공고 등록
     // ajax로 등록
-    @PostMapping("/regi")
+    /*@PostMapping("/regi")
     @ResponseBody
     public ResponseEntity<Integer> regi(@RequestBody ProtectBoardDto protectBoardDto){
         protectBoardService.insertProductBoard(protectBoardDto);
         return new ResponseEntity<Integer>( protectBoardService.readWritedBoardno(protectBoardDto.getProtectboard_userno()), HttpStatus.OK);
+    }*/
+
+    @PostMapping("/regi")
+    @ResponseBody
+    public ResponseEntity<String> regi(@RequestParam Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+                     @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
+                     @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached
+    ) throws IOException {
+        ProtectBoardDto protectboardDto = new ProtectBoardDto(protectboard_userno , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+        protectboardDto.setProtectboardFile(protectboardFile);
+        // 첨부 파일이 있는 경우 fileAttached 값을 변경해준다.
+        if(protectboardDto.getProtectboardFile() != null){
+            protectboardDto.setFileAttached(1);
+        }
+        protectBoardService.insertProductBoard(protectboardDto);
+        return new ResponseEntity<String> ("성공적으로 등록되었습니다." , HttpStatus.OK);
     }
 
     // 임보자 공고 등록

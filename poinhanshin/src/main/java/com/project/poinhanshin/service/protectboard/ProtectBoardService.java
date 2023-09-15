@@ -17,7 +17,7 @@ public interface ProtectBoardService {
     ProtectBoardDto bringBoardOne(Integer protectboardno);
 
     // 임보자 게시물을 등록한다.
-    int insertProductBoard(ProtectBoardDto protectBoardDto);
+    int insertProductBoard(ProtectBoardDto protectBoardDto) throws IOException;
 
     // 임보자 게시물의 내용을 수정한다.
     int updateProductBoard(ProtectBoardDto protectBoardDto , Integer LoginId);
