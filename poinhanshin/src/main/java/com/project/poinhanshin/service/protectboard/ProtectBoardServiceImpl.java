@@ -39,7 +39,6 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     @Transactional(rollbackFor = Exception.class)
     public ProtectBoardDto bringBoardOne(Integer protectboardno) {
             ProtectBoardDto protectBoard =  protectBoardMapper.selectContentOne(protectboardno);
-        System.out.println(protectBoard);
             if(protectBoard.getFileAttached() == 0){
                 // 파일 없음
                 return protectBoard;
@@ -105,13 +104,32 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
 
     // 게시물을 수정한다.
     @Override
-    public int updateProductBoard(ProtectBoardDto protectBoardDto, Integer LoginId) {
-        protectBoardDto.setProtectboard_userno(LoginId);
-        if(protectBoardDto.getFileAttached() == 1){
-            // 파일 있음
+    public int updateProductBoard(ProtectBoardDto protectBoardDto) throws IOException {
+        // 게시물 등록
+        protectBoardMapper.updateContent(protectBoardDto);
 
+        // 첨부 파일 있음
+// 첨부 파일 있음
+        if (protectBoardDto.getFileAttached() != 0) {
+
+            // 다중 파일이기 때문
+            for (MultipartFile protectboardFile : protectBoardDto.getProtectboardFile()) {
+
+                // 파일 이름 저장 (서버 이름 X)
+                String originalFileName = protectboardFile.getOriginalFilename();
+                // 서버 저장용 이름 // System.currentTimeMillis - 현재 몇 밀리초가 지났는지 - 겹치면 안 되기 때문
+                String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+                // 서버 컴퓨터 파일 저장 위치
+                String savePath = "/Users/yuyeong-u/fileStorage/protectboard/" + storedFileName;
+                // java.io.File; // 지정된 경로로 파일을 넘긴다.
+                protectboardFile.transferTo(new File(savePath));
+
+                // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
+                ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null, null, originalFileName, storedFileName, protectBoardDto.getProtectboardno() , protectboardFile.getSize());
+                protectBoardFileMapper.insertFiles(protectBoardFileDto);
+            }
         }
-        return protectBoardMapper.updateContent(protectBoardDto);
+        return protectBoardDto.getProtectboardno();
     }
 
     // 게시물을 삭제한다.

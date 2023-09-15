@@ -115,7 +115,7 @@ public class ProtectBoardController {
 
     @PostMapping("/regi")
     @ResponseBody
-    public ResponseEntity<Integer> regi(@RequestParam Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> regi(@RequestParam Integer protectboard_userno ,@RequestParam(required = false) Integer protectboardno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                      @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached
     ) throws IOException {
@@ -184,6 +184,8 @@ public class ProtectBoardController {
         return "/protect/protecteredit";
     }
 
+    // 임보자 게시물 수정
+    
     /*// 임보자 게시물 상세화면
     @GetMapping("/modify")
     public String ProtectBoardModifyMove(ProtectBoardDto protectBoardDto , SearchCondition1 sc , Model m , RedirectAttributes redirectAttributes
@@ -213,7 +215,7 @@ public class ProtectBoardController {
         return "/protect/protecteredit";
     }
 */
-    // 임보자 게시물 수정
+    /*// 임보자 게시물 수정
     @PostMapping("/modify")
     public String ProtectBoardModify(ProtectBoardDto protectBoardDto , SearchCondition1 sc , RedirectAttributes redirectAttributes){
 
@@ -236,7 +238,7 @@ public class ProtectBoardController {
 
         redirectAttributes.addAttribute("protectboardno" , protectBoardDto.getProtectboardno());
         return "redirect:/protectboard/read";
-    }
+    }*/
 
     // 임보자 게시물 삭제
     @PostMapping("/remove")

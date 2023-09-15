@@ -20,7 +20,7 @@ public interface ProtectBoardService {
     int insertProductBoard(ProtectBoardDto protectBoardDto) throws IOException;
 
     // 임보자 게시물의 내용을 수정한다.
-    int updateProductBoard(ProtectBoardDto protectBoardDto , Integer LoginId);
+    int updateProductBoard(ProtectBoardDto protectBoardDto) throws IOException;
 
     // 임보자 게시물을 삭제한다.
     int deleteProductBoard(Integer bno , Integer LoginId);

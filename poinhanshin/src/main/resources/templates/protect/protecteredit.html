@@ -48,26 +48,26 @@
         <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:value="${LoginId}" />
 
 
-        <input type="hidden" name="fileAttached" th:if="${mode} == 'WRITE'" value="0"/>
-        <input type="hidden" name="fileAttached" th:if="${mode} == 'MODIFY'" th:value="${protectboard.fileAttached}">
+        <input type="hidden" name="fileAttached" class="writeMode" th:if="${mode} == 'WRITE'" value="0"/>
+        <input type="hidden" name="fileAttached" class="modifyMode" th:if="${mode} == 'MODIFY'" th:value="${protectboard.fileAttached}"/>
+
 
         <div th:if="${mode} == 'MODIFY'">
             <!--글 수정-->
-            <!-- protectstatus , protectboard_ani_category 값 변경하는 버튼 필요. -->
-            <input type="hidden" name="protectboard_ani_category" id="protectboard_ani_category2" th:value="${protectboard.protectboard_ani_category}"/>
-            <input type="hidden" name="protectstatus" id="protectstatus2" th:value="${protectboard.protectstatus}"/>
-            <input type="text" name="protectboard_reg_date" th:value="${#dates.format(protectboard.protectboard_reg_date, 'yyyy-MM-dd HH:ss')}" hidden="hidden"/>
-            <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.protectboardno}"/>
+            <input type="hidden" name="protectboard_ani_category" class="modifyMode" id="protectboard_ani_category2" th:value="${protectboard.protectboard_ani_category}"/>
+            <input type="hidden" name="protectstatus" class="modifyMode" id="protectstatus2" th:value="${protectboard.protectstatus}"/>
+            <input type="hidden" name="protectboard_reg_date"  class="modifyMode" th:value="${#dates.format(protectboard.protectboard_reg_date, 'yyyy-MM-dd HH:ss')}"/>
+            <input type="hidden" name="protectboardno" class="modifyMode" th:value="${protectboard.protectboardno}"/>
         </div>
 
         <div th:if="${mode} == 'WRITE'">
             <!--글 작성-->
             <!-- protectstatus , protectboard_ani_category 값 설정하는 버튼 필요. -->
-            <input th:if="${mode} == 'WRITE'" type="hidden" name="protectboardno" id="writePbn"/>
-            <input type="hidden" name="protectstatus" id="protectstatus" value="false"/>
-            <input type="hidden" name="protectboard_ani_category" id="protectboard_ani_category" value="false"/>
-            <input type="hidden" name="protectboard_ani_category" value="false"/>
-            <input type="hidden" name="protectstatus" value="false"/>
+            <input type="hidden" name="protectboardno" class="writeMode" id="writePbn" />
+            <input type="hidden" name="protectstatus" class="writeMode" id="protectstatus" value="false"/>
+            <input type="hidden" name="protectboard_ani_category" class="writeMode" id="protectboard_ani_category" value="false"/>
+            <input type="hidden" name="protectboard_ani_category" class="writeMode" value="false"/>
+            <input type="hidden" name="protectstatus" class="writeMode" value="false"/>
         </div>
 
         <section class="container">
@@ -76,8 +76,8 @@
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text" id="inputGroup-sizing-sm">품종</span>
-                        <input th:if="${mode} == 'WRITE'" type="text" name="breeds" class="form-control" id="writeBreeds" placeholder="품종을 입력해주세요" >
-                        <input th:if="${mode} == 'MODIFY'"   type="text" name="breeds" class="form-control" id="modifyBreeds" placeholder="품종을 입력해주세요" th:value="${protectboard.breeds}" >
+                        <input th:if="${mode} == 'WRITE'" type="text" name="breeds" class="form-control writeMode" id="writeBreeds" placeholder="품종을 입력해주세요" >
+                        <input th:if="${mode} == 'MODIFY'"   type="text" name="breeds" class="form-control modifyMode" id="modifyBreeds" placeholder="품종을 입력해주세요" th:value="${protectboard.breeds}" >
                     </div>
                 </div>
                 </label>
@@ -90,14 +90,14 @@
                             </span>
                         </span>
 
-                    <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
-                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}"/>
+                    <input th:if="${mode} == 'WRITE'" type="text" class="form-control writeMode" id="startDate" name="starttime" readonly placeholder="시작일"/>
+                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control modifyMode" id="startDate2" name="starttime" readonly th:text="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}"/>
                     <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
 
                         </span>
-                    <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일" />
-                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}"/>
+                    <input th:if="${mode} == 'WRITE'" type="text" class="form-control writerMode" id="endDate" name="deadline" readonly  placeholder="종료일" />
+                    <input th:if="${mode} == 'MODIFY'" type="text" class="form-control modifyMode" id="endDate2" name="deadline" readonly  th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}"/>
 
 
                 </div>
@@ -112,7 +112,7 @@
                         th:if="${mode} == 'MODIFY'"
                         type="text"
                         name="protectboard_title"
-                        class="form-control"
+                        class="form-control modifyMode"
                         id="modifyTitle"
                         th:text="${protectboard.protectboard_title}"
                 >
@@ -122,7 +122,7 @@
                         th:if="${mode} == 'WRITE'"
                         type="text"
                         name="protectboard_title"
-                        class="form-control"
+                        class="form-control writerMode"
                         id="writeTitle"
                 >
                   </textarea>
@@ -134,7 +134,7 @@
                         th:if="${mode} == 'MODIFY'"
                         type="text"
                         name="protectboard_content"
-                        class="form-control"
+                        class="form-control modifyMode"
                         id="modifyContent"
                         th:text="${protectboard.protectboard_content}"
                         style="height: 300px;">
@@ -144,7 +144,7 @@
                         th:if="${mode} == 'WRITE'"
                         type="text"
                         name="protectboard_content"
-                        class="form-control"
+                        class="form-control writeMode"
                         id="writeContent"
                         style="height: 300px;">
                   </textarea>
@@ -156,21 +156,12 @@
         <!--이미지 첨부 input type file-->
         <div id="image_preview">
             <div class="input-group mb-3 p-2">
-                <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple" />
             </div>
         </div>
         <!-- 이전에 첨부한 첨부파일 목록  -->
         <div th:if="${mode == 'MODIFY'}">
             <span id="imgDiv"th:if="${protectboard.fileAttached == 1}">
                 <table id="attachTable">
-                <!--<span th:each="fileName: ${protectboard.storedFileName}">
-                    <td>
-                        <img width="100px" height="100px" th:src="@{|/upload/${fileName}|}" alt="이미지 없음" />
-                    </td>
-                    <td>
-                        <button type="button" name="">삭제</button>
-                    </td>
-                </span>-->
             </table>
             </span>
         </div>
@@ -179,8 +170,8 @@
         <div class="row p-5">
             <div class="col-auto mr-auto"></div>
             <div class="d-grid col-1 mx-auto">
-                <input th:if="${mode} == 'MODIFY'" id="modifyBtn" class="btn btn-primary submitBtn" role="button" value="수정" />
-                <input th:if="${mode} == 'WRITE'" id="writeBtn" class="btn btn-primary submitBtn"  role="button" value="등록" />
+                <input th:if="${mode} == 'MODIFY'" id="modifyBtn" class="btn btn-primary submitBtn modifyMode" role="button" value="수정" />
+                <input th:if="${mode} == 'WRITE'" id="writeBtn" class="btn btn-primary submitBtn writeMode"  role="button" value="등록" />
             </div>
         </div>
         <button type="button" class="btn btn-secondary"
@@ -210,7 +201,7 @@
             thumbnailWidth: 120, // Upload icon size
 
             maxFiles: 10, // 업로드 파일수
-            maxFilesize: 100, // 최대업로드용량 : 100MB
+            maxFilesize: 100000, // 최대업로드용량 : 100MB
             paramName: 'file', // 서버에서 사용할 formdata 이름 설정 (default는 file)
             parallelUploads: 1, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 넘긴다.)
             uploadMultiple: false, // 다중업로드 기능
@@ -257,7 +248,7 @@
     if(pageMode == "MODIFY"){
         let currentFileAttached = $('input[name=fileAttached]').val();
         let protectbn = $('input[name=protectboardno]').val();
-        let protectBFDL;
+
         let showImgList = function () {
             $.ajax({
                 type: 'GET',
@@ -270,19 +261,6 @@
                 error: function () {alert("ERROR"); }
             });
         }
-
-        /*let toHtml = function (protectBoardFileDtoList) {
-            let tmp = '';
-            protectBoardFileDtoList.forEach(function (protectBoardFileDto) {
-                tmp += '<span>';
-                tmp += '<td>';
-                tmp += '<img width="100px" height="100px" data-size=""+protectboardFileDto.fileSize id="img' + protectBoardFileDto.protectboardfileno + '" src="/upload/' + protectBoardFileDto.stored_file_name + '" alt="이미지 없음" />';
-                tmp += '</td>';
-                tmp += '</span>';
-            });
-            return tmp;
-        }*/
-
         let displayImg = function(protectBoardFileDtoList){
             protectBoardFileDtoList.forEach(function(protectBoardFileDto){
                 let mockFile = {name: protectBoardFileDto.storedFileName , size : protectBoardFileDto.fileSize}
@@ -291,45 +269,21 @@
         }
         showImgList()
 
-
-
     }
     // document ready start
     $(document).ready(function(){
 
-
-
-
-
-
-        // 수정 버튼 클릭시
-        $("#modifyBtn").on("click",function(){
-            if(!confirm("수정하시겠습니까 ?")) return;
-            let form = $('#form');
-            form.attr("action", [[@{/protectboard/modify}]]);
-            form.attr("method","post");
-            form.submit();
-        });
-
-        let setQueryString = function(key , value){
-            let str = key+'='+value+'&';
-            return str;
-        }
-
-        // 등록 버튼 클릭시, 게시물 데이터와 이미지 정보를 전송하여 게시물 등록 후 이미지 데이터 저장
-        $("#writeBtn").on("click",function(){
-            console.log("게시물 등록 및 업로드")
-
-            // input 데이터 가져오기 , ajax로 통신할 경우 input 태그를 사용할 이유가 없음 - 수정 필요.
-            let protectboard_userno = $('input[name=protectboard_userno]').val();
-            let protectboard_title = $('#writeTitle').val();
-            let protectboard_content = $('#writeContent').val();
-            let breeds = $('#writeBreeds').val();
-            let protectboard_ani_category = $('#protectboard_ani_category').val();
-            let protectstatus = $('#protectstatus').val();
-            let starttime = $('#startDate').val();
-            let deadline = $('#endDate').val();
-            let fileAttached = $('input[name=fileAttached]').val();
+        let formSendFunction = function(url , mode){
+            let protectboard_userno = $('input[name=protectboard_userno] , mode').val();
+            let protectboardno = $('input[name=protectboardno] , mode').val();
+            let protectboard_title = $('#writeTitle , mode').val();
+            let protectboard_content = $('#writeContent , mode').val();
+            let breeds = $('#writeBreeds , mode').val();
+            let protectboard_ani_category = $('#protectboard_ani_category , mode').val();
+            let protectstatus = $('#protectstatus , mode').val();
+            let starttime = $('#startDate , mode').val();
+            let deadline = $('#endDate , mode').val();
+            let fileAttached = $('input[name=fileAttached] , mode').val();
 
             if (dropzone.getRejectedFiles().length > 0) {
                 let file = dropzone.getRejectedFiles();
@@ -349,8 +303,9 @@
                     formData.append("protectboardFile" , files[i]);
                 }
             }
-                // 폼 데이터 등록
+            // 폼 데이터 등록
             formData.append("protectboard_userno" , protectboard_userno);
+            formData.append("protectboardno" , protectboardno);
             formData.append("protectboard_title" , protectboard_title);
             formData.append("protectboard_content",protectboard_content);
             formData.append("breeds" , breeds);
@@ -364,7 +319,7 @@
             let pbn;
             $.ajax({
                 type : 'POST',
-                url : '/protectboard/regi',
+                url : '/protectboard/'+url,
                 data : formData,
                 async : false,
                 enctype: "multipart/form-data",
@@ -375,6 +330,31 @@
                 },
                 error : function(){}
             });
+            return pbn;
+        }
+
+        // 수정 버튼 클릭시
+        $("#modifyBtn").on("click",function(){
+            if(!confirm("수정하시겠습니까 ?")) return;
+
+            let pbn = formSendFunction("modify",".modifyMode");
+            /*let form = $('#form');
+            form.attr("action", [[@{/protectboard/modify}]]);
+            form.attr("method","post");
+            form.submit();*/
+        });
+
+        let setQueryString = function(key , value){
+            let str = key+'='+value+'&';
+            return str;
+        }
+
+        // 등록 버튼 클릭시, 게시물 데이터와 이미지 정보를 전송하여 게시물 등록 후 이미지 데이터 저장
+        $("#writeBtn").on("click",function(){
+            if(!confirm("등록하시겠습니까 ?")) return;
+            console.log("게시물 등록 및 업로드")
+
+            let pbn = formSendFunction("regi",".writeMode");
 
             $('#writePbn').val(pbn);
 
@@ -386,45 +366,6 @@
 
 
         });
-       /* if( [[${mode == 'MODIFY'}]] == true) {
-
-
-            // 수정시 게시판 번호 가져오기
-            let protectboardno = $('input[name=protectboardno]').val();
-
-            // 첨부 파일 삭제 후 다시 보여주기 위함
-            let showImgList = function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/protectboard/file?protectboardno=' + protectboardno,
-                    dataType: 'json',
-                    success: function (protectBoardFileDtoList) {
-                        $('#attachTable').html(toHtml(protectBoardFileDtoList));
-                    },
-                    error: function () {
-                        alert("ERROR");
-                    }
-                });
-            }
-
-            // 이미지 삭제 버튼 클리시 ( dropzone 이전에 만든 것 )
-            $(document).on("click", ".removeBtn", function () {
-                let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
-                $.ajax({
-                    type: 'DELETE',
-                    url: '/protectboard/file/' + protectboardfileno,
-                    success: function (str) {
-                        alert(str);
-                        showImgList();
-                        return;
-                    },
-                    error: function () {
-                        alert("ERROR");
-                    }
-                })
-            });
-            showImgList();*
-        }*/
     // document ready end
     var submitted = false;
 
