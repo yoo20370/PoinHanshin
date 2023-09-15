@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -40,7 +42,7 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
     }
 
     @Override
-    public int insetFile(MultipartFile[] multipartFile, Integer protectboard_userno){
+    public int insetFile(MultipartFile[] multipartFile, Integer protectboard_userno) throws IOException {
         if(multipartFile == null)
             return 0;
         // 등록한 게시물의 번호 가져오기
@@ -53,6 +55,8 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
             String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
 
             String savePath = "/Users/yuyeong-u/fileStorage/protectboard/" + storedFileName;
+
+            multipartFile[i].transferTo(new File(savePath));
 
             ProtectBoardFileDto protectBoardFileDto = new ProtectBoardFileDto(null , null , originalFileName, storedFileName , protectboardno );
             protectBoardFileMapper.insertFiles(protectBoardFileDto);

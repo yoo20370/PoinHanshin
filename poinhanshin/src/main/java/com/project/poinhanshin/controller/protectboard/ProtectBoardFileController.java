@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ProtectBoardFileController {
 
     @PostMapping("/protectboard/uploadFile")
     @ResponseBody
-    public int uploadFile(@RequestParam MultipartFile[] multipartFile, @RequestParam Integer protectboard_userno){
+    public int uploadFile(@RequestParam MultipartFile[] multipartFile, @RequestParam Integer protectboard_userno) throws IOException {
         System.out.println(Arrays.toString(multipartFile));
         System.out.println("uploadFile "+protectboard_userno);
         protectBoardFileService.insetFile(multipartFile , protectboard_userno);
