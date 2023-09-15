@@ -115,7 +115,7 @@ public class ProtectBoardController {
 
     @PostMapping("/regi")
     @ResponseBody
-    public ResponseEntity<String> regi(@RequestParam Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> regi(@RequestParam Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                      @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached
     ) throws IOException {
@@ -125,8 +125,8 @@ public class ProtectBoardController {
         if(protectboardDto.getProtectboardFile() != null){
             protectboardDto.setFileAttached(1);
         }
-        protectBoardService.insertProductBoard(protectboardDto);
-        return new ResponseEntity<String> ("성공적으로 등록되었습니다." , HttpStatus.OK);
+        Integer currentPbn = protectBoardService.insertProductBoard(protectboardDto);
+        return new ResponseEntity<Integer> ( currentPbn , HttpStatus.OK);
     }
 
     // 임보자 공고 등록

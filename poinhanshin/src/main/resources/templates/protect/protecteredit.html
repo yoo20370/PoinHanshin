@@ -22,8 +22,6 @@
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js" defer></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 
-
-
 </head>
 <script th:if="${msg} == 'NO_INSERT'">alert("게시글을 등록하지 못했습니다.")</script>
 <script th:if="${msg} == 'FAIL_INSERT'">alert("게시글을 등록 실패했습니다.")</script>
@@ -65,6 +63,7 @@
         <div th:if="${mode} == 'WRITE'">
             <!--글 작성-->
             <!-- protectstatus , protectboard_ani_category 값 설정하는 버튼 필요. -->
+            <input th:if="${mode} == 'WRITE'" type="hidden" name="protectboardno" id="writePbn"/>
             <input type="hidden" name="protectstatus" id="protectstatus" value="false"/>
             <input type="hidden" name="protectboard_ani_category" id="protectboard_ani_category" value="false"/>
             <input type="hidden" name="protectboard_ani_category" value="false"/>
@@ -254,7 +253,6 @@
 
     const mode = [[${mode}]];
 
-
     // document ready start
     $(document).ready(function(){
         // 수정 버튼 클릭시
@@ -277,7 +275,6 @@
 
             // input 데이터 가져오기 , ajax로 통신할 경우 input 태그를 사용할 이유가 없음 - 수정 필요.
             let protectboard_userno = $('input[name=protectboard_userno]').val();
-            let protectboardno = $('input[name=protectboardno]').val();
             let protectboard_title = $('#writeTitle').val();
             let protectboard_content = $('#writeContent').val();
             let breeds = $('#writeBreeds').val();
@@ -306,32 +303,43 @@
                 }
             }
                 // 폼 데이터 등록
-                formData.append("protectboard_userno" , protectboard_userno);
-                formData.append("protectboardno" , protectboardno);
-                formData.append("protectboard_title" , protectboard_title);
-                formData.append("protectboard_content",protectboard_content);
-                formData.append("breeds" , breeds);
-                formData.append("protectboard_ani_category" , protectboard_ani_category);
-                formData.append("protectstatus" , protectstatus);
-                formData.append("starttime" , new Date(starttime));
-                formData.append("deadline", new Date(deadline));
+            formData.append("protectboard_userno" , protectboard_userno);
+            formData.append("protectboard_title" , protectboard_title);
+            formData.append("protectboard_content",protectboard_content);
+            formData.append("breeds" , breeds);
+            formData.append("protectboard_ani_category" , protectboard_ani_category);
+            formData.append("protectstatus" , protectstatus);
+            formData.append("starttime" , new Date(starttime));
+            formData.append("deadline", new Date(deadline));
+            formData.append("fileAttached",fileAttached);
 
-                formData.append("fileAttached",fileAttached);
 
-                $.ajax({
-                    type : 'POST',
-                    url : '/protectboard/regi',
-                    data : formData,
-                    async : true,
-                    enctype: "multipart/form-data",
-                    processData : false,
-                    contentType : false,
-                    success :function(){},
-                    error : function(){}
-                });
+            let pbn;
+            $.ajax({
+                type : 'POST',
+                url : '/protectboard/regi',
+                data : formData,
+                async : false,
+                enctype: "multipart/form-data",
+                processData : false,
+                contentType : false,
+                success :function(data){
+                    pbn = data;
+                },
+                error : function(){}
+            });
+
+            $('#writePbn').val(pbn);
+
+            let form = $('#form');
+            /*form.attr("action",[[@{/protectboard/read(protectboardno = pbn , page=${sc.getPage()} , pageSize = ${sc.getPageSize()} , keyword=${sc.getKeyword()} ) } ]]);*/
+            form.attr( "action", [[@{/protectboard/read}]] );
+            form.attr("method","get");
+            form.submit();
+
+
 
         });
-
         if( [[${mode == 'MODIFY'}]] == true) {
             let toHtml = function (protectBoardFileDtoList) {
                 let tmp = '';
@@ -366,6 +374,7 @@
                 });
             }
 
+            // 댓글 삭제 버튼 클리시 ( dropzone 이전에 만든 것 )
             $(document).on("click", ".removeBtn", function () {
                 let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
                 $.ajax({
@@ -384,7 +393,6 @@
             showImgList();
         }
     // document ready end
-
     var submitted = false;
 
     $(document).ready(function() {
@@ -400,8 +408,6 @@
 
         };
     })});
-
-
     /*]]>*/
 </script>
 </body>

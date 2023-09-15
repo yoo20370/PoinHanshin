@@ -76,11 +76,11 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         // 게시물 등록
         protectBoardMapper.insertContent(protectBoardDto);
 
+        // 등록한 게시물 번호
+        Integer currentProtectboardno = protectBoardMapper.selectRecentBoardno(protectBoardDto.getProtectboard_userno());
+
         // 첨부 파일 있음
         if (protectBoardDto.getFileAttached() != 0) {
-
-            // 매개변수 protectBoardDto를 사용할 수 없는 이유 - 아직 protectboardno 값이 설정되지 않았기 때문
-            Integer currentProtectboardno = protectBoardMapper.selectRecentBoardno(protectBoardDto.getProtectboard_userno());
 
             // 다중 파일이기 때문
             for (MultipartFile protectboardFile : protectBoardDto.getProtectboardFile()) {
@@ -99,7 +99,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
                 protectBoardFileMapper.insertFiles(protectBoardFileDto);
             }
         }
-        return 1;
+        return currentProtectboardno;
     }
 
 
