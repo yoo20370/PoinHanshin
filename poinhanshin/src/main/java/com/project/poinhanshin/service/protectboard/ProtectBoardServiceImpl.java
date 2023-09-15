@@ -105,11 +105,11 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 게시물을 수정한다.
     @Override
     public int updateProductBoard(ProtectBoardDto protectBoardDto) throws IOException {
-        // 게시물 등록
+        // 게시물 수정
         protectBoardMapper.updateContent(protectBoardDto);
 
         // 첨부 파일 있음
-// 첨부 파일 있음
+        // 첨부 파일 수정
         if (protectBoardDto.getFileAttached() != 0) {
 
             // 다중 파일이기 때문

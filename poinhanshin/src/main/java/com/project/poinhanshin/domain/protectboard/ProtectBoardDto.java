@@ -22,7 +22,6 @@ public class ProtectBoardDto {
      private Integer protectboardno;    // PK, 임보자공고 게시물 번호
      private String protectboard_title; // 임보자 게시물 제목
      private String protectboard_content;   // sqltype : varchar, 공고내용
-     /*private byte[] protectboard_imagepath; // sqltype : longblob, 이미지 경로*/
      private String breeds;    // sqltype : varchar, 품종
      boolean protectboard_ani_category;  // 강아지 0 or 고양이 1
      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
