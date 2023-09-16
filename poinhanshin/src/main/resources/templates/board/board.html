@@ -42,7 +42,6 @@
 <span th:if="${boardDto.ani_category == 1 }" class="badge text-bg-primary">고양이</span>
 
 
-
     <div class="row">
         <div class="form-floating">
             <input type="text" readonly class="form-control-plaintext"T
@@ -73,8 +72,7 @@
     <div class="row">
         <span th:text="| 작성일 : ${boardDto.regDate}|">작성일:</span>
         <span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>
-<!--        dto에 작성자가 없음-->
-<!--        <span th:text="| 작성자 : ${boardDto.board_users_id}|">작성자:</span>-->
+        <span th:text="| 작성자 : ${boardDto.board_users_id}|">작성자:</span>
     </div>
 
 <!--댓글출력-->
@@ -111,7 +109,7 @@
                             <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
                             <input type="text"  name="comment" class="form-control" th:text="${commentDto.comment}">
                             <input type="hidden" name="pcno" th:value="${commentDto.cno}"/>
-<!--                            <input type="hidden" name="boardcomment_userno" th:value="${users.userno}"/>-->
+                            <input type="hidden" name="boardcomment_userno" th:value="${users.userno}"/>
                             <button type="submit" class="btn btn-outline-dark">댓글작성</button>
                             <br>
                         </div>
