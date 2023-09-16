@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -77,5 +79,30 @@ public class ProtectBoardFileController {
             e.printStackTrace();
             return new ResponseEntity<String>("Remove_ERROR" , HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // 첨부 파일 삭제
+    @DeleteMapping("/protectboard/img") // /protectboard/file/{dataurl}?=http://localhost:8080/upload/miletimes_filename.확장자
+    @ResponseBody
+    public ResponseEntity<String> remove(@RequestBody String dataURL) {
+
+        System.out.println(dataURL);
+
+        dataURL = dataURL.substring(41);
+        String stored_file_name = dataURL.substring(0 , dataURL.lastIndexOf(".jpg")+4);
+        System.out.println(stored_file_name);
+
+        String path = "/Users/yuyeong-u/fileStorage/protectboard/";
+
+        File file = new File(path + stored_file_name);
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        protectBoardFileService.deleteFile(stored_file_name);
+
+        return new ResponseEntity<String>("Remove_OK", HttpStatus.OK);
+
     }
 }

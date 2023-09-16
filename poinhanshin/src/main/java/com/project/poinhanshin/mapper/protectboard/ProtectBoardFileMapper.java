@@ -15,6 +15,8 @@ public interface ProtectBoardFileMapper {
 
     int deleteFile(Integer protectboardfileno );
 
+    int deleteFile2(String stored_file_name );
+
     int selectCnt(Integer protectboardfileno);
 
 }

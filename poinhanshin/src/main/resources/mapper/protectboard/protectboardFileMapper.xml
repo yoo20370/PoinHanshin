@@ -15,6 +15,10 @@
         DELETE FROM protectboardFile
         WHERE protectboardfileno = #{protectboardfileno}
     </delete>
+    <delete id="deleteFile2" parameterType="string">
+        DELETE FROM protectboardFile
+        WHERE stored_file_name = #{stored_file_name}
+    </delete>
     <select id="selectCnt" parameterType="int" resultType="int">
         SELECT COUNT(*)
         FROM protectboardFile

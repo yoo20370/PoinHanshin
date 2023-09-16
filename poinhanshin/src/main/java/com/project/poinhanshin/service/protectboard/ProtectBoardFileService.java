@@ -16,6 +16,8 @@ public interface ProtectBoardFileService {
     // 이미지 삭제 
     int deleteFile(Integer protectboardfileno );
 
+    int deleteFile(String stored_file_name );
+
     // 게시물 이미지 개수 카운트
 
     int selectCnt(Integer protectboardfileno);

@@ -176,6 +176,7 @@
                 console.log('최초 실행');
                 let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
             },
+
         });
     })
 </script>
@@ -205,6 +206,7 @@
     }*/
 
     // 해당 게시물의 첨부파일 데이터를 DB에서 가져온다.
+
     let showImgList = function () {
         $.ajax({
             type: 'GET',
@@ -248,6 +250,24 @@
 
     // document ready start
     $(document).ready(function(){
+
+        dropzone.on("removedfile" , function(dataURL){
+            $.ajax({
+                type : 'DELETE',
+                url : '/protectboard/img',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(dataURL,["dataURL"]),
+                success: function(data){
+                    console.log(data)
+                },
+                error: function(request ,status , error){
+                    console.log("code: " + request.status)
+                    console.log("message: " + request.responseText)
+                    console.log("error: " + error);
+                }
+            })
+        })
 
         // 수정 버튼 클릭시
         $("#submitBtn").on("click",function(){

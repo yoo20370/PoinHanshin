@@ -37,6 +37,11 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
     }
 
     @Override
+    public int deleteFile(String stored_file_name) {
+        return protectBoardFileMapper.deleteFile2(stored_file_name);
+    }
+
+    @Override
     public int selectCnt(Integer protectboardfileno) {
         return protectBoardFileMapper.selectCnt(protectboardfileno);
     }
