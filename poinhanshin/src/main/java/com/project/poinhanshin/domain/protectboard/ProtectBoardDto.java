@@ -22,7 +22,6 @@ public class ProtectBoardDto {
      private Integer protectboardno;    // PK, 임보자공고 게시물 번호
      private String protectboard_title; // 임보자 게시물 제목
      private String protectboard_content;   // sqltype : varchar, 공고내용
-     /*private byte[] protectboard_imagepath; // sqltype : longblob, 이미지 경로*/
      private String breeds;    // sqltype : varchar, 품종
      boolean protectboard_ani_category;  // 강아지 0 or 고양이 1
      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -33,6 +32,7 @@ public class ProtectBoardDto {
      @JsonFormat(pattern="yyyy-MM-dd HH:mm")
      /*@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")*/
      private Date starttime; // util.Date : date, 공고 시작일
+
      @JsonFormat(pattern="yyyy-MM-dd HH:mm")
      /*@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")*/
      private Date deadline; // util.Date : date, 마감날짜
@@ -47,7 +47,7 @@ public class ProtectBoardDto {
      // 파일 첨부 여부(첨부 1,  미첨부 0) , boolean로 할 경우 엔티티(DB)에서 손이 많이 가게 됨
      private int fileAttached;
 
-     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline, int fileAttached) {
+     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline,  int fileAttached) {
           this.protectboard_userno = protectboard_userno;
           this.protectboardno = protectboardno;
           this.protectboard_title = protectboard_title;

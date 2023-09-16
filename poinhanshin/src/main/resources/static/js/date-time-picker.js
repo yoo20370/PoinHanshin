@@ -34,7 +34,7 @@
         var endDate = $('#endDate2');
         startDate.datetimepicker({
             lang: 'ko',
-            format: 'Y-m-d H:i',
+            format: 'Y-m-d H:i:s',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
@@ -45,7 +45,7 @@
         });
         endDate.datetimepicker({
             lang: 'ko',
-            format: 'Y-m-d H:i',
+            format: 'Y-m-d H:i:s',
             scrollMonth: false,
             scrollInput: false,
             onShow: function (ct) {
