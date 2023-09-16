@@ -28,6 +28,7 @@
   .pet-image{
 
   }
+
 </style>
 <body layout:fragment="content">
 <div class="page">
@@ -60,6 +61,18 @@
         </div>
     </div>
 
+    <div class="ph-wrapper">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group m-auto btn-group-sm" role="group" aria-label="First group">
+                <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/api/AnimalList'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
+                <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+
+                    <button type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/api/AnimalList'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+                </th:block>
+                <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/api/AnimalList'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
+            </div>
+        </div>
+    </div>
 
 
 </div>
@@ -99,21 +112,26 @@
     </span>
 </div>-->
 
-<div style=" position:absolute; right:40%;">
-    <span th:if="${ph.showPrev}">
-                <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
-    </span>
-    <span th:if="${ph.totalCnt != 0}">
-        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-            <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(i)}}">
-                <span th:text="${i}"/>
-            </a>
-        </span>
-    </span>
-    <span th:if="${ph.showNext}">
-                <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
-    </span>
-</div>
+
+
+
+
+
+<!--<div style=" position:absolute; right:40%;">-->
+<!--    <span th:if="${ph.showPrev}">-->
+<!--                <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>-->
+<!--    </span>-->
+<!--    <span th:if="${ph.totalCnt != 0}">-->
+<!--        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">-->
+<!--            <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(i)}}">-->
+<!--                <span th:text="${i}"/>-->
+<!--            </a>-->
+<!--        </span>-->
+<!--    </span>-->
+<!--    <span th:if="${ph.showNext}">-->
+<!--                <a th:href="@{'/api/AnimalList'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>-->
+<!--    </span>-->
+<!--</div>-->
 
 
 </body>

@@ -85,13 +85,13 @@
                         </span>
 
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:value="${protectboard.starttime}"/>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:mm')}"/>
                         <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
 
                         </span>
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일"/>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:value="${protectboard.deadline}"/>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:mm')}"/>
 
 
                     </div>
@@ -174,7 +174,7 @@
             <input type="file" id="btnAtt" class="form-control" name="protectboardFile" multiple="multiple" style="display:none;" accept=".gif, .jpg, .png"  />
             <div id='att_zone' class="row row-col-sm-2 form-control" style="z-index:-1"></div>
 
-
+W
         <div class="row p-5">
             <div class="col-auto mr-auto"></div>
             <div class="d-grid col-1 mx-auto">

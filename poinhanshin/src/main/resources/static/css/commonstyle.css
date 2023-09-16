@@ -22,6 +22,10 @@
        height: 100%;
 
    }
+   body{
+
+   }
+
   .page {
 
         min-height:100vh;
@@ -34,7 +38,11 @@
         border-radius:10px;
         border-bottom-width: 2px;
         padding-bottom: 20px;
-        box-shadow:2px 2px 2px 2px #BFACE2;
+        box-shadow:2px 2px 2px 2px  #B1E1FF;
+
+    }
+    .page-wrapper-box{
+        background: linear-gradient(#A66CFF,#9C9EFE,#AFB4FF)
     }
    .chart{
 
@@ -121,4 +129,5 @@
 
 
 
-    /*#6F61C0 #A084E8 #8BE8E5 #D5FFE4 색팔레트  코드메모용 https://colorhunt.co/palette/6f61c0a084e88be8e5d5ffe4 */
+    /*#6F61C0 #A084E8 #8BE8E5 #D5FFE4 색팔레트  코드메모용 https://colorhunt.co/palette/6f61c0a084e88be8e5d5ffe4
+     #A66CFF  #9C9EFE #AFB4FF #B1E1FF*/
