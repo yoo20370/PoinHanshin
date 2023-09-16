@@ -22,6 +22,6 @@
     <select id="selectCnt" parameterType="int" resultType="int">
         SELECT COUNT(*)
         FROM protectboardFile
-        WHERE protectboardfileno = #{protectboardfileno}
+        WHERE protectboardno = #{protectboardno}
     </select>
 </mapper>

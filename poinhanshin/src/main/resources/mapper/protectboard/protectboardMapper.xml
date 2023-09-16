@@ -21,7 +21,7 @@
     </insert>
     <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         UPDATE protectboard
-        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} , fileAttached = #{fileAttached} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus} , starttime = #{starttime} , deadline = #{deadline}
+        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus} , starttime = #{starttime} , deadline = #{deadline} , fileAttached = #{fileAttached}
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </update>
     <delete id="deleteContent" parameterType="map">

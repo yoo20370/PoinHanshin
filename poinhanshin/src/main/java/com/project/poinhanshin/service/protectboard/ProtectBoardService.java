@@ -36,6 +36,8 @@ public interface ProtectBoardService {
 
     int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
+    void addImgFiles(ProtectBoardDto protectBoardDto) throws IOException;
+
 
 
 }

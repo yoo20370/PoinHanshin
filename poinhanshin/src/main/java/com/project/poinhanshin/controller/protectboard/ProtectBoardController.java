@@ -3,6 +3,7 @@ package com.project.poinhanshin.controller.protectboard;
 import com.project.poinhanshin.domain.etc.PageHandler1;
 import com.project.poinhanshin.domain.etc.SearchCondition1;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
+import com.project.poinhanshin.service.protectboard.ProtectBoardFileServiceImpl;
 import com.project.poinhanshin.service.protectboard.ProtectBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -165,16 +166,10 @@ public class ProtectBoardController {
     public ResponseEntity<Integer> protectBoardModify(@RequestParam Integer protectboard_userno ,@RequestParam(required = false) Integer protectboardno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                                                       @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                                                       @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached) throws IOException {
-        ProtectBoardDto protectboardDto = new ProtectBoardDto(protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
-        protectboardDto.setProtectboardFile(protectboardFile);
+        ProtectBoardDto protectBoardDto = new ProtectBoardDto(protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+        protectBoardDto.setProtectboardFile(protectboardFile);
 
-        // 첨부 파일이 있는 경우 fileAttached 값을 변경해준다.
-        if(protectboardDto.getProtectboardFile() != null){
-            protectboardDto.setFileAttached(1);
-        }
-        System.out.println("modify"+protectboardDto);
-        //protectBoardService.updateProductBoard(protectboardDto);
-
+        protectBoardService.updateProductBoard(protectBoardDto);
         return new ResponseEntity<Integer>( protectboardno , HttpStatus.OK);
 
     }

@@ -40,7 +40,7 @@ public class ProtectBoardFileMapperImpl implements ProtectBoardFileMapper{
     }
 
     @Override
-    public int selectCnt(Integer protectboardfileno) {
-        return sqlSession.selectOne(namespace+"selectCnt",protectboardfileno );
+    public int selectCnt(Integer protectboardno) {
+        return sqlSession.selectOne(namespace+"selectCnt",protectboardno );
     }
 }

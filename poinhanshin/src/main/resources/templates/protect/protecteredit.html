@@ -161,7 +161,7 @@
             thumbnailHeight: 120, // Upload icon size
             thumbnailWidth: 120, // Upload icon size
 
-            maxFiles: 10, // 업로드 파일수
+            maxFiles: 4, // 업로드 파일수
             maxFilesize: 100000, // 최대업로드용량 : 100MB
             paramName: 'file', // 서버에서 사용할 formdata 이름 설정 (default는 file)
             parallelUploads: 1, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 넘긴다.)
@@ -176,7 +176,6 @@
                 console.log('최초 실행');
                 let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
             },
-
         });
     })
 </script>
@@ -184,26 +183,8 @@
     /*<![CDATA[*/
 
     let pageMode = [[${mode}]];
-
-
     let currentFileAttached = $('input[name=fileAttached]').val();
     let protectbn = $('input[name=protectboardno]').val();
-
-    //
-    /*let toHtml = function (protectBoardFileDtoList) {
-        let tmp = '';
-        protectBoardFileDtoList.forEach(function (protectBoardFileDto) {
-            tmp += '<span>';
-            tmp += '<td>';
-            tmp += '<img width="100px" height="100px" src="/upload/'+protectBoardFileDto.stored_file_name+'" alt="이미지 없음" />';
-            tmp += '</td>';
-            tmp += '<td data-protectboardfileno='+ protectBoardFileDto.protectboardfileno + ' >';
-            tmp += '<button type="button" class="removeBtn" id="btn'+protectBoardFileDto.protectboardfileno+'">삭제</button>';
-            tmp += '</td>';
-            tmp += '</span>';
-        });
-        return tmp;
-    }*/
 
     // 해당 게시물의 첨부파일 데이터를 DB에서 가져온다.
 
@@ -213,7 +194,6 @@
             url: '/protectboard/file?protectboardno=' + protectbn,
             dataType: 'json',
             success: function (protectBoardFileDtoList) {
-                //$('#attachTable').html(toHtml(protectBoardFileDtoList));
                 displayImg(protectBoardFileDtoList)
             },
             error: function () {alert("ERROR"); }
@@ -226,35 +206,17 @@
             dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/'+protectBoardFileDto.stored_file_name);
         });
     }
-
-
-    $(document).on("click", ".removeBtn" ,function(){
-        let protectboardfileno = $(this).parent().attr('data-protectboardfileno');
-        $.ajax({
-            type : 'DELETE',
-            url : '/protectboard/file/'+protectboardfileno,
-            success : function(str){
-                alert(str);
-                showImgList();
-                return;
-            },
-            error : function(){
-                alert("ERROR");
-            }
-        })
-    });
-
-    // 첨부파일 데이터 가져오기 함수 실행
-    showImgList()
-
+    // 첨부파일 드롭존에 전달
+    showImgList();
 
     // document ready start
     $(document).ready(function(){
 
+        // 드롭존 파일 제거시 실제 경로와 DB에서 제거
         dropzone.on("removedfile" , function(dataURL){
             $.ajax({
                 type : 'DELETE',
-                url : '/protectboard/img',
+                url : '/protectboard/remove',
                 headers : {"content-type" : "application/json"},
                 dataType : 'text',
                 data : JSON.stringify(dataURL,["dataURL"]),
@@ -331,11 +293,10 @@
                 error : function(){}
             });
 
-
-            /*let form = $('#form');
-            form.attr("action", [[@{/protectboard/modify}]]);
-            form.attr("method","post");
-            form.submit();*/
+            let form = $('#form');
+            form.attr("action", [[@{/protectboard/read}]]);
+            form.attr("method","get");
+            form.submit();
         });
 
         let setQueryString = function(key , value){

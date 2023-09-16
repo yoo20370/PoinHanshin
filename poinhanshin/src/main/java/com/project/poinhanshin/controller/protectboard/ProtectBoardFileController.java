@@ -82,27 +82,27 @@ public class ProtectBoardFileController {
     }
 
     // 첨부 파일 삭제
-    @DeleteMapping("/protectboard/img") // /protectboard/file/{dataurl}?=http://localhost:8080/upload/miletimes_filename.확장자
+    @DeleteMapping("/protectboard/remove")
     @ResponseBody
     public ResponseEntity<String> remove(@RequestBody String dataURL) {
 
-        System.out.println(dataURL);
+        // 기존 사진을 제거한 경우
+        if(dataURL.length() < 100){
+            dataURL = dataURL.substring(41);
+            String stored_file_name = dataURL.substring(0 , dataURL.lastIndexOf(".jpg")+4);
+            System.out.println(stored_file_name);
 
-        dataURL = dataURL.substring(41);
-        String stored_file_name = dataURL.substring(0 , dataURL.lastIndexOf(".jpg")+4);
-        System.out.println(stored_file_name);
+            String path = "/Users/yuyeong-u/fileStorage/protectboard/";
 
-        String path = "/Users/yuyeong-u/fileStorage/protectboard/";
+            File file = new File(path + stored_file_name);
 
-        File file = new File(path + stored_file_name);
+            if (file.exists()) {
+                file.delete();
+            }
 
-        if (file.exists()) {
-            file.delete();
+            protectBoardFileService.deleteFile(stored_file_name);
+            return new ResponseEntity<String>("Remove_existing_file", HttpStatus.OK);
         }
-
-        protectBoardFileService.deleteFile(stored_file_name);
-
-        return new ResponseEntity<String>("Remove_OK", HttpStatus.OK);
-
+        return new ResponseEntity<String>("Remove_new_file", HttpStatus.OK);
     }
 }
