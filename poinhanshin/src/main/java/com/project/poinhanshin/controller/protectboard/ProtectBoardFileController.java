@@ -92,14 +92,6 @@ public class ProtectBoardFileController {
             String stored_file_name = dataURL.substring(0 , dataURL.lastIndexOf(".jpg")+4);
             System.out.println(stored_file_name);
 
-            String path = "/Users/yuyeong-u/fileStorage/protectboard/";
-
-            File file = new File(path + stored_file_name);
-
-            if (file.exists()) {
-                file.delete();
-            }
-
             protectBoardFileService.deleteFile(stored_file_name);
             return new ResponseEntity<String>("Remove_existing_file", HttpStatus.OK);
         }

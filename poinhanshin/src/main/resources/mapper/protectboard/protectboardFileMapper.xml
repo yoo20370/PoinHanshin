@@ -7,6 +7,11 @@
         FROM protectboardFile
         WHERE protectboardno = #{protectboardno}
     </select>
+    <select id="selectFilesName">
+        SELECT stored_file_name
+        FROM protectboardFile
+        WHERE protectboardno = #{protectboardno}
+    </select>
     <insert id="insertFiles" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto">
         INSERT INTO protectboardFile ( reg_date , original_file_name , stored_file_name , protectboardno , fileSize)
         VALUES( now() , #{original_file_name} , #{stored_file_name} , #{protectboardno} , #{fileSize} )

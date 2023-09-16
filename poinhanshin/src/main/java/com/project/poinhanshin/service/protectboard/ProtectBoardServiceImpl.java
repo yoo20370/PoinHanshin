@@ -135,8 +135,27 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
 
     // 게시물을 삭제한다.
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteProductBoard(Integer bno, Integer LoginId) {
-        return protectBoardMapper.deleteContent(bno ,LoginId);
+
+        // 저장된 이미지 이름 목록 가져오기 
+        List<String> filesName = protectBoardFileMapper.selectFilesName(bno);
+
+        // 게시물 삭제 ( 게시물 먼저 삭제하면 DB 데이터 사라짐 )
+        int result = protectBoardMapper.deleteContent(bno ,LoginId);
+
+        // 로컬 저장소에서 이미지 파일 삭제
+        if( result == 1){
+            String path = "/Users/yuyeong-u/fileStorage/protectboard/";
+            for(String fileName : filesName){
+                File file = new File(path + fileName);
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+        }
+
+        return result;
     }
 
     // 검색된 게시물의 개수를 읽어온다.
@@ -157,6 +176,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return protectBoardMapper.selectRecentBoardno(protectboard_userno);
     }
 
+    // 파일 존재 여부 값 수정
     @Override
     public int updateFileAttached(Integer protectboardno, Integer fileAttached) {
         return protectBoardMapper.updateFileAttached(protectboardno,fileAttached);

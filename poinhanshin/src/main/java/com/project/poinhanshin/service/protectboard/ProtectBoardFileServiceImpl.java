@@ -38,7 +38,19 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
 
     @Override
     public int deleteFile(String stored_file_name) {
-        return protectBoardFileMapper.deleteFile2(stored_file_name);
+
+        // 이미지 파일 제거
+        int result = protectBoardFileMapper.deleteFile2(stored_file_name);
+
+        // 이미지 파일 제거 성공시
+        if(result == 1){
+            String path = "/Users/yuyeong-u/fileStorage/protectboard/";
+            File file = new File(path + stored_file_name);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        return result;
     }
 
     @Override

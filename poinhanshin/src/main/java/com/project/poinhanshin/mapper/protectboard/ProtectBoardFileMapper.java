@@ -19,4 +19,6 @@ public interface ProtectBoardFileMapper {
 
     int selectCnt(Integer protectboardno);
 
+    List<String> selectFilesName(Integer protectboardno);
+
 }
