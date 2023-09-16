@@ -189,6 +189,29 @@
     // document ready start
     $(document).ready(function(){
 
+        let formCheck = function(){
+            if($('#breeds').val().trim() == ""){
+                alert("품종을 입력해주세요.");
+                return false;
+            }
+            if($('#startDate').val().trim() == ""){
+                alert("시작일을 입력해주세요.");
+                return false;
+            }
+            if($('#endDate').val().trim() == ""){
+                alert("종료일을 입력해주세요.")
+                return false;
+            }
+            if($('#protectboard_title').val().trim() == ""){
+                alert("제목을 입력해주세요.");
+                return false;
+            }
+            if($('#protectboard_content').val().trim()==""){
+                alert("내용을 입력해주세요.");
+                return false;
+            }
+            return true;
+        }
         let setQueryString = function(key , value){
             let str = key+'='+value+'&';
             return str;
@@ -196,6 +219,9 @@
 
         // 등록 버튼 클릭시, 게시물 데이터와 이미지 정보를 전송하여 게시물 등록 후 이미지 데이터 저장
         $("#submitBtn").on("click",function(){
+            if(!formCheck()){
+                return false;
+            }
             if(!confirm("등록하시겠습니까 ?")) return;
             console.log("게시물 등록 및 이미지 업로드");
 
