@@ -63,7 +63,7 @@
                                     <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
                                     <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
 
-                                    <span class="badge rounded-pill text-bg-warning" th:text="${#temporals.format(protectboard.deadline, 'yyyy-MM-dd')}"> 남은날짜 : 2023-08-01</span>
+                                    <span class="badge rounded-pill text-bg-warning" th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}"> 남은날짜 : 2023-08-01</span>
                                     <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}">D-1일</span>
                                     <p class="card-text" th:text="|${#strings.substring(protectboard.protectboard_title,0,10)}...|">제목</p>
                 <!--<p class="card-text" th:text="${protectboard.protectboard_content}">내용</p>-->
