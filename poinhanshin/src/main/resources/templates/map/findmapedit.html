@@ -8,7 +8,7 @@
     <title>게시물 수정</title>
     <link rel="stylesheet" type="text/css" href="css/mapst.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body layout:fragment="content">
 <div class="container">
@@ -41,11 +41,8 @@
                 <!-- 지역 선택 드롭다운 필터 -->
                 <div class="mb-3">
                     <label class="form-label" for="locatin-filter">지역 선택:</label>
-                    <select class="form-select" id="locatin-filter">
-                        <option value="all">전체</option>
-                        <option value="강남">신고자</option>
-                        <option value="발견자">발견자</option>
-                    </select>
+                        <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+                        <input type="text" id="locatin-filter" placeholder="지역">
                 </div>
             </div>
         </div>
@@ -96,6 +93,61 @@
             window.location.href = 'findmaplistdetail.html';
         }
     });
+//주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+        function map_Postcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+             document.getElementById('locatin-filter').value = data.bname;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("locatin-filter").focus();
+            }
+        }).open();
+<!--     반환데이터참고용   -->
+<!--        postcode: ""-->
+<!--postcode1: ""-->
+<!--postcode2: ""-->
+<!--postcodeSeq: ""-->
+<!--zonecode: "06035"-->
+<!--address: "서울 강남구 가로수길 5"-->
+<!--addressEnglish: "5, Garosu-gil, Gangnam-gu, Seoul, Korea"-->
+<!--addressType: "R"-->
+<!--bcode: "1168010700"-->
+<!--bname: "신사동"-->
+<!--bnameEnglish: "Sinsa-dong"-->
+<!--bname1: ""-->
+<!--bname1English: ""-->
+<!--bname2: "신사동"-->
+<!--bname2English: "Sinsa-dong"-->
+<!--sido: "서울"-->
+<!--sidoEnglish: "Seoul"-->
+<!--sigungu: "강남구"-->
+<!--sigunguEnglish: "Gangnam-gu"-->
+<!--sigunguCode: "11680"-->
+<!--userLanguageType: "K"-->
+<!--query: "서울특별시 강남구 "-->
+<!--buildingName: ""-->
+<!--buildingCode: "1168010700105370005011918"-->
+<!--apartment: "N"-->
+<!--jibunAddress: ""-->
+<!--jibunAddressEnglish: ""-->
+<!--roadAddress: "서울 강남구 가로수길 5"-->
+<!--roadAddressEnglish: "5, Garosu-gil, Gangnam-gu, Seoul, Korea"-->
+<!--autoRoadAddress: ""-->
+<!--autoRoadAddressEnglish: ""-->
+<!--autoJibunAddress: "서울 강남구 신사동 537-5"-->
+<!--autoJibunAddressEnglish: "537-5, Sinsa-dong, Gangnam-gu, Seoul, Korea"-->
+<!--userSelectedType: "R"-->
+<!--noSelected: "N"-->
+<!--hname: ""-->
+<!--roadnameCode: "4858362"-->
+<!--roadname: "가로수길"-->
+<!--roadnameEnglish: "Garosu-gil"-->
+    }
+
+
+
 </script>
 </body>
 </html>
