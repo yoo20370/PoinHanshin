@@ -52,7 +52,7 @@
             <!--글 수정-->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
-            <input type="datetime-local" name="protectboard_reg_date" th:value="${protectboard.getProtectboard_reg_date()}" hidden="hidden"/>
+            <input type="date" name="protectboard_reg_date" th:value="${protectboard.getProtectboard_reg_date()}" hidden="hidden"/>
             <input th:if="${mode} == 'MODIFY'" type="hidden" name="protectboardno"  th:value="${protectboard.getProtectboardno()}"/>
         </div>
 
@@ -85,13 +85,13 @@
                         </span>
 
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="startDate" name="starttime" readonly placeholder="시작일"/>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:text="${protectboard.starttime}"/>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="startDate2" name="starttime" readonly th:value="${protectboard.starttime}"/>
                         <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
 
                         </span>
                         <input th:if="${mode} == 'WRITE'" type="text" class="form-control" id="endDate" name="deadline" readonly  placeholder="종료일"/>
-                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:text="${protectboard.deadline}"/>
+                        <input th:if="${mode} == 'MODIFY'" type="text" class="form-control" id="endDate2" name="deadline" readonly  th:value="${protectboard.deadline}"/>
 
 
                     </div>

@@ -7,7 +7,6 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,14 +24,14 @@ public class ProtectBoardDto {
      private String breeds;    // sqltype : varchar, 품종
      boolean protectboard_ani_category;  // 강아지 0 or 고양이 1
      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-     private LocalDateTime protectboard_reg_date;    // util.Date : date, 임보자 게시물 작성날짜
+     private Date protectboard_reg_date;    // util.Date : date, 임보자 게시물 작성날짜
      boolean protectstatus;    // 공고중 확인, 공고중 0 or 공고완료 1
 
      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-     private LocalDateTime starttime; // util.Date : date, 공고 시작일
+     private Date starttime; // util.Date : date, 공고 시작일
      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 
-     private LocalDateTime deadline; // util.Date : date, 마감날짜
+     private Date deadline; // util.Date : date, 마감날짜
 
      // 이미지 저장 관련 멤버변수
      // html -> Controller 파일 담는 용도
@@ -44,7 +43,7 @@ public class ProtectBoardDto {
      // 파일 첨부 여부(첨부 1,  미첨부 0) , boolean로 할 경우 엔티티(DB)에서 손이 많이 가게 됨
      private int fileAttached;
 
-     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, String breeds, boolean protectboard_ani_category, LocalDateTime protectboard_reg_date, boolean protectstatus, LocalDateTime starttime, LocalDateTime deadline, int fileAttached) {
+     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline, int fileAttached) {
           this.protectboard_userno = protectboard_userno;
           this.protectboardno = protectboardno;
           this.protectboard_title = protectboard_title;
