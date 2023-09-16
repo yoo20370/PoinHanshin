@@ -166,8 +166,17 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
 
     // 검색된 게시물 리스트를 읽어온다.
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ProtectBoardDto> searchResultList(SearchCondition1 sc) {
-        return protectBoardMapper.searchResultList(sc);
+        // 리스트 목록을 가져온다.
+        List<ProtectBoardDto> protectBoardDtoList = protectBoardMapper.searchResultList(sc);
+
+        // 각 게시물의 이미지의 StoredFileName 가져와서 각 ProtectBoardDto에 저장
+        for(ProtectBoardDto protectBoardDto : protectBoardDtoList){
+            List<String> storedFileName = protectBoardFileMapper.selectFilesName(protectBoardDto.getProtectboardno());
+            protectBoardDto.setStoredFileName(storedFileName);
+        }
+        return protectBoardDtoList;
     }
 
     // 최근 등록한 게시물의 번호를 읽어온다.
