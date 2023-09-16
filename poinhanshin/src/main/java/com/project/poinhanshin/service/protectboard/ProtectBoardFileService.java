@@ -13,15 +13,12 @@ public interface ProtectBoardFileService {
     // 이미지 불러오기
     List<ProtectBoardFileDto> selectFiles(Integer protectboardno);
 
-    // 이미지 삭제 
-    int deleteFile(Integer protectboardfileno );
-
+    // 이미지 삭제
     int deleteFile(String stored_file_name );
 
     // 게시물 이미지 개수 카운트
-
     int selectCnt(Integer protectboardfileno);
 
-
+    // 이미지 저장
     int insetFile(MultipartFile[] multipartFile, Integer protectboard_userno) throws IOException;
 }

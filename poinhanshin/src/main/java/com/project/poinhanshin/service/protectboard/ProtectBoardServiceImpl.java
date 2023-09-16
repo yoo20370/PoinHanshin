@@ -138,7 +138,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     @Transactional(rollbackFor = Exception.class)
     public int deleteProductBoard(Integer bno, Integer LoginId) {
 
-        // 저장된 이미지 이름 목록 가져오기 
+        // 저장된 이미지 이름 목록 가져오기
         List<String> filesName = protectBoardFileMapper.selectFilesName(bno);
 
         // 게시물 삭제 ( 게시물 먼저 삭제하면 DB 데이터 사라짐 )
@@ -182,7 +182,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return protectBoardMapper.updateFileAttached(protectboardno,fileAttached);
     }
 
-    // 이미지 등록 메서드
+    // 이미지 등록을 위한 메서드
     @Override
     public void addImgFiles(ProtectBoardDto protectBoardDto) throws IOException {
         for (MultipartFile protectboardFile : protectBoardDto.getProtectboardFile()) {
@@ -201,7 +201,5 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
             protectBoardFileMapper.insertFiles(protectBoardFileDto);
         }
     }
-
-
 }
 

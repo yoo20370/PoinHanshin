@@ -12,38 +12,40 @@ public class ProtectBoardFileMapperImpl implements ProtectBoardFileMapper{
 
     SqlSession sqlSession;
 
+    // 의존성 주입
     @Autowired
     public ProtectBoardFileMapperImpl(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 
+    // namespace 정의
     private String namespace = "com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper.";
 
+    // 이미지 파일들을 읽어온다.
     @Override
     public List<ProtectBoardFileDto> selectFiles(Integer protectboardno) {
         return sqlSession.selectOne(namespace+"selectFiles" , protectboardno);
     }
 
+    // 이미지 파일들을 등록한다.
     @Override
     public int insertFiles(ProtectBoardFileDto protectBoardFileDto) {
         return sqlSession.insert(namespace+"insertFiles" , protectBoardFileDto);
     }
 
+    // 이미지 파일들을 삭제한다.
     @Override
-    public int deleteFile(Integer protectboardfileno) {
-        return sqlSession.delete(namespace+"deleteFile" , protectboardfileno);
+    public int deleteFile(String stored_file_name) {
+        return sqlSession.delete(namespace+"deleteFile",stored_file_name );
     }
 
-    @Override
-    public int deleteFile2(String stored_file_name) {
-        return sqlSession.delete(namespace+"deleteFile2",stored_file_name );
-    }
-
+    // 게시물의 이미지 개수를 읽어온다.
     @Override
     public int selectCnt(Integer protectboardno) {
         return sqlSession.selectOne(namespace+"selectCnt",protectboardno );
     }
 
+    // 게시물의 파일들의 이름을 읽어온다.
     @Override
     public List<String> selectFilesName(Integer protectboardno) {
         return sqlSession.selectList(namespace+"selectFilesName",protectboardno);

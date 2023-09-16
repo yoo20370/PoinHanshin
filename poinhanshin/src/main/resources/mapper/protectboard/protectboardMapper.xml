@@ -2,13 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper">
-    <select id="animalFilterList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT *
-        FROM protectboard
-        WHERE protectboard_ani_category = #{protectboard_ani_category}
-        ORDER BY deadline ASC , protectboardno ASC
-        LIMIT #{offset} , #{pageSize}
-    </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
         FROM protectboard
