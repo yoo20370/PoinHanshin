@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -38,16 +39,26 @@ public class BoardServiceImpl implements BoardService{
     // 검색된 게시물 리스트를 가져온다.
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<BoardDto> bringBoardList(SearchCondition sc) {
+    public HashMap bringBoardList(SearchCondition sc) {
         // 리스트 목록을 가져온다.
         List<BoardDto> boardDtoList = boardMapper.boardSearchResultList(sc);
+        List<BoardDto> topBoardDtoList = boardMapper.selectViewCntTop();
 
         // 각 게시물의 이미지들을 가져와 boardDto에 저장
         for(BoardDto boardDto : boardDtoList ){
             List<String> storedFileName = boardFileMapper.boardSelectFileName(boardDto.getBoardno());
             boardDto.setStoredFileName(storedFileName);
         }
-        return boardDtoList;
+        for(BoardDto boardDto : topBoardDtoList){
+            List<String> storedFileName = boardFileMapper.boardSelectFileName(boardDto.getBoardno());
+            boardDto.setStoredFileName(storedFileName);
+        }
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("boardDtoList" , boardDtoList);
+        hashMap.put("topBoardDtoList", topBoardDtoList);
+
+        return hashMap;
     }
 
     // 특정 게시물 하나 가져오기

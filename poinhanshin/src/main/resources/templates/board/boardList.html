@@ -102,9 +102,9 @@
     </div>-->
 <div class="row justify-content-center p-3">
     <span class="card gap-3" style="width: 15rem;">
-        <div class="card-body">
-          <h5 class="card-title">제목</h5>
-          <p class="card-text">내용</p>
+        <div class="card-body" th:each="topBoardDto : ${topBoardDtoList}">
+          <h5 class="card-title" th:text="${topBoardDto.board_title}">제목</h5>
+          <p class="card-text" th:text="${topBoardDto.board_content}">내용</p>
           <p class="card-subtitle sm-1 text-end">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                  class="bi bi-chat-right-heart-fill" viewBox="0 0 16 16">

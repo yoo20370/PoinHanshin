@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -35,12 +36,16 @@ public class BoardController {
     @GetMapping("/list")
     public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg){
 
-        List<BoardDto> boardDtoList = boardService.bringBoardList(sc);
+        HashMap hashMap = boardService.bringBoardList(sc);
+        List<BoardDto> boardDtoList = (List<BoardDto>)hashMap.get("boardDtoList");
+        List<BoardDto> topBoardDtoList = (List<BoardDto>)hashMap.get("topBoardDtoList");
+
         int totalCnt = boardService.bringBoarndListCnt(sc);
 
         PageHandler ph = new PageHandler(totalCnt , sc);
 
         m.addAttribute("boardDtoList" , boardDtoList );
+        m.addAttribute("topBoardDtoList" , topBoardDtoList);
         m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("sc",sc);
         m.addAttribute("ph",ph);
