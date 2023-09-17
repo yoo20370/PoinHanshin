@@ -2,6 +2,7 @@ package com.project.poinhanshin.controller.mbti;
 
 import com.project.poinhanshin.domain.api.Abandoned_animal;
 
+import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.etc.ApiExplorer;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.io.IOException;
 
@@ -24,7 +26,10 @@ public class MBTIController {
     }
 
     @GetMapping("/main")
-    public String mbti(Model m) throws IOException, ParseException {
+    public String mbti(Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
+
+        m.addAttribute("loginUser", loginUser);
+
         Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","","","","","","","","1","6");
 
         m.addAttribute("AAArr",abandoned_animal);
