@@ -27,12 +27,12 @@ public class LoginController {
         this.userDao = userDao;
     }
 
-    @GetMapping("/register")
+    @GetMapping("/members/add")
     public String addForm(@ModelAttribute("user") User user) {
         return "login/registerForm";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/members/add")
     public String add(User user, BindingResult bindingResult) {
         if (user.getId().trim().length() == 0) {
             bindingResult.reject("id_null", "아이디를 입력하세요");

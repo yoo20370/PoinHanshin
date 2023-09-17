@@ -2,6 +2,7 @@ package com.project.poinhanshin.controller.protectboard;
 
 import com.project.poinhanshin.domain.etc.PageHandler;
 import com.project.poinhanshin.domain.etc.SearchCondition;
+import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.protectboard.ProtectBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,12 @@ public class ProtectBoardController {
 
     // 임보자 게시물 리스트
     @GetMapping("/list")
-    public String protectBoardList (SearchCondition sc , Model m , @ModelAttribute("msg") String msg
-                                    //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+    public String protectBoardList (SearchCondition sc , Model m , @ModelAttribute("msg") String msg,
+                                    @SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+
+        m.addAttribute("loginUser", loginUser); // 로그인 이식
+
         System.out.println(sc);
         // 모든 임보자 게시물을 읽어온다.
         List<ProtectBoardDto> list = protectBoardService.searchResultList(sc);

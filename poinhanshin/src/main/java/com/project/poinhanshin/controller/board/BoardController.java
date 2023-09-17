@@ -4,6 +4,7 @@ package com.project.poinhanshin.controller.board;
 import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.PageHandler;
 import com.project.poinhanshin.domain.etc.SearchCondition;
+import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.board.BoardService;
 import groovy.util.logging.Slf4j;
@@ -34,7 +35,9 @@ public class BoardController {
 
     // 커뮤니티 게시물 목록
     @GetMapping("/list")
-    public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg){
+    public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        m.addAttribute("loginUser", loginUser); // 로그인 이식
 
         HashMap hashMap = boardService.bringBoardList(sc);
         List<BoardDto> boardDtoList = (List<BoardDto>)hashMap.get("boardDtoList");
