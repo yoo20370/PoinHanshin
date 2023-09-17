@@ -72,7 +72,7 @@
             <tr th:each="boardDto : ${list}">
                 <td valign="middle">
                     <div class="title_wrapper">
-                    <span class="title" th:text="${boardDto.title}" th:href="${/board/read(boardno=${boardDto.bno})}">----제목---</span>
+                    <span class="title" th:text="${boardDto.title}" th:href="${/board/read(bno=${boardDto.bno})}">----제목---</span>
                     </div>
                     <div style="vertical-align: bottom;">
 <!--                        <span class="info_table" th:text="| 유저id : ${boardDto.board_userno}|"> 유저id : 12312314</span>-->
