@@ -1,174 +1,162 @@
 package com.project.poinhanshin.controller.board;
 
+
 import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.PageHandler;
 import com.project.poinhanshin.domain.etc.SearchCondition;
-import com.project.poinhanshin.domain.member.User;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.board.BoardService;
-import lombok.extern.slf4j.Slf4j;
+import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.HashMap;
+
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
 @RequestMapping("/board")
 public class BoardController {
 
-    private final BoardService boardService;
+    BoardService boardService;
 
     @Autowired
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
 
+    // 커뮤니티 게시물 목록
     @GetMapping("/list")
-    public String board(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model, Integer page, Integer pageSize, SearchCondition sc) {
-        model.addAttribute("user", loginUser);
+    public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg){
 
-        if (page==null) page=1;
-        if (pageSize==null) pageSize=50;
+        List<BoardDto> boardDtoList = boardService.bringBoardList(sc);
+        int totalCnt = boardService.bringBoarndListCnt(sc);
 
-        if (sc.getOption().equals("T") || sc.getOption().equals("W") || sc.getOption().equals("A")) {
-            int totalCnt = boardService.getSearchResultCnt(sc);
-            PageHandler pageHandler = new PageHandler(totalCnt, page, pageSize);
-            Map<String, Integer> map = new HashMap<>();
-            map.put("offset", (page - 1) * pageSize);
-            map.put("pageSize", pageSize);
-            List<BoardDto> list = boardService.getSearchResultPage(sc);
-            model.addAttribute("list", list);
-            model.addAttribute("ph", pageHandler);
-            model.addAttribute("page", page);
-            model.addAttribute("pageSize", pageSize);
-            return "board/boardList";
-        }
+        PageHandler ph = new PageHandler(totalCnt , sc);
 
-        int totalCnt = boardService.getCount();
-        PageHandler pageHandler = new PageHandler(totalCnt, page, pageSize);
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("offset", (page - 1) * pageSize);
-        map.put("pageSize", pageSize);
-
-        List<BoardDto> list = boardService.getPage(map);
-        model.addAttribute("list", list);
-        model.addAttribute("ph", pageHandler);
-        model.addAttribute("page", page);
-        model.addAttribute("pageSize", pageSize);
-
-        return "boardList";
+        m.addAttribute("boardDtoList" , boardDtoList );
+        m.addAttribute("totalCnt",totalCnt);
+        m.addAttribute("sc",sc);
+        m.addAttribute("ph",ph);
+        m.addAttribute("msg",msg);
+        return "board/boardList";
     }
-    /*@GetMapping("/list")
-    public String board(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model, SearchCondition sc) {
-        model.addAttribute("user", loginUser);
 
-        if (sc.getPage()==null) sc.setPage(1);
-        if (sc.getPageSize()==null) sc.setPageSize(50);
-
-        if (sc.getOption().equals("T") || sc.getOption().equals("W") || sc.getOption().equals("A")) {
-            int totalCnt = boardService.getSearchResultCnt(sc);
-            PageHandler ph = new PageHandler(totalCnt, sc);
-
-            List<BoardDto> list = boardService.getSearchResultPage(sc);
-            Map<String, Integer> map = new HashMap<>();
-            map.put("offset", (sc.getPage() - 1) * sc.getPageSize());
-            map.put("pageSize", sc.getPageSize());
-            model.addAttribute("list", list);
-            model.addAttribute("ph", ph);
-            model.addAttribute("sc",sc);
-            return "board/boardList";
-        }
-
-        int totalCnt = boardService.getCount();
-        PageHandler ph = new PageHandler(totalCnt, sc);
-
-        Map<String, Integer> map = new HashMap<>();
-        map.put("offset", (sc.getPage() - 1) * sc.getPageSize());
-        map.put("pageSize", sc.getPageSize());
-
-        List<BoardDto> list = boardService.getPage(map);
-        model.addAttribute("list", list);
-        model.addAttribute("ph", ph);
-        model.addAttribute("sc",sc);
-
-        return "boardList";
-    }*/
-
+    // 커뮤니티 게시물 상세 페이지
     @GetMapping("/read")
-    public String read(Integer bno, Integer page, Integer pageSize, Model model,
-                       @SessionAttribute(name = "loginUser", required = false) User loginUser) {
-        BoardDto boardDto = boardService.read(bno);
-        model.addAttribute("user", loginUser);
-        model.addAttribute("boardDto", boardDto);
-        model.addAttribute("page", page);
-        model.addAttribute("pageSize", pageSize);
-        return "boardR";
+    public String boardRead(Integer boardno , SearchCondition sc , Model m , @ModelAttribute("msg") String msg){
+
+        // 임시 로그인
+        Integer LoginId = 1;
+
+        BoardDto boardDto = boardService.bringBoardOne(boardno);
+
+        // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
+        if(LoginId.equals(boardDto.getBoard_userno()))
+            m.addAttribute("WriterCheck", "OK");
+
+        m.addAttribute("LoginId", LoginId);
+        m.addAttribute("boardDto" , boardDto);
+        m.addAttribute("sc",sc);
+        m.addAttribute("msg" , msg);
+        return "board/board";
     }
 
+    // 커뮤니티 게시물 작성 상세 페이지
     @GetMapping("/write")
-    public String write(@SessionAttribute(name = "loginUser", required = false) User loginUser,
-                        @ModelAttribute("boardDto") BoardDto boardDto, Model model, RedirectAttributes redirectAttributes) {
+    public String boardWritePage(SearchCondition sc , Model m, RedirectAttributes redirectAttributes , @ModelAttribute("msg") String msg){
 
-        if (loginUser==null) {
+        Integer LoginId = 1;
+
+        if(LoginId == null) {
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
-            return "redirect:/login";
+            return "redirect:/protectboard/list";
         }
 
-        model.addAttribute("boardDto", boardDto);
-        model.addAttribute("user", loginUser);
-        return "boardC";
+        m.addAttribute("sc",sc);
+        m.addAttribute("LoginId", LoginId);
+        m.addAttribute("msg" , msg);
+
+        return "board/boardreg";
     }
 
+    // 커뮤니티 등록 페이지에서 ajax로 보낸 데이터를 받아 각 변수에 바인딩하고 이를 DB에 저장
+    // 커뮤니티 게시물 작성 데이터 DB에 저장
     @PostMapping("/write")
-    public String write(@SessionAttribute(name = "loginUser", required = false) User loginUser,
-                        BoardDto boardDto, RedirectAttributes redirectAttributes) {
-        boardDto.setWriter(loginUser.getName());
-        boardService.write(boardDto);
-        redirectAttributes.addFlashAttribute("msg", "WRT_OK");
-        return "redirect:/board/list";
-    }
+    @ResponseBody
+    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) Integer board_userno , @RequestParam String board_title ,
+                                              @RequestParam String board_content , @RequestParam Boolean board_ani_category ,
+                                              @RequestParam(required = false) List<MultipartFile> boardFile) throws IOException {
+        BoardDto boardDto = new BoardDto(board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
 
-    @PostMapping("/remove")
-    public String remove(Integer bno, Integer page, Integer pageSize,
-                         Model model, RedirectAttributes redirectAttributes,
-                         @SessionAttribute(name = "loginUser", required = false) User loginUser,
-                         BoardDto boardDto) {
-
-        model.addAttribute("page",page);
-        model.addAttribute("pageSize",pageSize);
-
-        if (loginUser==null || !loginUser.getName().equals(boardDto.getWriter())) { //BoardDto 에 loginId 를 구현 안해놔서 동명이인이면 게시글을 지울수가 있음
-            redirectAttributes.addFlashAttribute("msg", "NOT_EQL");
-            return "redirect:/board/list";
+        boardDto.setBoardFile(boardFile);
+        // 파일이 있는 경우
+        if(boardFile != null){
+            boardDto.setFileAttached(1);
+            System.out.println(boardFile);
         }
-        boardService.remove(bno);
-        redirectAttributes.addFlashAttribute("msg", "REMOVE_OK");
-        return "redirect:/board/list";
 
+        System.out.println(boardDto);
+        int result = boardService.writeContent(boardDto);
+
+        return new ResponseEntity<Integer>( result , HttpStatus.OK);
     }
 
+    // 커뮤니티 게시물 수정 상세 페이지
     @GetMapping("/modify")
-    public String modify(Integer bno, @SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
-        BoardDto boardDto = boardService.readV2(bno);
-        model.addAttribute("boardDto", boardDto);
-        model.addAttribute("user", loginUser);
-        return "boardU";
+    public String boardModifyPage(Integer boardno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes){
+        // 임시 로그인
+        Integer LoginId = 1;
+
+        // 로그인 확인 (나중에 loginUser == null로 변경
+        if(LoginId == null) {
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            return "redirect:/protectboard/list";
+        }
+        BoardDto boardDto = boardService.bringBoardOne(boardno);
+
+        System.out.println(boardno);
+        m.addAttribute("LoginId" ,LoginId);
+        m.addAttribute("boardDto" , boardDto);
+        m.addAttribute("sc",sc);
+        return "board/boardedit";
     }
 
+    // 커뮤니티 수정 페이제에서 ajax로 보낸 데이터를 받아 각 변수게 바인딩하고 이를 DB에 저장
     @PostMapping("/modify")
-    public String modify(BoardDto boardDto, RedirectAttributes redirectAttributes) {
-        boardDto.setWriter(boardDto.getWriter());
-        boardService.modify(boardDto);
-        redirectAttributes.addFlashAttribute("msg", "MOD_OK");
-        return "redirect:/board/list";
+    public ResponseEntity<Integer> boardModify(@RequestParam Integer board_userno , @RequestParam Integer board_boardno, @RequestParam String board_title ,
+                                               @RequestParam String board_content , @RequestParam Boolean board_ani_category , @RequestParam Integer fileAttached,
+                                               @RequestParam(required = false) List<MultipartFile> boardFile
+                                                ){
+        BoardDto boardDto = new BoardDto(board_userno , board_boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
+        if(boardFile != null){
+            boardDto.setFileAttached(1);
+            boardDto.setBoardFile(boardFile);
+        }
+        System.out.println(boardDto);
 
+        return new ResponseEntity<Integer>(1 , HttpStatus.OK);
     }
 
+    // 커뮤니티 게시물 삭제
+    @PostMapping("/remove")
+    public String boardRemove(Integer boardno , SearchCondition sc , RedirectAttributes redirectAttributes ){
 
-
+        return "redirect:/board/list";
+    }
 }
