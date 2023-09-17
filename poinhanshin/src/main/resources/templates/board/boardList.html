@@ -183,8 +183,7 @@
 
 <script th:inline="javascript">
     $('#searchBtn').on("click",function(){
-        alert("버튼을 클릭했습니다.");
-        let form = $('#searchForm');
+        let form = $('form[name=search-form]');
         form.submit();
     });
 

@@ -55,7 +55,7 @@ public class BoardServiceImpl implements BoardService{
     @Transactional(rollbackFor = Exception.class)
     public BoardDto bringBoardOne(Integer boardno) {
         BoardDto boardDto = boardMapper.boardSelectContentOne(boardno);
-
+        boardMapper.updateViewCnt(boardno);
         if(boardDto.getFileAttached() == 0){
             // 파일 없음
             return boardDto;
@@ -108,6 +108,7 @@ public class BoardServiceImpl implements BoardService{
 
         int imgCnt = boardFileMapper.boardSelectCnt(boardDto.getBoardno());
 
+        // 이미지가 있는 게시물을 수정할 때
         if(boardDto.getFileAttached() == 1){
             System.out.println("이미지가 있는 게시물 수정");
             if(imgCnt == 0){
@@ -159,7 +160,7 @@ public class BoardServiceImpl implements BoardService{
 
         // 로컬 저장소에서 이미지 파일 삭제
         if( result == 1){
-            String path = "/Users/yuyeong-u/fileStorage/protectboard/";
+            String path = "/Users/yuyeong-u/fileStorage/board/";
             for(String fileName : fileNameList){
                 File file = new File(path+fileName);
                 if(file.exists()){

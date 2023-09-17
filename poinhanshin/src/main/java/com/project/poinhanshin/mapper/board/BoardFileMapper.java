@@ -22,4 +22,6 @@ public interface BoardFileMapper {
 
     // 게시물 파일들 이름 반환
     List<String> boardSelectFileName(Integer boardno);
+
+
 }

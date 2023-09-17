@@ -195,7 +195,7 @@
     // 해당 게시물이 첨부파일을 가지고 있으면 dropzone에 보여준다.
     let displayImg = function(protectBoardFileDtoList){
         protectBoardFileDtoList.forEach(function(protectBoardFileDto){
-            let mockFile = {name: protectBoardFileDto.storedFileName , size : protectBoardFileDto.fileSize}
+            let mockFile = {name: protectBoardFileDto.stored_file_name , size : protectBoardFileDto.fileSize}
             dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/protectboard/'+protectBoardFileDto.stored_file_name);
         });
     }

@@ -80,4 +80,5 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
         hashMap.put("fileAttached" , fileAttached);
         return sqlSession.update(namespace+"updateFileAttached", hashMap);
     }
+
 }

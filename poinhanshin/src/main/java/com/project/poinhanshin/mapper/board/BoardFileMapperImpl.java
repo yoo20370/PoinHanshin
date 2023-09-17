@@ -12,26 +12,28 @@ public class BoardFileMapperImpl implements BoardFileMapper{
 
     SqlSession sqlSession;
 
+    // 의존성 주입
     @Autowired
     public BoardFileMapperImpl(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 
+    // namespace 정의
     private String namespace = "com.project.poinhanshin.mapper.board.BoardFileMapper.";
 
-    // 게시물 번호에 해당하는 이미지를 불러온다.
+    // 게시물 번호에 해당하는 이미지들 반환
     @Override
     public List<BoardFileDto> boardSelectFile(Integer boardno) {
         return sqlSession.selectOne(namespace+"boardSelectFile",boardno);
     }
 
-    // 이미지 파일을 등록한다.
+    // 이미지 파일을 등록
     @Override
     public int boardInsertFile(BoardFileDto boardFileDto) {
         return sqlSession.insert(namespace+"boardInsertFile" , boardFileDto);
     }
 
-    // 이미지 파일을 삭제한다.
+    // 이미지 파일을 삭제
     @Override
     public int boardDeleteFile(String stored_file_name) {
         return sqlSession.delete(namespace+"boardDeleteFile" ,stored_file_name );
@@ -43,9 +45,10 @@ public class BoardFileMapperImpl implements BoardFileMapper{
         return sqlSession.selectOne(namespace+"boardSelectCnt", boardno);
     }
 
-    // 해당  게시물의 이미지 이름 반환
+    // 게시물의 이미지 이름 반환
     @Override
     public List<String> boardSelectFileName(Integer boardno) {
         return sqlSession.selectOne(namespace+"boardSelectFileName",boardno);
     }
+
 }

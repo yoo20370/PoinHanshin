@@ -9,6 +9,11 @@ import java.util.List;
 public interface ProtectBoardService {
 
 
+    // 검색된 임보자 게시물 개수를 반환
+    int searchResultCnt(SearchCondition sc);
+
+    // 검색된 임보자 게시물 리스트를 반환
+    List<ProtectBoardDto> searchResultList(SearchCondition sc);
 
     // 특정 임보자 게시물 하나 가져오기
     ProtectBoardDto bringBoardOne(Integer protectboardno);
@@ -16,17 +21,12 @@ public interface ProtectBoardService {
     // 임보자 게시물을 등록한다.
     int insertProductBoard(ProtectBoardDto protectBoardDto) throws IOException;
 
-    // 임보자 게시물의 내용을 수정한다.
+    // 임보자 게시물을 수정한다.
     int updateProductBoard(ProtectBoardDto protectBoardDto) throws IOException;
 
     // 임보자 게시물을 삭제한다.
     int deleteProductBoard(Integer bno , Integer LoginId);
 
-    // 검색된 임보자 게시물 개수를 반환
-    int searchResultCnt(SearchCondition sc);
-
-    // 검색된 임보자 게시물 리스트를 반환
-    List<ProtectBoardDto> searchResultList(SearchCondition sc);
 
     // 최근 등록한 임보자 게시물의 번호를 반환
     int readWritedBoardno(Integer protectboard_userno);

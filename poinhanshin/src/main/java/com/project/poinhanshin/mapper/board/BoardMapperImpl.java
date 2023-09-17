@@ -76,4 +76,15 @@ public class BoardMapperImpl implements BoardMapper {
         hashMap.put("fileAttached" , fileAttached);
         return sqlSession.update(namespace+"boardUpdateFileAttached", hashMap);
     }
+
+    @Override
+    public int updateViewCnt(Integer boardno) {
+        return sqlSession.update(namespace+"updateViewCnt" , boardno);
+    }
+
+    @Override
+    public List<BoardDto> selectViewCntTop() {
+        return sqlSession.selectList(namespace+"selectViewCntTop");
+
+    }
 }

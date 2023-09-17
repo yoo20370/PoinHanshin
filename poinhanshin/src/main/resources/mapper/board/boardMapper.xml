@@ -25,9 +25,9 @@
         VALUES (#{board_userno} , #{board_title} , #{board_content} , #{board_ani_category} , now() , 0 , 0 , 0 , #{fileAttached})
     </insert>
     <update id="boardUpdateContent" parameterType="map">
-        UPDATE FROM board
-        SET board_title = #{board_title} , board_content = #{board_content} , board_ani_category = #{board_ani_category} , fileAttached = #{fileAttached}
-        WHERE boardno = #{boardno} and board_userno = #{LoginId}
+        UPDATE board
+        SET board_title = #{boardDto.board_title} , board_content = #{boardDto.board_content} , board_ani_category = #{boardDto.board_ani_category} , fileAttached = #{boardDto.fileAttached}
+        WHERE boardno = #{boardDto.boardno} and board_userno = #{LoginId}
     </update>
     <delete id="boardDeleteContent" parameterType="map">
         DELETE FROM board
@@ -56,5 +56,15 @@
             <otherwise> TRUE </otherwise>
         </choose>
     </sql>
-
+    <update id="updateViewCnt">
+        UPDATE board
+        SET board_viewcount = board_viewcount + 1
+        WHERE boardno = #{boardno}
+    </update>
+    <select id="selectViewCntTop" >
+        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
+        FROM board
+        ORDER BY board_viewcount DESC
+        LIMIT 3
+    </select>
 </mapper>

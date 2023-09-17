@@ -33,4 +33,10 @@ public interface BoardMapper {
     // 게시물의 파일 여부 값을 수정한다.
     int boardUpdateFileAttached(Integer boardno , Integer fileAttached);
 
+    // 조회수 업데이트
+    int updateViewCnt(Integer boardno);
+
+    // 조회수 Top3
+    List<BoardDto> selectViewCntTop();
+
 }

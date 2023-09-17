@@ -155,6 +155,7 @@ public class ProtectBoardController {
         ProtectBoardDto protectBoardDto = new ProtectBoardDto(protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectBoardDto.setProtectboardFile(protectboardFile);
 
+        // 로그인 연결 시 수정 필요 
         protectBoardService.updateProductBoard(protectBoardDto);
         return new ResponseEntity<Integer>( protectboardno , HttpStatus.OK);
 

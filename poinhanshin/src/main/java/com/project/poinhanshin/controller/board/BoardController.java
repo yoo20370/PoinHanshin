@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -139,24 +138,43 @@ public class BoardController {
 
     // 커뮤니티 수정 페이제에서 ajax로 보낸 데이터를 받아 각 변수게 바인딩하고 이를 DB에 저장
     @PostMapping("/modify")
-    public ResponseEntity<Integer> boardModify(@RequestParam Integer board_userno , @RequestParam Integer board_boardno, @RequestParam String board_title ,
+    public ResponseEntity<Integer> boardModify(@RequestParam Integer board_userno , @RequestParam Integer boardno, @RequestParam String board_title ,
                                                @RequestParam String board_content , @RequestParam Boolean board_ani_category , @RequestParam Integer fileAttached,
                                                @RequestParam(required = false) List<MultipartFile> boardFile
-                                                ){
-        BoardDto boardDto = new BoardDto(board_userno , board_boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
-        if(boardFile != null){
-            boardDto.setFileAttached(1);
-            boardDto.setBoardFile(boardFile);
-        }
-        System.out.println(boardDto);
+                                                ) throws IOException {
+        BoardDto boardDto = new BoardDto(board_userno , boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
+        boardDto.setBoardFile(boardFile);
 
-        return new ResponseEntity<Integer>(1 , HttpStatus.OK);
+        // Login 연결 시 수정 필요
+        boardService.modifyContent(boardDto , board_userno);
+        return new ResponseEntity<Integer>(boardno , HttpStatus.OK);
     }
 
     // 커뮤니티 게시물 삭제
     @PostMapping("/remove")
-    public String boardRemove(Integer boardno , SearchCondition sc , RedirectAttributes redirectAttributes ){
+    public String boardRemove(Integer boardno , SearchCondition sc , RedirectAttributes redirectAttributes ) throws IOException {
 
+        // 임시 로그인
+        Integer loginId = 1;
+
+        // 로그인 여부 확인
+        if(loginId == null){
+            redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            return "redirect:/board/list";
+        }
+
+        // 삭제 실패시
+        if(boardService.removeContent(boardno , loginId) != 1){
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addAttribute("boardno",boardno);
+            redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
+            return "redirect:/protectboard/read";
+        }
+
+        redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
         return "redirect:/board/list";
     }
 }

@@ -42,9 +42,9 @@
 </style>
 <body layout:fragment="content">
 <div class="page">
-  <form  action="" method="post" enctype="multipart/form-data">
+  <form  id="form" action="" method="post" enctype="multipart/form-data">
 
-    <!-- 페이지 정보 및 로그인 아이디 값 -->
+    <!-- 페이지 정보 -->
     <input type="hidden" name="board_userno" id="board_userno" th:value="${LoginId}"/>
     <input type="hidden" name="boardno" th:value="${boardDto.boardno}" />
     <input type="hidden" name="page" th:value="${sc.page}"/>
@@ -142,87 +142,109 @@
   })
 </script>
 <script>
-$('#submitBtn').on("click" , function(){
-  if(!confirm("수정하시겠습니까 ?")) return;
-  console.log("게시물 수정 및 이미지 업로드");
 
-  let board_userno = [[${boardDto.board_userno}]];
-  let board_boardno = [[${boardDto.boardno}]];
-  let board_title = $('#inputTitle').val();
-  let board_content = $('#inputContent').val();
-  let board_ani_category = $('select[name=board_ani_category] option:selected').val();
-  let fileAttached = [[${boardDto.fileAttached}]];
-  let bno;
-
+  let bno = [[${boardDto.boardno}]]
   let showImgList = function () {
     $.ajax({
       type: 'GET',
-      url: '/protectboard/file?protectboardno=' + protectbn,
+      url: '/board/file?board_boardno=' + bno,
       dataType: 'json',
-      success: function (protectBoardFileDtoList) {
-        displayImg(protectBoardFileDtoList)
+      success: function (boardFileDtoList) {
+        displayImg(boardFileDtoList)
       },
       error: function () {alert("ERROR"); }
     });
   }
 
-  let displayImg = function(protectBoardFileDtoList){
-    protectBoardFileDtoList.forEach(function(protectBoardFileDto){
-      let mockFile = {name: protectBoardFileDto.storedFileName , size : protectBoardFileDto.fileSize}
-      dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/protectboard/'+protectBoardFileDto.stored_file_name);
+  let displayImg = function(boardFileDtoList){
+    boardFileDtoList.forEach(function(boardFileDto){
+      let mockFile = {name: boardFileDto.stored_file_name , size : boardFileDto.fileSize}
+      dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/board/'+boardFileDto.stored_file_name);
     });
   }
 
+  showImgList();
 
-  if (dropzone.getRejectedFiles().length > 0) {
-    let file = dropzone.getRejectedFiles();
-    console.log('거부된 파일이 있습니다.', file);
-    return;
-  }
+  $(document).ready(function(){
 
-  // 드롭존에서 파일 가져온다.
-  let files = dropzone.files;
+    dropzone.on("removedfile" , function(dataURL){
+      $.ajax({
+        type : 'DELETE',
+        url : '/board/remove',
+        headers : {"content-type" : "application/json"},
+        dataType : 'text',
+        data : JSON.stringify(dataURL,["dataURL"]),
+        success: function(data){
+          console.log(data)
+        },
+        error: function(request ,status , error){
+          console.log("code: " + request.status)
+          console.log("message: " + request.responseText)
+          console.log("error: " + error);
+        }
+      })
+    })
 
-  let formData = new FormData();
+    $('#submitBtn').on("click" , function(){
+      if(!confirm("수정하시겠습니까 ?")) return;
+      console.log("게시물 수정 및 이미지 업로드");
 
-  // 파일이 없다면 파일을 전송하지 않음
-  if(files.length != 0) {
-    for(let i = 0 ; i < files.length ; i++){
-      formData.append("boardFile" , files[i]);
-    }
-  }
+      let board_userno = [[${boardDto.board_userno}]];
+      let boardno = [[${boardDto.boardno}]];
+      let board_title = $('#inputTitle').val();
+      let board_content = $('#inputContent').val();
+      let board_ani_category = $('select[name=board_ani_category] option:selected').val();
+      let fileAttached = [[${boardDto.fileAttached}]];
 
-  formData.append("board_userno" ,board_userno);
-  formData.append("board_boardno", board_boardno);
-  formData.append("board_title" , board_title);
-  formData.append("board_content", board_content);
-  formData.append("board_ani_category",board_ani_category);
-  formData.append("fileAttached" , fileAttached);
+      if (dropzone.getRejectedFiles().length > 0) {
+        let file = dropzone.getRejectedFiles();
+        console.log('거부된 파일이 있습니다.', file);
+        return;
+      }
 
-  console.log("게시물 수정");
+      // 드롭존에서 파일 가져온다.
+      let files = dropzone.files;
 
-  console.log("게시물 등록")
-  $.ajax({
-    type : 'POST',
-    url : '/board/modify',
-    data : formData,
-    async : false,
-    enctype: "multipart/form-data",
-    processData : false,
-    contentType : false,
-    success :function(data){
-      bno = data;
-    },
-    error : function(){}
-  });
+      let formData = new FormData();
 
-  /*let form = $('#form');
-  form.attr("action" , "/board/read");
-  form.attr("method","get");
-  form.submit();*/
+      // 파일이 없다면 파일을 전송하지 않음
+      if(files.length != 0) {
+        for(let i = 0 ; i < files.length ; i++){
+          formData.append("boardFile" , files[i]);
+        }
+      }
+
+      formData.append("board_userno" ,board_userno);
+      formData.append("boardno", boardno);
+      formData.append("board_title" , board_title);
+      formData.append("board_content", board_content);
+      formData.append("board_ani_category",board_ani_category);
+      formData.append("fileAttached" , fileAttached);
+
+      console.log("게시물 수정");
+
+      console.log("게시물 등록")
+      $.ajax({
+        type : 'POST',
+        url : '/board/modify',
+        data : formData,
+        async : false,
+        enctype: "multipart/form-data",
+        processData : false,
+        contentType : false,
+        success :function(){},
+        error : function(){}
+      });
+
+      let form = $('#form');
+      form.attr("action" , "/board/read");
+      form.attr("method","get");
+      form.submit();
 
 
-});
+    });
+
+  })
 
 var submitted = false;
 

@@ -32,11 +32,11 @@ public interface BoardService {
     // 최근 등록 게시물 번호를 가져온다.(매개변수 유저에 해당하는 것을 가져오는 것)
     int bringRecentRegContentNo(Integer board_userno);
 
+    // 파일 존재 여부 값 수정
     int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
     // 이미지 등록을 위한 메서드
     void addImgFiles(BoardDto boardDto) throws IOException;
-
 
 
 

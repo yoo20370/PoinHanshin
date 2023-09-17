@@ -21,7 +21,7 @@ public class ProtectBoardFileMapperImpl implements ProtectBoardFileMapper{
     // namespace 정의
     private String namespace = "com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper.";
 
-    // 임보자 게시물에 해당하는 이미지들을 가져오는 메서드
+    // 임보자 게시물에 해당하는 이미지들 반환
     @Override
     public List<ProtectBoardFileDto> selectFiles(Integer protectboardno) {
         return sqlSession.selectOne(namespace+"selectFiles" , protectboardno);
