@@ -77,14 +77,16 @@ public class BoardMapperImpl implements BoardMapper {
         return sqlSession.update(namespace+"boardUpdateFileAttached", hashMap);
     }
 
+    // 조회수 업데이트 기능
     @Override
     public int updateViewCnt(Integer boardno) {
         return sqlSession.update(namespace+"updateViewCnt" , boardno);
     }
 
+    // 게시판 목록 검색 Top3
     @Override
     public List<BoardDto> selectViewCntTop() {
         return sqlSession.selectList(namespace+"selectViewCntTop");
-
     }
+
 }

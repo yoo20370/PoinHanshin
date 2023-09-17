@@ -6,6 +6,7 @@ import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -15,7 +16,7 @@ public interface BoardService {
     int bringBoarndListCnt(SearchCondition sc);
 
     // 검색된 게시물 리스트를 가져온다.
-    List<BoardDto> bringBoardList(SearchCondition sc);
+    HashMap bringBoardList(SearchCondition sc);
 
     // 특정 게시물 하나 가져오기
     BoardDto bringBoardOne(Integer boardno);
