@@ -1,97 +1,206 @@
 package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
-import com.project.poinhanshin.domain.board.LikeBoardDto;
-
+import com.project.poinhanshin.domain.board.BoardFileDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
+import com.project.poinhanshin.mapper.board.BoardFileMapper;
 import com.project.poinhanshin.mapper.board.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BoardServiceImpl implements BoardService{
-    private final BoardMapper boardDao;
+
+    BoardMapper boardMapper;
+    BoardFileMapper boardFileMapper;
 
     @Autowired
-    public BoardServiceImpl(BoardMapper boardMapper) {
-        this.boardDao = boardMapper;
+    public BoardServiceImpl(BoardMapper boardMapper, BoardFileMapper boardFileMapper) {
+        this.boardMapper = boardMapper;
+        this.boardFileMapper = boardFileMapper;
+    }
+
+    // 검색된 게시물 리스트 개수를 가져온다.
+    @Override
+    public int bringBoarndListCnt(SearchCondition sc) {
+        return boardMapper.boardSearchResultCnt(sc);
+    }
+
+    // 검색된 게시물 리스트를 가져온다.
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<BoardDto> bringBoardList(SearchCondition sc) {
+        // 리스트 목록을 가져온다.
+        List<BoardDto> boardDtoList = boardMapper.boardSearchResultList(sc);
+
+        // 각 게시물의 이미지들을 가져와 boardDto에 저장
+        for(BoardDto boardDto : boardDtoList ){
+            List<String> storedFileName = boardFileMapper.boardSelectFileName(boardDto.getBoardno());
+            boardDto.setStoredFileName(storedFileName);
+        }
+        return boardDtoList;
+    }
+
+    // 특정 게시물 하나 가져오기
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BoardDto bringBoardOne(Integer boardno) {
+        BoardDto boardDto = boardMapper.boardSelectContentOne(boardno);
+        boardMapper.updateViewCnt(boardno);
+        if(boardDto.getFileAttached() == 0){
+            // 파일 없음
+            return boardDto;
+        }
+        else {
+            // 파일 있음
+            List<BoardFileDto> boardFileDtoList = boardFileMapper.boardSelectFile(boardno);
+
+            // 원본 파일 이름 저장하기 위한 리스트
+            List<String> originalFileNameList = new ArrayList<>();
+
+            // 서버 저장 이름 저장하기 위한 리스트
+            List<String>  storedFileNameList = new ArrayList<>();
+
+            // DB에서 게시물 이미지 파일들을 읽어 와서 각각 원본 파일 이름과 서버 저장 파일을 리스트에 저장
+            for( BoardFileDto boardFileDto : boardFileDtoList){
+                originalFileNameList.add(boardFileDto.getOriginal_file_name());
+                storedFileNameList.add(boardFileDto.getStored_file_name());
+            }
+
+            // 게시물 객체에 원본 파일 이름 , 서버 저장 파일 이름 리스트를 저장
+            boardDto.setOriginalFileName(originalFileNameList);
+            boardDto.setStoredFileName(storedFileNameList);
+
+            return boardDto;
+        }
+    }
+
+    // 게시물을 등록한다.
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int writeContent(BoardDto boardDto) throws IOException {
+
+        // 게시물 등록
+        boardMapper.boardInsertContent(boardDto);
+
+        Integer currentBoardno = boardMapper.boardSelectRecentBoardNo(boardDto.getBoard_userno());
+        // 게시물 객체에 등록된 게시물 번호 설정
+        boardDto.setBoardno(currentBoardno);
+        // 첨부 파일 있음
+        if(boardDto.getFileAttached() != 0){
+            addImgFiles(boardDto);
+        }
+        return currentBoardno;
+    }
+
+    // 특정 게시물을 수정한다.
+    @Override
+    public int modifyContent(BoardDto boardDto, Integer loginId) throws IOException {
+
+        int imgCnt = boardFileMapper.boardSelectCnt(boardDto.getBoardno());
+
+        // 이미지가 있는 게시물을 수정할 때
+        if(boardDto.getFileAttached() == 1){
+            System.out.println("이미지가 있는 게시물 수정");
+            if(imgCnt == 0){
+                // 기존 이미지를 모두 삭제하고 이미지를 추가하지 않은 경우
+                System.out.println("기존 이미지 X , 이미지 추가 X");
+                boardDto.setFileAttached(0);
+            } else {
+                // 이미지가 하나라도 남아 있는 경우
+                System.out.println("이미지가 하나라도 존재하는 경우");
+                if(boardDto.getBoardFile() != null){
+                    // 추가 이미지가 있는 경우
+                    System.out.println("이미지를 추가하는 경우");
+                    // 이미지 저장
+                    addImgFiles(boardDto);
+                } else {
+                    // 추가 이미지가 없는 경우
+                    System.out.println("이미지를 추가하지 않는 경우");
+                }
+            }
+        } else {
+            // 이미지가 없는 게시물을 수정할 때
+            System.out.println("이미지가 없는 게시물 수정시");
+            if(boardDto.getBoardFile() != null){
+                // 이미지를 추가하는 경우
+                System.out.println("이미지를 추가하는 경우");
+                boardDto.setFileAttached(1);
+                // 이미지 저장
+                addImgFiles(boardDto);
+            } else {
+                // 이미지를 추가하지 않는 경우
+                System.out.println("이미지를 추가하지 않는 경우");
+            }
+        }
+        // 게시물 내용 업데이트
+        boardMapper.boardUpdateContent(boardDto , loginId);
+
+        return boardDto.getBoardno();
+    }
+
+    // 특정 게시물을 삭제한다.
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int removeContent(Integer boardno, Integer loginId) throws IOException {
+        // 저장된 이미지 이름 목록 가져오기
+        List<String> fileNameList = boardFileMapper.boardSelectFileName(boardno);
+
+        // 게시물 삭제( 게시물 먼저 삭제하면 DB 데이터 사라짐 )
+        int result = boardMapper.boardDeleteContent(boardno,loginId);
+
+        // 로컬 저장소에서 이미지 파일 삭제
+        if( result == 1){
+            String path = "/Users/yuyeong-u/fileStorage/board/";
+            for(String fileName : fileNameList){
+                File file = new File(path+fileName);
+                if(file.exists()){
+                    file.delete();
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // 최근 등록 게시물 번호를 가져온다.
+    @Override
+    public int bringRecentRegContentNo(Integer board_userno) {
+        return boardMapper.boardSelectRecentBoardNo(board_userno);
     }
 
     @Override
-    public int getCount() {
-        return boardDao.count();
+    public int updateFileAttached(Integer protectboardno, Integer fileAttached) {
+        return boardMapper.boardUpdateFileAttached(protectboardno , fileAttached);
     }
 
+
+    // 이미지 등록을 위한 메서드
     @Override
-    public int remove(Integer bno) {
-        return boardDao.delete(bno);
+    public void addImgFiles(BoardDto boardDto) throws IOException {
+        for (MultipartFile boardFile : boardDto.getBoardFile()) {
+
+            // 파일 이름 저장 (서버 이름 X)
+            String originalFileName = boardFile.getOriginalFilename();
+            // 서버 저장용 이름 // System.currentTimeMillis - 현재 몇 밀리초가 지났는지 - 겹치면 안 되기 때문
+            String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+            // 서버 컴퓨터 파일 저장 위치
+            String savePath = "/Users/yuyeong-u/fileStorage/board/" + storedFileName;
+            // java.io.File; // 지정된 경로로 파일을 넘긴다.
+            boardFile.transferTo(new File(savePath));
+
+            // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
+            BoardFileDto boardFileDto = new BoardFileDto(boardDto.getBoardno() , null , null , originalFileName , storedFileName , boardFile.getSize());
+            boardFileMapper.boardInsertFile(boardFileDto);
+        }
     }
-
-    @Override
-    public int write(BoardDto boardDto) {
-        return boardDao.insert(boardDto);
-    }
-
-    @Override
-    public List<BoardDto> getList() {
-        return boardDao.selectAll();
-    }
-
-    @Override
-    public BoardDto read(Integer bno) {
-        BoardDto boardDto = boardDao.select(bno);
-        boardDao.increaseViewCnt(bno);
-
-        return boardDto;
-    }
-
-    @Override
-    public BoardDto readV2(Integer bno) {
-        return boardDao.select(bno);
-    }
-
-
-    @Override
-    public List<BoardDto> getPage(Map map) {
-        return boardDao.selectPage(map);
-    }
-
-    @Override
-    public int modify(BoardDto boardDto) {
-        return boardDao.update(boardDto);
-    }
-
-    @Override
-    public List<BoardDto> getSearchResultPage(SearchCondition sc) {
-        return boardDao.searchSelectPage(sc);
-    }
-
-    @Override
-    public int getSearchResultCnt(SearchCondition sc) {
-        return boardDao.searchResultCnt(sc);
-    }
-
-    @Override
-    public int likeCheck(Integer bno , Integer uno) {
-        HashMap<String , Integer> hashMap = new HashMap<String , Integer>();
-        hashMap.put("like_boardno",bno);
-        hashMap.put("like_userno", uno);
-
-        return 0;
-    }
-
-    @Override
-    public int addLike(String userno, LikeBoardDto likeDto) {
-        return 0;
-    }
-
-    @Override
-    public int deleteLike(String userno, LikeBoardDto likeDto) {
-        return 0;
-    }
-
 }

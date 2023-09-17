@@ -1,6 +1,6 @@
 package com.project.poinhanshin.mapper.map;
 
-import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.map.MapBoardDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -21,12 +21,12 @@ public class MapMapperImpl implements MapMapper{
 
 
     @Override
-    public int selectMapCnt(SearchCondition1 sc) {
+    public int selectMapCnt(SearchCondition sc) {
         return sqlSession.selectOne(namespace+"selectMapCnt",sc);
     }
 
     @Override
-    public List<MapBoardDto> selectMapList(SearchCondition1 sc) {
+    public List<MapBoardDto> selectMapList(SearchCondition sc) {
         return sqlSession.selectList(namespace+"selectMapList",sc);
     }
 

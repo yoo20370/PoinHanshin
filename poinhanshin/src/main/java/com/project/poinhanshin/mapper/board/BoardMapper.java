@@ -1,39 +1,42 @@
 package com.project.poinhanshin.mapper.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
-import com.project.poinhanshin.domain.board.LikeBoardDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
-    int count();
 
-    int deleteAll();
+    // 검색된 게시물 개수 반환
+    int boardSearchResultCnt(SearchCondition sc);
 
-    int delete(Integer bno);
+    // 검색된 게시물 리스트 반환
+    List<BoardDto> boardSearchResultList(SearchCondition sc);
 
-    int insert(BoardDto dto);
+    // 특정 게시물 하나를 읽어온다.
+    BoardDto boardSelectContentOne(Integer boardno);
 
-    List<BoardDto> selectAll();
+    // 게시물을 등록한다.
+    int boardInsertContent(BoardDto boardDto);
 
-    BoardDto select(Integer bno);
+    // 게시물을 수정한다.
+    int boardUpdateContent(BoardDto boardDto , Integer LoginId);
 
-    List<BoardDto> selectPage(Map map);
+    // 게시물을 삭제한다.
+    int boardDeleteContent(Integer boardno , Integer LoginId);
 
-    int update(BoardDto dto);
+    // 최근 사용자가 등록한 게시물의 번호를 가져온다.
+    int boardSelectRecentBoardNo(Integer board_userno);
 
-    int increaseViewCnt(Integer bno);
+    // 게시물의 파일 여부 값을 수정한다.
+    int boardUpdateFileAttached(Integer boardno , Integer fileAttached);
 
-    List<BoardDto> searchSelectPage(SearchCondition sc);
+    // 조회수 업데이트
+    int updateViewCnt(Integer boardno);
 
-    int searchResultCnt(SearchCondition sc);
-
-    int updateCommentCnt(@Param("bno") Integer bno, @Param("cnt") int cnt);
+    // 조회수 Top3
+    List<BoardDto> selectViewCntTop();
 
 }

@@ -1,6 +1,6 @@
 package com.project.poinhanshin.mapper.protectboard;
 
-import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import org.apache.ibatis.session.SqlSession;
 
@@ -24,13 +24,21 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
     private String namespace = "com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper.";
 
 
-    // 동물 카테고리 선택시
+    // 검색된 임보자 게시물 개수 반환
     @Override
-    public List<ProtectBoardDto> animalFilterList(SearchCondition1 sc ) {
-        return sqlSession.selectList(namespace+"animalFilterList",sc);
+    public int searchResultCnt(SearchCondition sc) {
+
+        return sqlSession.selectOne(namespace+"searchResultCnt",sc);
     }
 
-    // 특정 임보자 게시물 하나를 가져온다.
+    // 검색된 임보자 게시물 리스트 반환
+    @Override
+    public List<ProtectBoardDto> searchResultList(SearchCondition sc) {
+        return sqlSession.selectList(namespace+"searchResultList", sc);
+    }
+
+
+    // 특정 임보자 게시물 하나를 반환
     @Override
     public ProtectBoardDto selectContentOne(Integer protectboardno) {
         return sqlSession.selectOne(namespace+"selectContentOne", protectboardno);
@@ -58,25 +66,13 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
     }
 
-    // 검색된 임보자 게시물 수를 가져온다.
-    @Override
-    public int searchResultCnt(SearchCondition1 sc) {
-
-        return sqlSession.selectOne(namespace+"searchResultCnt",sc);
-    }
-
-    // 검색된 임보자 게시물 리스트를 가져온다.
-    @Override
-    public List<ProtectBoardDto> searchResultList(SearchCondition1 sc) {
-        return sqlSession.selectList(namespace+"searchResultList", sc);
-    }
-
-    // 가장 최근에 등록한 자신 게시물을 읽어온다.
+    // 최근에 사용자가 등록한 게시물 번호를 반환
     @Override
     public int selectRecentBoardno(Integer protectboard_userno) {
         return sqlSession.selectOne(namespace+"selectRecentBoardno" , protectboard_userno);
     }
 
+    // 게시물의 파일 여부 값을 수정
     @Override
     public int updateFileAttached(Integer protectboardno, Integer fileAttached) {
         HashMap<String ,Integer> hashMap = new HashMap<>();
@@ -84,6 +80,5 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
         hashMap.put("fileAttached" , fileAttached);
         return sqlSession.update(namespace+"updateFileAttached", hashMap);
     }
-
 
 }

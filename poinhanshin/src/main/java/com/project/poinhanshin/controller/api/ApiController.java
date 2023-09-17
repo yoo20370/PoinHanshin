@@ -2,8 +2,8 @@ package com.project.poinhanshin.controller.api;
 
 import com.project.poinhanshin.domain.api.Abandoned_animal;
 import com.project.poinhanshin.domain.api.Shelter;
-import com.project.poinhanshin.domain.etc.PageHandler1;
-import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.etc.PageHandler;
+import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.etc.ApiExplorer;
 import com.project.poinhanshin.service.api.ApiService;
 import org.json.simple.parser.ParseException;
@@ -30,7 +30,7 @@ public class ApiController {
     }
 
     @GetMapping("/AnimalList")
-    public String AnimalList(SearchCondition1 sc , String kind , Model m) throws IOException, ParseException {
+    public String AnimalList(SearchCondition sc , String kind , Model m) throws IOException, ParseException {
 
         if(sc.getPage() == null) sc.setPage(1);
         // 품종 검색을 위한 삼항연산자
@@ -38,7 +38,7 @@ public class ApiController {
         Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","",kind,"","","","","",sc.getPage().toString(),"8");
 
         int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());
-        PageHandler1 ph = new PageHandler1(totalCnt , sc);
+        PageHandler ph = new PageHandler(totalCnt , sc);
         m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("ph",ph);
         m.addAttribute("AAArr",abandoned_animal);
@@ -47,14 +47,14 @@ public class ApiController {
     }
 
     @GetMapping("/ShelterList")
-    public String ShelterList(SearchCondition1 sc, Model m) throws IOException, ParseException {
+    public String ShelterList(SearchCondition sc, Model m) throws IOException, ParseException {
         System.out.println(sc.toString());
         if(sc.getKeyword() == null) sc.setKeyword("");
         if(sc.getPage() == null) sc.setPage(1);
 
         Shelter shelterList[] = apiExplorer.SearchShelterList("",sc.getKeyword(),"10", sc.getPage().toString());
         int totalCnt = Integer.parseInt(shelterList[0].getTotalCount());
-        PageHandler1 ph = new PageHandler1(totalCnt , sc);
+        PageHandler ph = new PageHandler(totalCnt , sc);
         m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("ph",ph);
         m.addAttribute("ShelterList", shelterList);
