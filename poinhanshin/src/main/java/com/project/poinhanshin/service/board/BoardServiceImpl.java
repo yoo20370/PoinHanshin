@@ -3,8 +3,6 @@ package com.project.poinhanshin.service.board;
 import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.board.BoardFileDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
-import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
-import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import com.project.poinhanshin.mapper.board.BoardFileMapper;
 import com.project.poinhanshin.mapper.board.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
