@@ -112,35 +112,35 @@
         <span th:text="|작성자 : ${boardDto.board_userno}|" >작성자:</span>
     </div>
 
+
 <!--댓글출력-->
 <!--${commentList} 댓글리스트-->
+    <div id="hiddenArea" style="display:none">
+        <div id="replyCmtContainer" style="display:none">
+            <input type="text" name="replyComment" />
+            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>
+        </div>
+    </div>
 
     <div id="commentTable">
-
             <div>
-                <div class="commentbox" >
-                    <input type="hidden" id="commentno" name="commentno" >
-                    <div>
+                <div class="commentbox" id="commentArea">
+                   <!-- <div>
                         <small >유저id</small>
                         <small > 2010-11-11 10:51:03 (ex)</small>
-                    </div>
-                    <span >내용</span>
-                    <span>
-                        <button type="button" data-bs-toggle="collapse"
-
-
+                        <span >내용</span>
+                        <button type="button" id="writeCommentBtn" data-bs-toggle="collapse"
                                 style="display:inline" class="btn btn-outline-primary btn-sm">답글달기
                         </button>
-                    </span>
-                    <span class="text-right" >
-                        <span><button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
-                                      style="display:inline" >수정</button>
-                        </span>
-                        <span><button type="submit"  class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button></span>
-                    </span>
+                        <button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
+                                style="display:inline" >수정
+                        </button>
+                        <button type="button"   class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button>
+                    </div>-->
                 </div>
 
 <!--        댓글수정          -->
+<!--
 
                 <div class="collapse" >
                     <form   method="post">
@@ -155,11 +155,10 @@
                         <br>
                     </form>
                 </div>
-
-
+-->
 <!--        답글출력        -->
 <!--parcommentno 답글을 구분-->
-
+<!--
                 <div  id="relybox">
                     <div class="relpybox" >
                         <i class="bi bi-arrow-90deg-up"></i>
@@ -179,7 +178,7 @@
                                 <span><button type="button"  class="btn btn-outline-danger btn-sm">삭제</button></span>
                             </span>
                     </div>
-                    <!--        답글수정          -->
+                    &lt;!&ndash;        답글수정          &ndash;&gt;
                     <div class="collapse" >
                         <form   method="post">
                             <div class="input-group" style="width:auto">
@@ -209,25 +208,23 @@
                 </div>
         </div>
         </th:block>
-    </div>
+    </div>-->
 <!--댓글작성-->
     <div class="commentbox2">
         <div>
             <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
         </div>
-
-
         <div>
             <form  method="post">
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                    <input type="text"  class="form-control" id="content" name="content"
+                    <input type="text"  class="form-control" id="content" name="comment"
                            placeholder="1자에서 100자 이내로 입력해주세요.">
                     <div class="field-error" >
                         오류2
                     </div>
-                    <button type="submit" class="btn btn-outline-dark">작성</button>
+                    <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
                     <br>
                 </div>
             </form>
@@ -247,15 +244,157 @@
 
 <script th:inline="javascript">
 
-    // 삭제 버튼 클릭시
-    $('#removeBtn').on("click",function(){
-        if(!confirm("삭제하시겠습니까 ?")) return;
-        console.log("게시물 삭제");
 
-        let form = $('#removeForm');
-        form.submit();
+    $(document).ready(function(){
+        // 게시글 시작
+        // 게시물 삭제 버튼 클릭시
+        $('#removeBtn').on("click",function(){
+            if(!confirm("삭제하시겠습니까 ?")) return;
+            console.log("게시물 삭제");
+
+            let form = $('#removeForm');
+            form.submit();
+        });
+        // 게시글 끝
+
+        // 댓글 시작
+
+        let toTime = function(input){
+            let time = new Date(input);
+            let year = time.getFullYear();
+            let month = time.getMonth() + 1;
+            let day = time.getDate();
+            let yoil = time.getDay();
+
+            let hour = time.getHours();
+            let minute = time.getMinutes();
+
+
+            let str = ''+ year + '년' +month+'월'+day+'일' + ' ' + hour +'시'+ minute +'분';
+            return str;
+        }
+
+        // 게시물 댓글 HTML 작성
+        let toHtml = function(comments){
+            let tmp = '';
+            comments.forEach(function(comment){
+                tmp += '<div data-commentno=' + comment.commentno;
+                /*tmp +=' data-boardcomment_boardno='+ comment.boardcomment_boardno;*/
+                tmp +=' data-parcommentno='+ comment.parcommentno + '>';
+                tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
+                tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
+                tmp += '<span> 내용 :  ' + comment.comment+' | </span>';
+                tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
+                tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
+                tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
+                tmp += 'class="btn btn-outline-danger btn-sm" >삭제</button>';
+                tmp += '</div>';
+            })
+            return tmp;
+        }
+
+        // 게시물 댓글을 가져와서 화면에 출력
+        let showList = function(boardcomment_boardno){
+            $.ajax({
+                type : 'GET',
+                url : '/comments?boardcomment_boardno='+boardcomment_boardno,
+                dataType : 'json',
+                success:function(commentList){
+                    console.log(commentList);
+                    $('#commentArea').html(toHtml(commentList));
+                }
+            })
+        }
+
+        showList([[${boardDto.boardno}]]);
+
+
+        // 댓글 등록 버튼 ( 대댓글 X )
+        $('#insertCommentBtn').on("click" ,function(){
+            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+            let comment = $('input[name=comment]').val();
+            let boardcomment_boardno = [[${boardDto.boardno}]];
+            if(comment.trim() == ''){
+                alert("댓글을 입력해주세요.");
+                return;
+            }
+            let commentDto = {
+                boardcomment_boardno : boardcomment_boardno,
+                comment : comment,
+            }
+            $.ajax({
+               type : 'POST',
+                url : '/comments',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(commentDto),
+                success:function(str){
+                   console.log(str)
+                   showList([[${boardDto.boardno}]]);
+                    $('input[name=comment]').val("");
+                },
+                error:function(){}
+            });
+        })
+
+        // 삭제 버튼 클릭
+        $(document).on("click", "button[name=removeCmtBtn]" ,function(){
+            if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
+            let commentno = $(this).parent().attr("data-commentno");
+
+            $.ajax({
+                type : 'DELETE',
+                url : '/comments/'+commentno+"?boardcomment_boardno="+[[${boardDto.boardno}]],
+                success : function(str){
+                    console.log(str)
+                    showList([[${boardDto.boardno}]]);
+                },
+                error : function(){}
+            })
+        })
+
+        // 대댓글 버튼 클릭
+        $(document).on("click" , "button[name=writeCmtBtn]", function(){
+            $('#replyCmtContainer').appendTo($(this).parent());
+            $('#replyCmtContainer').css("display","block");
+        });
+
+        // 대댓글 등록 버튼 클릭
+        $('#replyBtn').on("click" , function(){
+            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+            let comment = $('input[name=replyComment]') .val();
+            let commentno = $('#replyCmtContainer').parent().attr("data-commentno");
+            let boardcomment_boardno = [[${boardDto.boardno}]];
+            let parcommentno = commentno;
+
+            let commentDto = {
+                parcommentno : parcommentno,
+                boardcomment_boardno : boardcomment_boardno,
+                comment : comment
+            }
+
+            $.ajax({
+               type : 'POST',
+               url : '/comments',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(commentDto),
+                success : function(str){
+                   alert(str);
+                   $('#replyCmtContainer').appendTo($('#hiddenArea'));
+                   $('#replyCmtContainer').css("display", "none");
+                   $('input[name=replyComment]').val("");
+
+                   showList([[${boardDto.boardno}]])
+
+                },
+                error : function(){}
+            });
+        });
+
+        // 댓글 끝
+
     });
-
 
 
 

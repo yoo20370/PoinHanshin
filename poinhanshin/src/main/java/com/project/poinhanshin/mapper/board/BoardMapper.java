@@ -4,6 +4,7 @@ import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -39,4 +40,6 @@ public interface BoardMapper {
     // 조회수 Top3
     List<BoardDto> selectViewCntTop();
 
+    // 댓글 개수 업데이트
+    int updateCommentCnt(Integer boardno, Integer num);
 }
