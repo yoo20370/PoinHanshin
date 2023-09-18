@@ -45,9 +45,9 @@ public class ProtectBoardDto {
      // 서버 저장용 파일 이름
      private List<String> storedFileName;
      // 파일 첨부 여부(첨부 1,  미첨부 0) , boolean로 할 경우 엔티티(DB)에서 손이 많이 가게 됨
-     private int fileAttached;
+     private Integer fileAttached;
 
-     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline,  int fileAttached) {
+     public ProtectBoardDto(Integer protectboard_userno, Integer protectboardno, String protectboard_title, String protectboard_content, String breeds, boolean protectboard_ani_category, Date protectboard_reg_date, boolean protectstatus, Date starttime, Date deadline,  Integer fileAttached) {
           this.protectboard_userno = protectboard_userno;
           this.protectboardno = protectboardno;
           this.protectboard_title = protectboard_title;

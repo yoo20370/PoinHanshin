@@ -116,14 +116,6 @@
 
         </div>
 
-        <!-- 이전에 첨부한 첨부파일 목록 -->
-        <span id="imgDiv"th:if="${protectboard.fileAttached == 1}">
-            <h3>이전에 첨부한 첨부파일 목록</h3>
-            <table id="attachTable">
-
-            </table>
-        </span>
-
         <!-- dropzone -->
         <div class="dropzone" id="my-dropzone" ></div>
 
@@ -170,6 +162,7 @@
 
             addRemoveLinks: true, // 업로드 후 파일 삭제버튼 표시 여부
             dictRemoveFile: '삭제', // 삭제버튼 표시 텍스트
+            acceptedFiles: '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF',
 
             init: function () {
                 // 최초 dropzone 설정시 init을 통해 호출
@@ -202,8 +195,8 @@
     // 해당 게시물이 첨부파일을 가지고 있으면 dropzone에 보여준다.
     let displayImg = function(protectBoardFileDtoList){
         protectBoardFileDtoList.forEach(function(protectBoardFileDto){
-            let mockFile = {name: protectBoardFileDto.storedFileName , size : protectBoardFileDto.fileSize}
-            dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/'+protectBoardFileDto.stored_file_name);
+            let mockFile = {name: protectBoardFileDto.stored_file_name , size : protectBoardFileDto.fileSize}
+            dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/protectboard/'+protectBoardFileDto.stored_file_name);
         });
     }
     // 첨부파일 드롭존에 전달

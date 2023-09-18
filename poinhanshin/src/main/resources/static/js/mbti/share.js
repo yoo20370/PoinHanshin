@@ -1,4 +1,3 @@
-
 const url = 'https://';
 
 function setShare(){
@@ -31,5 +30,4 @@ function setShare(){
             },
         ]
     });
-
 }

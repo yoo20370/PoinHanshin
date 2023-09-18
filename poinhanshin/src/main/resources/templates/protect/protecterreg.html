@@ -152,6 +152,7 @@
 
             addRemoveLinks: true, // 업로드 후 파일 삭제버튼 표시 여부
             dictRemoveFile: '삭제', // 삭제버튼 표시 텍스트
+            acceptedFiles: '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF',
 
             init: function () {
                 // 최초 dropzone 설정시 init을 통해 호출
@@ -284,7 +285,7 @@
             $('#protectboardno').val(pbn);
 
             let form = $('#form');
-            form.attr( "action", [[@{/protectboard/read}]] );
+            form.attr( "action", [[@{/protectboard/read}]]);
             form.attr("method","get");
             form.submit();
 

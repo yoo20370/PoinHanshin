@@ -7,42 +7,19 @@
     <meta charset="UTF-8">
     <title>상세페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
+    <link href="/css/commonstyle.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+
 </head>
 <style>
-
 
     button {
         float : right;
     }
-    @media (min-width: 768px) {
-      .page {
-        width: 600px;
-      }
-    }
 
-    @media (min-width: 992px) {
-      .page {
-        width: 940px;
-      }
-    }
-
-    @media (min-width: 1200px) {
-      .page {
-        width: 940px;
-      }
-    }
-
-.page {
-        margin: 0 auto;
-        height: 100%;
-        padding: 50px;
-        height: auto;
-        min-height: 100%;
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-        border-bottom-width: 2px;
-        padding-bottom: 20px
-    }
   .commentbox {
         padding : 20px;
         border-top: 1px solid black;
@@ -60,185 +37,350 @@
 <body layout:fragment="content">
 <div class="page">
 <span class="fs-6">태그</span>
+
 <!--    고양이=1(true), 강아지=0(false)-->
+    <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
+    <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
 
-<span th:if="${boardDto.ani_category == 0}" class="badge rounded-pill text-bg-secondary">강아지</span>
-<span th:if="${boardDto.ani_category == 1 }" class="badge text-bg-primary">고양이</span>
-
-
-
+    <!-- 제목 -->
     <div class="row">
         <div class="form-floating">
             <input type="text" readonly class="form-control-plaintext"
-            id="floatingEmptyPlaintextInput"
-            th:value="${boardDto.title}">
-        <label for="floatingEmptyPlaintextInput">제목</label>
+                   id="floatingEmptyPlaintextInput"
+                   name="board_title"
+                   th:value="${boardDto.board_title}"
+                   >
+            <label for="floatingEmptyPlaintextInput">제목</label>
         </div>
     </div>
 
+    <!-- 이미지 파일 존재 여부에 따라 이미지 표시 -->
+    <div th:if="${boardDto.fileAttached == 1}">
+        <span th:each="fileName: ${boardDto.storedFileName}">
+                <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
+                <input type="hidden" name="storedFileName" th:value="${fileName}"/>
+            </span>
+    </div>
+    <!-- 내용 -->
     <div class="row">
         <div class="col-mb-3">
-<!--  이미지     -->
-                  <div class="col-sm-6" th:each="image:${boardDto.board_imagepath}" th:if="${#strings.isEmpty(protectboard.protectboard_imagepath)}">
-                    <img th:src="'data:image/jpeg;base64,'+${image}" class="img-fluid" alt="빈이미지">
-                  </div>
+            <!--  이미지     -->
+            <div class="col-sm-6" >
+                <img  class="img-fluid" alt="빈이미지" >
+            </div>
             <textarea
-                type="text"
-                name="content"
-                class="form-control"
-                id="inputContent"
-                th:value="${boardDto.content}"
-                readonly="readonly"
-                style="height: 300px;border:none"
+                    type="text"
+                    name="board_content"
+                    class="form-control"
+                    id="inputContent"
+                    th:text="${boardDto.board_content}"
+                    readonly="readonly"
+                    style="height: 300px;border:none"
             ></textarea>
         </div>
     </div>
 
+    <!-- 작성일 , 조회수 , 작성자 -->
     <div class="row">
-        <span th:text="| 작성일 : ${boardDto.reg_date}|">작성일:</span>
-        <span th:text="| 조회수 : ${boardDto.viewcount}|">조회수:</span>
-        <span th:text="| 작성자 : ${boardDto.board_users_id}|">작성자:</span>
+        <span th:text="|작성일 : ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')} |" >작성일:</span>
+        <span th:text="|조회수 : ${boardDto.board_viewcount}|" >조회수:</span>
+        <span th:text="|작성자 : ${boardDto.board_userno}|" >작성자:</span>
     </div>
+
 
 <!--댓글출력-->
 <!--${commentList} 댓글리스트-->
+    <div id="hiddenArea" style="display:none">
+        <div id="replyCmtContainer" style="display:none">
+            <input type="text" name="replyComment" />
+            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>
+        </div>
+    </div>
+
     <div id="commentTable">
-        <th:block th:each="commentDto:${commentList}">
-        <div>
-                <div class="commentbox" th:if="${#strings.isEmpty(commentDto.parcommentno)}">
-                    <input type="hidden" id="commentno" name="commentno" th:value="${commentDto.commentno}">
-                    <div>
-                        <small th:text="${commentDto.boardcomment_userno}">유저id</small>
-                        <small th:text="${#strings.substring(commentDto.reg_date,0,19)}"> 2010-11-11 10:51:03 (ex)</small>
-                    </div>
-                    <span th:text="${commentDto.comment}">내용</span>
-                    <span>
-                        <button type="button" data-bs-toggle="collapse"
-                                       th:attr="data-bs-target=|#r${commentDto.commentno}"
-                                       th:if="${users.userno != null}"
-                                       style="display:inline" class="btn btn-outline-primary btn-sm">답글달기
+
+            <div>
+                <div class="commentbox" id="commentArea">
+                   <!-- <div>
+                        <small >유저id</small>
+                        <small > 2010-11-11 10:51:03 (ex)</small>
+                        <span >내용</span>
+                        <button type="button" id="writeCommentBtn" data-bs-toggle="collapse"
+                                style="display:inline" class="btn btn-outline-primary btn-sm">답글달기
                         </button>
-                    </span>
-                    <span class="text-right" th:if="${commentDto.boardcomment_userno} == ${users.userno}">
-                        <span><button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
-                                      th:attr="data-bs-target=|#c${commentDto.commentno}"style="display:inline" >수정</button>
-                        </span>
-                        <span><button type="submit" th:onclick="commentRemove([[${commentDto.commentno}]]);" class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button></span>
-                    </span>
+                        <button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
+                                style="display:inline" >수정
+                        </button>
+                        <button type="button"   class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button>
+                    </div>-->
                 </div>
 
 <!--        댓글수정          -->
-                <div class="collapse" th:id="c + ${commentDto.commentno}">
-                    <form  th:action="@{/comments/{cno}(cno=${commentDto.commentno})}" th:object="${commentVO}" method="post">
+<!--
+
+                <div class="collapse" >
+                    <form   method="post">
                         <div class="input-group" style="width:auto">
                             <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                            <input type="text"  th:name="comment" class="form-control" th:text="${commentDto.comment}">
-                            <input type="hidden" th:name="parcommentno" th:value="${commentDto.commentno}"/>
-                            <input type="hidden" th:name="boardcomment_userno" th:value="${users.userno}"/>
+                            <input type="text"   class="form-control" >
+                            <input type="hidden"  />
+                            <input type="hidden" />
+
                             <button type="submit" class="btn btn-outline-dark">댓글작성</button>
                             <br>
                         </div>
                         <br>
                     </form>
                 </div>
-
-
+-->
 <!--        답글출력        -->
 <!--parcommentno 답글을 구분-->
-                    <div th:each="relpy:${commentList}" id="relybox">
-                        <div class="relpybox" th:if="${#strings.equals(relpy.parcommentno, commentDto.commentno)">
-                            <i class="bi bi-arrow-90deg-up"></i>
-                            <input type="hidden" id="replyno" name="relpyno" th:value="${relpy.commentno}">
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
-                                </svg>
-                                <small th:text="${relpy.boardcomment_userno}">유저id</small>
-                                <small th:text="${#strings.substring(relpy.reg_date,0,19)}"> 2010-11-11 10:51:03 (ex)</small>
-                            </div>
-                            <span th:text="${relpy.comment}">답글내용</span>
-                            <span class="text-right" th:if="${relpy.boardcomment_userno == users.userno}">
+
+<!--
+                <div  id="relybox">
+                    <div class="relpybox" >
+                        <i class="bi bi-arrow-90deg-up"></i>
+                        <input type="hidden" id="replyno" name="relpyno" >
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
+                            </svg>
+                            <small >유저id</small>
+                            <small > 2010-11-11 10:51:03 (ex)</small>
+                        </div>
+                        <span >답글내용</span>
+                        <span class="text-right" >
                                  <span><button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
-                                              th:attr="data-bs-target=|#r${relpy.commentno}"style="display:inline" >수정</button>
+                                              style="display:inline" >수정</button>
                                  </span>
-                                <span><button type="button" th:onclick="commentRemove([[${relpy.commentno}]]);" class="btn btn-outline-danger btn-sm">삭제</button></span>
+                                <span><button type="button"  class="btn btn-outline-danger btn-sm">삭제</button></span>
                             </span>
-                        </div>
-                        <!--        답글수정          -->
-                        <div class="collapse" th:id="r + ${relpy.commentno}">
-                            <form  th:action="@{/comments/{cno}(cno=${relpy.commentno})}" th:object="${commentVO}" method="post">
-                                <div class="input-group" style="width:auto">
-                                    <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                                    <input type="text"  th:name="comment" class="form-control">
-                                    <input type="hidden" th:name="parcommentno" th:value="${relpy.commentno}"/>
-                                    <input type="hidden" th:name="boardcomment_userno" th:value="${users.userno}"/>
-                                    <button type="submit" class="btn btn-outline-dark">댓글작성</button>
-                                    <br>
-                                </div>
-                                <br>
-                            </form>
-                        </div>
                     </div>
+                    &lt;!&ndash;        답글수정          &ndash;&gt;
+                    <div class="collapse" >
+                        <form   method="post">
+                            <div class="input-group" style="width:auto">
+                                <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                                <input type="text"   class="form-control">
+                                <input type="hidden" />
+                                <input type="hidden" />
+                                <button type="submit" class="btn btn-outline-dark">댓글작성</button>
 
-
-                        <!--        답글 작성창      -->
-                        <div class="collapse" th:id="r + ${commentDto.commentno}">
-                            <form  th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentVO}" method="post">
-                                <div class="input-group" style="width:auto">
-                                    <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                                    <input type="text"  th:name="comment" class="form-control" th:text="${commentDto.comment}">
-                                    <input type="hidden" th:name="parcommentno" th:value="${commentDto.commentno}"/>
-                                    <input type="hidden" th:name="boardcomment_userno" th:value="${users.userno}"/>
-                                    <button type="submit" class="btn btn-outline-dark">답글작성</button>
-                                    <br>
-                                </div>
                                 <br>
-                            </form>
+                            </div>
+                            <br>
+                        </form>
+                    </div>
+                </div>
+                <div class="collapse" >
+                    <form   method="post">
+                        <div class="input-group" style="width:auto">
+                            <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                            <input type="text"  class="form-control" >
+                            <input type="hidden" />
+                            <input type="hidden" />
+                            <button type="submit" class="btn btn-outline-dark">답글작성</button>
+                            <br>
                         </div>
-
-
-
+                        <br>
+                    </form>
+                </div>
         </div>
         </th:block>
-
-
-
-
-    </div>
-
-
-
+    </div>-->
 <!--댓글작성-->
     <div class="commentbox2">
         <div>
             <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
         </div>
-
         <div>
-            <form th:unless="${session.isEmpty()}" th:action="@{/comments(bno=${boardDto.boardno})}" th:object="${commentVO}" method="post">
+
+            <form  method="post">
+
                 <div class="input-group" style="width:auto">
-                    <input type="hidden" name="boardcomment_userno" th:value="${user.userno}">
+                    <input type="hidden" name="boardcomment_userno" >
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                    <input type="text" th:field="*{comment}" class="form-control" id="content" name="content"
-                                   placeholder="1자에서 100자 이내로 입력해주세요.">
-                    <div class="field-error" th:errors="*{comment}">
-                                오류2
+                    <input type="text"  class="form-control" id="content" name="comment"
+                           placeholder="1자에서 100자 이내로 입력해주세요.">
+                    <div class="field-error" >
+                        오류2
                     </div>
-                    <button type="submit" class="btn btn-outline-dark">작성</button>
+                    <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
                     <br>
                 </div>
             </form>
         </div>
     </div>
-        <form>
-        <div class="col-7 p-3">
-            <button type="button" th:onclick="|location.href='@{/board/modify}'|" class="btn btn-secondary">수정</button>
-            <button type="button" onclick="removePost();" class="btn btn-danger">삭제</button>
-        </div>
-        </form>
+
+    <!-- 버튼 -->
+    <button type="button" class="btn btn-secondary"
+            th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
+    </button>
+    <button type="button" class="btn btn-secondary"
+            th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
+    </button>
+    <form id="removeForm" th:action="@{/board/remove(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}" method="post">
+        <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
+    </form>
 
 <script th:inline="javascript">
-/*<![CDATA[*/
+
+
+    $(document).ready(function(){
+        // 게시글 시작
+        // 게시물 삭제 버튼 클릭시
+        $('#removeBtn').on("click",function(){
+            if(!confirm("삭제하시겠습니까 ?")) return;
+            console.log("게시물 삭제");
+
+            let form = $('#removeForm');
+            form.submit();
+        });
+        // 게시글 끝
+
+        // 댓글 시작
+
+        let toTime = function(input){
+            let time = new Date(input);
+            let year = time.getFullYear();
+            let month = time.getMonth() + 1;
+            let day = time.getDate();
+            let yoil = time.getDay();
+
+            let hour = time.getHours();
+            let minute = time.getMinutes();
+
+
+            let str = ''+ year + '년' +month+'월'+day+'일' + ' ' + hour +'시'+ minute +'분';
+            return str;
+        }
+
+        // 게시물 댓글 HTML 작성
+        let toHtml = function(comments){
+            let tmp = '';
+            comments.forEach(function(comment){
+                tmp += '<div data-commentno=' + comment.commentno;
+                /*tmp +=' data-boardcomment_boardno='+ comment.boardcomment_boardno;*/
+                tmp +=' data-parcommentno='+ comment.parcommentno + '>';
+                tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
+                tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
+                tmp += '<span> 내용 :  ' + comment.comment+' | </span>';
+                tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
+                tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
+                tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
+                tmp += 'class="btn btn-outline-danger btn-sm" >삭제</button>';
+                tmp += '</div>';
+            })
+            return tmp;
+        }
+
+        // 게시물 댓글을 가져와서 화면에 출력
+        let showList = function(boardcomment_boardno){
+            $.ajax({
+                type : 'GET',
+                url : '/comments?boardcomment_boardno='+boardcomment_boardno,
+                dataType : 'json',
+                success:function(commentList){
+                    console.log(commentList);
+                    $('#commentArea').html(toHtml(commentList));
+                }
+            })
+        }
+
+        showList([[${boardDto.boardno}]]);
+
+
+        // 댓글 등록 버튼 ( 대댓글 X )
+        $('#insertCommentBtn').on("click" ,function(){
+            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+            let comment = $('input[name=comment]').val();
+            let boardcomment_boardno = [[${boardDto.boardno}]];
+            if(comment.trim() == ''){
+                alert("댓글을 입력해주세요.");
+                return;
+            }
+            let commentDto = {
+                boardcomment_boardno : boardcomment_boardno,
+                comment : comment,
+            }
+            $.ajax({
+               type : 'POST',
+                url : '/comments',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(commentDto),
+                success:function(str){
+                   console.log(str)
+                   showList([[${boardDto.boardno}]]);
+                    $('input[name=comment]').val("");
+                },
+                error:function(){}
+            });
+        })
+
+        // 삭제 버튼 클릭
+        $(document).on("click", "button[name=removeCmtBtn]" ,function(){
+            if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
+            let commentno = $(this).parent().attr("data-commentno");
+
+            $.ajax({
+                type : 'DELETE',
+                url : '/comments/'+commentno+"?boardcomment_boardno="+[[${boardDto.boardno}]],
+                success : function(str){
+                    console.log(str)
+                    showList([[${boardDto.boardno}]]);
+                },
+                error : function(){}
+            })
+        })
+
+        // 대댓글 버튼 클릭
+        $(document).on("click" , "button[name=writeCmtBtn]", function(){
+            $('#replyCmtContainer').appendTo($(this).parent());
+            $('#replyCmtContainer').css("display","block");
+        });
+
+        // 대댓글 등록 버튼 클릭
+        $('#replyBtn').on("click" , function(){
+            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+            let comment = $('input[name=replyComment]') .val();
+            let commentno = $('#replyCmtContainer').parent().attr("data-commentno");
+            let boardcomment_boardno = [[${boardDto.boardno}]];
+            let parcommentno = commentno;
+
+            let commentDto = {
+                parcommentno : parcommentno,
+                boardcomment_boardno : boardcomment_boardno,
+                comment : comment
+            }
+
+            $.ajax({
+               type : 'POST',
+               url : '/comments',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(commentDto),
+                success : function(str){
+                   alert(str);
+                   $('#replyCmtContainer').appendTo($('#hiddenArea'));
+                   $('#replyCmtContainer').css("display", "none");
+                   $('input[name=replyComment]').val("");
+
+                   showList([[${boardDto.boardno}]])
+
+                },
+                error : function(){}
+            });
+        });
+
+        // 댓글 끝
+
+    });
+
+
+
+    /*<![CDATA[*/
+
 
 //테스트용 콘솔창데이터확인용
 const list = [[${boardDto}]];
@@ -264,15 +406,15 @@ function commentRemove(commentno) {
 
 //게시글삭제
  function removePost() {
-                const id = /*[[ ${boardDto.boardno} ]]*/;
+                const id = /*[[ ${boardDto.bno} ]]*/;
 
-                if ( !confirm(id + '번 게시글을 삭제할까요?'); ) {
+                if ( !confirm(id + '번 게시글을 삭제할까요?') ) {
                     return false;
                 }
 
                 const formHtml = `
                     <form id="deleteForm" action="/board/remove" method="post">
-                        <input type="hidden" id="boardno" name="boardno" value="${boardDto.boardno}" />
+                        <input type="hidden" id="bno" name="bno" value="${boardDto.bno}" />
                     </form>
                 `;
                 const doc = new DOMParser().parseFromString(formHtml, 'text/html');

@@ -2,22 +2,22 @@ package com.project.poinhanshin.service.board;
 
 
 import com.project.poinhanshin.domain.board.CommentDto;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.stream.events.Comment;
 import java.util.List;
 
+@Service
 public interface CommentService {
-    int getCount(Integer bno) throws Exception;
 
-    @Transactional(rollbackFor = Exception.class)
-    int remove(Integer cno, Integer bno, String commenter) throws Exception;
+    // 댓글 목록 가져오기
+    List<CommentDto> getCommentList(Integer boardcomment_boardno);
+    // 댓글 등록하기
+    int addComment(CommentDto commentDto);
+    // 댓글 수정하기
+    int modifyComment(CommentDto commentDto);
+    // 댓글 삭제하기
+    int removeComment(Integer boardcomment_boardno , Integer commentno , Integer boardcomment_userno);
 
-    @Transactional(rollbackFor = Exception.class)
-    int write(CommentDto commentDto) throws Exception;
-
-    List<CommentDto> getList(Integer bno) throws Exception;
-
-    CommentDto read(Integer cno) throws Exception;
-
-    int modify(CommentDto commentDto) throws Exception;
 }

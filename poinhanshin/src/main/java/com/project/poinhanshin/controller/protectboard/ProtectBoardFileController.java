@@ -48,7 +48,7 @@ public class ProtectBoardFileController {
         // 특정 게시물의 첨부파일 데이터들을 읽어온다.
         List<ProtectBoardFileDto> protectBoardFileDtoList = protectBoardFileService.selectFiles(protectboardno);
 
-        // 서버 이름을 저장한 List를 반환한다.
+        // 서버에 저장된 파일 이름들을 List로 반환
         return new ResponseEntity<List<ProtectBoardFileDto>>(protectBoardFileDtoList, HttpStatus.OK);
     }
 

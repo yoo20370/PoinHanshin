@@ -2,59 +2,55 @@ package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.CommentDto;
 import com.project.poinhanshin.mapper.board.BoardMapper;
-import com.project.poinhanshin.mapper.board.CommentDao;
+import com.project.poinhanshin.mapper.board.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 
 @Service
 public class CommentServiceImpl implements CommentService {
-    private final BoardMapper boardDao;
-    private final CommentDao commentDao;
 
+    CommentMapper commentMapper;
+    BoardMapper boardMapper;
+
+    // 의존성 추가
     @Autowired
-    public CommentServiceImpl(CommentDao commentDao, BoardMapper boardMapper) {
-        this.commentDao = commentDao;
-        this.boardDao = boardMapper;
+    public CommentServiceImpl(CommentMapper commentMapper, BoardMapper boardMapper) {
+        this.commentMapper = commentMapper;
+        this.boardMapper = boardMapper;
     }
 
+    // 댓글 목록을 가져온다.
     @Override
-    public int getCount(Integer bno) {
-        return commentDao.count(bno);
+    public List<CommentDto> getCommentList(Integer boardcomment_boardno) {
+        return commentMapper.selectComment(boardcomment_boardno);
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int remove(Integer cno, Integer bno, String commenter) {
-        int rowCnt = boardDao.updateCommentCnt(bno, -1);
-        System.out.println("updateCommentCnt - rowCnt = " + rowCnt);
-        rowCnt = commentDao.delete(cno, commenter);
-        System.out.println("rowCnt = " + rowCnt);
-        return rowCnt;
-    }
-
+    // 댓글 추가
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int write(CommentDto commentDto) {
-        boardDao.updateCommentCnt(commentDto.getBno(), 1);
-        return commentDao.insert(commentDto);
+    public int addComment(CommentDto commentDto) {
+        // 값을 증가시켜줘야하기 때문
+        boardMapper.updateCommentCnt(commentDto.getBoardcomment_boardno() , 1);
+        return commentMapper.insertContent(commentDto);
     }
 
+    // 댓글 수정
     @Override
-    public List<CommentDto> getList(Integer bno) {
-        return commentDao.selectAll(bno);
+    public int modifyComment(CommentDto commentDto) {
+        return commentMapper.updateComment(commentDto);
     }
 
+    // 댓글 삭제
     @Override
-    public CommentDto read(Integer cno) {
-        return commentDao.select(cno);
-    }
-
-    @Override
-    public int modify(CommentDto commentDto) {
-        return commentDao.update(commentDto);
+    @Transactional(rollbackFor = Exception.class)
+    public int removeComment(Integer boardcomment_boardno, Integer commentno, Integer boardcomment_userno) {
+        // 값을 감소시켜야하기 때문
+        boardMapper.updateCommentCnt(boardcomment_boardno , -1);
+        return commentMapper.deleteComment(commentno , boardcomment_userno);
     }
 }

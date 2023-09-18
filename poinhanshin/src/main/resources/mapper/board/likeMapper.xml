@@ -21,5 +21,4 @@
         WHERE boardno = #{boardno}
 
     </update>
-
 </mapper>
