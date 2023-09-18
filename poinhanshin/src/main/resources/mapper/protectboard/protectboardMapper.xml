@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper">
+    <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="int">
+        SELECT count(*)
+        FROM protectboard
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+        <include refid="aniCategoryChoose"/>
+    </select>
+    <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
+        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
+        FROM protectboard
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+        <include refid="aniCategoryChoose"/>
+        ORDER BY deadline ASC , protectboardno ASC
+        LIMIT #{offset} , #{pageSize}
+    </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
         FROM protectboard
@@ -21,20 +35,6 @@
         DELETE FROM protectboard
         WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
     </delete>
-    <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="int">
-        SELECT count(*)
-        FROM protectboard
-        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
-        <include refid="aniCategoryChoose"/>
-    </select>
-    <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition1" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
-        FROM protectboard
-        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
-        <include refid="aniCategoryChoose"/>
-        ORDER BY deadline ASC , protectboardno ASC
-        LIMIT #{offset} , #{pageSize}
-    </select>
     <select id="selectRecentBoardno" resultType="int" parameterType="int">
         SELECT protectboardno
         FROM protectboard
@@ -42,11 +42,11 @@
         ORDER BY protectboardno DESC
         LIMIT 1
     </select>
-    <select id="updateFileAttached" parameterType="map">
+    <update id="updateFileAttached" parameterType="map">
         UPDATE protectboard
         SET fileAttached = #{fileAttached}
         WHERE protectboardno = #{protectboardno}
-    </select>
+    </update>
     <sql id="aniCategoryChoose">
         <choose>
             <when test="ani_category == 0">
