@@ -21,7 +21,8 @@
 <body layout:fragment="content">
 
 
-<center style="padding-left:25%;padding-right:25%">
+<div class="page">
+    <div class="container">
     <br><div><h1> 보호소 목록 </h1></div><br><br><br>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
         <form action="" method="" name="searchForm" id="searchForm">
@@ -40,46 +41,80 @@
         <div class="btn-group" role="group"aria-label="Basic outlined example">
         </div>
     </div>
-    <div class ="item" th:each="shelterList :${ShelterList}">
-        <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}">
 
-            <table border="1" class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th style="width:100px">동물보호센터명</th>
-                    <th style="width:100px">관리기관명</th>
-                    <th style="width:200px">도로명주소</th>
-                    <th style="width:100px">전화번호</th>
-                </tr>
-                <tr>
-                    <td th:text="${shelterList.careNm}"></td>
-                    <td th:text="${shelterList.orgNm}"></td>
-                    <td th:text="${shelterList.careAddr}"></td>
-                    <td th:text="${shelterList.careTel}"></td>
-                </tr>
-            </table>
-        </a>
+        <div class="row">
+            <div class="col-md-4 p-3" th:each="shelterList :${ShelterList}">
+                <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}" style="text-decoration-line: none;color:black;">
+                    <div class="card" style="background-color:#9C9EFE;">
+                        <div class="card-body">
+                            <h4 class="card-title" th:text="${shelterList.careNm}"></h4>
+                            <p class="card-text" th:text="${shelterList.careTel}"></p>
+                            <p class="card-text" th:text="${#strings.substringBefore(shelterList.careAddr,' ')}"></p>
+                            <p class="card-text" th:text="${shelterList.careNm}"></p>
+                        </div>
+                    </div>
+
+
+                </a>
+            </div>
+        </div>
+
+
+
+<!--    <div class ="item" th:each="shelterList :${ShelterList}">-->
+<!--        <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}">-->
+
+<!--            <table border="1" class="table table-bordered table-striped table-hover">-->
+<!--                <tr>-->
+<!--                    <th style="width:100px">동물보호센터명</th>-->
+<!--                    <th style="width:100px">관리기관명</th>-->
+<!--                    <th style="width:200px">도로명주소</th>-->
+<!--                    <th style="width:100px">전화번호</th>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td th:text="${shelterList.careNm}"></td>-->
+<!--                    <td th:text="${shelterList.orgNm}"></td>-->
+<!--                    <td th:text="${shelterList.careAddr}"></td>-->
+<!--                    <td th:text="${shelterList.careTel}"></td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </a>-->
+<!--    </div>-->
     </div>
-</center>
 <!--<div style=" position:absolute; right:50%;">
     <span th:each="i : ${#numbers.sequence(1,10)}">
         <a th:href="@{/api/ShelterList(page=${i})}"><span th:text="${i}"></span></a>
     </span>
 </div>-->
-<div style=" position:absolute; right:40%;">
-    <span th:if="${ph.showPrev}">
-                <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>
-    </span>
-    <span th:if="${ph.totalCnt != 0}">
-        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-            <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}">
-                <span th:text="${i}"/>
-            </a>
-        </span>
-    </span>
-    <span th:if="${ph.showNext}">
-                <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>
-    </span>
+<div class="page-container">
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group" role="group" aria-label="First group">
+        <button class="btn btn-secondary" th:unless="${ph.showPrev}">&lt;&lt;</button>
+        <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;&lt;</button>
+        <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+
+            <button type="button" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+        </th:block>
+        <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;&gt;</button>
+    </div>
 </div>
+</div>
+</div>
+<!--<div style=" position:absolute; right:40%;">-->
+<!--    <span th:if="${ph.showPrev}">-->
+<!--                <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}"> &lt;&lt; </a>-->
+<!--    </span>-->
+<!--    <span th:if="${ph.totalCnt != 0}">-->
+<!--        <span th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">-->
+<!--            <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}">-->
+<!--                <span th:text="${i}"/>-->
+<!--            </a>-->
+<!--        </span>-->
+<!--    </span>-->
+<!--    <span th:if="${ph.showNext}">-->
+<!--                <a th:href="@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;&gt;</a>-->
+<!--    </span>-->
+<!--</div>-->
 <script>
     $('#searchBtn').on("click",function(){
        let form = $('#searchForm');
