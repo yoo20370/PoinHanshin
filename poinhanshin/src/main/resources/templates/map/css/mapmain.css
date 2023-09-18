@@ -123,8 +123,7 @@ select option:checked {
 }
 
 .popupbox {
-    position:relative;width:400%;height:150%;
+    position:relative; height:150px;
     padding:10px; display: flex; flex-direction: column;
-    overflow-x: auto; overflow-y: auto;
-    font-family: "Nanum Gothic Coding";
+   overflow-y: auto;
 }

@@ -5,21 +5,12 @@ const result = document.querySelector("#result");
 const endPoint = 16;
 const select = [0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-function calResult() {
-    console.log(select);
-    const maxSelectValue = Math.max(...select);
-    const maxIndices = [];
-
-    // 최댓값을 가진 모든 인덱스를 찾아서 maxIndices 배열에 저장
-    for (let i = 0; i < select.length; i++) {
-        if (select[i] === maxSelectValue) {
-            maxIndices.push(i);
-        }
+function calResult(){
+    let result = 0;
+    for(let i = 0; i < endPoint; i++){
+        result += select[i];
     }
-
-    // maxIndices 배열에서 하나의 인덱스를 무작위로 선택
-    const randomIndex = maxIndices[Math.floor(Math.random() * maxIndices.length)];
-    return randomIndex;
+    return result.indexOf(Math.max(...select));
 }
 
 function setResult(){
