@@ -55,5 +55,4 @@ public class MBTIController {
         System.out.println(mbtiMapper.searchAband(2));
         return "test/likeDBTest";
     }
-
 }

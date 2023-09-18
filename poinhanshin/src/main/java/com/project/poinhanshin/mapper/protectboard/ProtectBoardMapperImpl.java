@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
-
     SqlSession sqlSession;
 
     @Autowired
