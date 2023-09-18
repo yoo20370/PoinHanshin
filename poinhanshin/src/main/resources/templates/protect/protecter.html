@@ -81,7 +81,7 @@
             <!-- 이미지 파일 존재 여부 -->
             <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             <span th:each="fileName: ${protectboard.storedFileName}">
-                <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" />
+                <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음"  width="300px" height="300px" />
                 <!-- 수정으로 이미지 정보 넘겨주기 위해 추가 (? 사용 안하는 것 같긴한데 일단 변경 금지 -->
                 <input type="hidden" name="storedFileName" th:value="${fileName}"/>
             </span>
