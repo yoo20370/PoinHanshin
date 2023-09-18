@@ -146,22 +146,34 @@ var newPlaceLng = document.getElementById('newPlaceLng');
 // 팝업 디자인을 위한 임시코드 --------------------------------
 var places = [
 {
-mapboard_title: '강아지가 실종되었습니다.',
+mapboard_title: '실종A',
 // latlng: new kakao.maps.LatLng(37.5665, 126.9780), // 예시 좌표
 mapboard_content: '내용-------',
 missingtime: '2021-09-01 12:00',
 missingaddress: '서울특별시 중구 을지로 281',
 latitude: '37.5665',
-longitude: '126.9780'
+longitude: '126.9780',
+mapboard_ani_category:"강아지"
 },
 {
-mapboard_title : '레스토랑 B',
+mapboard_title : '실종B',
 // latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
 mapboard_content : '내용-------',
 missingtime: '2021-09-01 12:00',
 missingaddress : '서울특별시 중구 을지로 281',
 latitude : '37.5600',
-longitude : '126.9700'
+longitude : '126.9700',
+mapboard_ani_category:"강아지"
+},
+{
+mapboard_title : '실종C',
+// latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
+mapboard_content : '내용-------',
+missingtime: '2021-09-01 12:00',
+missingaddress : '서울특별시 중구 을지로 281',
+latitude : '37.5630',
+longitude : '126.9730',
+mapboard_ani_category:"고양이"
 },
 // 추가적인 장소 정보 추가
 ];
@@ -183,12 +195,19 @@ content.setAttribute( 'class' , 'card');
 var cardBdoy = document.createElement('div');
 cardBdoy.setAttribute( 'class' , 'card-body');
 
+var animalType = document.createElement('span');
+animalType.appendChild(document.createTextNode(pos.mapboard_ani_category));
+animalType.setAttribute( 'class' , 'badge rounded-pill text-bg-warning');
+
 var info = document.createElement('span');
 info.appendChild(document.createTextNode(pos.mapboard_title));
+
 var infoText = document.createElement('div');
 infoText.appendChild(document.createTextNode(pos.missingaddress));
+
 var dateText = document.createElement('div');
 dateText.appendChild(document.createTextNode(pos.missingtime));
+
 var address = document.createElement('div');
 address.appendChild(document.createTextNode(pos.mapboard_content));
 // 닫기 버튼 추가
@@ -202,6 +221,7 @@ overlay.setMap(null);
 content.appendChild(cardBdoy);
 content.appendChild(closeBtn);
 cardBdoy.appendChild(info);
+cardBdoy.appendChild(animalType);
 cardBdoy.appendChild(infoText);
 cardBdoy.appendChild(dateText);
 cardBdoy.appendChild(address);
