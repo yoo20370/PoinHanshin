@@ -177,6 +177,9 @@
     return marker;
   }
 
+  function closeOverlay() {
+    overlay.setMap(null);
+  }
   // 마커 생성
   function renderPlaces() {
     placesList.innerHTML = '';
