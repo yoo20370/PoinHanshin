@@ -192,7 +192,10 @@
       createMarkerAndPopup(places[i]);
     }
   }
-
+  //오버레이 닫는 함수
+  function closeOverlay() {
+    overlay.setMap(null);
+  }
   // 초기 렌더링
   renderPlaces();
   // 팝업 디자인을 위한 임시코드 -------------------------------- 끝
