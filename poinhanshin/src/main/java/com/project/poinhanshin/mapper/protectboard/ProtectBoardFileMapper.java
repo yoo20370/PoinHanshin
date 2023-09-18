@@ -11,16 +11,16 @@ public interface ProtectBoardFileMapper {
     // 임보자 게시물에 해당하는 이미지들을 가져오는 메서드
     List<ProtectBoardFileDto> selectFiles(Integer protectboardno);
 
-    // 파일 등록
+    // 이미지 파일 등록
     int insertFiles(ProtectBoardFileDto protectBoardFileDto);
 
-    // 파일 삭제
+    // 이미지 파일 삭제
     int deleteFile(String stored_file_name );
 
-    // 파일 수 카운트
+    // 게시물 이미지 파일 개수 반환
     int selectCnt(Integer protectboardno);
 
-    // 게시물의 파일들 이름 검색
+    // 게시물의 파일들 이름 반환
     List<String> selectFilesName(Integer protectboardno);
 
 }

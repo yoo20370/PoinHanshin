@@ -52,10 +52,10 @@
                         </li>
 
                         <li class="nav-item" th:unless="${session.isEmpty()}">
-                            <a class="nav-link" href="/" aria-current="page">내정보</a>
+                            <a class="nav-link" href="/" aria-current="page" th:text="|${loginUser.id}님|">내정보</a>
                         </li>
                         <li class="nav-item" th:unless="${session.isEmpty()}">
-                            <a class="nav-link" href="/" aria-current="page">로그아웃</a>
+                            <a class="nav-link" href="/logout" aria-current="page">로그아웃</a>
                         </li>
                     </ul>
                 </div>

@@ -2,6 +2,7 @@ package com.project.poinhanshin.controller.board;
 
 import com.project.poinhanshin.domain.board.CommentDto;
 import com.project.poinhanshin.service.board.CommentService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,64 +13,67 @@ import java.util.List;
 @RestController
 public class CommentController {
 
-    private final CommentService service;
+    CommentService commentService;
 
     @Autowired
-    public CommentController(CommentService service) {
-        this.service = service;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
-    // 지정된 게시물의 모든 댓글을 가져오는 메서드
-    @GetMapping("/comments") // /comments?bno=1080 GET
-    public List<CommentDto> list(Integer bno) throws Exception {
-        return service.getList(bno);
+    // 댓글 읽어오기
+    @GetMapping("/comments")
+    @ResponseBody
+    public ResponseEntity<List<CommentDto>> readCommentList( Integer boardcomment_boardno ){
+        // 댓글 불러오기
+        List<CommentDto> list = commentService.getCommentList(1);
+        // 댓글 반환
+        return new ResponseEntity<List<CommentDto>>(list , HttpStatus.OK);
     }
+    // 댓글 추가
+    @PostMapping("/comments")
+    @ResponseBody
+    public ResponseEntity<String> addComment(@RequestBody CommentDto commentDto){
+        Integer loginid = 1;
+        commentDto.setBoardcomment_userno(loginid);
+        System.out.println("등록 : "+commentDto);
 
-    //댓글을 등록하는 메소드
-    @PostMapping("/comments") // /comments?bno=1085 POST
-    public ResponseEntity<String> write(@RequestBody CommentDto dto, Integer bno) {
-        String commenter = "asdf";
-        dto.setCommenter(commenter);
-        dto.setBno(bno);
-        try {
-            service.write(dto);
-            return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<String>("WRT_ERR", HttpStatus.BAD_REQUEST);
+
+        if(commentService.addComment(commentDto) != 1){
+            return new ResponseEntity<String>("WRITE_ERROR" , HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<String>("WRITE_OK" , HttpStatus.OK);
         }
     }
+    // 댓글 수정
+    @PatchMapping("/comments")
+    @ResponseBody
+    public ResponseEntity<String> modifyComment(@RequestBody CommentDto commentDto , Integer loginId ){
+        commentDto.setBoardcomment_userno(loginId);
 
-    //댓글을 수정하는 메소드
-    @PatchMapping("/comments/{cno}")
-    public ResponseEntity<String> modify(@PathVariable Integer cno, @RequestBody CommentDto dto) {
-
-        dto.setCno(cno);
-
-        try {
-            service.modify(dto);
-            return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<String>("MOD_ERR", HttpStatus.BAD_REQUEST);
+        if(commentService.modifyComment(commentDto) != 1){
+            return new ResponseEntity<String>("MODIFY_ERROR" ,HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<String>("MODIFY_OK" , HttpStatus.OK);
         }
 
     }
 
-    //지정된 댓글을 삭제하는 메소드
-    @DeleteMapping("/comments/{cno}")
-    public ResponseEntity<String> remove(@PathVariable Integer cno, Integer bno) {
-        try {
-            int rowCnt = service.remove(cno, bno, "qwer");
-            return new ResponseEntity<>("DEL_OK", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("DEL_ERR", HttpStatus.BAD_REQUEST);
+
+    // 댓글 삭제
+    @DeleteMapping("/comments/{commentno}")
+    @ResponseBody
+    public ResponseEntity<String> removeComment(@PathVariable Integer commentno , Integer boardcomment_boardno ){
+
+        System.out.println(commentno);
+        System.out.println(boardcomment_boardno);
+        // 임시 로그인
+        Integer loginId = 1;
+
+        if(commentService.removeComment(boardcomment_boardno , commentno , loginId) != 1){
+            return new ResponseEntity<String>("REMOVE_ERROR" , HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<String>("REMOVE_OK" , HttpStatus.OK);
     }
+
+
 }
-//
-//        {
-//        "pcno":0, "comment":"hihihi", "commenter":"asdf"
-//        }
-//        수정할때 JSON

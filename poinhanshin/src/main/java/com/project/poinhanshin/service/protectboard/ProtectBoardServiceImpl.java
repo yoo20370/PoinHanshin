@@ -1,6 +1,6 @@
 package com.project.poinhanshin.service.protectboard;
 
-import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper;
@@ -28,13 +28,29 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         this.protectBoardFileMapper = protectBoardFileMapper;
     }
 
-    // 동물 필터에 맞는 임보자 게시물 리스트를 읽어온다.
+
+    // 검색된 게시물의 개수를 반환
     @Override
-    public List<ProtectBoardDto> bringanimalFilterList(SearchCondition1 sc) {
-        return protectBoardMapper.animalFilterList(sc);
+    public int searchResultCnt(SearchCondition sc) {
+        return protectBoardMapper.searchResultCnt(sc);
     }
 
-    // 한 게시물의 정보를 읽어온다.
+    // 검색된 게시물 리스트를 반환
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<ProtectBoardDto> searchResultList(SearchCondition sc) {
+        // 리스트 목록을 가져온다.
+        List<ProtectBoardDto> protectBoardDtoList = protectBoardMapper.searchResultList(sc);
+
+        // 각 게시물의 이미지의 StoredFileName 가져와서 각 ProtectBoardDto에 저장
+        for(ProtectBoardDto protectBoardDto : protectBoardDtoList){
+            List<String> storedFileName = protectBoardFileMapper.selectFilesName(protectBoardDto.getProtectboardno());
+            protectBoardDto.setStoredFileName(storedFileName);
+        }
+        return protectBoardDtoList;
+    }
+
+    // 특정 임보자 게시물 하나 가져오기
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProtectBoardDto bringBoardOne(Integer protectboardno) {
@@ -67,7 +83,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
             }
     }
 
-    // 게시물을 등록한다.
+    // 임보자 게시물을 등록
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insertProductBoard(ProtectBoardDto protectBoardDto) throws IOException {
@@ -84,7 +100,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return currentProtectboardno;
     }
 
-    // 게시물을 수정한다.
+    // 임보자 게시물을 수정한다.
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateProductBoard(ProtectBoardDto protectBoardDto) throws IOException {
@@ -133,7 +149,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     }
 
 
-    // 게시물을 삭제한다.
+    // 임보자 게시물을 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int deleteProductBoard(Integer bno, Integer LoginId) {
@@ -158,28 +174,9 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         return result;
     }
 
-    // 검색된 게시물의 개수를 읽어온다.
-    @Override
-    public int searchResultCnt(SearchCondition1 sc) {
-        return protectBoardMapper.searchResultCnt(sc);
-    }
 
-    // 검색된 게시물 리스트를 읽어온다.
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public List<ProtectBoardDto> searchResultList(SearchCondition1 sc) {
-        // 리스트 목록을 가져온다.
-        List<ProtectBoardDto> protectBoardDtoList = protectBoardMapper.searchResultList(sc);
 
-        // 각 게시물의 이미지의 StoredFileName 가져와서 각 ProtectBoardDto에 저장
-        for(ProtectBoardDto protectBoardDto : protectBoardDtoList){
-            List<String> storedFileName = protectBoardFileMapper.selectFilesName(protectBoardDto.getProtectboardno());
-            protectBoardDto.setStoredFileName(storedFileName);
-        }
-        return protectBoardDtoList;
-    }
-
-    // 최근 등록한 게시물의 번호를 읽어온다.
+    // 최근 등록한 게시물의 번호를 반환
     @Override
     public int readWritedBoardno(Integer protectboard_userno) {
         return protectBoardMapper.selectRecentBoardno(protectboard_userno);
@@ -210,5 +207,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
             protectBoardFileMapper.insertFiles(protectBoardFileDto);
         }
     }
+
 }
+
 

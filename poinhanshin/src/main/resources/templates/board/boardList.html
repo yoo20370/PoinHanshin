@@ -16,9 +16,11 @@
     <link href="/css/commonstyle.css" rel="stylesheet">
 </head>
 <body layout:fragment="content">
+<script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
+<script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <div class="page">
 <!--인기글 상위 3개만 출력 -->
-    <div class="row justify-content-center p-3">
+    <!--<div class="row justify-content-center p-3">
     <span class="card gap-3" style="width: 15rem;" th:each = "best : ${bestList}">
         <div class="card-body" th:if = "${bestStat.index} < 3">
           <h5 class="card-title" th:text="${best.title}">제목</h5>
@@ -65,7 +67,7 @@
             <tr th:each="boardDto : ${list}">
                 <td valign="middle">
                     <div class="title_wrapper">
-                    <span class="title" th:text="${boardDto.title}" th:href="${/board/read(boardno=${boardDto.boardno})}">----제목---</span>
+                    <span class="title" th:text="${boardDto.title}" th:href="${/board/read(boardno=${boardDto.boardno})}">&#45;&#45;&#45;&#45;제목-&#45;&#45;</span>
                     </div>
                     <div style="vertical-align: bottom;">
                         <span class="info_table" th:text="| 유저id : ${boardDto.board_userno}|"> 유저id : 12312314</span>
@@ -76,11 +78,11 @@
 
                 </td>
                 <td valign="middle">
-<!--                    테스트용-->
+&lt;!&ndash;                    테스트용&ndash;&gt;
                     <img class="thumbnail_wrapper" src="/img/empty.png">
-<!--                    <img class="thumbnail_wrapper" th:if="${#strings.isEmpty(boardDto.board_imagepath)}" src="/img/empty.png">-->
-<!--                    <img class="thumbnail_wrapper" th:unless="${#strings.isEmpty(boardDto.board_imagepath)}" th:src="'data:image/jpeg;base64,'+${boardDto.board_imagepath}"-->
-<!--                         th:href="${/board/read(boardno=${boardDto.boardno})}" atl="빈이미지" >-->
+&lt;!&ndash;                    <img class="thumbnail_wrapper" th:if="${#strings.isEmpty(boardDto.board_imagepath)}" src="/img/empty.png">&ndash;&gt;
+&lt;!&ndash;                    <img class="thumbnail_wrapper" th:unless="${#strings.isEmpty(boardDto.board_imagepath)}" th:src="'data:image/jpeg;base64,'+${boardDto.board_imagepath}"&ndash;&gt;
+&lt;!&ndash;                         th:href="${/board/read(boardno=${boardDto.boardno})}" atl="빈이미지" >&ndash;&gt;
 
                 </td>
             </tr>
@@ -97,10 +99,94 @@
             </th:block>
             <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>
         </div>
+    </div>-->
+<div class="row justify-content-center p-3">
+    <span class="card gap-3" style="width: 15rem;">
+        <div class="card-body" th:each="topBoardDto : ${topBoardDtoList}">
+          <h5 class="card-title" th:text="${topBoardDto.board_title}">제목</h5>
+          <p class="card-text" th:text="${topBoardDto.board_content}">내용</p>
+          <p class="card-subtitle sm-1 text-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-chat-right-heart-fill" viewBox="0 0 16 16">
+                <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353V2ZM8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
+            </svg>
+          </p>
+        </div>
+    </span>
+</div>
+
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
+    <form id="form" name="search-form" action="/board/list" method="get">
+        <div class="input-group">
+            <div class="input-group-text" id="btnGroupAddon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </div>
+            <!-- 현재 페이지 정보 전달 -->
+            <input type="hidden" name="page" th:value="${sc.page}"/>
+            <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
+            <input type="text" name="keyword" class="form-control" placeholder="Input group example"
+                       aria-label="Input group example" aria-describedby="btnGroupAddon">
+            <input type="button" id="searchBtn" class="btn btn-outline-primary" value="검색">
+        </div>
+    </form>
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-info"
+                th:onclick="|location.href='@{/board/write(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword})}'|">
+        글작성</button>
     </div>
+</div>
+<div>
+    <table border="1" class="table table-bordered table-striped table-hover" id="boardtable">
+        <thead>
+        <tr>
+            <th class="th_title">제목</th>
+            <th class="th_thumbnail">이미지</th>
+        </tr>
+        </thead>
+        <tbody th:each="boardDto : ${boardDtoList}">
+            <tr>
+                <td valign="middle">
+                    <div class="title_wrapper">
+                        <a th:href="@{/board/read(boardno=${boardDto.boardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">임시 링크</a>
+                        <span class="title" th:text="${boardDto.board_title}">----제목---</span>
+                    </div>
+                    <div style="vertical-align: bottom;">
+                        <!-- Controller에서 따로 LoginID 전달해서 수정해야 함 , 로그인 연결 후 진행 -->
+                        <span class="info_table" th:text="| 작성자 :${boardDto.board_userno}|"> 유저id : 12312314</span>
+                        <span class="info_table" th:text="| 조회수 :${boardDto.board_viewcount}|" > 조회수 : 42</span>
+                        <span class="info_table" th:text="| 등록일 :${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}|"> 등록일 : 2019-05-14</span>
+                    </div>
+                </td>
+            <td valign="middle">
+                <!-- 썸네일 이미지  -->
+                <img th:if="${boardDto.fileAttached == 1}" th:src="@{|/upload/board/${boardDto.storedFileName[0]}|}" width="150px" height="150" />
+                <img th:if="${boardDto.fileAttached == 0}" class="thumbnail_wrapper" src="/img/empty.png" width="150px" height="150">
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<span th:if="${totalCnt == 0}">게시물이 없습니다.</span>
+<div class="btn-toolbar position-absolute top-100 start-50 translate-middle" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group me-2" role="group" aria-label="First group">
+        <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><<</button>
+        <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+            <button type="button" class="btn btn-secondary" th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}" th:text="${i}"></button>
+        </th:block>
+        <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>
+    </div>
+</div>
 
+<script th:inline="javascript">
+    $('#searchBtn').on("click",function(){
+        let form = $('form[name=search-form]');
+        form.submit();
+    });
 
-    <script th:inline="javascript">
      /*<![CDATA[*/
 
      //테스트용 콘솔창데이터확인용
