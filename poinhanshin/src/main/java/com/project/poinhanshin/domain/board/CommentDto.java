@@ -1,106 +1,34 @@
 package com.project.poinhanshin.domain.board;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+
+
 import java.util.Date;
-import java.util.Objects;
 
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class CommentDto {
-    private Integer cno;
-    private Integer bno;
-    private Integer pcno;
-    private String comment;
-    private String commenter;
-    private Date reg_date;
-    private Date up_date;
+   private Integer boardcomment_boardno;
+   private Integer boardcomment_userno;
+   private Integer commentno;
+   private Integer parcommentno;
+   private String comment;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    /*@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")*/
+   private Date boardcomment_reg_date;
 
-    public CommentDto(){}
-
-    public CommentDto(Integer bno, Integer pcno, String comment, String commenter) {
-        this.bno = bno;
-        this.pcno = pcno;
-        this.comment = comment;
-        this.commenter = commenter;
-    }
-
-    public Integer getCno() {
-        return cno;
-    }
-
-    public void setCno(Integer cno) {
-        this.cno = cno;
-    }
-
-    public Integer getBno() {
-        return bno;
-    }
-
-    public void setBno(Integer bno) {
-        this.bno = bno;
-    }
-
-    public Integer getPcno() {
-        return pcno;
-    }
-
-    public void setPcno(Integer pcno) {
-        this.pcno = pcno;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getCommenter() {
-        return commenter;
-    }
-
-    public void setCommenter(String commenter) {
-        this.commenter = commenter;
-    }
-
-    public Date getReg_date() {
-        return reg_date;
-    }
-
-    public void setReg_date(Date reg_date) {
-        this.reg_date = reg_date;
-    }
-
-    public Date getUp_date() {
-        return up_date;
-    }
-
-    public void setUp_date(Date up_date) {
-        this.up_date = up_date;
-    }
-
-
-    @Override
-    public String toString() {
-        return "CommentDto{" +
-                "cno=" + cno +
-                ", bno=" + bno +
-                ", pcno=" + pcno +
-                ", comment='" + comment + '\'' +
-                ", commenter='" + commenter + '\'' +
-                ", reg_date=" + reg_date +
-                ", up_date=" + up_date +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CommentDto)) return false;
-        CommentDto that = (CommentDto) o;
-        return Objects.equals(cno, that.cno) && Objects.equals(bno, that.bno) && Objects.equals(pcno, that.pcno) && Objects.equals(comment, that.comment) && Objects.equals(commenter, that.commenter);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cno, bno, pcno, comment, commenter);
-    }
+   public CommentDto(Integer boardcomment_boardno, Integer boardcomment_userno, Integer commentno, Integer parcommentno, String comment, Date boardcomment_reg_date) {
+      this.boardcomment_boardno = boardcomment_boardno;
+      this.boardcomment_userno = boardcomment_userno;
+      this.commentno = commentno;
+      this.parcommentno = parcommentno;
+      this.comment = comment;
+      this.boardcomment_reg_date = boardcomment_reg_date;
+   }
 }
+
+

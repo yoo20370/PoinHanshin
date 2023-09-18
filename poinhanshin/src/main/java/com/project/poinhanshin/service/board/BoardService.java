@@ -39,10 +39,4 @@ public interface BoardService {
     // 이미지 등록을 위한 메서드
     void addImgFiles(BoardDto boardDto) throws IOException;
 
-
-
-
-
-
-
 }
