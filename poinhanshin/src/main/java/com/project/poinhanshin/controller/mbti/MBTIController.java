@@ -3,6 +3,7 @@ package com.project.poinhanshin.controller.mbti;
 import com.project.poinhanshin.domain.api.Abandoned_animal;
 
 import com.project.poinhanshin.etc.ApiExplorer;
+import com.project.poinhanshin.mapper.mbti.MBTIMapper;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,18 @@ import java.io.IOException;
 public class MBTIController {
 
     ApiExplorer apiExplorer;
+    MBTIMapper mbtiMapper;
 
     @Autowired
+    public MBTIController(ApiExplorer apiExplorer, MBTIMapper mbtiMapper) {
+        this.apiExplorer = apiExplorer;
+        this.mbtiMapper = mbtiMapper;
+    }
+
+    /*@Autowired
     public MBTIController(ApiExplorer apiExplorer) {
         this.apiExplorer = apiExplorer;
-    }
+    }*/
 
     @GetMapping("/main")
     public String mbti(Model m) throws IOException, ParseException {
@@ -42,5 +50,10 @@ public class MBTIController {
         return "mbti/mbti_result";
     }
 
+    @GetMapping("/test")
+    public String mbtitest() {
+        System.out.println(mbtiMapper.searchAband(2));
+        return "test/likeDBTest";
+    }
 
 }

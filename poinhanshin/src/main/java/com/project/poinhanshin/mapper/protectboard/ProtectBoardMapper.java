@@ -35,14 +35,5 @@ public interface ProtectBoardMapper {
     int selectRecentBoardno(Integer protectboardno);
 
     int updateFileAttached(Integer protectboardno , Integer fileAttached);
-
-
-
-
-
-
-
-
-
-
+    
 }
