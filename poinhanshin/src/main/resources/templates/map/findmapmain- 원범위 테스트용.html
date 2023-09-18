@@ -109,131 +109,152 @@
 
 </div>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
-<script>
-  var mapContainer = document.getElementById('map');
-  var mapOption = {
-    center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울)
-    level: 4 // 지도 확대 레벨
-  };
+<script th:inline="javascript">
+  // dto참고용
+//   this.mapboard_userno = mapboard_userno;
+// this.mapboardno = mapboardno;
+// this.mapboard_title = mapboard_title;
+// this.mapboard_content = mapboard_content;
+// this.mapboard_imagepath = mapboard_imagepath;
+// this.missingtime = missingtime;
+// this.missingaddress = missingaddress;
+// this.latitude = latitude;
+// this.longitude = longitude;
+// this.mapboard_reg_date = mapboard_reg_date;
+// this.mapboard_viewcount = mapboard_viewcount;
+// this.mapboard_ani_category = mapboard_ani_category;
+// this.writertype = writertype;
 
-  // 지도 생성
-  var map = new kakao.maps.Map(mapContainer, mapOption);
-
-  var placesList = document.getElementById('placesList');
-  var addPlaceButton = document.getElementById('addPlaceButton');
-  var newPlaceName = document.getElementById('newPlaceName');
-  var newPlaceLat = document.getElementById('newPlaceLat');
-  var newPlaceLng = document.getElementById('newPlaceLng');
-
-  // 팝업 디자인을 위한 임시코드 --------------------------------
-  var places = [
-    {
-      name: '강아지',
-      latlng: new kakao.maps.LatLng(37.5665, 126.9780), // 예시 좌표
-      description:'',
-      address : '서울특별시 중구 을지로 281',
-      datetime : '2021-09-01 12:00'  
-
-    },
-    {
-      name: '레스토랑 B',
-      latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
-      description: '레스토랑 B는 현지 식재료를 사용한 다양한 요리를 제공합니다.',
-      address : '서울특별시 중구 을지로 281',
-      datetime : '2021-09-01 12:00'  
-    },
-    // 추가적인 장소 정보 추가
-  ];
+// const mapDto = [[${MapBoardDto}]];
 
 
-  // 마커와 팝업 생성
+var mapContainer = document.getElementById('map');
+var mapOption = {
+center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울)
+level: 4 // 지도 확대 레벨
+};
 
-    places.forEach(function (pos) {
-    // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-        map: map,
-        position: pos.latlng,
-        title: pos.name
-    });
+// 지도 생성
+var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    // content HTMLElement 생성
-    var content = document.createElement('div');
-    content.setAttribute( 'class' , 'card');
-    var cardBdoy = document.createElement('div');
-    cardBdoy.setAttribute( 'class' , 'card-body');
-    
-    var info = document.createElement('span');
-    info.appendChild(document.createTextNode(pos.name));
-    var infoText = document.createElement('div');
-    infoText.appendChild(document.createTextNode(pos.description));
-    var dateText = document.createElement('div');
-    dateText.appendChild(document.createTextNode(pos.datetime));
-    var address = document.createElement('div');
-    address.appendChild(document.createTextNode(pos.address));
-    // 닫기 버튼 추가
-    var closeBtn = document.createElement('button');
-    closeBtn.setAttribute( 'class' , 'btn btn-dark');
-    closeBtn.appendChild(document.createTextNode('닫기'));
-    // 닫기 이벤트 추가
-    closeBtn.onclick = function() {
-        overlay.setMap(null);
-    };
-    content.appendChild(cardBdoy);
-    content.appendChild(closeBtn);
-    cardBdoy.appendChild(info);
-    cardBdoy.appendChild(infoText);
-    cardBdoy.appendChild(dateText);
-    cardBdoy.appendChild(address);
+var placesList = document.getElementById('placesList');
+var addPlaceButton = document.getElementById('addPlaceButton');
+var newPlaceName = document.getElementById('newPlaceName');
+var newPlaceLat = document.getElementById('newPlaceLat');
+var newPlaceLng = document.getElementById('newPlaceLng');
 
-    // customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
-    var overlay = new daum.maps.CustomOverlay({
-        position: pos.latlng,
-        content: content
-    });
-    
-    var circle = new kakao.maps.Circle({
-    center : pos.latlng,  // 원의 중심좌표 입니다 
-    radius: 500, // 미터 단위의 원의 반지름입니다 
-    strokeWeight: 5, // 선의 두께입니다 
-    strokeColor: '#75B8FA', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'dashed', // 선의 스타일 입니다
-    fillColor: '#CFE7FF', // 채우기 색깔입니다
-    fillOpacity: 0.7  // 채우기 불투명도 입니다   
-}); 
+// 팝업 디자인을 위한 임시코드 --------------------------------
+var places = [
+{
+mapboard_title: '강아지가 실종되었습니다.',
+// latlng: new kakao.maps.LatLng(37.5665, 126.9780), // 예시 좌표
+mapboard_content: '내용-------',
+missingtime: '2021-09-01 12:00',
+missingaddress: '서울특별시 중구 을지로 281',
+latitude: '37.5665',
+longitude: '126.9780'
+},
+{
+mapboard_title : '레스토랑 B',
+// latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
+mapboard_content : '내용-------',
+missingtime: '2021-09-01 12:00',
+missingaddress : '서울특별시 중구 을지로 281',
+latitude : '37.5600',
+longitude : '126.9700'
+},
+// 추가적인 장소 정보 추가
+];
+
+
+// 마커와 팝업 생성
+
+places.forEach(function (pos) {
+// 마커를 생성합니다
+var markerPosition  = new kakao.maps.LatLng(pos.latitude,pos.longitude);
+var marker = new kakao.maps.Marker({
+map: map,
+position: markerPosition
+});
+
+// content HTMLElement 생성
+var content = document.createElement('div');
+content.setAttribute( 'class' , 'card');
+var cardBdoy = document.createElement('div');
+cardBdoy.setAttribute( 'class' , 'card-body');
+
+var info = document.createElement('span');
+info.appendChild(document.createTextNode(pos.mapboard_title));
+var infoText = document.createElement('div');
+infoText.appendChild(document.createTextNode(pos.missingaddress));
+var dateText = document.createElement('div');
+dateText.appendChild(document.createTextNode(pos.missingtime));
+var address = document.createElement('div');
+address.appendChild(document.createTextNode(pos.mapboard_content));
+// 닫기 버튼 추가
+var closeBtn = document.createElement('button');
+closeBtn.setAttribute( 'class' , 'btn btn-dark');
+closeBtn.appendChild(document.createTextNode('닫기'));
+// 닫기 이벤트 추가
+closeBtn.onclick = function() {
+overlay.setMap(null);
+};
+content.appendChild(cardBdoy);
+content.appendChild(closeBtn);
+cardBdoy.appendChild(info);
+cardBdoy.appendChild(infoText);
+cardBdoy.appendChild(dateText);
+cardBdoy.appendChild(address);
+
+// customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
+var overlay = new daum.maps.CustomOverlay({
+position: markerPosition,
+content: content
+});
+
+var circle = new kakao.maps.Circle({
+center : markerPosition,  // 원의 중심좌표 입니다
+radius: 500, // 미터 단위의 원의 반지름입니다
+strokeWeight: 5, // 선의 두께입니다
+strokeColor: '#75B8FA', // 선의 색깔입니다
+strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+strokeStyle: 'dashed', // 선의 스타일 입니다
+fillColor: '#CFE7FF', // 채우기 색깔입니다
+fillOpacity: 0.7  // 채우기 불투명도 입니다
+});
 
 
 // 지도에 원을 표시합니다
 circle.setMap(map);
 
-    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-    kakao.maps.event.addListener(marker, 'click', function() {
-        overlay.setMap(map);
-    });
+// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+kakao.maps.event.addListener(marker, 'click', function() {
+overlay.setMap(map);
+});
 });
 
-  function closeOverlay() {
-    overlay.setMap(null);
-  }
-  // 마커 생성
-  // function renderPlaces() {
-  //   placesList.innerHTML = '';
-  //   for (var i = 0; i < places.length; i++) {
-  //     var listItem = document.createElement('li');
-  //     listItem.textContent = places[i].name;
-  //     listItem.addEventListener('click', function() {
-  //       var index = Array.from(placesList.children).indexOf(this);
-  //       map.setCenter(places[index].latlng);
-  //     });
-  //     placesList.appendChild(listItem);
+function closeOverlay() {
+overlay.setMap(null);
+}
+// 마커 생성
+// function renderPlaces() {
+//   placesList.innerHTML = '';
+//   for (var i = 0; i < places.length; i++) {
+//     var listItem = document.createElement('li');
+//     listItem.textContent = places[i].name;
+//     listItem.addEventListener('click', function() {
+//       var index = Array.from(placesList.children).indexOf(this);
+//       map.setCenter(places[index].latlng);
+//     });
+//     placesList.appendChild(listItem);
 
-  //     createMarkerAndPopup(places[i]);
-  //   }
-  // }
+//     createMarkerAndPopup(places[i]);
+//   }
+// }
 
-  // // 초기 렌더링
-  // renderPlaces();
-  // 팝업 디자인을 위한 임시코드 -------------------------------- 끝
+// // 초기 렌더링
+// renderPlaces();
+// 팝업 디자인을 위한 임시코드 -------------------------------- 끝
 
 </script>
 </body>
