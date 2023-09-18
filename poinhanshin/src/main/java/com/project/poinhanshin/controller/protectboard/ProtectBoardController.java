@@ -55,8 +55,11 @@ public class ProtectBoardController {
     // 임보자 게시물 상세화면
     @GetMapping("/read")
     public String protectBoardRead(Integer protectboardno , SearchCondition sc , Model m , @ModelAttribute("msg")  String msg
-                                   //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+                                   ,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+
+        m.addAttribute("loginUser", loginUser);
+
         // 로그인
         //Integer LoginId = loginUser.id;
 
@@ -80,8 +83,10 @@ public class ProtectBoardController {
     // 임보자 게시물 작성 상세화면으로 이동
     @GetMapping("/write")
     public String protectBoardWritePage(SearchCondition sc , Model m , RedirectAttributes redirectAttributes , @ModelAttribute("msg") String msg
-                                        //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+                                        ,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+
+        m.addAttribute("loginUser", loginUser);
         // 로그인
         //Integer LoginId = loginUser.id;
 
@@ -124,8 +129,10 @@ public class ProtectBoardController {
     // 임보자 게시물 수정 상세페이지로 이동
     @GetMapping("/modify")
     public String ProtectBoardModifyMove(Integer protectboardno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes
-                                         //,@SessionAttribute(name = "loginUser", required = false) User loginUser
+                                         ,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
+
+        m.addAttribute("loginUser", loginUser);
         //Integer LoginId = loginUser.id;
 
         // 임시 로그인

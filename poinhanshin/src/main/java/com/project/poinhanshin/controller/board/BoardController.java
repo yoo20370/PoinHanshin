@@ -58,7 +58,9 @@ public class BoardController {
 
     // 커뮤니티 게시물 상세 페이지
     @GetMapping("/read")
-    public String boardRead(Integer boardno , SearchCondition sc , Model m , @ModelAttribute("msg") String msg){
+    public String boardRead(Integer boardno , SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        m.addAttribute("loginUser", loginUser);
 
         // 임시 로그인
         Integer LoginId = 1;
@@ -78,7 +80,9 @@ public class BoardController {
 
     // 커뮤니티 게시물 작성 상세 페이지
     @GetMapping("/write")
-    public String boardWritePage(SearchCondition sc , Model m, RedirectAttributes redirectAttributes , @ModelAttribute("msg") String msg){
+    public String boardWritePage(SearchCondition sc , Model m, RedirectAttributes redirectAttributes , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        m.addAttribute("loginUser", loginUser);
 
         Integer LoginId = 1;
 
@@ -122,7 +126,10 @@ public class BoardController {
 
     // 커뮤니티 게시물 수정 상세 페이지
     @GetMapping("/modify")
-    public String boardModifyPage(Integer boardno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes){
+    public String boardModifyPage(Integer boardno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        m.addAttribute("loginUser", loginUser);
+
         // 임시 로그인
         Integer LoginId = 1;
 
