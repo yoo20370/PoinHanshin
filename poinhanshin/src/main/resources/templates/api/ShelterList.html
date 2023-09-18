@@ -41,25 +41,45 @@
         <div class="btn-group" role="group"aria-label="Basic outlined example">
         </div>
     </div>
-    <div class ="item" th:each="shelterList :${ShelterList}">
-        <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}">
 
-            <table border="1" class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th style="width:100px">동물보호센터명</th>
-                    <th style="width:100px">관리기관명</th>
-                    <th style="width:200px">도로명주소</th>
-                    <th style="width:100px">전화번호</th>
-                </tr>
-                <tr>
-                    <td th:text="${shelterList.careNm}"></td>
-                    <td th:text="${shelterList.orgNm}"></td>
-                    <td th:text="${shelterList.careAddr}"></td>
-                    <td th:text="${shelterList.careTel}"></td>
-                </tr>
-            </table>
-        </a>
-    </div>
+        <div class="row">
+            <div class="col-md-4 p-3" th:each="shelterList :${ShelterList}">
+                <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}" style="text-decoration-line: none;color:black;">
+                    <div class="card" style="background-color:#9C9EFE;">
+                        <div class="card-body">
+                            <h4 class="card-title" th:text="${shelterList.careNm}"></h4>
+                            <p class="card-text" th:text="${shelterList.careTel}"></p>
+                            <p class="card-text" th:text="${#strings.substringBefore(shelterList.careAddr,' ')}"></p>
+                            <p class="card-text" th:text="${shelterList.careNm}"></p>
+                        </div>
+                    </div>
+
+
+                </a>
+            </div>
+        </div>
+
+
+
+<!--    <div class ="item" th:each="shelterList :${ShelterList}">-->
+<!--        <a th:href="@{'/api/ShelterBoard'+${shelterList.queryString}}">-->
+
+<!--            <table border="1" class="table table-bordered table-striped table-hover">-->
+<!--                <tr>-->
+<!--                    <th style="width:100px">동물보호센터명</th>-->
+<!--                    <th style="width:100px">관리기관명</th>-->
+<!--                    <th style="width:200px">도로명주소</th>-->
+<!--                    <th style="width:100px">전화번호</th>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td th:text="${shelterList.careNm}"></td>-->
+<!--                    <td th:text="${shelterList.orgNm}"></td>-->
+<!--                    <td th:text="${shelterList.careAddr}"></td>-->
+<!--                    <td th:text="${shelterList.careTel}"></td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </a>-->
+<!--    </div>-->
     </div>
 <!--<div style=" position:absolute; right:50%;">
     <span th:each="i : ${#numbers.sequence(1,10)}">

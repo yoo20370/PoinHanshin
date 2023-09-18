@@ -69,30 +69,30 @@
   </div>
 </div>
 
-    <div class="card-group mt-3">
+    <div class="card-group mt-3 p-5">
 
         <div class="card">
-          <a href="@{/board/list}">
-            <img src="/img/" class="card-img-top" alt="커뮤니티img">
+          <a href="@{/board/list}" style="color:black">
+            <img src="/img/empty.png" class="card-img-top" alt="커뮤니티img">
               <div class="card-body">
-                <h5 class="card-title">커뮤니티</h5>
+                <h5 class="card-title text-center">커뮤니티</h5>
               </div>
           </a>
         </div>
 
         <div class="card">
-          <a href="@{/information/MBTI}">
-            <img src="/img/MBTITestImg.jpg" class="card-img-top" alt="mbtiimg">
+          <a href="@{/information/MBTI}" style="color:black">
+            <img src="/img/empty.png" class="card-img-top" alt="mbtiimg">
             <div class="card-body">
-              <h5 class="card-title">MBTI 매칭</h5>
+              <h5 class="card-title text-center">MBTI 매칭</h5>
             </div>
           </a>
         </div>
         <div class="card">
-            <a href="">
+            <a href="" style="color:black">
               <img src="/img/map.png" class="card-img-top" alt="맵이미지">
               <div class="card-body">
-                <h5 class="card-title">실종 신고/등록 MAP</h5>
+                <h5 class="card-title text-center">신고/등록 MAP</h5>
               </div>
             </a>
         </div>
@@ -100,24 +100,6 @@
 
 
     <table class="table table-bordered table-striped table-hover">
-      <th>
-        <div class="col">
-          <button class="w-100 btn btn-dark btn-lg"
-                  onclick="location.href='items.html'"
-                  th:onclick="|location.href='@{/board/list}'|" type="button">
-            커뮤니티
-          </button>
-        </div>
-      </th>
-      <th>
-        <div class="col">
-          <button class="w-100 btn btn-dark btn-lg"
-                  onclick="location.href='items.html'"
-                  th:onclick="|location.href='@{/information/MBTI}'|" type="button">
-            MBTI 매칭
-          </button>
-        </div>
-      </th>
       <th>
         <div class="col">
           <button class="w-100 btn btn-dark btn-lg"
