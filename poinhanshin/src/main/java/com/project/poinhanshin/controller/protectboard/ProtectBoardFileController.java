@@ -59,8 +59,8 @@ public class ProtectBoardFileController {
 
         // 기존 사진을 제거한 경우
         if(dataURL.length() < 100){
-            dataURL = dataURL.substring(41);
-            String stored_file_name = dataURL.substring(0 , dataURL.lastIndexOf(".jpg")+4);
+
+            String stored_file_name = dataURL.substring(dataURL.indexOf("/protectboard/")+14 , dataURL.lastIndexOf('"'));
             System.out.println(stored_file_name);
 
             protectBoardFileService.deleteFile(stored_file_name);

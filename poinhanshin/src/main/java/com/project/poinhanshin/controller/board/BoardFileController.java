@@ -45,7 +45,7 @@ public class BoardFileController {
 
         // 기존 사진을 제거한 경우
         if(dataURL.length() < 100){
-            String stored_file_name = dataURL.substring(dataURL.indexOf("/board/")+7 , dataURL.lastIndexOf(".")+4);
+            String stored_file_name = dataURL.substring(dataURL.indexOf("/board/")+7 , dataURL.lastIndexOf('"'));
             System.out.println(stored_file_name);
             boardFileService.boardDeleteFile(stored_file_name);
             return new ResponseEntity<String>("Remove_existing_file", HttpStatus.OK);
