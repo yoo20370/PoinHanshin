@@ -25,7 +25,7 @@ public class CommentController {
     @ResponseBody
     public ResponseEntity<List<CommentDto>> readCommentList( Integer boardcomment_boardno ){
         // 댓글 불러오기
-        List<CommentDto> list = commentService.getCommentList(1);
+        List<CommentDto> list = commentService.getCommentList(boardcomment_boardno);
         // 댓글 반환
         return new ResponseEntity<List<CommentDto>>(list , HttpStatus.OK);
     }
