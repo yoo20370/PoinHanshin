@@ -41,7 +41,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     public List<ProtectBoardDto> searchResultList(SearchCondition sc) {
         // 리스트 목록을 가져온다.
         List<ProtectBoardDto> protectBoardDtoList = protectBoardMapper.searchResultList(sc);
-
+        
         // 각 게시물의 이미지의 StoredFileName 가져와서 각 ProtectBoardDto에 저장
         for(ProtectBoardDto protectBoardDto : protectBoardDtoList){
             List<String> storedFileName = protectBoardFileMapper.selectFilesName(protectBoardDto.getProtectboardno());
