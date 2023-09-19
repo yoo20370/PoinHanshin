@@ -1,18 +1,19 @@
 
     const main = document.querySelector("#main");
     const qna = document.querySelector("#qna");
-    const result = document.querySelector("#result");
+    const result = [document.querySelector("#result")];
 
     const endPoint = 16;
     const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     function calResult() {
-        let result = 0;
+        let result = []; // 배열로 변경
         for (let i = 0; i < endPoint; i++) {
-            result += select[i];
+            result.push(select[i]); // 배열에 값을 추가
         }
-        return result.indexOf(Math.max(...select));
+        return result.indexOf(Math.max(...result)); // 배열에서 indexOf 함수 사용
     }
+
 
     function setResult() {
         let point = calResult();
@@ -20,52 +21,52 @@
 
         switch (point) {
             case 0:
-                location.href = "/mbti/page/result-0.html";
+                location.href = "/img/mbti/page/result-0.html";
                 break;
             case 1:
-                location.href = "/mbti/page/result-1.html";
+                location.href = "/img/mbti/page/result-1.html";
                 break;
             case 2:
-                location.href = "/mbti/page/result-2.html";
+                location.href = "/img/mbti/page/result-2.html";
                 break;
             case 3:
-                location.href = "/mbti/page/result-3.html";
+                location.href = "/img/mbti/page/result-3.html";
                 break;
             case 4:
-                location.href = "/mbti/page/result-4.html";
+                location.href = "/img/mbti/page/result-4.html";
                 break;
             case 5:
-                location.href = "/mbti/page/result-5.html";
+                location.href = "/img/mbti/page/result-5.html";
                 break;
             case 6:
-                location.href = "/mbti/page/result-6.html";
+                location.href = "/img/mbti/page/result-6.html";
                 break;
             case 7:
-                location.href = "/mbti/page/result-7.html";
+                location.href = "/img/mbti/page/result-7.html";
                 break;
             case 8:
-                location.href = "/mbti/page/result-8.html";
+                location.href = "/img/mbti/page/result-8.html";
                 break;
             case 9:
-                location.href = "/mbti/page/result-9.html";
+                location.href = "/img/mbti/page/result-9.html";
                 break;
             case 10:
-                location.href = "/mbti/page/result-10.html";
+                location.href = "/img/mbti/page/result-10.html";
                 break;
             case 11:
-                location.href = "/mbti/page/result-11.html";
+                location.href = "/img/mbti/page/result-11.html";
                 break;
             case 12:
-                location.href = "/mbti/page/result-12.html";
+                location.href = "/img/mbti/page/result-12.html";
                 break;
             case 13:
-                location.href = "/mbti/page/result-13.html";
+                location.href = "/img/mbti/page/result-13.html";
                 break;
             case 14:
-                location.href = "/mbti/page/result-14.html";
+                location.href = "/img/mbti/page/result-14.html";
                 break;
             case 15:
-                location.href = "/mbti/page/result-15.html";
+                location.href = "/img/mbti/page/result-15.html";
                 break;
         }
         // 결과 페이지로 이동하는 링크 생성
