@@ -24,6 +24,7 @@
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
   <link rel="stylesheet" href="/css/mbti/default.css">
   <link rel="stylesheet" href="/css/mbti/result.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 </head>
 <body>
 <section id="shareResult" class="mx-auto my-5 py-5 px-3">
@@ -34,7 +35,7 @@
   <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
     <img src="/img/mbti/image-1.png" alt="0" class="img-fluid">
   </div>
-  <p>ENTJ</p>
+  <p id="mbtiValue">ENTJ</p>
   <div class="resultDesc">
     <p>대담하고 분석적인 리더십을 가진 당신! 목표 달성을 위해 체계적인 계획과 조직을 선호하며, 자신의 비전을 추구하는 데 열정적입니다. 강한 의지력과 독립성을 바탕으로 목표를 추구하며, 리더십과 결정력을 발휘하는 특징을 보입니다. 때로는 과도한 완벽주의나 강박적인 특성이 드러날 수 있습니다. 이를 극복하고 효율적인 조화롭고 성공적인 리더십 스타일을 발전시키는 방법을 고민해보세요! '
     </p> </div>
@@ -43,7 +44,13 @@
       location.href = "/MBTI/main";
     }
   </script>
-  <button type="button" class="gohome mt-3 py-2 px-3" onclick="js:moveHome()">다시 시도하기</button>
+  <button type="button" class="gohome mt-3 py-2 px-3" onclick="js:moveHome()">
+    다시 시도하기
+  </button>
 </section>
 </body>
+<script>
+
+
+</script>
 </html>
