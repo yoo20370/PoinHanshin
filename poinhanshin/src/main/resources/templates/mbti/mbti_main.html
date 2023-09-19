@@ -84,28 +84,31 @@
     </p>
     <button id="startButton" class="btn btn-outline-danger mt-3" onclick="begin()">시작하기</button>
     <!--  유기동물 테이블  -->
-    <div class="table-container">
-      <div th:each="Ab_ani : ${AAArr}">
-        <a th:href="@{'/information/AnimalBoard'+${Ab_ani.queryString}}">
-          <table>
-            <tr>
-              <td>유기번호</td>
-              <td th:text="${Ab_ani.desertionNo}"></td>
-            </tr>
-            <tr>
-              <td>이미지</td>
-              <td><img th:src="${Ab_ani.filename}" alt="Animal Image"></td>
-            </tr>
-            <tr>
-              <td>품종</td>
-              <td th:text="${Ab_ani.kindCd}"></td>
-            </tr>
-            <tr>
-              <td>성별</td>
-              <td th:text="${Ab_ani.sexCd}"></td>
-            </tr>
-          </table>
+    <div class="row">
+      <div class="col-sm-4 p-2" th:each="Ab_ani : ${AAArr}">
+      <div class="card" id="pcard">
+        <a th:href="@{'/api/AnimalBoard'+${Ab_ani.queryString}}" style="text-decoration-line: none;">
+          <div class="card-header ">
+            <div class="">
+              <div class="" style="display: flex; justify-content: center;">
+                <img th:src="${Ab_ani.filename}" style=" width : 150px;height : 150px;"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <span class="badge text-bg-primary card-text" th:text="${Ab_ani.kindCd}">강아지</span>
+            <span class="badge rounded-pill text-bg-success" th:text="${Ab_ani.desertionNo}">유기번호</span>
+
+            <th:block th:if="${Ab_ani.sexCd}=='M'">
+              <span class="badge rounded-pill text-bg-info "th:text="|성별:${Ab_ani.sexCd}|" >M</span>
+            </th:block>
+            <th:block th:if="${Ab_ani.sexCd}=='F'">
+              <span class="badge rounded-pill text-bg-danger "th:text="|성별:${Ab_ani.sexCd}|" >F</span>
+            </th:block>
+          </div>
         </a>
+      </div>
       </div>
     </div>
   </section>

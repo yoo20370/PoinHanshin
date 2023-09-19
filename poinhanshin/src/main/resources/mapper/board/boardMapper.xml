@@ -2,100 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.board.BoardMapper">
-    <select id="count" resultType="int">
-        SELECT count(*) FROM board
+    <select id="boardSearchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="int">
+        SELECT COUNT(*)
+        FROM board
+        WHERE board_title LIKE concat('%' , #{keyword} ,'%')
+        and <include refid="aniCategoryChoose"/>
     </select>
-
-    <delete id="deleteAll">
-        DELETE FROM board
-    </delete>
-
-    <delete id="delete" parameterType="int">
-        DELETE FROM board WHERE bno = #{bno}
-    </delete>
-
-    <insert id="insert" parameterType="com.project.poinhanshin.domain.board.BoardDto">
+    <select id="boardSearchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.board.BoardDto">
+        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
+        FROM board
+        WHERE board_title LIKE concat('%' , #{keyword} ,'%')
+        and <include refid="aniCategoryChoose"/>
+    </select>
+    <select id="boardSelectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.board.BoardDto">
+        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount , likecount , fileAttached
+        FROM board
+        WHERE boardno = #{boardno}
+    </select>
+    <insert id="boardInsertContent" parameterType="com.project.poinhanshin.domain.board.BoardDto">
         INSERT INTO board
-            (title, content, writer)
-        VALUES
-            (#{title}, #{content}, #{writer})
+        (board_userno , board_title , board_content , board_ani_category , board_reg_date  , board_viewcount , commentcount , likecount , fileAttached)
+        VALUES (#{board_userno} , #{board_title} , #{board_content} , #{board_ani_category} , now() , 0 , 0 , 0 , #{fileAttached})
     </insert>
-
-    <select id="selectAll" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
-        FROM board
-        ORDER BY reg_date DESC, bno DESC
-    </select>
-
-    <select id="select" parameterType="int" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
-        FROM board
-        WHERE bno = #{bno}
-    </select>
-
-    <select id="selectPage" parameterType="map" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
-        FROM board
-        ORDER BY reg_date DESC, bno DESC
-        LIMIT #{offset}, #{pageSize}
-    </select>
-
-    <update id="update" parameterType="com.project.poinhanshin.domain.board.BoardDto">
+    <update id="boardUpdateContent" parameterType="map">
         UPDATE board
-        SET title = #{title},
-            content = #{content},
-            up_date = now()
-        WHERE bno = #{bno}
+        SET board_title = #{boardDto.board_title} , board_content = #{boardDto.board_content} , board_ani_category = #{boardDto.board_ani_category} , fileAttached = #{boardDto.fileAttached}
+        WHERE boardno = #{boardDto.boardno} and board_userno = #{LoginId}
     </update>
-
-    <update id="increaseViewCnt" parameterType="int">
-        UPDATE board
-        SET view_cnt = view_cnt + 1
-        WHERE bno = #{bno}
-    </update>
-
-    <select id="searchSelectPage" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
+    <delete id="boardDeleteContent" parameterType="map">
+        DELETE FROM board
+        WHERE boardno = #{boardno} and board_userno = #{LoginId}
+    </delete>
+    <select id="boardSelectRecentBoardNo" parameterType="int" resultType="int">
+        SELECT boardno
         FROM board
-        WHERE TRUE
+        WHERE board_userno = #{board_userno}
+        ORDER BY boardno DESC
+        LIMIT 1
+    </select>
+    <update id="boardUpdateFileAttached" parameterType="map">
+        UPDATE board
+        SET fileAttached = #{fileAttached}
+        WHERE boardno = #{boardno}
+    </update>
+    <sql id="aniCategoryChoose">
         <choose>
-            <when test='option=="T"'>
-                AND title LIKE concat('%', #{keyword}, '%')
+            <when test="ani_category == 0">
+                protectboard_ani_category = 0
             </when>
-            <when test='option=="W"'>
-                AND writer LIKE concat('%', #{keyword}, '%')
+            <when test="ani_category == 1">
+                protectboard_ani_category = 1
             </when>
-            <otherwise>
-                AND title LIKE concat('%', #{keyword}, '%')
-                OR content LIKE concat('%', #{keyword}, '%')
-            </otherwise>
+            <otherwise> TRUE </otherwise>
         </choose>
-        ORDER BY reg_date DESC, bno DESC
-        LIMIT #{offset}, #{pageSize}
-    </select>
-
-    <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="int">
-        SELECT count(*)
-        FROM board
-        WHERE TRUE
-        <choose>
-            <when test='option=="T"'>
-                AND title LIKE concat('%', #{keyword}, '%')
-            </when>
-            <when test='option=="W"'>
-                AND writer LIKE concat('%', #{keyword}, '%')
-            </when>
-            <otherwise>
-                AND title LIKE concat('%', #{keyword}, '%')
-                OR content LIKE concat('%', #{keyword}, '%')
-            </otherwise>
-        </choose>
-    </select>
-
-    <update id="updateCommentCnt" parameterType="com.project.poinhanshin.domain.board.CommentDto">
+    </sql>
+    <update id="updateViewCnt">
         UPDATE board
-        SET comment_cnt = comment_cnt + #{cnt}
-        WHERE bno = #{bno}
+        SET board_viewcount = board_viewcount + 1
+        WHERE boardno = #{boardno}
     </update>
-
+    <select id="selectViewCntTop" >
+        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
+        FROM board
+        ORDER BY board_viewcount DESC
+        LIMIT 3
+    </select>
+    <update id="updateCommentCnt" parameterType="map">
+        Update board
+        SET commentcount = commentcount + #{num}
+        Where boardno = #{boardno}
+    </update>
 </mapper>

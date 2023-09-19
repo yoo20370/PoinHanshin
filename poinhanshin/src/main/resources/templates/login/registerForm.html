@@ -22,7 +22,7 @@
   <div class="py-5 text-center">
     <h2>회원가입</h2>
   </div>
-  <form th:action="@{/register}" th:object="${user}" method="post">
+  <form th:action="@{/members/add}" th:object="${user}" method="post">
     <div>
       <label for="id">아이디</label>
       <input type="text" id="id" th:field="*{id}" class="form-control">

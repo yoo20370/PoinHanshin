@@ -8,47 +8,30 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PageHandler {
-    private int totalCnt; // 총 게시물 개수
-    private int pageSize; // 한 페이지의 크기
-    private int navSize = 10; // 페이지 내비게이션의 크기
-    private int totalPage; // 전체 페이지의 개수
-    private int page; // 현재 페이지
-    private int beginPage; // 내비게이션의 첫번째 페이지
-    private int endPage; // 내비게이션의 마지막 페이지
-    private boolean showPrev; // 이전 페이지로 이동하는 링크를 보여줄 것인지의 여부
-    private boolean showNext; // 다음 페이지로 이동하는 링크를 보여줄 것인지의 여부
+    private SearchCondition sc; // page , pageSize , keyword , option , offset
+    private int totalCnt;
+    private int totalPage;
+    private int naveSize = 10;
+    private int beginPage;
+    private int endPage;
+    private boolean showPrev;
+    private boolean showNext;
 
-    public PageHandler(int totalCnt, int page) {
-        this(totalCnt, page, 50);
-    }
-
-    public PageHandler(int totalCnt, int page, int pageSize) {
+    public PageHandler(){}
+    public PageHandler(int totalCnt , SearchCondition sc) {
         this.totalCnt = totalCnt;
-        this.page = page;
-        this.pageSize = pageSize;
+        this.sc = sc;
 
-        if (totalCnt <= 0) {
-            totalPage = 1;
-            beginPage = 1;
-            endPage = 1;
-            showPrev = false;
-            showNext = false;
-        } else {
-            totalPage = (int) Math.ceil(totalCnt / (double) pageSize);
-            beginPage = (page - 1) / navSize * navSize + 1;
-            endPage = Math.min(beginPage + navSize - 1, totalPage);
-            showPrev = beginPage != 1;
-            showNext = endPage != totalPage;
-        }
+        doPaging(totalCnt , sc);
     }
 
-    void print() {
-        System.out.println("page = " + page);
-        System.out.print(showPrev ? "[PREV]" : "");
-        for (int i = beginPage; i <= endPage; i++) {
-            System.out.print(i+" ");
-        }
-        System.out.println(showNext ? " [NEXT]": "");
+    void doPaging(int totalCnt  , SearchCondition sc){
+
+        totalPage = (int)Math.ceil(totalCnt / (double) sc.getPageSize());
+        beginPage = (sc.getPage() - 1) / naveSize * naveSize + 1;
+        endPage = Math.min(beginPage + naveSize - 1 , totalPage);
+        showPrev = beginPage != 1;
+        showNext = endPage != totalPage;
     }
 
 

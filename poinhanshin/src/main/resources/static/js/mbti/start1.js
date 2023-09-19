@@ -16,6 +16,8 @@
 
     function setResult() {
         let point = calResult();
+        let resultPage;
+
         switch (point) {
             case 0:
                 location.href = "/mbti/page/result-0.html";
@@ -66,7 +68,16 @@
                 location.href = "/mbti/page/result-15.html";
                 break;
         }
+        // 결과 페이지로 이동하는 링크 생성
+        const resultLink = document.createElement('a');
+        resultLink.href = resultPage;
+        resultLink.textContent = '결과 페이지로 이동'; // 링크 텍스트 수정 가능
+
+        // 결과 페이지를 표시할 DOM 요소에 링크를 추가
+        const resultContainer = document.querySelector('#result'); // 결과를 표시할 요소에 맞게 수정
+        resultContainer.appendChild(resultLink);
     }
+
 
     function goResult() {
         qna.style.WebkitAnimation = "fadeOut 1s";
