@@ -2,89 +2,46 @@ package com.project.poinhanshin.domain.board;
 
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
-
+@Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 public class BoardDto {
-    private Integer bno;
-    private String title;
-    private String content;
-    private String writer;
-    private int viewCnt;
-    private int commentCnt;
-    private Date regDate;
+        private Integer board_userno;
+        private Integer boardno;
+        private String board_title;
+        private String board_content;
+        private boolean board_ani_category;
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private Date board_reg_date;
+        private Integer board_viewcount;
+        private Integer commentcount;
+        private Integer likecount;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
+        private List<MultipartFile> boardFile = null;
+        private List<String> originalFileName;
+        private List<String> storedFileName;
+        private Integer fileAttached;
 
-    public Integer getBno() {
-        return bno;
-    }
-
-    public void setBno(Integer bno) {
-        this.bno = bno;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public int getViewCnt() {
-        return viewCnt;
-    }
-
-    public void setViewCnt(int viewCnt) {
-        this.viewCnt = viewCnt;
-    }
-
-    public int getCommentCnt() {
-        return commentCnt;
-    }
-
-    public void setCommentCnt(int commentCnt) {
-        this.commentCnt = commentCnt;
-    }
-
-    public String getRegDate() {
-        return sdf.format(regDate);
-    }
-
-    public void setRegDate(Date regDate) {
-        this.regDate = regDate;
-    }
-
-    public BoardDto(){}
-
-    public BoardDto(String title, String content, String writer) {
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
-    }
-
-
+        public BoardDto(Integer board_userno, Integer boardno, String board_title, String board_content, boolean board_ani_category, Date board_reg_date, Integer board_viewcount, Integer commentcount, Integer likecount, Integer fileAttached) {
+                this.board_userno = board_userno;
+                this.boardno = boardno;
+                this.board_title = board_title;
+                this.board_content = board_content;
+                this.board_ani_category = board_ani_category;
+                this.board_reg_date = board_reg_date;
+                this.board_viewcount = board_viewcount;
+                this.commentcount = commentcount;
+                this.likecount = likecount;
+                this.fileAttached = fileAttached;
+        }
 }
-//Getter Setter lombok 안쓴이유 -> 날짜 형식 때문에

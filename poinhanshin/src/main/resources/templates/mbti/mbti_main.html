@@ -12,6 +12,7 @@
           content="나랑 잘 맞는 성향을 가진 동물을 MBTI 기반으로 추천해주는 사이트"
   />
 
+  <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">-->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
@@ -23,73 +24,55 @@
   <link rel="stylesheet" href="/css/mbti/act.css">
   <link rel="stylesheet" href="/css/mbti/result.css">
   <title>mbti 메인 홈페이지</title>
-  <style>
-
-    table{
-      padding:10px;
-    }
-
+ <!-- <style>
     .table-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 50px;
-    }
-
-    .table-container table {
-      border-collapse: collapse;
       width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
       border: 1px solid #ddd;
     }
 
-    .table-container th, .table-container td {
-      border: 1px solid #ddd;
+    th, td {
       padding: 8px;
-      text-align: center;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
 
-    .table-container th {
+    th {
       background-color: #f2f2f2;
     }
 
-    .table-container img {
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    img {
       max-width: 100px;
-      max-height: 100px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
-    .item{
-      display:grid;
-      grid-template-columns: repeat(2 , 400px);
-      grid-template-rows: repeat(2,350px);
+    a {
+      text-decoration: none;
     }
-    .btn1 {
-      position: absolute;
-      top: 700px;
-      left : 390px;
-      border: 2px;
-      border-radius: 10px;
-      width: auto;
-      height: 60px;
-      font-size : 30px;
-    }
-
-    #thum{
-      position : relative;
-      width: 1000px;
-      height: 1300px;
-    }
-  </style>
+  </style> -->
 </head>
 
 <body layout:fragment="content">
 <div class="container">
   <section id="main" class="mx-auto my-5 py-5 px-3">
     <div class="search-bar mx-auto my-3">
-
-
       <form id="form" action="" method="">
         <input type="text" name="mbti" id="searchInput" placeholder="mbti를 입력하세요...">
         <button type="button" class="btn btn-outline-primary" id="searchButton">검색</button>
       </form>
+
 
     </div>
     <div class="col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
@@ -101,31 +84,28 @@
     </p>
     <button type="button" class="btn btn-outline-danger mt-3" onclick="begin()">시작하기</button>
     <!--  유기동물 테이블  -->
-    <div class="row">
-      <div class="col-sm-4 p-2" th:each="Ab_ani : ${AAArr}">
-        <div class="card" id="pcard">
-          <a th:href="@{'/api/AnimalBoard'+${Ab_ani.queryString}}" style="text-decoration-line: none;">
-            <div class="card-header ">
-              <div class="">
-                <div class="" style="display: flex; justify-content: center;">
-                  <img th:src="${Ab_ani.filename}" style=" width : 150px;height : 150px;"/>
-                </div>
-              </div>
-            </div>
-
-            <div class="card-body">
-              <span class="badge text-bg-primary card-text" th:text="${Ab_ani.kindCd}">강아지</span>
-              <span class="badge rounded-pill text-bg-success" th:text="${Ab_ani.desertionNo}">유기번호</span>
-
-              <th:block th:if="${Ab_ani.sexCd}=='M'">
-                <span class="badge rounded-pill text-bg-info "th:text="|성별:${Ab_ani.sexCd}|" >M</span>
-              </th:block>
-              <th:block th:if="${Ab_ani.sexCd}=='F'">
-                <span class="badge rounded-pill text-bg-danger "th:text="|성별:${Ab_ani.sexCd}|" >F</span>
-              </th:block>
-            </div>
-          </a>
-        </div>
+    <div class="table-container">
+      <div th:each="Ab_ani : ${AAArr}">
+        <a th:href="@{'/information/AnimalBoard'+${Ab_ani.queryString}}">
+          <table>
+            <tr>
+              <td>유기번호</td>
+              <td th:text="${Ab_ani.desertionNo}"></td>
+            </tr>
+            <tr>
+              <td>이미지</td>
+              <td><img th:src="${Ab_ani.filename}" alt="Animal Image"></td>
+            </tr>
+            <tr>
+              <td>품종</td>
+              <td th:text="${Ab_ani.kindCd}"></td>
+            </tr>
+            <tr>
+              <td>성별</td>
+              <td th:text="${Ab_ani.sexCd}"></td>
+            </tr>
+          </table>
+        </a>
       </div>
     </div>
   </section>
@@ -152,20 +132,31 @@
     <div class="resultDesc">
 
     </div>
-    <button type="button" class="gohome mt-3 py-2 px-3 mx-auto" onclick="moveHome()">MBTI 홈으로</button>
+    <button type="button" class="gohome mt-3 py-2 px-3 mx-auto" onclick="moveHome()">나도 참여하기</button>
+    <button type="button" class="kakao mt-3 py-2 px-3" onclick="">공유하기</button>
   </section>
-
-</div>
-<script src="/js/mbti/data.js" charset="utf-8"></script>
-<script src="/js/mbti/start.js" charset="utf-8"></script>
-<script src="/js/mbti/share.js" charset="utf-8"></script>
-<script>
-  $('#searchButton').on("click",function(){
+  <script src="/js/mbti/data.js" charset="utf-8"></script>
+  <script src="/js/mbti/start.js" charset="utf-8"></script>
+  <script src="/js/mbti/share.js" charset="utf-8"></script>
+  <script>
+    $('#searchButton').on("click",function(){
       let form = $('#form');
       form.attr("action" ,"/MBTI/result");
       form.attr("method" ,"get");
       form.submit();
     });
-</script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 검색 버튼 클릭 시 이벤트 리스너 추가
+      /*document.getElementById("searchButton").addEventListener("click", function () {
+        // MBTI 입력값 가져오기
+        var mbtiInput = document.getElementById("searchInput").value;
+
+        // 검색 페이지로 이동
+        window.location.href = "/MBTI/result";
+      });*/
+    });
+  </script>
+</div>
 </body>
+
 </html>

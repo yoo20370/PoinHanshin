@@ -1,37 +1,42 @@
 package com.project.poinhanshin.service.board;
 
 import com.project.poinhanshin.domain.board.BoardDto;
-import com.project.poinhanshin.domain.board.LikeBoardDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
+import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@Service
 public interface BoardService {
-    int getCount();
 
-    int remove(Integer bno);
+    // 검색된 게시물 리스트 개수를 가져온다.
+    int bringBoarndListCnt(SearchCondition sc);
 
-    int write(BoardDto boardDto);
+    // 검색된 게시물 리스트를 가져온다.
+    HashMap bringBoardList(SearchCondition sc);
 
-    List<BoardDto> getList();
+    // 특정 게시물 하나 가져오기
+    BoardDto bringBoardOne(Integer boardno);
 
-    BoardDto read(Integer bno);
+    // 게시물을 등록한다.
+    int writeContent(BoardDto boardDto) throws IOException;
 
-    BoardDto readV2(Integer bno);
+    // 특정 게시물을 수정한다.
+    int modifyContent(BoardDto boardDto , Integer loginId) throws IOException;
 
-    List<BoardDto> getPage(Map map);
+    // 특정 게시물을 삭제한다.
+    int removeContent(Integer boardno , Integer loginId) throws IOException;
 
-    int modify(BoardDto boardDto);
+    // 최근 등록 게시물 번호를 가져온다.(매개변수 유저에 해당하는 것을 가져오는 것)
+    int bringRecentRegContentNo(Integer board_userno);
 
-    List<BoardDto> getSearchResultPage(SearchCondition sc);
+    // 파일 존재 여부 값 수정
+    int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
-    int getSearchResultCnt(SearchCondition sc);
+    // 이미지 등록을 위한 메서드
+    void addImgFiles(BoardDto boardDto) throws IOException;
 
-    int likeCheck(Integer bno , Integer uno);
-
-    int addLike(String userno , LikeBoardDto likeDto );
-
-    int deleteLike(String userno , LikeBoardDto likeDto );
 }

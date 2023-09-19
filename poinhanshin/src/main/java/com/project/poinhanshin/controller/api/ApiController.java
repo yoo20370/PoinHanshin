@@ -2,8 +2,9 @@ package com.project.poinhanshin.controller.api;
 
 import com.project.poinhanshin.domain.api.Abandoned_animal;
 import com.project.poinhanshin.domain.api.Shelter;
-import com.project.poinhanshin.domain.etc.PageHandler1;
-import com.project.poinhanshin.domain.etc.SearchCondition1;
+import com.project.poinhanshin.domain.etc.PageHandler;
+import com.project.poinhanshin.domain.etc.SearchCondition;
+import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.etc.ApiExplorer;
 import com.project.poinhanshin.service.api.ApiService;
 import org.json.simple.parser.ParseException;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
 import java.io.IOException;
 
 
@@ -30,7 +33,9 @@ public class ApiController {
     }
 
     @GetMapping("/AnimalList")
-    public String AnimalList(SearchCondition1 sc , String kind , Model m) throws IOException, ParseException {
+    public String AnimalList(SearchCondition sc , String kind , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
+
+        m.addAttribute("loginUser", loginUser);
 
         if(sc.getPage() == null) sc.setPage(1);
         // 품종 검색을 위한 삼항연산자
@@ -38,7 +43,7 @@ public class ApiController {
         Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","",kind,"","","","","",sc.getPage().toString(),"8");
 
         int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());
-        PageHandler1 ph = new PageHandler1(totalCnt , sc);
+        PageHandler ph = new PageHandler(totalCnt , sc);
         m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("ph",ph);
         m.addAttribute("AAArr",abandoned_animal);
@@ -47,14 +52,17 @@ public class ApiController {
     }
 
     @GetMapping("/ShelterList")
-    public String ShelterList(SearchCondition1 sc, Model m) throws IOException, ParseException {
+    public String ShelterList(SearchCondition sc, Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
+
+        m.addAttribute("loginUser", loginUser);
+
         System.out.println(sc.toString());
         if(sc.getKeyword() == null) sc.setKeyword("");
         if(sc.getPage() == null) sc.setPage(1);
 
         Shelter shelterList[] = apiExplorer.SearchShelterList("",sc.getKeyword(),"10", sc.getPage().toString());
         int totalCnt = Integer.parseInt(shelterList[0].getTotalCount());
-        PageHandler1 ph = new PageHandler1(totalCnt , sc);
+        PageHandler ph = new PageHandler(totalCnt , sc);
         m.addAttribute("totalCnt",totalCnt);
         m.addAttribute("ph",ph);
         m.addAttribute("ShelterList", shelterList);
@@ -62,14 +70,18 @@ public class ApiController {
     }
 
     @GetMapping("/AnimalBoard")
-    public String AnimalBoard(Abandoned_animal aban_ani , Model m){
+    public String AnimalBoard(Abandoned_animal aban_ani , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        m.addAttribute("loginUser", loginUser);
+
         System.out.println(aban_ani);
         m.addAttribute("aban_ani",aban_ani);
         return "api/AnimalBoard";
     }
 
     @GetMapping("/ShelterBoard")
-    public String ShelterBoard(Shelter shelter , Model m){
+    public String ShelterBoard(Shelter shelter , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+        m.addAttribute("loginUser", loginUser);
         m.addAttribute("shelter",  shelter);
         return "api/ShelterBoard";
     }
