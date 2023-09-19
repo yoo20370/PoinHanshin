@@ -89,4 +89,15 @@ public class BoardMapperImpl implements BoardMapper {
         return sqlSession.selectList(namespace+"selectViewCntTop");
     }
 
+    @Override
+    public int updateCommentCnt(Integer boardno, Integer num) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("boardno",boardno);
+        hashMap.put("num" , num);
+        return sqlSession.update(namespace+"updateCommentCnt" , hashMap);
+    }
+
+    // 댓글 개수 수정
+
+
 }

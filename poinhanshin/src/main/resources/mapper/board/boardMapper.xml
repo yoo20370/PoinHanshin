@@ -67,4 +67,9 @@
         ORDER BY board_viewcount DESC
         LIMIT 3
     </select>
+    <update id="updateCommentCnt" parameterType="map">
+        Update board
+        SET commentcount = commentcount + #{num}
+        Where boardno = #{boardno}
+    </update>
 </mapper>

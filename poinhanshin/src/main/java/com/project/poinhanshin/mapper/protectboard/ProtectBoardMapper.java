@@ -33,15 +33,4 @@ public interface ProtectBoardMapper {
     // 게시물의 파일 여부 값을 수정한다.
     int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
-
-
-
-
-
-
-
-
-
-
-
 }

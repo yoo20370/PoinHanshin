@@ -19,6 +19,9 @@
 <script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <div class="page">
+<!-- dto와 연결이 아직임   -->
+
+
 <!--인기글 상위 3개만 출력 -->
     <!--<div class="row justify-content-center p-3">
     <span class="card gap-3" style="width: 15rem;" th:each = "best : ${bestList}">
@@ -37,6 +40,7 @@
 
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
+<!--        검색창-->
         <form name="search-form">
         <div class="input-group">
             <div class="input-group-text" id="btnGroupAddon">
@@ -47,7 +51,9 @@
             <input type="text" name="keyword" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
             <input type="button" onclick="getSearchList()" class="btn btn-outline-primary" value="검색">
         </div>
-        </form>    
+        </form>
+
+<!--   글작성     -->
         <div class="btn-group" role="group"aria-label="Basic outlined example">
             <button type="button" class="btn btn-info">글작성</button>
         </div>
@@ -64,15 +70,16 @@
             </thead>
 
             <tbody>
+<!--            리스트 출력 부분 -->
             <tr th:each="boardDto : ${list}">
                 <td valign="middle">
                     <div class="title_wrapper">
                     <span class="title" th:text="${boardDto.title}" th:href="${/board/read(boardno=${boardDto.boardno})}">&#45;&#45;&#45;&#45;제목-&#45;&#45;</span>
                     </div>
                     <div style="vertical-align: bottom;">
-                        <span class="info_table" th:text="| 유저id : ${boardDto.board_userno}|"> 유저id : 12312314</span>
-                        <span class="info_table" th:text="| 조회수 : ${boardDto.board_viewcount}|"> 조회수 : 42</span>
-                        <span class="info_table" th:text="| 등록일 : ${boardDto.board_reg_date}|"> 등록일 : 2019-05-14</span>
+<!--                        <span class="info_table" th:text="| 유저id : ${boardDto.board_userno}|"> 유저id : 12312314</span>-->
+                        <span class="info_table" th:text="| 조회수 : ${boardDto.viewCnt}|"> 조회수 : 42</span>
+                        <span class="info_table" th:text="| 등록일 : ${#strings.toString(boardDto.regDate)}|"> 등록일 : 2019-05-14</span>
                     </div>
 
 
@@ -91,13 +98,17 @@
     </div>
 
     <span th:if="${#strings.isEmpty(totalCnt)}">게시물이 없습니다.</span>
-    <div class="btn-toolbar position-absolute top-100 start-50 translate-middle" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group me-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><<</button>
-            <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-                <button type="button" class="btn btn-secondary" th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}" th:text="${i}"></button>
-            </th:block>
-            <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>
+
+    <div class="ph-wrapper">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group m-auto btn-group-sm" role="group" aria-label="First group">
+                <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
+                <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+
+                    <button type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/board/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+                </th:block>
+                <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
+            </div>
         </div>
     </div>-->
 <div class="row justify-content-center p-3">
