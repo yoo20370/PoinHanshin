@@ -29,20 +29,19 @@
         <div class="container">
 
             <form action="/protectboard/list" method="get" name="searchForm" id="searchForm" class="row">
-<!--                필터검색창-->
-                <div class="col-4">
+
+                <div class="col-sm-4">
                     <div class="btn-group" role="group">
-                        <input type="radio" name="option" value="2" class="btn-check" id="all-check" th:checked="${#strings.equals(sc.option, '2')}">
-                        <label class="btn btn-outline-dark" for="all-check" >전체</label>
+                        <input type="radio" name="ani_category" value="2" class="btn-check" id="all-check" autocomplete="off" th:checked="${sc.ani_category eq 2}">
+                        <label class="btn btn-outline-dark" for="all-check">전체</label>
 
-                        <input type="radio" name="option" value="0" class="btn-check" id="dog-check" th:checked="${#strings.equals(sc.option, '0')}">
-                        <label class="btn btn-outline-dark" for="dog-check" >강아지</label>
+                        <input type="radio" name="ani_category" value="0" class="btn-check" id="dog-check" autocomplete="off" th:checked="${sc.ani_category eq 0}">
+                        <label class="btn btn-outline-dark" for="dog-check">강아지</label>
 
-                        <input type="radio" name="option" value="1" class="btn-check" id="cat-check" th:checked="${#strings.equals(sc.option, '1')}">
-                        <label class="btn btn-outline-dark" for="cat-check" >고양이</label>
+                        <input type="radio" name="ani_category" value="1" class="btn-check" id="cat-check" autocomplete="off" th:checked="${sc.ani_category eq 1}">
+                        <label class="btn btn-outline-dark" for="cat-check">고양이</label>
                     </div>
                 </div>
-
                 <div class="col-sm-4" id="spacer"></div>
 
                 <div class="col-sm-4">
@@ -120,10 +119,12 @@
             let form = $('#searchForm');
             form.submit();
         });
-         $('.btn-check').on("click",function(){
+
+        $('input[name=ani_category]').on("click" , function(){
             let form = $('#searchForm');
             form.submit();
         });
+
 
 
 //D-day 남은날짜 계산
