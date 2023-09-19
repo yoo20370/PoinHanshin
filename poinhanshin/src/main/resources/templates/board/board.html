@@ -381,47 +381,6 @@
     /*<![CDATA[*/
 
 
-//테스트용 콘솔창데이터확인용
-const list = [[${boardDto}]];
-console.log(list);
-
-//댓글삭제
-function commentRemove(commentno) {
-
-                if ( !confirm('댓글을 삭제할까요?') ) {
-                    return false;
-                }
-
-                const formHtml = `
-                    <form id="deleteForm" action="/comments/remove/(cno=commentno)" method="post">
-                        <input type="hidden" id="commentno" name="commentno" value="commentno" />
-                    </form>
-                `;
-                const doc = new DOMParser().parseFromString(formHtml, 'text/html');
-                const form = doc.body.firstChild;
-                document.body.append(form);
-                document.getElementById('deleteForm').submit();
-            }
-
-//게시글삭제
- function removePost() {
-                const id = /*[[ ${boardDto.bno} ]]*/;
-
-                if ( !confirm(id + '번 게시글을 삭제할까요?') ) {
-                    return false;
-                }
-
-                const formHtml = `
-                    <form id="deleteForm" action="/board/remove" method="post">
-                        <input type="hidden" id="bno" name="bno" value="${boardDto.bno}" />
-                    </form>
-                `;
-                const doc = new DOMParser().parseFromString(formHtml, 'text/html');
-                const form = doc.body.firstChild;
-                document.body.append(form);
-                document.getElementById('deleteForm').submit();
-            }
-
 
 /*]]>*/
 </script>
