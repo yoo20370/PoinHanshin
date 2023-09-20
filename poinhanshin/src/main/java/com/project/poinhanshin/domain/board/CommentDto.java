@@ -12,6 +12,8 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode
 public class CommentDto {
+   public CommentDto(){};
+
    private String Comment_id;
    private Integer boardcomment_boardno;
    private Integer boardcomment_userno;
