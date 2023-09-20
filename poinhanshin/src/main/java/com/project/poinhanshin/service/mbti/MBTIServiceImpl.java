@@ -1,6 +1,6 @@
 package com.project.poinhanshin.service.mbti;
 
-import com.project.poinhanshin.domain.mbti.MBTInameKind;
+import com.project.poinhanshin.domain.mbti.MBTINameKind;
 import com.project.poinhanshin.mapper.mbti.MBTIMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class MBTIServiceImpl implements MBTIService{
 
     // 테스트 결과값에 대응되는 MBTI 데이터를 불러온다.
     @Override
-    public List<MBTInameKind> serviceSearchAband(Integer MBTI) {
-        List<MBTInameKind> mbtInameKindList =  mbtiMapper.searchAband(MBTI);
+    public List<MBTINameKind> serviceSearchAband(Integer MBTI) {
+        List<MBTINameKind> mbtInameKindList =  mbtiMapper.searchAband(MBTI);
         return mbtInameKindList;
     }
 }
