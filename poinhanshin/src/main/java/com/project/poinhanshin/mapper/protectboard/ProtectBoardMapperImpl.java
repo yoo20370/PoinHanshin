@@ -80,4 +80,11 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
         return sqlSession.update(namespace+"updateFileAttached", hashMap);
     }
 
+
+    //마이페이지 임보자 게시판 불러오기
+    @Override
+    public List<ProtectBoardDto> selectMyprotectboard(SearchCondition sc) {
+        return sqlSession.selectList(namespace+"selectMyprotectboard", sc);
+    }
+
 }
