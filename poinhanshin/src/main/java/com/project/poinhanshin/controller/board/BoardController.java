@@ -38,7 +38,6 @@ public class BoardController {
     public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
         m.addAttribute("loginUser", loginUser); // 로그인 이식
-
         HashMap hashMap = boardService.bringBoardList(sc);
         List<BoardDto> boardDtoList = (List<BoardDto>)hashMap.get("boardDtoList");
         List<BoardDto> topBoardDtoList = (List<BoardDto>)hashMap.get("topBoardDtoList");
@@ -59,7 +58,7 @@ public class BoardController {
     // 커뮤니티 게시물 상세 페이지
     @GetMapping("/read")
     public String boardRead(Integer boardno , SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
-
+        System.out.println("read 컨트롤러 실행 됨 "+boardno);
         m.addAttribute("loginUser", loginUser);
 
         // 임시 로그인

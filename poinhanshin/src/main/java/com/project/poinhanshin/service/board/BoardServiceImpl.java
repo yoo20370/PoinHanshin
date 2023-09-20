@@ -63,6 +63,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BoardDto bringBoardOne(Integer boardno) {
+
         BoardDto boardDto = boardMapper.boardSelectContentOne(boardno);
         boardMapper.updateViewCnt(boardno);
         if(boardDto.getFileAttached() == 0){
@@ -88,6 +89,7 @@ public class BoardServiceImpl implements BoardService{
             // 게시물 객체에 원본 파일 이름 , 서버 저장 파일 이름 리스트를 저장
             boardDto.setOriginalFileName(originalFileNameList);
             boardDto.setStoredFileName(storedFileNameList);
+
 
             return boardDto;
         }
