@@ -172,6 +172,13 @@ public class ApiExplorer {
 
         KindDto[] KindDtoList1 = getKindDto(up_kind_cd_dog);
         KindDto[] KindDtoList2 = getKindDto(up_kind_cd_cat);
+
+        for(KindDto kindDto : KindDtoList1 ){
+            System.out.println(kindDto);
+        }
+        for(KindDto kindDto : KindDtoList2 ){
+            System.out.println(kindDto);
+        }
         return Arrays.concat(KindDtoList1, KindDtoList2);
     }
 
