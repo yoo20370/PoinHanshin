@@ -106,10 +106,10 @@ public class BoardController {
     // 커뮤니티 게시물 작성 데이터 DB에 저장
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) Integer board_userno , @RequestParam String board_title ,
+    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) String id ,@RequestParam(required = false) Integer board_userno , @RequestParam String board_title ,
                                               @RequestParam String board_content , @RequestParam Boolean board_ani_category ,
                                               @RequestParam(required = false) List<MultipartFile> boardFile) throws IOException {
-        BoardDto boardDto = new BoardDto(board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
+        BoardDto boardDto = new BoardDto(id, board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
 
         boardDto.setBoardFile(boardFile);
         // 파일이 있는 경우
@@ -153,11 +153,11 @@ public class BoardController {
 
     // 커뮤니티 수정 페이제에서 ajax로 보낸 데이터를 받아 각 변수게 바인딩하고 이를 DB에 저장
     @PostMapping("/modify")
-    public ResponseEntity<Integer> boardModify(@RequestParam Integer board_userno , @RequestParam Integer boardno, @RequestParam String board_title ,
+    public ResponseEntity<Integer> boardModify(@RequestParam(required = false) String id ,@RequestParam Integer board_userno , @RequestParam Integer boardno, @RequestParam String board_title ,
                                                @RequestParam String board_content , @RequestParam Boolean board_ani_category , @RequestParam Integer fileAttached,
                                                @RequestParam(required = false) List<MultipartFile> boardFile
                                                 ) throws IOException {
-        BoardDto boardDto = new BoardDto(board_userno , boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
+        BoardDto boardDto = new BoardDto(id, board_userno , boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
         boardDto.setBoardFile(boardFile);
 
         // Login 연결 시 수정 필요
