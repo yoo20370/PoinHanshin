@@ -205,6 +205,7 @@
 
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
+                    <input hidden="hidden" />
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
                     <input type="text"  class="form-control" id="content" name="comment"
                            placeholder="1자에서 100자 이내로 입력해주세요.">
@@ -297,7 +298,7 @@
             relpybox.setAttribute('data-parcommentno',comment.parcommentno);
             //댓글 컨텐츠 박스
             var contentCol= document.createElement('div');
-            contentCol.setAttribute('class','col-sm-9');
+            contentCol.setAttribute('class','col-sm-10');
             var writer= document.createElement('div');
             writer.textContent ='작성자 : '+comment.boardcomment_userno;
             var comments= document.createElement('div');
@@ -309,28 +310,36 @@
             contentCol.appendChild(writeDate);
             //버튼공간
             var buttonCol= document.createElement('div');
-            buttonCol.setAttribute('class','col-sm-3');
+            buttonCol.setAttribute('class','col-sm-2 float-end');
             
             //버튼
             var Wbutton= document.createElement('button');
             Wbutton.setAttribute('name','writeCmtBtn');
             Wbutton.setAttribute('id','writeCommentBtn'+comment.commentno);
             Wbutton.setAttribute('data-bs-toggle','collapse');
-            Wbutton.setAttribute('class','btn btn-outline-dark');
+            Wbutton.setAttribute('class','btn btn-outline');
             Wbutton.textContent = '답글';
             buttonCol.appendChild(Wbutton);
             var Rbutton= document.createElement('button');
             Rbutton.setAttribute('name','removeCmtBtn');
             Rbutton.setAttribute('id','removeCommentBtn'+ comment.commentno);
             Rbutton.setAttribute('data-bs-toggle','collapse');
-            Rbutton.setAttribute('class','btn btn-outline-dark');
+            Rbutton.setAttribute('class','btn btn-outline');
             Rbutton.textContent = '삭제';
             buttonCol.appendChild(Rbutton);
+
+            if(comment.commentno != comment.parcommentno){
+                var spacer =document.createElement('div');
+                    spacer.setAttribute('class','col-sm-1');
+                    contentCol.setAttribute('class','col-sm-9');
+                    relpybox.appendChild(spacer);
+            }
         
             relpybox.appendChild(contentCol);
             relpybox.appendChild(buttonCol);
             commentWrapper.appendChild(relpybox);
             document.querySelector('#commentArea').appendChild(commentWrapper);
+
                     })
                     
                    // $('#commentArea').append(toHtml(list));
@@ -364,10 +373,14 @@
                 data : JSON.stringify(commentDto),
                 success:function(str){
                    console.log(str)
-                   showList([[${boardDto.boardno}]]);
+                  
                     $('input[name=comment]').val("");
                 },
-                error:function(){}
+                error:function(){},
+                complete:function(){
+                    $('#commentArea').empty();
+                   showList([[${boardDto.boardno}]]);
+                }
             });
         })
 
@@ -383,9 +396,14 @@
                 url : '/comments/'+commentno+'?boardcomment_boardno='+[[${boardDto.boardno}]],
                 success : function(str){
                     console.log(str)
-                    showList([[${boardDto.boardno}]]);
+                    
                 },
-                error : function(){}
+                error : function(){},
+                complete : function(){
+                    $('#commentArea').empty();
+                    showList([[${boardDto.boardno}]]);
+                }
+
             })
         })
 
@@ -399,7 +417,7 @@
         $('#replyBtn').on("click" , function(){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
             let comment = $('input[name=replyComment]') .val();
-            let commentno = $('#replyCmtContainer').parent().attr("data-commentno");
+            let commentno = $('#replyCmtContainer').parent().parent().attr("data-commentno");
             let boardcomment_boardno = [[${boardDto.boardno}]];
             let parcommentno = commentno;
 
@@ -421,10 +439,14 @@
                    $('#replyCmtContainer').css("display", "none");
                    $('input[name=replyComment]').val("");
 
-                   showList([[${boardDto.boardno}]])
+                   
 
                 },
-                error : function(){}
+                error : function(){},
+                complete : function(){
+                    $('#commentArea').empty();
+                    showList([[${boardDto.boardno}]])
+                }
             });
         });
 
