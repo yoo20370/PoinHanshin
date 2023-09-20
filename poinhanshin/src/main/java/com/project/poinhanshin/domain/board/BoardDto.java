@@ -1,10 +1,6 @@
 package com.project.poinhanshin.domain.board;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +11,10 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardDto {
+        private String id;
         private Integer board_userno;
         private Integer boardno;
         private String board_title;
@@ -32,7 +31,8 @@ public class BoardDto {
         private List<String> storedFileName;
         private Integer fileAttached;
 
-        public BoardDto(Integer board_userno, Integer boardno, String board_title, String board_content, boolean board_ani_category, Date board_reg_date, Integer board_viewcount, Integer commentcount, Integer likecount, Integer fileAttached) {
+        public BoardDto(String id, Integer board_userno, Integer boardno, String board_title, String board_content, boolean board_ani_category, Date board_reg_date, Integer board_viewcount, Integer commentcount, Integer likecount, Integer fileAttached) {
+                this.id = id;
                 this.board_userno = board_userno;
                 this.boardno = boardno;
                 this.board_title = board_title;
