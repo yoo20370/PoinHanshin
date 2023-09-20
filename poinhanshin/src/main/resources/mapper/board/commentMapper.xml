@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.poinhanshin.mapper.board.CommentMapper">
     <select id="selectComment" parameterType="int" resultType="com.project.poinhanshin.domain.board.CommentDto">
-        Select boardcomment_boardno , boardcomment_userno , commentno , ifnull(parcommentno , commentno) as parcommentno, comment ,boardcomment_reg_date
-        From boardcomment
-        Where boardcomment_boardno = #{boardcomment_boardno}
-        ORDER BY parcommentno ASC , commentno ASC
+        Select u.id, b.boardcomment_boardno , b.boardcomment_userno , b.commentno , ifnull(b.parcommentno , b.commentno) as parcommentno, b.comment ,boardcomment_reg_date
+        From boardcomment b, users u, board board
+        Where b.boardcomment_userno = u.userno and b.boardcomment_boardno = board.board_userno and boardcomment_boardno = 1
+        ORDER BY b.parcommentno ASC , b.commentno ASC;
     </select>
 
     <delete id="deleteComment" parameterType="map">
