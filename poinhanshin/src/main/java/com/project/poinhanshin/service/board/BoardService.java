@@ -39,4 +39,7 @@ public interface BoardService {
     // 이미지 등록을 위한 메서드
     void addImgFiles(BoardDto boardDto) throws IOException;
 
+    // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
+    List<BoardDto> SelectMyBoardService(Integer userno);
+
 }

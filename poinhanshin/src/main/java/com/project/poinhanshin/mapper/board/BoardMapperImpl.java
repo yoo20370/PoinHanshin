@@ -99,5 +99,9 @@ public class BoardMapperImpl implements BoardMapper {
 
     // 댓글 개수 수정
 
-
+    // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
+    @Override
+    public List<BoardDto> SelectMyBoard(Integer userno) {
+        return sqlSession.selectList(namespace+"SelectMyBoard", userno);
+    }
 }

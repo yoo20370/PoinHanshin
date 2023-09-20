@@ -214,4 +214,10 @@ public class BoardServiceImpl implements BoardService{
             boardFileMapper.boardInsertFile(boardFileDto);
         }
     }
+
+    @Override
+    public List<BoardDto> SelectMyBoardService(Integer userno) {
+        List<BoardDto> SelectMyBoardService = boardMapper.SelectMyBoard(userno);
+        return SelectMyBoardService;
+    }
 }

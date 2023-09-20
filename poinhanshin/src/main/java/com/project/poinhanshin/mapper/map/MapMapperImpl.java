@@ -52,4 +52,9 @@ public class MapMapperImpl implements MapMapper{
         hashMap.put("mapboardno" , mapboardno);
         return sqlSession.delete(namespace+"deleteMapBoard", hashMap);
     }
+
+    @Override
+    public List<MapBoardDto> SelectMyMap(Integer userno) {
+        return sqlSession.selectList(namespace+"SelectMyMap", userno);
+    }
 }
