@@ -35,7 +35,7 @@
             <input type="hidden" name="page" th:value="${sc.getPage()}"/>
             <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
             <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
-            <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}"/>
+            <input type="hidden" name="protectboard_id" th:value="${protectboard.protectboard_id}"/>
             <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}"/>
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
             <input th:if="${protectboard.fileAttached == 0}" tpye="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
@@ -105,7 +105,7 @@
         <div class="col">
             <span th:text="| 작성일 : ${#dates.format(protectboard.protectboard_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}|" >작성일:</span>
 
-            <span th:text="| 작성자 : ${protectboard.protectboard_userno}|">작성자:</span>
+            <span th:text="| 작성자 : ${protectboard.protectboard_id}|">작성자:</span>
         </div>
 
         <div class="col-5 p-3" >

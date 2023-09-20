@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" dir="ltr">
 <head>
-  <  <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- sns share -->
@@ -29,7 +29,12 @@
 <section id="shareResult" class="mx-auto my-5 py-5 px-3">
   <h1>당신의 결과는?!</h1>
   <div class="resultname">
-    <p>논리적인 전략가 <허스키, 소말리></p>
+    <p>논리적인 전략가</p>
+    <div id="hyperLinkContainer" >
+      <div th:each=" AnimalData : ${AnimalDatas}" >
+        <a th:href="@{/api/AnimalList(kind = ${AnimalData.kindCd})}" th:text="${AnimalData.animalname}"></a>
+      </div>
+    </div>
   </div>
   <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
     <img src="/img/mbti/image-15.png" alt="0" class="img-fluid">

@@ -9,15 +9,15 @@
         and <include refid="aniCategoryChoose"/>
     </select>
     <select id="boardSearchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
-        FROM board
-        WHERE board_title LIKE concat('%' , #{keyword} ,'%')
+        SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount , b.likecount , b.fileAttached
+        FROM users u, board b
+        WHERE u.userno = b.board_userno and b.board_title LIKE concat('%' , #{keyword} ,'%')
         and <include refid="aniCategoryChoose"/>
     </select>
     <select id="boardSelectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount , likecount , fileAttached
-        FROM board
-        WHERE boardno = #{boardno}
+        SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount ,b.likecount ,b.fileAttached
+        FROM users u, board b
+        WHERE u.userno = b.board_userno and b.boardno = #{boardno}
     </select>
     <insert id="boardInsertContent" parameterType="com.project.poinhanshin.domain.board.BoardDto">
         INSERT INTO board
@@ -62,8 +62,8 @@
         WHERE boardno = #{boardno}
     </update>
     <select id="selectViewCntTop" >
-        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
-        FROM board
+        SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount , b.likecount , b.fileAttached
+        FROM users u, board b
         ORDER BY board_viewcount DESC
         LIMIT 3
     </select>
@@ -72,4 +72,17 @@
         SET commentcount = commentcount + #{num}
         Where boardno = #{boardno}
     </update>
+
+    <select id="SelectMyBoard" parameterType="int" resultType="com.project.poinhanshin.domain.board.BoardDto">
+        SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount , b.likecount , b.fileAttached
+        FROM users u, board b, mypage m
+        WHERE u.userno = m.mypage_userno and b.boardno = m.mypage_boardno and m.mypage_userno = #{userno}
+    </select>
+
+    <select id="WriteMyBoard" parameterType="int" resultType="com.project.poinhanshin.domain.board.BoardDto">
+        SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount , b.likecount , b.fileAttached
+        FROM users u, board b
+        WHERE u.userno = b.board_userno and b.board_userno = #{userno}
+    </select>
+
 </mapper>

@@ -63,6 +63,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BoardDto bringBoardOne(Integer boardno) {
+
         BoardDto boardDto = boardMapper.boardSelectContentOne(boardno);
         boardMapper.updateViewCnt(boardno);
         if(boardDto.getFileAttached() == 0){
@@ -88,6 +89,7 @@ public class BoardServiceImpl implements BoardService{
             // 게시물 객체에 원본 파일 이름 , 서버 저장 파일 이름 리스트를 저장
             boardDto.setOriginalFileName(originalFileNameList);
             boardDto.setStoredFileName(storedFileNameList);
+
 
             return boardDto;
         }
@@ -211,5 +213,19 @@ public class BoardServiceImpl implements BoardService{
             BoardFileDto boardFileDto = new BoardFileDto(boardDto.getBoardno() , null , null , originalFileName , storedFileName , boardFile.getSize());
             boardFileMapper.boardInsertFile(boardFileDto);
         }
+    }
+
+    // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
+    @Override
+    public List<BoardDto> SelectMyBoardService(Integer userno) {
+        List<BoardDto> SelectMyBoardService = boardMapper.SelectMyBoard(userno);
+        return SelectMyBoardService;
+    }
+
+    // 마이페이지 - 자신이 쓴 커뮤니티 게시글 불러오기
+    @Override
+    public List<BoardDto> WriteMyBoardService(Integer userno) {
+        List<BoardDto> WriteMyBoardService = boardMapper.WriteMyBoard(userno);
+        return WriteMyBoardService;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.project.poinhanshin.mapper.board;
 
 import org.apache.ibatis.session.SqlSession;
@@ -54,3 +55,4 @@ public class LikeMapperImpl implements LikeMapper {
     }
 
 }
+*/

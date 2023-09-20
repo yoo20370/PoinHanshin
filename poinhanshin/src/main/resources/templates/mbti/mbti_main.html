@@ -24,44 +24,44 @@
   <link rel="stylesheet" href="/css/mbti/act.css">
   <link rel="stylesheet" href="/css/mbti/result.css">
   <title>mbti 메인 홈페이지</title>
- <!-- <style>
-    .table-container {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-    }
+  <!-- <style>
+     .table-container {
+       width: 100%;
+       max-width: 800px;
+       margin: 0 auto;
+     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      border: 1px solid #ddd;
-    }
+     table {
+       width: 100%;
+       border-collapse: collapse;
+       border: 1px solid #ddd;
+     }
 
-    th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
+     th, td {
+       padding: 8px;
+       text-align: left;
+       border-bottom: 1px solid #ddd;
+     }
 
-    th {
-      background-color: #f2f2f2;
-    }
+     th {
+       background-color: #f2f2f2;
+     }
 
-    tr:hover {
-      background-color: #f5f5f5;
-    }
+     tr:hover {
+       background-color: #f5f5f5;
+     }
 
-    img {
-      max-width: 100px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
+     img {
+       max-width: 100px;
+       height: auto;
+       display: block;
+       margin: 0 auto;
+     }
 
-    a {
-      text-decoration: none;
-    }
-  </style> -->
+     a {
+       text-decoration: none;
+     }
+   </style> -->
 </head>
 
 <body layout:fragment="content">
@@ -82,7 +82,7 @@
       나만의 MBTI 사이트입니다! <br>
       아래 시작하기 버튼을 눌러 시작해 주십시오.
     </p>
-    <button type="button" class="btn btn-outline-danger mt-3" onclick="begin()">시작하기</button>
+    <button id="startButton" class="btn btn-outline-danger mt-3" onclick="begin()">시작하기</button>
     <!--  유기동물 테이블  -->
     <div class="row">
       <div class="col-sm-4 p-2" th:each="Ab_ani : ${AAArr}">
@@ -139,12 +139,13 @@
     <button type="button" class="kakao mt-3 py-2 px-3" onclick="">공유하기</button>
   </section>
   <script src="/js/mbti/data.js" charset="utf-8"></script>
-  <script src="/js/mbti/start.js" charset="utf-8"></script>
+  <!--  <script src="/js/mbti/start.js" charset="utf-8"></script>-->
+  <script src="/js/mbti/start1.js" charset="utf-8"></script>
   <script src="/js/mbti/share.js" charset="utf-8"></script>
   <script>
     $('#searchButton').on("click",function(){
       let form = $('#form');
-      form.attr("action" ,"/MBTI/result");
+      form.attr("action" ,"/MBTI/point");
       form.attr("method" ,"get");
       form.submit();
     });

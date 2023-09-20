@@ -52,4 +52,16 @@ public class MapMapperImpl implements MapMapper{
         hashMap.put("mapboardno" , mapboardno);
         return sqlSession.delete(namespace+"deleteMapBoard", hashMap);
     }
+
+    // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
+    @Override
+    public List<MapBoardDto> SelectMyMap(Integer userno) {
+        return sqlSession.selectList(namespace+"SelectMyMap", userno);
+    }
+
+    // 마이페이지 - 자신이 작성한 실종/발견 지도 게시글 불러오기
+    @Override
+    public List<MapBoardDto> WriteMyMap(Integer userno) {
+        return sqlSession.selectList(namespace+"WriteMyMap", userno);
+    }
 }

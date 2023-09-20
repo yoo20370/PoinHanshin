@@ -19,26 +19,27 @@
         float : right;
     }
 
-  .commentbox {
+    .commentbox {
         padding : 20px;
         border-top: 1px solid black;
 
     }
-  .relpybox {
+    .relpybox {
         padding : 20px;
-         border-top: 1px solid black;
-  }
-   .commentbox2 {
+        border-top: 1px solid black;
+    }
+    .commentbox2 {
         border-top: 1px solid black;
         padding : 30px;
-  }
+    }
 </style>
 <body layout:fragment="content">
 <div class="page">
+
 <!--    고양이=1(true), 강아지=0(false)-->
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
-
+    <input type="hidden" th:if="${loginUser != null}" th:value="${loginUser.userno}" id="loginUserNo"/>
     <!-- 제목 -->
     <div class="row">
         <div class="form-floating">
@@ -46,7 +47,7 @@
                    id="floatingEmptyPlaintextInput"
                    name="board_title"
                    th:value="${boardDto.board_title}"
-                   >
+            >
             <label for="floatingEmptyPlaintextInput">제목</label>
         </div>
     </div>
@@ -86,8 +87,15 @@
     <div class="row">
         <span th:text="|작성일 : ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')} |" >작성일:</span>
         <span th:text="|조회수 : ${boardDto.board_viewcount}|" >조회수:</span>
-        <span th:text="|작성자 : ${boardDto.board_userno}|" >작성자:</span>
+        <span th:text="|작성자 : ${boardDto.id}|" >작성자:</span>
+
     </div>
+    <div id="likeContainer">
+        <p>좋아요 수 : <span id="likeCnt" th:text="${boardDto.likecount}"></span></p>
+
+        <span id="likeImg"></span>
+    </div>
+    <button th:if="${loginUser != null }" type="button" id="likeBtn">좋아요 버튼</button>
 
 
 <!--댓글출력-->
@@ -112,11 +120,6 @@
                 </div>
         </div>
     </div>
-
-
-
-
-
 
     <div class="container" id="commentTable">
             <div>
@@ -147,77 +150,104 @@
                             <input type="hidden"  />
                             <input type="hidden" />
 
-                            <button type="submit" class="btn btn-outline-dark">댓글작성</button>
-                            <br>
-                        </div>
-                        <br>
-                    </form>
-                </div>
--->
-<!--        답글출력        -->
-<!--parcommentno 답글을 구분-->
 
-<!--
-                <div  id="relybox">
-                    <div class="relpybox" >
-                        <i class="bi bi-arrow-90deg-up"></i>
-                        <input type="hidden" id="replyno" name="relpyno" >
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
-                            </svg>
-                            <small >유저id</small>
-                            <small > 2010-11-11 10:51:03 (ex)</small>
-                        </div>
-                        <span >답글내용</span>
-                        <span class="text-right" >
-                                 <span><button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
-                                              style="display:inline" >수정</button>
-                                 </span>
-                                <span><button type="button"  class="btn btn-outline-danger btn-sm">삭제</button></span>
-                            </span>
-                    </div>
-                    &lt;!&ndash;        답글수정          &ndash;&gt;
-                    <div class="collapse" >
-                        <form   method="post">
-                            <div class="input-group" style="width:auto">
-                                <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                                <input type="text"   class="form-control">
-                                <input type="hidden" />
-                                <input type="hidden" />
-                                <button type="submit" class="btn btn-outline-dark">댓글작성</button>
+            <!--        댓글수정          -->
+            <!--
 
-                                <br>
+                            <div class="collapse" >
+                                <form   method="post">
+                                    <div class="input-group" style="width:auto">
+                                        <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                                        <input type="text"   class="form-control" >
+                                        <input type="hidden"  />
+                                        <input type="hidden" />
+
+                                        <button type="submit" class="btn btn-outline-dark">댓글작성</button>
+                                        <br>
+                                    </div>
+                                    <br>
+                                </form>
                             </div>
-                            <br>
-                        </form>
+            -->
+            <!--        답글출력        -->
+            <!--parcommentno 답글을 구분-->
+
+            <!--
+                            <div  id="relybox">
+                                <div class="relpybox" >
+                                    <i class="bi bi-arrow-90deg-up"></i>
+                                    <input type="hidden" id="replyno" name="relpyno" >
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="25" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
+                                        </svg>
+                                        <small >유저id</small>
+                                        <small > 2010-11-11 10:51:03 (ex)</small>
+                                    </div>
+                                    <span >답글내용</span>
+                                    <span class="text-right" >
+                                             <span><button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
+                                                          style="display:inline" >수정</button>
+                                             </span>
+                                            <span><button type="button"  class="btn btn-outline-danger btn-sm">삭제</button></span>
+                                        </span>
+                                </div>
+                                &lt;!&ndash;        답글수정          &ndash;&gt;
+                                <div class="collapse" >
+                                    <form   method="post">
+                                        <div class="input-group" style="width:auto">
+                                            <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                                            <input type="text"   class="form-control">
+                                            <input type="hidden" />
+                                            <input type="hidden" />
+                                            <button type="submit" class="btn btn-outline-dark">댓글작성</button>
+
+                                            <br>
+                                        </div>
+                                        <br>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="collapse" >
+                                <form   method="post">
+                                    <div class="input-group" style="width:auto">
+                                        <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                                        <input type="text"  class="form-control" >
+                                        <input type="hidden" />
+                                        <input type="hidden" />
+                                        <button type="submit" class="btn btn-outline-dark">답글작성</button>
+                                        <br>
+                                    </div>
+                                    <br>
+                                </form>
+                            </div>
                     </div>
+                    </th:block>
+                </div>-->
+            <!--댓글작성-->
+            <div class="commentbox2">
+                <div>
+                    <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
                 </div>
-                <div class="collapse" >
-                    <form   method="post">
+                <div>
+
+                    <form  method="post">
+
                         <div class="input-group" style="width:auto">
+                            <input type="hidden" name="boardcomment_userno" >
                             <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                            <input type="text"  class="form-control" >
-                            <input type="hidden" />
-                            <input type="hidden" />
-                            <button type="submit" class="btn btn-outline-dark">답글작성</button>
+                            <input type="text"  class="form-control" id="content" name="comment"
+                                   placeholder="1자에서 100자 이내로 입력해주세요.">
+                            <div class="field-error" >
+                                오류2
+                            </div>
+                            <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
                             <br>
                         </div>
-                        <br>
                     </form>
                 </div>
-        </div>
-        </th:block>
-    </div>-->
-<!--댓글작성-->
-    <div class="commentbox2">
-        <div>
-            <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
-        </div>
-        <div>
-
-            <form  method="post">
-
+            </div>
+  
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
                     <input hidden="hidden" />
@@ -475,14 +505,70 @@
         });
 
         // 댓글 끝
+        // 좋아요 기능 시작
+                    let likeboard_userno = $('#loginUserNo').val();
+
+                    if(likeboard_userno != undefined){
+                        let likeboard_boardno = [[${boardDto.boardno}]];
+
+
+                        let likeBoardDto = {
+                            likeboard_boardno : likeboard_boardno,
+                            likeboard_userno : likeboard_userno,
+                        }
+                        // 사용자의 좋아요 값 불러오기
+                        // ajax에서 넘어온 값이 0 이면 좋아요 누르기 전 , 1 이면 좋아요 누른 것
+                        $.ajax({
+                            type : 'GET',
+                            url : '/likeCheck?likeboard_boardno='+likeboard_boardno+'&likeboard_userno='+likeboard_userno,
+                            dataType : 'json',
+                            success : function(data){
+                                // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                                let likeImg = $('#likeImg');
+                                if(data == 1){
+                                    likeImg.text("♥");
+                                } else {
+                                    likeImg.text("♡");
+                                }
+                            },
+                            error : function(){}
+                        });
+
+                        // 좋아요 버튼 클릭시 실행
+                        $('#likeBtn').on("click" , function(){
+
+                            $.ajax({
+                                type : 'POST',
+                                url : '/likeUpdate',
+                                headers : {"content-type" : "application/json"},
+                                dataType : 'json',
+                                data : JSON.stringify(likeBoardDto),
+                                success : function(map){
+                                    // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                                    let checkNum = map.checkNum;
+                                    let likeCnt = map.likeCnt;
+
+                                    let likeImg = $('#likeImg');
+                                    let like = $('#likeCnt');
+                                    if(checkNum == 1){
+                                        likeImg.text("♥");
+                                    } else {
+                                        likeImg.text("♡");
+                                    }
+                                    like.text(likeCnt);
+
+                                },
+                                error : function(){}
+                            });
+                        });
+                    }
+
+                    // 좋아요 기능 끝
 
     });
 
-
-
-
-
 </script>
 </div>
+
 </body>
 </html>
