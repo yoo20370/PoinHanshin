@@ -36,6 +36,7 @@ public interface ProtectBoardMapper {
     // 마이페이지 임보자 게시판 즐겨찾기
     List<ProtectBoardDto> selectMyprotectboard(Integer userno);
 
+    // 마이페이지 내가 쓴 임보자 게시글 불러오기
     List<ProtectBoardDto> writeMyprotectboard(Integer userno);
 
 }
