@@ -31,7 +31,7 @@ public class MyPageController {
     @GetMapping("/dismiss")
     public String dismiss(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         myPageService.dismiss(loginUser.getUserno());
-        return "redirect:/";
+        return "redirect:/logout";
     }
 
     @PostMapping("/modifyPage")

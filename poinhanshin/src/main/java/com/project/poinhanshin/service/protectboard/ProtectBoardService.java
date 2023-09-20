@@ -38,6 +38,6 @@ public interface ProtectBoardService {
     void addImgFiles(ProtectBoardDto protectBoardDto) throws IOException;
 
     //마이페이지 임보자 반환
-    List<ProtectBoardDto> selectMyprotectboard(SearchCondition sc);
+    List<ProtectBoardDto> selectMyprotectboardService(Integer userno);
 
 }

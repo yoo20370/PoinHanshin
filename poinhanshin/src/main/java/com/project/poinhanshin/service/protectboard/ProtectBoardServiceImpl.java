@@ -208,6 +208,11 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         }
     }
 
+    @Override
+    public List<ProtectBoardDto> selectMyprotectboardService(Integer userno) {
+            List<ProtectBoardDto> selectMyprotectboardService = protectBoardMapper.selectMyprotectboard(userno);
+        return selectMyprotectboardService;
+    }
 }
 
 

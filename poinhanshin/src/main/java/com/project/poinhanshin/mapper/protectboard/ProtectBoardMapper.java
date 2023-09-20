@@ -34,8 +34,8 @@ public interface ProtectBoardMapper {
     int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
     // 마이페이지 임보자 게시판 즐겨찾기
-    List<ProtectBoardDto> selectMyprotectboard(SearchCondition sc);
+    List<ProtectBoardDto> selectMyprotectboard(Integer userno);
 
-    List<ProtectBoardDto> writeMyprotectboard(SearchCondition sc);
+    List<ProtectBoardDto> writeMyprotectboard(Integer userno);
 
 }
