@@ -104,4 +104,9 @@ public class BoardMapperImpl implements BoardMapper {
     public List<BoardDto> SelectMyBoard(Integer userno) {
         return sqlSession.selectList(namespace+"SelectMyBoard", userno);
     }
+
+    @Override
+    public List<BoardDto> WriteMyBoard(Integer userno) {
+        return sqlSession.selectList(namespace+"WriteMyBoard",userno);
+    }
 }

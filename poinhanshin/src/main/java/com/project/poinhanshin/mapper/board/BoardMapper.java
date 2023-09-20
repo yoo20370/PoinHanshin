@@ -45,4 +45,7 @@ public interface BoardMapper {
 
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     List<BoardDto> SelectMyBoard(Integer userno);
+
+    // 마이페이지 - 자신이 쓴 커뮤니티 게시글 불러오기
+    List<BoardDto> WriteMyBoard(Integer userno);
 }
