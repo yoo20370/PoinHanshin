@@ -5,6 +5,7 @@ import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardFileDto;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -208,6 +209,15 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         }
     }
 
+    @Override
+    public List<ProtectBoardDto> selectMyprotectboardService(Integer userno) {
+            List<ProtectBoardDto> selectMyprotectboardService = protectBoardMapper.selectMyprotectboard(userno);
+        return selectMyprotectboardService;
+    }
+
+    @Override
+    public List<ProtectBoardDto> writeMyprotectboardService(Integer userno) {
+        List<ProtectBoardDto> writeMyprotectboardService = protectBoardMapper.writeMyprotectboard(userno);
+        return writeMyprotectboardService;
+    }
 }
-
-

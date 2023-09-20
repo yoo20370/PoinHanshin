@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 // 실종/발견신고지도
 
 public class MapBoardDto {
+    private String id; // 회원 id
     private Integer mapboard_userno;    // FK, 회원번호
     private Integer mapboardno;         // PK, 게시물내용
     private String mapboard_title;    // 게시물 제목
@@ -31,7 +32,8 @@ public class MapBoardDto {
 
     public MapBoardDto(){}
 
-    public MapBoardDto(Integer mapboard_userno, Integer mapboardno, String mapboard_title, String mapboard_content, byte[] mapboard_imagepath, Timestamp missingtime, String missingaddress, BigDecimal latitude, BigDecimal longitude, Timestamp mapboard_reg_date, Integer mapboard_viewcount, boolean mapboard_ani_category, boolean writertype) {
+    public MapBoardDto(String id, Integer mapboard_userno, Integer mapboardno, String mapboard_title, String mapboard_content, byte[] mapboard_imagepath, Timestamp missingtime, String missingaddress, BigDecimal latitude, BigDecimal longitude, Timestamp mapboard_reg_date, Integer mapboard_viewcount, boolean mapboard_ani_category, boolean writertype) {
+        this.id = id;
         this.mapboard_userno = mapboard_userno;
         this.mapboardno = mapboardno;
         this.mapboard_title = mapboard_title;
@@ -46,6 +48,4 @@ public class MapBoardDto {
         this.mapboard_ani_category = mapboard_ani_category;
         this.writertype = writertype;
     }
-
-
 }
