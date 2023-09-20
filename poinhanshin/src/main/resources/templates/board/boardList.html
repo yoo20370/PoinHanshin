@@ -167,7 +167,7 @@
                     </div>
                     <div style="vertical-align: bottom;">
                         <!-- Controller에서 따로 LoginID 전달해서 수정해야 함 , 로그인 연결 후 진행 -->
-                        <span class="info_table" th:text="| 작성자 :${boardDto.board_userno}|"> 유저id : 12312314</span>
+                        <span class="info_table" th:text="| 작성자 :${boardDto.id}|"> 유저id : 12312314</span>
                         <span class="info_table" th:text="| 조회수 :${boardDto.board_viewcount}|" > 조회수 : 42</span>
                         <span class="info_table" th:text="| 등록일 :${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}|"> 등록일 : 2019-05-14</span>
                     </div>

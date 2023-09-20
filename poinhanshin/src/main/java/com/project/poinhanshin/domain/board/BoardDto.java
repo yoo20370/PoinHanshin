@@ -16,6 +16,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class BoardDto {
+        private String id;
         private Integer board_userno;
         private Integer boardno;
         private String board_title;
@@ -26,13 +27,13 @@ public class BoardDto {
         private Integer board_viewcount;
         private Integer commentcount;
         private Integer likecount;
-
         private List<MultipartFile> boardFile = null;
         private List<String> originalFileName;
         private List<String> storedFileName;
         private Integer fileAttached;
 
-        public BoardDto(Integer board_userno, Integer boardno, String board_title, String board_content, boolean board_ani_category, Date board_reg_date, Integer board_viewcount, Integer commentcount, Integer likecount, Integer fileAttached) {
+        public BoardDto(String id, Integer board_userno, Integer boardno, String board_title, String board_content, boolean board_ani_category, Date board_reg_date, Integer board_viewcount, Integer commentcount, Integer likecount, Integer fileAttached) {
+                this.id = id;
                 this.board_userno = board_userno;
                 this.boardno = boardno;
                 this.board_title = board_title;

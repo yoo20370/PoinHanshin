@@ -9,17 +9,17 @@
         <include refid="aniCategoryChoose"/>
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
-        FROM protectboard
-        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
+        SELECT u.id, p.protectboard_userno , p.protectboardno , p.protectboard_title , p.protectboard_content , p.breeds , p.protectboard_ani_category , p.protectboard_reg_date  , p.protectstatus , p.starttime , p.deadline ,  p.fileAttached
+        FROM users u, protectboard p
+        WHERE u.userno = p.protectboard_userno AND breeds LIKE concat('%' , #{keyword} ,'%') and
         <include refid="aniCategoryChoose"/>
         ORDER BY deadline ASC , protectboardno ASC
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date  , protectstatus , starttime ,deadline ,  fileAttached
-        FROM protectboard
-        WHERE protectboardno = #{protectboardno}
+        SELECT u.id, p.protectboard_userno , p.protectboardno , p.protectboard_title , p.protectboard_content , p.breeds , p.protectboard_ani_category , p.protectboard_reg_date  , p.protectstatus , p.starttime , p.deadline ,  p.fileAttached
+        FROM users u, protectboard p
+        WHERE u.userno = p.protectboard_userno AND p.protectboardno = #{protectboardno}
     </select>
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         INSERT INTO protectboard

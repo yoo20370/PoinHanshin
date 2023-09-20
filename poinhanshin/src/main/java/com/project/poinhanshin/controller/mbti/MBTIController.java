@@ -1,8 +1,6 @@
 package com.project.poinhanshin.controller.mbti;
-
 import com.project.poinhanshin.domain.api.Abandoned_animal;
-
-import com.project.poinhanshin.domain.mbti.MBTINameKind;
+import com.project.poinhanshin.domain.mbti.MBTInameKind;
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.etc.ApiExplorer;
 import com.project.poinhanshin.mapper.mbti.MBTIMapper;
@@ -60,18 +58,15 @@ public class MBTIController {
         return "mbti/mbti_result";
     }
 
-    @GetMapping("/test")
-    public String mbtitest() {
-        System.out.println(mbtiMapper.searchAband(2));
-        return "test/likeDBTest";
+    @GetMapping("/resultPage")
+    public String resultPage(Integer point , Model m){
+        System.out.println("mbti 테스트 결과 값 "+point);
+        List<MBTInameKind> list = mbtiMapper.searchAband(point+1);
+        System.out.println(list);
+
+        m.addAttribute("AnimalDatas" , list);
+        return "/mbti/page/result-"+point;
     }
 
-    @GetMapping("/getMBTIValue")
-    @ResponseBody
-    public String getMBTIValue(Integer MBTI){
-        System.out.println("MBTI값="+MBTI);
 
-        String str = "실행됨 ";
-        return str;
-    }
 }

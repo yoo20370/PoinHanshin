@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" dir="ltr">
 <head>
-  <meta charset="utf-8">
+  <  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- sns share -->
@@ -29,27 +29,21 @@
 <section id="shareResult" class="mx-auto my-5 py-5 px-3">
   <h1>당신의 결과는?!</h1>
   <div class="resultname">
-    <p>논리적인 전략가</p>
-    <div id="hyperLinkContainer" >
-      <div th:each=" AnimalData : ${AnimalDatas}" >
-        <a th:href="@{/api/AnimalList(kind = ${AnimalData.kindCd})}" th:text="${AnimalData.animalname}"></a>
-      </div>
-    </div>
+    <p>민감한 중재자 <알래스칸 말라뮤트, 러시안블루></p>
   </div>
   <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
-    <img src="/img/mbti/image-15.png" alt="0" class="img-fluid">
+    <img src="/img/mbti/image-11.png" alt="0" class="img-fluid">
   </div>
-  <p>INTJ</p>
+  <p>INFP</p>
   <div class="resultDesc">
-    <p>논리적이고 전략적인 사고를 가진 당신! 지적 호기심과 혁신적인 아이디어를 중요하게 여기는 특징을 가지고 있습니다. 뛰어난 분석력과 조직력을 바탕으로 목표를 달성하기 위해 계획을 세우고 실행하는 능력을 지니며, 목표 달성에 대한 열정과 결단력을 보입니다. 때로는 자신의 아이디어와 목표에 대해 너무 깊이 생각하거나 완벽주의적인 경향이 있습니다. 이를 극복하고 유연성을 유지하며 다양한 시각을 수용하는 법을 고민해보세요! ',
-    </p>
-  </div>
+    <p>민감하고 중재적인 성격을 가진 당신! 감성 표현이 풍부하며 창의적인 성향으로 예술과 창작 활동을 즐깁니다. 따뜻한 마음으로 주변 사람들과 인정받는 편이며, 자유분방한 모습을 솔직하게 표현하는 능력이 있습니다. 그러나 감정에 휘둘려 결정을 내릴 때 신중하지 못할 때가 있을 수 있습니다. 논리적 판단력을 키우고 현실적인 측면을 고려하는 방법을 연구해보세요! '
+    </p></div>
   <script type="text/javascript">
     function moveHome(){
       location.href = "/MBTI/main";
     }
   </script>
-  <button type="button" class="gohome mt-3 py-2 px-3" onclick="moveHome()">나도 참여하기</button>
+  <button type="button" class="gohome mt-3 py-2 px-3" onclick="js:moveHome()">나도 참여하기</button>
 </section>
 </body>
 </html>
