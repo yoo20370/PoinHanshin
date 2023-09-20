@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>게시물 목록 보기</title>
+  <link rel="stylesheet" type="text/css" href="css/maplist.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body layout:fragment="content">
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      <!-- 드롭다운 필터 -->
+      <div class="mb-3">
+        <label class="form-label" for="animal-filter">동물 선택:</label>
+        <select class="form-select" id="animal-filter">
+          <option value="2">전체</option>
+          <option value="1">고양이</option>
+          <option value="0">강아지</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <!-- 신고자/발견자 선택 드롭다운 필터 -->
+      <div class="mb-3">
+        <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
+        <select class="form-select" id="author-filter">
+          <option value="2">전체</option>
+          <option value="0">신고자</option>
+          <option value="1">발견자</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <!-- 지역 선택 드롭다운 필터 -->
+      <label class="form-label" for="locatin-filter">지역 선택:</label>
+      <div class="mb-3 d-flex align-items-center">
+        <input type="text" id="locatin-filter" placeholder="지역">
+        <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" onclick="location.href='findmapmain.html'" data-toggle="tooltip" data-placement="top" title="지도">
+        <i class="fa-solid fa-map fa-2xl" style="color: #7605ff;"></i>
+      </button>
+      <button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
+        <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
+      </button>
+      <button class="icon-btn" onclick="location.href='findmapreg.html'" data-toggle="tooltip" data-placement="top" title="글 작성하기">
+        <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
+      </button>
+    </div>
+  </div>
+  <table>
+    <tr>
+      <th style="width: 0.5%">글 번호</th>
+      <th class="mx-3" style="width: 10%;">내용</th>
+    </tr>
+    <tr th:each="MapBoardDto: ${mapboardList}">
+      <td th:text="${mapboard.mapboardno}"></td>
+      <td>
+        <ul class="post-list">
+          <li class="post">
+            <div class="post-header">
+              <strong class="animal-type" th:text="'품종:'${mapboard.mapboard_ani_category}">품종: </strong>
+            </div>
+            <div class="post-content">
+              <div class="header-right">
+                <img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">
+                <img class="post-image" src="../../static/img/mbti/image-0.png" alt="Dog">
+              </div>
+            </div>
+            <div class="post-footer" style="display: flex; flex-direction: column">
+              <span class="writertype" th:text="'실종/발견자: ' + ${mapboard.writertype}">실종/발견자: </span>
+              <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
+              <span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingdatetime}">실종/발견 날짜 및 시간: </span>
+            </div>
+            <div class="header-right">
+              <span class="mapboard_reg_date" th:text="'작성일: ' +${mapboard.mapboard_reg_date}">작성일: </span>
+              <span class="mapboard_userno" th:text="'작성자: ' +${mapboard.mapboard_userno}">작성자: </span>
+            </div>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="d-flex justify-content-center">
+<div class="btn-group" role="group" aria-label="First group">
+  <button class="btn btn-outline-secondary">&lt;&lt;</button>
+  <button type="button" class="btn btn-primary" onclick="location.href=''">1</button>
+  <button type="button" class="btn btn-outline-secondary" onclick="location.href='/api/ShelterList?page=11&amp;pageSize=10&amp;keyword=&amp;option=&amp;ani_category=2&amp;writeType=2'">&gt;&gt;</button>
+</div>
+</div>
+<!--text="${boardDto.boardno}"-->
+<script>
+  // 게시글 클릭 이벤트 처리
+  const postListItems = document.querySelectorAll('.post');
+
+  postListItems.forEach((post) => {
+    post.addEventListener('click', () => {
+      const postId = post.getAttribute('data-post-id'); // 게시글의 고유 ID를 얻어옵니다.
+      const detailPageUrl = `/detail-page?id=${postId}`; // 상세 페이지 URL을 생성합니다.
+
+      // 생성한 URL로 이동
+      window.location.href = detailPageUrl;
+    });
+  });
+</script>
+<script>
+  let posts = [
+    {
+      mapboard_ani_category :'강아지' ,
+      time: '2023-09-03',
+      photo: '강아지사진.jpg',
+      content: '이 강아지를 발견했습니다.',
+      location: '서울',
+      author_category: '발견자'
+    },
+    {
+      animal_type: '고양이',
+      time: '2023-09-02',
+      photo: '고양이사진.jpg',
+      content: '이 고양이를 찾습니다.',
+      location: '부산',
+      author_category: '신고자'
+    },
+    // 다른 게시물 정보 추가
+  ];
+  // JavaScript로 동적으로 게시물 생성
+  const postList = document.querySelector('.post-list');
+  for (const post of posts) {
+    const li = document.createElement('li');
+    li.classList.add('post');
+
+    const postHeader = document.createElement('div');
+    postHeader.classList.add('post-header');
+    postHeader.innerHTML = `<strong class="animal-type">${post.mapboard_ani_category }</strong><span class="time">${post.time}</span>`;
+
+    const postContent = document.createElement('div');
+    postContent.classList.add('post-content');
+    postContent.innerHTML = `<img src="${post.photo}" alt="${post.mapboard_ani_category }" class="post-image"><p>${post.content}</p>`;
+
+    const postFooter = document.createElement('div');
+    postFooter.classList.add('post-footer');
+    postFooter.innerHTML = `<span class="location">${post.location}</span><span class="mapboard_userno">${post.author_category}</span>`;
+
+    li.appendChild(postHeader);
+    li.appendChild(postContent);
+    li.appendChild(postFooter);
+
+    postList.appendChild(li);
+  }
+
+  let posts = [
+    // 게시물 정보
+  ];
+
+  // JavaScript로 동적으로 게시물 생성
+  const postList = document.querySelector('.post-list');
+  const animalFilter = document.getElementById('animal-filter');
+  const authorFilter = document.getElementById('author-filter');
+
+  // 드롭다운 필터 변경 이벤트 처리
+  animalFilter.addEventListener('change', filterPosts);
+  authorFilter.addEventListener('change', filterPosts);
+
+  // 게시물 필터링 함수
+  function filterPosts() {
+    const selectedAnimal = animalFilter.value;
+    const selectedAuthor = authorFilter.value;
+
+    // 게시물 목록 초기화
+    postList.innerHTML = '';
+
+    // 선택한 동물과 신고자/발견자에 따라 게시물 생성
+    for (const post of posts) {
+      if (
+              (selectedAnimal === 'all' || selectedAnimal === post.mapboard_ani_category) &&
+              (selectedAuthor === 'all' || selectedAuthor === post.author_category)
+      ) {
+        const li = document.createElement('li');
+        li.classList.add('post');
+
+        // 게시물 내용 생성 코드
+
+        postList.appendChild(li);
+      }
+    }
+  }
+
+  // 초기에 전체 게시물 목록 생성
+  for (const post of posts) {
+    const li = document.createElement('li');
+    li.classList.add('post');
+
+    // 게시물 내용 생성 코드
+
+    postList.appendChild(li);
+  }
+
+  //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+  function map_Postcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+        document.getElementById('locatin-filter').value = data.bname;
+        // 커서를 상세주소 필드로 이동한다.
+        document.getElementById("locatin-filter").focus();
+      }
+    }).open();}
+  }
+</script>
+</body>
+</html>

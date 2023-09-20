@@ -41,10 +41,10 @@
     </div>
     <div class="col-md-2">
       <!-- 지역 선택 드롭다운 필터 -->
-      <div class="mb-3">
-        <label class="form-label" for="locatin-filter">지역 선택:</label>
-        <input type="text" id="locatin-filter" placeholder="지역">
-        <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+      <label class="form-label" for="locatin-filter">지역 선택:</label>
+      <div class="mb-3 d-flex align-items-center">
+        <input type="text" class="form-control" style="width: 300px;" id="locatin-filter" placeholder="지역">
+        <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
       </div>
     </div>
     <div class="header-right">
@@ -82,99 +82,15 @@
     </li>
   </ul>
 </div>
+<div class="d-flex justify-content-center">
+<div class="btn-group" role="group" aria-label="First group">
+  <button class="btn btn-outline-secondary">&lt;&lt;</button>
+  <button type="button" class="btn btn-primary" onclick="location.href=''">1</button>
+  <button type="button" class="btn btn-outline-secondary" onclick="location.href='/api/ShelterList?page=11&amp;pageSize=10&amp;keyword=&amp;option=&amp;ani_category=2&amp;writeType=2'">&gt;&gt;</button>
+</div>
+</div>
 <!--text="${boardDto.boardno}"-->
 <script>
-  let posts = [
-    {
-      mapboard_ani_category :'강아지' ,
-      time: '2023-09-03',
-      photo: '강아지사진.jpg',
-      content: '이 강아지를 발견했습니다.',
-      location: '서울',
-      author_category: '발견자'
-    },
-    {
-      animal_type: '고양이',
-      time: '2023-09-02',
-      photo: '고양이사진.jpg',
-      content: '이 고양이를 찾습니다.',
-      location: '부산',
-      author_category: '신고자'
-    },
-    // 다른 게시물 정보 추가
-  ];
-  // JavaScript로 동적으로 게시물 생성
-  const postList = document.querySelector('.post-list');
-  for (const post of posts) {
-    const li = document.createElement('li');
-    li.classList.add('post');
-
-    const postHeader = document.createElement('div');
-    postHeader.classList.add('post-header');
-    postHeader.innerHTML = `<strong class="animal-type">${post.mapboard_ani_category }</strong><span class="time">${post.time}</span>`;
-
-    const postContent = document.createElement('div');
-    postContent.classList.add('post-content');
-    postContent.innerHTML = `<img src="${post.photo}" alt="${post.mapboard_ani_category }" class="post-image"><p>${post.content}</p>`;
-
-    const postFooter = document.createElement('div');
-    postFooter.classList.add('post-footer');
-    postFooter.innerHTML = `<span class="location">${post.location}</span><span class="mapboard_userno">${post.author_category}</span>`;
-
-    li.appendChild(postHeader);
-    li.appendChild(postContent);
-    li.appendChild(postFooter);
-
-    postList.appendChild(li);
-  }
-
-  let posts = [
-    // 게시물 정보
-  ];
-
-  // JavaScript로 동적으로 게시물 생성
-  const postList = document.querySelector('.post-list');
-  const animalFilter = document.getElementById('animal-filter');
-  const authorFilter = document.getElementById('author-filter');
-
-  // 드롭다운 필터 변경 이벤트 처리
-  animalFilter.addEventListener('change', filterPosts);
-  authorFilter.addEventListener('change', filterPosts);
-
-  // 게시물 필터링 함수
-  function filterPosts() {
-    const selectedAnimal = animalFilter.value;
-    const selectedAuthor = authorFilter.value;
-
-    // 게시물 목록 초기화
-    postList.innerHTML = '';
-
-    // 선택한 동물과 신고자/발견자에 따라 게시물 생성
-    for (const post of posts) {
-      if (
-              (selectedAnimal === 'all' || selectedAnimal === post.mapboard_ani_category) &&
-              (selectedAuthor === 'all' || selectedAuthor === post.author_category)
-      ) {
-        const li = document.createElement('li');
-        li.classList.add('post');
-
-        // 게시물 내용 생성 코드
-
-        postList.appendChild(li);
-      }
-    }
-  }
-
-  // 초기에 전체 게시물 목록 생성
-  for (const post of posts) {
-    const li = document.createElement('li');
-    li.classList.add('post');
-
-    // 게시물 내용 생성 코드
-
-    postList.appendChild(li);
-  }
-
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
     new daum.Postcode({
