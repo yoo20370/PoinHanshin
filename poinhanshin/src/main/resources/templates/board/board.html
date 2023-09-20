@@ -35,8 +35,6 @@
 </style>
 <body layout:fragment="content">
 <div class="page">
-<span class="fs-6">태그</span>
-
 <!--    고양이=1(true), 강아지=0(false)-->
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
@@ -54,18 +52,23 @@
     </div>
 
     <!-- 이미지 파일 존재 여부에 따라 이미지 표시 -->
-    <div th:if="${boardDto.fileAttached == 1}">
+    <!-- <div th:if="${boardDto.fileAttached == 1}">
         <span th:each="fileName: ${boardDto.storedFileName}">
                 <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
                 <input type="hidden" name="storedFileName" th:value="${fileName}"/>
             </span>
-    </div>
+    </div> -->
     <!-- 내용 -->
     <div class="row">
         <div class="col-mb-3">
             <!--  이미지     -->
             <div class="col-sm-6" >
-                <img  class="img-fluid" alt="빈이미지" >
+                <div th:if="${boardDto.fileAttached == 1}">
+                    <span th:each="fileName: ${boardDto.storedFileName}">
+                            <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
+                            <input type="hidden" name="storedFileName" th:value="${fileName}"/>
+                        </span>
+                </div>
             </div>
             <textarea
                     type="text"
@@ -89,14 +92,33 @@
 
 <!--댓글출력-->
 <!--${commentList} 댓글리스트-->
-    <div id="hiddenArea" style="display:none">
-        <div id="replyCmtContainer" style="display:none">
-            <input type="text" name="replyComment" />
-            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>
+<!--    <div id="hiddenArea" style="display:none">-->
+<!--        <div id="replyCmtContainer" style="display:none">-->
+<!--            <input type="text" name="replyComment" />-->
+<!--            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div style="width:auto;display:none" id="hiddenArea">
+            <div id="replyCmtContainer" style="display:none" class="row">
+                <div class="input-group col-sm-12">
+                    <input type="hidden" name="boardcomment_userno" >
+                    <input hidden="hidden" />
+                    <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                    <input type="text"  class="form-control" name="replyComment"
+                           placeholder="1자에서 100자 이내로 입력해주세요.">
+                    <button type="button" id="replyBtn" class="btn btn-outline-dark">작성</button>
+                    <br>
+                </div>
         </div>
     </div>
 
-    <div id="commentTable">
+
+
+
+
+
+    <div class="container" id="commentTable">
             <div>
                 <div class="commentbox row" id="commentArea">
                    <!-- <div>
@@ -112,7 +134,8 @@
                         <button type="button"   class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button>
                     </div>-->
                 </div>
-
+            </div>
+    </div>                   
 <!--        댓글수정          -->
 <!--
 
@@ -192,14 +215,6 @@
             <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
         </div>
         <div>
-            <div class="row">
-                <div class="col-sm-9"> 왼쪽</div>
-
-                    <div class="col-sm-3">
-                    오른
-                    </div>
-            </div>
-
 
             <form  method="post">
 
@@ -215,7 +230,8 @@
             </form>
         </div>
     </div>
-
+    <div class="fa-solid fa-user">테스트</div>
+                <i class="fas fa-user"></i>
     <!-- 버튼 -->
     <button type="button" class="btn btn-secondary"
             th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
@@ -226,7 +242,7 @@
     <form id="removeForm" th:action="@{/board/remove(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}" method="post">
         <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
     </form>
-
+</div>
 <script th:inline="javascript">
 
 
@@ -291,20 +307,28 @@
                     list.forEach(function(comment){
                         console.log(comment);
                         var commentWrapper = document.createElement('div');
-                        commentWrapper.setAttribute('class','card');
+                        commentWrapper.setAttribute('class','card rounded-0');
                         var relpybox = document.createElement('div');
-            relpybox.setAttribute('class','row');
+            relpybox.setAttribute('class','row p-2');
             relpybox.setAttribute('data-commentno',comment.commentno);
             relpybox.setAttribute('data-parcommentno',comment.parcommentno);
             //댓글 컨텐츠 박스
             var contentCol= document.createElement('div');
-            contentCol.setAttribute('class','col-sm-10');
+            contentCol.setAttribute('class','col-sm-9');
+            //작성자
             var writer= document.createElement('div');
-            writer.textContent ='작성자 : '+comment.boardcomment_userno;
+            writer.setAttribute('class','fas fa-user');
+            writer.setAttribute('style','filter: opacity(0.5) drop-shadow(0 0 0 #6F61C0);color:black;')            
+            writer.textContent = '  '+comment.boardcomment_userno;
+            //내용
             var comments= document.createElement('div');
-            comments.textContent ='내용 : '+comment.comment;
+            comments.textContent = comment.comment;
+            //작성일
             var writeDate= document.createElement('div');
             writeDate.textContent ='작성일 : '+ toTime(comment.boardcomment_reg_date);
+            writeDate.setAttribute('style', 'font-size: smaller;color:gray' );
+            writeDate.setAttribute('class', 'float-end');
+            //돔구성
             contentCol.appendChild(writer);
             contentCol.appendChild(comments);
             contentCol.appendChild(writeDate);
@@ -327,11 +351,12 @@
             Rbutton.setAttribute('class','btn btn-outline');
             Rbutton.textContent = '삭제';
             buttonCol.appendChild(Rbutton);
-
+            //대댓글 부분
             if(comment.commentno != comment.parcommentno){
+                buttonCol.removeChild(Wbutton);
                 var spacer =document.createElement('div');
                     spacer.setAttribute('class','col-sm-1');
-                    contentCol.setAttribute('class','col-sm-9');
+                    contentCol.setAttribute('class','col-sm-8');
                     relpybox.appendChild(spacer);
             }
         
@@ -373,7 +398,6 @@
                 data : JSON.stringify(commentDto),
                 success:function(str){
                    console.log(str)
-                  
                     $('input[name=comment]').val("");
                 },
                 error:function(){},
@@ -409,7 +433,7 @@
 
         // 대댓글 버튼 클릭
         $(document).on("click" , "button[name=writeCmtBtn]", function(){
-            $('#replyCmtContainer').appendTo($(this).parent());
+            $('#replyCmtContainer').appendTo($(this).parent().parent());
             $('#replyCmtContainer').css("display","block");
         });
 
@@ -417,7 +441,7 @@
         $('#replyBtn').on("click" , function(){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
             let comment = $('input[name=replyComment]') .val();
-            let commentno = $('#replyCmtContainer').parent().parent().attr("data-commentno");
+            let commentno = $('#replyCmtContainer').parent().data("commentno");
             let boardcomment_boardno = [[${boardDto.boardno}]];
             let parcommentno = commentno;
 
