@@ -22,7 +22,7 @@ public class MBTIServiceImpl implements MBTIService{
     // 테스트 결과값에 대응되는 MBTI 데이터를 불러온다.
     @Override
     public List<MBTInameKind> serviceSearchAband(Integer MBTI) {
-        List<MBTInameKind> mbtInameKindList =  mbtiMapper.searchAband(MBTI+1);
+        List<MBTInameKind> mbtInameKindList =  mbtiMapper.searchAband(MBTI);
         return mbtInameKindList;
     }
 }

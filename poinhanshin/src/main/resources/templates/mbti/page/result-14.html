@@ -29,7 +29,12 @@
 <section id="shareResult" class="mx-auto my-5 py-5 px-3">
   <h1>당신의 결과는?!</h1>
   <div class="resultname">
-    <p>자유로운 영혼 <코카 스패니얼, 브리티시 숏헤어></p>
+    <p>자유로운 영혼</p>
+    <div id="hyperLinkContainer" >
+      <div th:each=" AnimalData : ${AnimalDatas}" >
+        <a th:href="@{/api/AnimalList(kind = ${AnimalData.kindCd})}" th:text="${AnimalData.animalname}"></a>
+      </div>
+    </div>
   </div>
   <div id="resultImg" class="my-3 col-lg-6 col-md-8 col-sm-10 col-12 mx-auto">
     <img src="/img/mbti/image-14.png" alt="0" class="img-fluid">

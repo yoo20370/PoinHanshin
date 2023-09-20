@@ -34,12 +34,12 @@ public class ApiController {
 
     @GetMapping("/AnimalList")
     public String AnimalList(SearchCondition sc , String kind , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
-
+        System.out.println("실행 됨" + sc + " " + kind);
         m.addAttribute("loginUser", loginUser);
 
         if(sc.getPage() == null) sc.setPage(1);
+        if(kind == null) kind ="";
         // 품종 검색을 위한 삼항연산자
-        kind = (kind != null)  ? apiService.searchKind(kind) : "";
         Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","",kind,"","","","","",sc.getPage().toString(),"8");
 
         int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());

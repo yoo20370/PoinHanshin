@@ -2,6 +2,7 @@ package com.project.poinhanshin.controller.mbti;
 
 import com.project.poinhanshin.domain.api.Abandoned_animal;
 
+import com.project.poinhanshin.domain.mbti.MBTInameKind;
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.etc.ApiExplorer;
 import com.project.poinhanshin.mapper.mbti.MBTIMapper;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/MBTI")
@@ -58,10 +60,10 @@ public class MBTIController {
     @GetMapping("/resultPage")
     public String resultPage(Integer point , Model m){
         System.out.println("mbti 테스트 결과 값 "+point);
-        System.out.println(mbtiMapper.searchAband(point));
-        //System.out.println(mbtiMapper.searchAband(point).get(0));
+        List<MBTInameKind> list = mbtiMapper.searchAband(point+1);
+        System.out.println(list);
 
-        m.addAttribute("AnimalDatas" , "");
+        m.addAttribute("AnimalDatas" , list);
         return "/mbti/page/result-"+point;
     }
 
