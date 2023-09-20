@@ -111,6 +111,7 @@ public class BoardController {
                                               @RequestParam(required = false) List<MultipartFile> boardFile) throws IOException {
         BoardDto boardDto = new BoardDto(id, board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
 
+        boardDto.setId("1");
         boardDto.setBoardFile(boardFile);
         // 파일이 있는 경우
         if(boardFile != null){
