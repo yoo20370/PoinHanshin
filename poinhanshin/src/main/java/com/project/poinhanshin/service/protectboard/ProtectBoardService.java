@@ -40,4 +40,7 @@ public interface ProtectBoardService {
     //마이페이지 임보자 반환
     List<ProtectBoardDto> selectMyprotectboardService(Integer userno);
 
+    //내가 쓴 글 가져오기
+    List<ProtectBoardDto> writeMyprotectboardService(Integer userno);
+
 }
