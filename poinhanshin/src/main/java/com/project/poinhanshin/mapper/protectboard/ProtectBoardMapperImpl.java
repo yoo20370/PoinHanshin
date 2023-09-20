@@ -87,4 +87,10 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
         return sqlSession.selectList(namespace+"selectMyprotectboard", sc);
     }
 
+    //자신이 쓴 임보자 게시판 불러오기
+    @Override
+    public List<ProtectBoardDto> writeMyprotectboard(SearchCondition sc) {
+        return sqlSession.selectList(namespace+"writeMyprotectboard", sc);
+    }
+
 }

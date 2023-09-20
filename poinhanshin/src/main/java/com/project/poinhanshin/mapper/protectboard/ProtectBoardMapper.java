@@ -35,4 +35,7 @@ public interface ProtectBoardMapper {
 
     // 마이페이지 임보자 게시판 즐겨찾기
     List<ProtectBoardDto> selectMyprotectboard(SearchCondition sc);
+
+    List<ProtectBoardDto> writeMyprotectboard(SearchCondition sc);
+
 }
