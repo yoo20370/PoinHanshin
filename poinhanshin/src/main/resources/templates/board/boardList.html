@@ -112,16 +112,19 @@
         </tbody>
     </table>
 </div>
-<span th:if="${totalCnt == 0}">게시물이 없습니다.</span>
-<div class="btn-toolbar position-absolute top-100 start-50 translate-middle" role="toolbar" aria-label="Toolbar with button groups">
-    <div class="btn-group me-2" role="group" aria-label="First group">
-        <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}"><<</button>
-        <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-            <button type="button" class="btn btn-secondary" th:href="@{'/board/list'+${ph.sc.getQueryString(i)}}" th:text="${i}"></button>
-        </th:block>
-        <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:href="@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}">>></button>
+
+    <div class="ph-wrapper">
+        <span th:if="${totalCnt == 0}">게시물이 없습니다.</span>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group m-auto btn-group-sm" role="group" aria-label="First group">
+                <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
+                <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+                    <button type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+                </th:block>
+                <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
+            </div>
+        </div>
     </div>
-</div>
 
 <script th:inline="javascript">
     $('#searchBtn').on("click",function(){

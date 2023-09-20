@@ -89,8 +89,8 @@
 
 <!--댓글출력-->
 <!--${commentList} 댓글리스트-->
-    <div id="hiddenArea" style="">
-        <div id="replyCmtContainer" style="">
+    <div id="hiddenArea" style="display:none">
+        <div id="replyCmtContainer" style="display:none">
             <input type="text" name="replyComment" />
             <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>
         </div>
@@ -260,6 +260,7 @@
                 tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
                 tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
                 tmp += '<span> 내용 :  ' + comment.comment+' | </span>';
+
                 tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
                 tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
                 tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
@@ -288,8 +289,10 @@
         // 댓글 등록 버튼 ( 대댓글 X )
         $('#insertCommentBtn').on("click" ,function(){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+
             let comment = $('input[name=comment]').val();
             let boardcomment_boardno = [[${boardDto.boardno}]];
+
             if(comment.trim() == ''){
                 alert("댓글을 입력해주세요.");
                 return;
@@ -374,11 +377,8 @@
 
 
 
-    /*<![CDATA[*/
 
 
-
-/*]]>*/
 </script>
 </div>
 </body>
