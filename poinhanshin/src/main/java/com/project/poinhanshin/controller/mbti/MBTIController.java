@@ -55,9 +55,19 @@ public class MBTIController {
         return "mbti/mbti_result";
     }
 
-    @GetMapping("/test")
+    @GetMapping("/resultPage")
+    public String resultPage(Integer point , Model m){
+        System.out.println("mbti 테스트 결과 값 "+point);
+        System.out.println(mbtiMapper.searchAband(point));
+        //System.out.println(mbtiMapper.searchAband(point).get(0));
+
+        m.addAttribute("AnimalDatas" , "");
+        return "/mbti/page/result-"+point;
+    }
+
+    /*@GetMapping("/test")
     public String mbtitest() {
         System.out.println(mbtiMapper.searchAband(2));
         return "test/likeDBTest";
-    }
+    }*/
 }

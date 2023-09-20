@@ -17,14 +17,15 @@
 
     function setResult() {
         let point = calResult();
-        let resultPage;
+        //let resultPage;
 
-        switch (point) {
+        location.href = "/MBTI/resultPage?point="+point;
+        /*switch (point) {
             case 0:
                 location.href = "/img/mbti/page/result-0.html";
                 break;
             case 1:
-                location.href = "/img/mbti/page/result-1.html";
+                location.href = "/MBTI/resultPage?point="+point;
                 break;
             case 2:
                 location.href = "/img/mbti/page/result-2.html";
@@ -68,7 +69,7 @@
             case 15:
                 location.href = "/img/mbti/page/result-15.html";
                 break;
-        }
+        }*/
         // 결과 페이지로 이동하는 링크 생성
         const resultLink = document.createElement('a');
         resultLink.href = resultPage;
