@@ -112,11 +112,11 @@ public class ProtectBoardController {
     // 임보자 게시물 및 이미지 등록
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> protectBoardWrite(@RequestParam(required = false) Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> protectBoardWrite(@RequestParam(required = false) String protectboard_id , @RequestParam(required = false) Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                                                      @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                                                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached
     ) throws IOException {
-        ProtectBoardDto protectboardDto = new ProtectBoardDto(protectboard_userno , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+        ProtectBoardDto protectboardDto = new ProtectBoardDto(protectboard_id, protectboard_userno , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectboardDto.setProtectboardFile(protectboardFile);
         // 첨부 파일이 있는 경우 fileAttached 값을 변경해준다.
         if(protectboardDto.getProtectboardFile() != null){
@@ -160,10 +160,10 @@ public class ProtectBoardController {
     // 임보자 게시물 수정
     @PostMapping("/modify")
     @ResponseBody
-    public ResponseEntity<Integer> protectBoardModify(@RequestParam Integer protectboard_userno ,@RequestParam Integer protectboardno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> protectBoardModify(@RequestParam(required = false) String protectboard_id , @RequestParam Integer protectboard_userno , @RequestParam Integer protectboardno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                                                       @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                                                       @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached) throws IOException {
-        ProtectBoardDto protectBoardDto = new ProtectBoardDto(protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+        ProtectBoardDto protectBoardDto = new ProtectBoardDto(protectboard_id, protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectBoardDto.setProtectboardFile(protectboardFile);
 
         // 로그인 연결 시 수정 필요 
