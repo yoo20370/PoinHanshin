@@ -33,4 +33,6 @@ public interface ProtectBoardMapper {
     // 게시물의 파일 여부 값을 수정한다.
     int updateFileAttached(Integer protectboardno , Integer fileAttached);
 
+    // 마이페이지 임보자 게시판 즐겨찾기
+    List<ProtectBoardDto> selectMyprotectboard(SearchCondition sc);
 }
