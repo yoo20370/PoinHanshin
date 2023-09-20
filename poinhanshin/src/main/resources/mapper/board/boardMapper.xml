@@ -9,7 +9,7 @@
         and <include refid="aniCategoryChoose"/>
     </select>
     <select id="boardSearchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.board.BoardDto">
-        SELECT board_userno , boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
+        SELECT board_userno, boardno , board_title , board_content , board_ani_category , board_reg_date , board_viewcount , commentcount ,likecount ,fileAttached
         FROM board
         WHERE board_title LIKE concat('%' , #{keyword} ,'%')
         and <include refid="aniCategoryChoose"/>
