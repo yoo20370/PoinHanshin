@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body layout:fragment="content">
 <div class="container">
@@ -59,31 +60,11 @@
 
   <!-- 지역 선택 드롭다운 필터 -->
   <div class="filter-container">
-    <label for="locatin-filter">지역 선택:</label>
-    <select id="locatin-filter">
-      <option value="all">전체</option>
-      <optgroup label="서울">
-        <option value="서울">서울시 전체</option>
-        <option value="강남구">강남구</option>
-        <option value="서초구">서초구</option>
-        <option value="송파구">송파구</option>
-        <option value="강동구">강동구</option>
-      </optgroup>
-      <optgroup label="인천">
-        <option value="인천">인천시 전체</option>
-        <option value="중구">중구</option>
-        <option value="동구">동구</option>
-        <option value="남구">남구</option>
-        <option value="북구">북구</option>
-      </optgroup>
-      <optgroup label="부산">
-        <option value="부산">부산시 전체</option>
-        <option value="해운대구">해운대구</option>
-        <option value="수영구">수영구</option>
-        <option value="사하구">사하구</option>
-        <option value="강서구">강서구</option>
-      </optgroup>
-    </select>
+    <div class="mb-3">
+      <label class="form-label" for="locatin-filter">지역 선택:</label>
+      <input type="text" id="locatin-filter" placeholder="지역">
+      <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+    </div>
   </div>
 </div>
   <div class="favorites-container">
@@ -129,5 +110,18 @@
 </div>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script src="../map/js/map.js"></script>
+<script>
+  //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+  function map_Postcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+        document.getElementById('locatin-filter').value = data.bname;
+        // 커서를 상세주소 필드로 이동한다.
+        document.getElementById("locatin-filter").focus();
+      }
+    }).open();}
+</script>
 </body>
 </html>
