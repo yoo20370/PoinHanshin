@@ -98,7 +98,7 @@
 
     <div id="commentTable">
             <div>
-                <div class="commentbox" id="commentArea">
+                <div class="commentbox row" id="commentArea">
                    <!-- <div>
                         <small >유저id</small>
                         <small > 2010-11-11 10:51:03 (ex)</small>
@@ -193,9 +193,9 @@
         </div>
         <div>
             <div class="row">
-                <div class="col-sm-8"> 왼쪽</div>
+                <div class="col-sm-9"> 왼쪽</div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                     오른
                     </div>
             </div>
@@ -259,25 +259,27 @@
         }
 
         // 게시물 댓글 HTML 작성
-        let toHtml = function(comments){
-            let tmp = '';
-            comments.forEach(function(comment){
-                tmp += '<div data-commentno=' + comment.commentno;
-                /*tmp +=' data-boardcomment_boardno='+ comment.boardcomment_boardno;*/
-                tmp +=' data-parcommentno='+ comment.parcommentno + '>';
-                tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
-                tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
-                tmp += '<span> 내용 :  ' + comment.comment+' | </span>';
+        let toHtml = function(list){
+            list.forEach(function(comment){
+            //     tmp += '<div data-commentno=' + comment.commentno;
+            //     /*tmp +=' data-boardcomment_boardno='+ comment.boardcomment_boardno;*/
+            //     tmp +=' data-parcommentno='+ comment.parcommentno + '>';
 
-                tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
-                tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
-                tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
-                tmp += 'class="btn btn-outline-danger btn-sm" >삭제</button>';
-                tmp += '</div>';
+            //     tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
+            //     tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
+            //     tmp += '<div> 내용 :  ' + comment.comment+' | </div>';
+
+            //     tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
+            //     tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
+            //     tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
+            //     tmp += 'class="btn btn-outline-danger btn-sm" >삭제</button>';
+            //     tmp += '</div>';
+            // })
+            // return tmp;
+            //전체 박스
             })
-            return tmp;
         }
-
+        
         // 게시물 댓글을 가져와서 화면에 출력
         let showList = function(boardcomment_boardno){
             $.ajax({
@@ -285,8 +287,53 @@
                 url : '/comments?boardcomment_boardno='+boardcomment_boardno,
                 dataType : 'json',
                 success:function(list){
-                    console.log(list);
-                    $('#commentArea').html(toHtml(list));
+                    list.forEach(function(comment){
+                        console.log(comment);
+                        var commentWrapper = document.createElement('div');
+                        commentWrapper.setAttribute('class','card');
+                        var relpybox = document.createElement('div');
+            relpybox.setAttribute('class','row');
+            relpybox.setAttribute('data-commentno',comment.commentno);
+            relpybox.setAttribute('data-parcommentno',comment.parcommentno);
+            //댓글 컨텐츠 박스
+            var contentCol= document.createElement('div');
+            contentCol.setAttribute('class','col-sm-9');
+            var writer= document.createElement('div');
+            writer.textContent ='작성자 : '+comment.boardcomment_userno;
+            var comments= document.createElement('div');
+            comments.textContent ='내용 : '+comment.comment;
+            var writeDate= document.createElement('div');
+            writeDate.textContent ='작성일 : '+ toTime(comment.boardcomment_reg_date);
+            contentCol.appendChild(writer);
+            contentCol.appendChild(comments);
+            contentCol.appendChild(writeDate);
+            //버튼공간
+            var buttonCol= document.createElement('div');
+            buttonCol.setAttribute('class','col-sm-3');
+            
+            //버튼
+            var Wbutton= document.createElement('button');
+            Wbutton.setAttribute('name','writeCmtBtn');
+            Wbutton.setAttribute('id','writeCommentBtn'+comment.commentno);
+            Wbutton.setAttribute('data-bs-toggle','collapse');
+            Wbutton.setAttribute('class','btn btn-outline-dark');
+            Wbutton.textContent = '답글';
+            buttonCol.appendChild(Wbutton);
+            var Rbutton= document.createElement('button');
+            Rbutton.setAttribute('name','removeCmtBtn');
+            Rbutton.setAttribute('id','removeCommentBtn'+ comment.commentno);
+            Rbutton.setAttribute('data-bs-toggle','collapse');
+            Rbutton.setAttribute('class','btn btn-outline-dark');
+            Rbutton.textContent = '삭제';
+            buttonCol.appendChild(Rbutton);
+        
+            relpybox.appendChild(contentCol);
+            relpybox.appendChild(buttonCol);
+            commentWrapper.appendChild(relpybox);
+            document.querySelector('#commentArea').appendChild(commentWrapper);
+                    })
+                    
+                   // $('#commentArea').append(toHtml(list));
                 }
             })
         }
@@ -327,11 +374,13 @@
         // 삭제 버튼 클릭
         $(document).on("click", "button[name=removeCmtBtn]" ,function(){
             if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
-            let commentno = $(this).parent().attr("data-commentno");
+
+            let commentno = $(this).parent().parent().data("commentno");
+                console.log(commentno);
 
             $.ajax({
                 type : 'DELETE',
-                url : '/comments/'+commentno+"?boardcomment_boardno="+[[${boardDto.boardno}]],
+                url : '/comments/'+commentno+'?boardcomment_boardno='+[[${boardDto.boardno}]],
                 success : function(str){
                     console.log(str)
                     showList([[${boardDto.boardno}]]);
