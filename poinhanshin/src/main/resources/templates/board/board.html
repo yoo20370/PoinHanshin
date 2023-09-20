@@ -38,10 +38,12 @@
 <div class="page">
     <span class="fs-6">태그</span>
 
+
+
     <!--    고양이=1(true), 강아지=0(false)-->
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
-
+    <input type="hidden" th:if="${loginUser != null}" th:value="${loginUser.userno}" id="loginUserNo"/>
     <!-- 제목 -->
     <div class="row">
         <div class="form-floating">
@@ -85,7 +87,15 @@
         <span th:text="|작성일 : ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')} |" >작성일:</span>
         <span th:text="|조회수 : ${boardDto.board_viewcount}|" >조회수:</span>
         <span th:text="|작성자 : ${boardDto.id}|" >작성자:</span>
+
     </div>
+    <div id="likeContainer">
+        <p>좋아요 수 : <span id="likeCnt" th:text="${boardDto.likecount}"></span></p>
+
+        <span id="likeImg"></span>
+    </div>
+    <button th:if="${loginUser != null }" type="button" id="likeBtn">좋아요 버튼</button>
+
 
 
     <!--댓글출력-->
@@ -374,14 +384,67 @@
 
                     // 댓글 끝
 
+                    // 좋아요 기능 시작
+                    let likeboard_userno = $('#loginUserNo').val();
+
+                    if(likeboard_userno != undefined){
+                        let likeboard_boardno = [[${boardDto.boardno}]];
+
+
+                        let likeBoardDto = {
+                            likeboard_boardno : likeboard_boardno,
+                            likeboard_userno : likeboard_userno,
+                        }
+                        // 사용자의 좋아요 값 불러오기
+                        // ajax에서 넘어온 값이 0 이면 좋아요 누르기 전 , 1 이면 좋아요 누른 것
+                        $.ajax({
+                            type : 'GET',
+                            url : '/likeCheck?likeboard_boardno='+likeboard_boardno+'&likeboard_userno='+likeboard_userno,
+                            dataType : 'json',
+                            success : function(data){
+                                // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                                let likeImg = $('#likeImg');
+                                if(data == 1){
+                                    likeImg.text("♥");
+                                } else {
+                                    likeImg.text("♡");
+                                }
+                            },
+                            error : function(){}
+                        });
+
+                        // 좋아요 버튼 클릭시 실행
+                        $('#likeBtn').on("click" , function(){
+
+                            $.ajax({
+                                type : 'POST',
+                                url : '/likeUpdate',
+                                headers : {"content-type" : "application/json"},
+                                dataType : 'json',
+                                data : JSON.stringify(likeBoardDto),
+                                success : function(map){
+                                    // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                                    let checkNum = map.checkNum;
+                                    let likeCnt = map.likeCnt;
+
+                                    let likeImg = $('#likeImg');
+                                    let like = $('#likeCnt');
+                                    if(checkNum == 1){
+                                        likeImg.text("♥");
+                                    } else {
+                                        likeImg.text("♡");
+                                    }
+                                    like.text(likeCnt);
+
+                                },
+                                error : function(){}
+                            });
+                        });
+                    }
+
+                    // 좋아요 기능 끝
                 });
-
-
-
                 /*<![CDATA[*/
-
-
-
                 /*]]>*/
             </script>
         </div>
