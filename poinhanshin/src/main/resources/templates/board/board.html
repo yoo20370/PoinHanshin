@@ -136,6 +136,7 @@
                         </button>
                         <button type="button"   class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button>
                     </div>-->
+
                 </div>
             </div>
     </div>                   
@@ -232,22 +233,6 @@
                 <div>
 
                     <form  method="post">
-
-                        <div class="input-group" style="width:auto">
-                            <input type="hidden" name="boardcomment_userno" >
-                            <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                            <input type="text"  class="form-control" id="content" name="comment"
-                                   placeholder="1자에서 100자 이내로 입력해주세요.">
-                            <div class="field-error" >
-                                오류2
-                            </div>
-                            <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
-                            <br>
-                        </div>
-                    </form>
-                </div>
-            </div>
-  
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
                     <input hidden="hidden" />
@@ -388,7 +373,7 @@
                     spacer.setAttribute('class','col-sm-1');
                     contentCol.setAttribute('class','col-sm-8');
                     relpybox.appendChild(spacer);
-            }
+                 }
         
             relpybox.appendChild(contentCol);
             relpybox.appendChild(buttonCol);

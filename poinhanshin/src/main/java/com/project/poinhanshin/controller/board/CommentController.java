@@ -27,6 +27,7 @@ public class CommentController {
         // 댓글 불러오기
         List<CommentDto> list = commentService.getCommentList(boardcomment_boardno);
         // 댓글 반환
+        System.out.println("댓글목록 : "+list);
         return new ResponseEntity<List<CommentDto>>(list , HttpStatus.OK);
     }
     // 댓글 추가
