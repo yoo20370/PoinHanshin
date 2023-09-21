@@ -1,4 +1,4 @@
-   @media (min-width: 768px) {
+   @media (min-width: 700px) {
       .page  {
         width: 600px;
       }
@@ -125,8 +125,12 @@
         height: 200px;
         background-color:#BFACE2;
     }
-
-
+/*protectlist*/
+.card-img-top {
+width: 100%;
+height: 25vh;
+object-fit: contain;
+}
 
 
     /*#6F61C0 #A084E8 #8BE8E5 #D5FFE4 색팔레트  코드메모용 https://colorhunt.co/palette/6f61c0a084e88be8e5d5ffe4
