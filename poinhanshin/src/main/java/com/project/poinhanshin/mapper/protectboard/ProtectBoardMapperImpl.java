@@ -51,7 +51,7 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
 
     // 임보자 게시물을 수정한다.
     @Override
-    public int updateContent(ProtectBoardDto protectBoardDto) {
+    public int updateContent(ProtectBoardDto protectBoardDto , Integer loginUser) {
         return sqlSession.update(namespace+"updateContent",protectBoardDto);
     }
 
