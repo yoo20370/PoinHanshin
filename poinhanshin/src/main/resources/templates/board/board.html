@@ -254,8 +254,8 @@
     </button>
     <form id="removeForm" action="" method="">
         <input type="hidden" name="loginUser" th:if="${loginUser != null}" th:value="${loginUser.userno}"/>
-        <input type="hidden" name="boardno" th:value="${boardDto.boardno}"/>
         <input type="hidden" name="loginUser"  th:unless="${loginUser != null}" value="0"/>
+        <input type="hidden" name="boardno" th:value="${boardDto.boardno}"/>
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
