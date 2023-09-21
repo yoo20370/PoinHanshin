@@ -45,7 +45,8 @@
         <input type="hidden" name="page" th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
-        <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:value="${LoginId}" />
+        <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:value="${protectboard.protectboard_userno}" />
+        <input type="hidden" name="protectboard_userno" id="loginUser" th:value="${loginUser.userno}" />
 
         <!-- 필수 전송 데이터  -->
         <input type="hidden" name="protectboardno" id="protectboardno"th:value="${protectboard.protectboardno}"/>
@@ -268,6 +269,7 @@
             let starttime = $('#startDate').val();
             let deadline = $('#endDate').val();
             let fileAttached = $('#fileAttached').val();
+            let loginUser = $('#loginUser').val();
 
             if (dropzone.getRejectedFiles().length > 0) {
                 let file = dropzone.getRejectedFiles();
@@ -299,6 +301,7 @@
             formData.append("starttime" , new Date(starttime));
             formData.append("deadline", new Date(deadline));
             formData.append("fileAttached",fileAttached);
+            formData.append("loginUser" , loginUser);
 
             let pbn;
             $.ajax({

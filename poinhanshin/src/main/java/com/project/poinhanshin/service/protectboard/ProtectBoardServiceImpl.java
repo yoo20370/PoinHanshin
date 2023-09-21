@@ -104,7 +104,7 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 임보자 게시물을 수정한다.
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateProductBoard(ProtectBoardDto protectBoardDto) throws IOException {
+    public int updateProductBoard(ProtectBoardDto protectBoardDto , Integer loginUser) throws IOException {
 
          // 기존 이미지 수 가져오기
         int imgCnt = protectBoardFileMapper.selectCnt(protectBoardDto.getProtectboardno());
@@ -141,11 +141,11 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
                 // 이미지를 추가하지 않는 경우
                 System.out.println("이미지를 추가하지 않는 경우");
             }
-
         }
-        // 게시물 내용 업데이트
-        protectBoardMapper.updateContent(protectBoardDto);
 
+        // 게시물 내용 업데이트
+        int result = protectBoardMapper.updateContent(protectBoardDto , loginUser);
+        System.out.println("실행 됨 "+ result);
         return protectBoardDto.getProtectboardno();
     }
 

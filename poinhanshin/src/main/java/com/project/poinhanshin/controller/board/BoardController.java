@@ -54,25 +54,27 @@ public class BoardController {
         m.addAttribute("sc",sc);
         m.addAttribute("ph",ph);
         m.addAttribute("msg",msg);
-        return "board/boardList";
+        return "/board/boardList";
     }
 
     // 커뮤니티 게시물 상세 페이지
     @GetMapping("/read")
     public String boardRead(Integer boardno , SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
         System.out.println("read 컨트롤러 실행 됨 "+boardno);
-        m.addAttribute("loginUser", loginUser);
 
-        // 임시 로그인
-        Integer LoginId = 1;
+        m.addAttribute("loginUser", loginUser);
 
         BoardDto boardDto = boardService.bringBoardOne(boardno);
 
-        m.addAttribute("LoginId", LoginId);
+        if(loginUser != null){
+            if(loginUser.getUserno().equals(boardDto.getBoard_userno().longValue()))
+                m.addAttribute("WriterCheck", "OK");
+        }
+
         m.addAttribute("boardDto" , boardDto);
         m.addAttribute("sc",sc);
         m.addAttribute("msg" , msg);
-        return "board/board";
+        return "/board/board";
     }
 
     // 커뮤니티 게시물 작성 상세 페이지
@@ -94,7 +96,7 @@ public class BoardController {
         m.addAttribute("sc",sc);
         m.addAttribute("msg" , msg);
 
-        return "board/boardreg";
+        return "/board/boardreg";
     }
 
     // 커뮤니티 등록 페이지에서 ajax로 보낸 데이터를 받아 각 변수에 바인딩하고 이를 DB에 저장
@@ -108,7 +110,7 @@ public class BoardController {
         BoardDto boardDto = new BoardDto(null, board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
         boardDto.setBoardFile(boardFile);
 
-        // 파일이 있는 경우
+        // 이미지가 있는 경우
         if(boardFile != null){
             boardDto.setFileAttached(1);
             System.out.println(boardFile);
@@ -159,7 +161,7 @@ public class BoardController {
 
         m.addAttribute("boardDto" , boardDto);
         m.addAttribute("sc",sc);
-        return "board/boardedit";
+        return "/board/boardedit";
     }
 
     // 커뮤니티 수정 페이제에서 ajax로 보낸 데이터를 받아 각 변수게 바인딩하고 이를 DB에 저장

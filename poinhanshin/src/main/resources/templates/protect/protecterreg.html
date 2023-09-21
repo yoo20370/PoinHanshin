@@ -45,7 +45,8 @@
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
-        <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:value="${LoginId}" />
+        <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:if="${loginUser != null}" th:value="${loginUser.userno}" />
+        <input type="hidden" name="protectboard_userno" th:unless="${loginUser != null}" />
 
         <!-- 필수 전송 데이터  -->
         <input type="hidden" name="protectboardno" id="protectboardno"/>
