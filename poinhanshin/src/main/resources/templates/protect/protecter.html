@@ -56,13 +56,13 @@
         <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
         <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}|" name="deadline"> 남은날짜 : </span>
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
-        <!--        -->
-        <div class="row">
-            <div class="col-sm-12 hstack">
-            <span class="p-2 ms-auto"><a href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
-            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>
-            </div>
-        </div>
+        <!-- 신고/즐겨찾기 -->
+<!--        <div class="row">-->
+<!--            <div class="col-sm-12 hstack">-->
+<!--            <span class="p-2 ms-auto"><a href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>-->
+<!--            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>-->
+<!--            </div>-->
+<!--        </div>-->
 
 <!--        <div class="row">-->
 <!--            <div class="form-floating">-->
@@ -74,22 +74,22 @@
 <!--                <label for="floatingEmptyPlaintextInput">품종</label>-->
 <!--            </div>-->
 <!--        </div>-->
-        <div class="row m-2 p-1 rounded-0 border-bottom" id="titleWrapper">
+        <div class="row m-2 p-3 rounded-0 border-bottom" id="titleWrapper">
                  <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none;outline:none;">
         </div>
         <!-- 이미지 출력 -->
         <div th:if="${protectboard.fileAttached == 1}">
             <!-- 이미지 파일 존재 여부 -->
             <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
-            <span th:each="fileName: ${protectboard.storedFileName}">
+            <div th:each="fileName: ${protectboard.storedFileName}">
                 <div class="col-sm-8 mx-auto">
-                  <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" class="img-fluid" />
+                  <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" class="rounded mx-auto d-block" />
                     
                 </div>
 
                 <!-- 수정으로 이미지 정보 넘겨주기 위해 추가 (? 사용 안하는 것 같긴한데 일단 변경 금지 -->
                 <input type="hidden" name="storedFileName" th:value="${fileName}"/>
-            </span>
+            </div>
         </div>
 
         <div class="row">
