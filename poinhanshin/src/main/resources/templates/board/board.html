@@ -39,7 +39,7 @@
 <!--    고양이=1(true), 강아지=0(false)-->
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
-    <input type="hidden" th:if="${loginUser != null}" th:value="${loginUser.userno}" id="loginUserNo"/>
+
     <!-- 제목 -->
     <div class="row">
         <div class="form-floating">
@@ -250,25 +250,43 @@
             th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
     </button>
     <button type="button" class="btn btn-secondary"
-            th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
+            th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , board_userno = ${boardDto.board_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
     </button>
-    <form id="removeForm" th:action="@{/board/remove(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}" method="post">
+    <form id="removeForm" action="" method="">
+        <input type="hidden" name="loginUser" th:value="${loginUser}"/>
+        <input type="hidden" name="page"th:value="${sc.getPage()}" />
+        <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
+        <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
+        <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
         <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
     </form>
 </div>
+<script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
+<script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <script th:inline="javascript">
 
 
     $(document).ready(function(){
         // 게시글 시작
         // 게시물 삭제 버튼 클릭시
-        $('#removeBtn').on("click",function(){
+
+
+        $(document).on("click", "#removeBtn", function(){
+            if(!confirm("삭제하시겠습니까 ?")) return;
+            let form = $('#removeForm');
+            form.attr("action", "/board/remove" );
+            form.attr("method","post");
+            form.submit();
+        });
+        /*$('#removeBtn').on("click",function(){
             if(!confirm("삭제하시겠습니까 ?")) return;
             console.log("게시물 삭제");
 
             let form = $('#removeForm');
+            form.attr("action",[[@{/board/remove(boardno = ${boardDto.boardno} , loginUser = loginUserno  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}]])
+            form.attr("method","post");
             form.submit();
-        });
+        });*/
         // 게시글 끝
 
         // 댓글 시작

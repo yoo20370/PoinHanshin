@@ -115,7 +115,7 @@ public class BoardServiceImpl implements BoardService{
 
     // 특정 게시물을 수정한다.
     @Override
-    public int modifyContent(BoardDto boardDto, Integer loginId) throws IOException {
+    public int modifyContent(BoardDto boardDto, Integer loginUser) throws IOException {
 
         int imgCnt = boardFileMapper.boardSelectCnt(boardDto.getBoardno());
 
@@ -154,7 +154,7 @@ public class BoardServiceImpl implements BoardService{
             }
         }
         // 게시물 내용 업데이트
-        boardMapper.boardUpdateContent(boardDto , loginId);
+        boardMapper.boardUpdateContent(boardDto , loginUser);
 
         return boardDto.getBoardno();
     }
@@ -162,12 +162,12 @@ public class BoardServiceImpl implements BoardService{
     // 특정 게시물을 삭제한다.
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeContent(Integer boardno, Integer loginId) throws IOException {
+    public int removeContent(Integer boardno, Long loginUser) throws IOException {
         // 저장된 이미지 이름 목록 가져오기
         List<String> fileNameList = boardFileMapper.boardSelectFileName(boardno);
 
         // 게시물 삭제( 게시물 먼저 삭제하면 DB 데이터 사라짐 )
-        int result = boardMapper.boardDeleteContent(boardno,loginId);
+        int result = boardMapper.boardDeleteContent(boardno,loginUser);
 
         // 로컬 저장소에서 이미지 파일 삭제
         if( result == 1){

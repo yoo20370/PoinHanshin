@@ -37,7 +37,9 @@ public class BoardController {
     @GetMapping("/list")
     public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
-        m.addAttribute("loginUser", loginUser); // 로그인 이식
+        if(loginUser != null){
+            m.addAttribute("loginUser", loginUser); // 로그인 이식
+        }
         HashMap hashMap = boardService.bringBoardList(sc);
         List<BoardDto> boardDtoList = (List<BoardDto>)hashMap.get("boardDtoList");
         List<BoardDto> topBoardDtoList = (List<BoardDto>)hashMap.get("topBoardDtoList");
@@ -66,10 +68,6 @@ public class BoardController {
 
         BoardDto boardDto = boardService.bringBoardOne(boardno);
 
-        // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
-        if(LoginId.equals(boardDto.getBoard_userno()))
-            m.addAttribute("WriterCheck", "OK");
-
         m.addAttribute("LoginId", LoginId);
         m.addAttribute("boardDto" , boardDto);
         m.addAttribute("sc",sc);
@@ -83,19 +81,17 @@ public class BoardController {
 
         m.addAttribute("loginUser", loginUser);
 
-        Integer LoginId = 1;
-
-        if(LoginId == null) {
+        // 로그인 여부 체크
+        if(loginUser == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
-            return "redirect:/protectboard/list";
+            return "redirect:/board/list";
         }
 
         m.addAttribute("sc",sc);
-        m.addAttribute("LoginId", LoginId);
         m.addAttribute("msg" , msg);
 
         return "board/boardreg";
@@ -105,13 +101,13 @@ public class BoardController {
     // 커뮤니티 게시물 작성 데이터 DB에 저장
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) String id ,@RequestParam(required = false) Integer board_userno , @RequestParam String board_title ,
+    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) Integer board_userno , @RequestParam String board_title ,
                                               @RequestParam String board_content , @RequestParam Boolean board_ani_category ,
                                               @RequestParam(required = false) List<MultipartFile> boardFile) throws IOException {
-        BoardDto boardDto = new BoardDto(id, board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
 
-        boardDto.setId("1");
+        BoardDto boardDto = new BoardDto(null, board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
         boardDto.setBoardFile(boardFile);
+
         // 파일이 있는 경우
         if(boardFile != null){
             boardDto.setFileAttached(1);
@@ -126,26 +122,41 @@ public class BoardController {
 
     // 커뮤니티 게시물 수정 상세 페이지
     @GetMapping("/modify")
-    public String boardModifyPage(Integer boardno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+    public String boardModifyPage(Integer boardno , Integer board_userno ,SearchCondition sc , Model m , RedirectAttributes redirectAttributes, @SessionAttribute(name = "loginUser", required = false) User loginUser){
+
+        System.out.println("modify : get");
+        System.out.println("boardno : "+boardno);
+        System.out.println("board_userno : "+ board_userno);
+        System.out.println("loginUser : " + loginUser);
 
         m.addAttribute("loginUser", loginUser);
 
-        // 임시 로그인
-        Integer LoginId = 1;
-
-        // 로그인 확인 (나중에 loginUser == null로 변경
-        if(LoginId == null) {
+        // 로그인 확인
+        if(loginUser == null) {
+            redirectAttributes.addAttribute("boardno" , boardno);
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
-            return "redirect:/protectboard/list";
+            return "redirect:/board/read";
+        } else if( ! board_userno.toString().equals(loginUser.getUserno().toString()) ){
+            // 작성자와 로그인 아이디가 같지 않을 때
+            redirectAttributes.addAttribute("loginUser" , loginUser);
+            redirectAttributes.addAttribute("boardno" , boardno);
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            return "redirect:/board/read";
         }
+
         BoardDto boardDto = boardService.bringBoardOne(boardno);
 
         System.out.println(boardno);
-        m.addAttribute("LoginId" ,LoginId);
+
         m.addAttribute("boardDto" , boardDto);
         m.addAttribute("sc",sc);
         return "board/boardedit";
@@ -153,40 +164,44 @@ public class BoardController {
 
     // 커뮤니티 수정 페이제에서 ajax로 보낸 데이터를 받아 각 변수게 바인딩하고 이를 DB에 저장
     @PostMapping("/modify")
-    public ResponseEntity<Integer> boardModify(@RequestParam(required = false) String id ,@RequestParam Integer board_userno , @RequestParam Integer boardno, @RequestParam String board_title ,
+    public ResponseEntity<String> boardModify(@RequestParam Integer board_userno , @RequestParam Integer boardno, @RequestParam String board_title ,
                                                @RequestParam String board_content , @RequestParam Boolean board_ani_category , @RequestParam Integer fileAttached,
-                                               @RequestParam(required = false) List<MultipartFile> boardFile
+                                               @RequestParam(required = false) List<MultipartFile> boardFile , @RequestParam(required = false) Integer loginUser
                                                 ) throws IOException {
-        BoardDto boardDto = new BoardDto(id, board_userno , boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
+
+
+        BoardDto boardDto = new BoardDto(null, board_userno , boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
         boardDto.setBoardFile(boardFile);
+        System.out.println("modify_post : "+boardDto);
+        System.out.println("modify_post: "+loginUser);
 
         // Login 연결 시 수정 필요
-        boardService.modifyContent(boardDto , board_userno);
-        return new ResponseEntity<Integer>(boardno , HttpStatus.OK);
+        boardService.modifyContent(boardDto , loginUser);
+        return new ResponseEntity<String>("성공적으로 수정했습니다." , HttpStatus.OK);
     }
 
     // 커뮤니티 게시물 삭제
     @PostMapping("/remove")
-    public String boardRemove(Integer boardno , SearchCondition sc , RedirectAttributes redirectAttributes ) throws IOException {
+    public String boardRemove(Integer boardno ,  SearchCondition sc , RedirectAttributes redirectAttributes,  @SessionAttribute(name = "loginUser", required = false) User loginUser ) throws IOException {
 
-        // 임시 로그인
-        Integer loginId = 1;
+        System.out.println("remove post "+loginUser);
 
         // 로그인 여부 확인
-        if(loginId == null){
+        if(loginUser == null){
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/board/list";
         }
 
         // 삭제 실패시
-        if(boardService.removeContent(boardno , loginId) != 1){
+        if(boardService.removeContent(boardno , loginUser.getUserno()) != 1){
+            redirectAttributes.addAttribute("loginUser" , loginUser);
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addAttribute("boardno",boardno);
             redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
-            return "redirect:/protectboard/read";
+            return "redirect:/board/read";
         }
 
         redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
