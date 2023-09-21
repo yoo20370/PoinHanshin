@@ -19,5 +19,5 @@ public interface CommentMapper {
     int updateComment(CommentDto commentDto);
 
     // 댓글 삭제
-    int deleteComment(@Param("commentno") Integer commentno ,@Param("boardcomment_userno") Integer boardcomment_userno );
+    int deleteComment(Integer commentno , Integer loginUser );
 }

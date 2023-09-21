@@ -29,11 +29,11 @@
     <update id="boardUpdateContent" parameterType="map">
         UPDATE board
         SET board_title = #{boardDto.board_title} , board_content = #{boardDto.board_content} , board_ani_category = #{boardDto.board_ani_category} , fileAttached = #{boardDto.fileAttached}
-        WHERE boardno = #{boardDto.boardno} and board_userno = #{LoginId}
+        WHERE boardno = #{boardDto.boardno} and board_userno = #{loginUser}
     </update>
     <delete id="boardDeleteContent" parameterType="map">
         DELETE FROM board
-        WHERE boardno = #{boardno} and board_userno = #{LoginId}
+        WHERE boardno = #{boardno} and board_userno = #{loginUser}
     </delete>
     <select id="boardSelectRecentBoardNo" parameterType="int" resultType="int">
         SELECT boardno
@@ -50,10 +50,10 @@
     <sql id="aniCategoryChoose">
         <choose>
             <when test="ani_category == 0">
-                protectboard_ani_category = 0
+                board_ani_category = 0
             </when>
             <when test="ani_category == 1">
-                protectboard_ani_category = 1
+                board_ani_category = 1
             </when>
             <otherwise> TRUE </otherwise>
         </choose>

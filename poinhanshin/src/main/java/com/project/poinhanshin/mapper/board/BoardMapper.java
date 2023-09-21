@@ -24,10 +24,10 @@ public interface BoardMapper {
     int boardInsertContent(BoardDto boardDto);
 
     // 게시물을 수정한다.
-    int boardUpdateContent(BoardDto boardDto , Integer LoginId);
+    int boardUpdateContent(BoardDto boardDto , Integer loginUser);
 
     // 게시물을 삭제한다.
-    int boardDeleteContent(Integer boardno , Integer LoginId);
+    int boardDeleteContent(Integer boardno , Long loginUser);
 
     // 최근 사용자가 등록한 게시물의 번호를 가져온다. (즐겨찾기?)
     int boardSelectRecentBoardNo(Integer board_userno);
