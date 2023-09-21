@@ -12,7 +12,9 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode
 public class CommentDto {
-   private String Comment_id;
+
+
+   private String id;
    private Integer boardcomment_boardno;
    private Integer boardcomment_userno;
    private Integer commentno;
@@ -22,8 +24,8 @@ public class CommentDto {
     /*@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")*/
    private Date boardcomment_reg_date;
 
-   public CommentDto(String Comment_id,Integer boardcomment_boardno, Integer boardcomment_userno, Integer commentno, Integer parcommentno, String comment, Date boardcomment_reg_date) {
-      this.Comment_id = Comment_id;
+   public CommentDto(String id,Integer boardcomment_boardno, Integer boardcomment_userno, Integer commentno, Integer parcommentno, String comment, Date boardcomment_reg_date) {
+      this.id = id;
       this.boardcomment_boardno = boardcomment_boardno;
       this.boardcomment_userno = boardcomment_userno;
       this.commentno = commentno;

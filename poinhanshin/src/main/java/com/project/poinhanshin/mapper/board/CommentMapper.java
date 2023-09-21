@@ -2,6 +2,7 @@ package com.project.poinhanshin.mapper.board;
 
 import com.project.poinhanshin.domain.board.CommentDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface CommentMapper {
     int updateComment(CommentDto commentDto);
 
     // 댓글 삭제
-    int deleteComment(Integer commentno , Integer boardcomment_userno );
+    int deleteComment(Integer commentno , Integer loginUser );
 }

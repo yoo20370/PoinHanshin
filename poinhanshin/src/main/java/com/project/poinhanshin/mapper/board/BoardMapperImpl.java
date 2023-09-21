@@ -46,19 +46,19 @@ public class BoardMapperImpl implements BoardMapper {
 
     // 게시물을 수정한다.
     @Override
-    public int boardUpdateContent(BoardDto boardDto, Integer LoginId) {
+    public int boardUpdateContent(BoardDto boardDto, Integer loginUser) {
         HashMap hashMap = new HashMap();
         hashMap.put("boardDto",boardDto);
-        hashMap.put("LoginId" ,LoginId);
+        hashMap.put("loginUser" ,loginUser);
         return sqlSession.update(namespace+"boardUpdateContent",hashMap);
     }
 
     // 게시물을 삭제한다.
     @Override
-    public int boardDeleteContent(Integer boardno, Integer LoginId) {
-        HashMap<String , Integer> hashMap = new HashMap<>();
+    public int boardDeleteContent(Integer boardno, Long loginUser) {
+        HashMap hashMap = new HashMap();
         hashMap.put("boardno" , boardno);
-        hashMap.put("LoginId",LoginId);
+        hashMap.put("loginUser",loginUser);
         return sqlSession.delete(namespace+"boardDeleteContent");
     }
 
@@ -99,5 +99,15 @@ public class BoardMapperImpl implements BoardMapper {
 
     // 댓글 개수 수정
 
+    // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
+    @Override
+    public List<BoardDto> SelectMyBoard(Integer userno) {
+        return sqlSession.selectList(namespace+"SelectMyBoard", userno);
+    }
 
+    // 마이페이지 - 자신이 쓴 커뮤니티 게시글 불러오기
+    @Override
+    public List<BoardDto> WriteMyBoard(Integer userno) {
+        return sqlSession.selectList(namespace+"WriteMyBoard",userno);
+    }
 }

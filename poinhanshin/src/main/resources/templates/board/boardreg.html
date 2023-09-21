@@ -106,7 +106,7 @@
 <div class="page">
     <form id="form" action="" method="post" enctype="multipart/form-data">
         <!-- 페이지 정보 및 로그인 아이디 값 -->
-        <input type="hidden" name="board_userno" id="board_userno" th:value="${LoginId}"/>
+        <input type="hidden" name="board_userno" id="board_userno" th:value="${loginUser.userno}"/>
         <input type="hidden" name="boardno" id="boardno"/>
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
@@ -246,12 +246,16 @@
             success :function(data){
                 bno = data;
             },
-            error : function(){}
+            error : function(data){
+               bno = data;
+            }
         });
+
+        let form = $('#form');
 
         $('#boardno').val(bno);
 
-        let form = $('#form');
+
         form.attr("action" , "/board/read");
         form.attr("method","get");
         form.submit();

@@ -28,7 +28,7 @@ public interface BoardService {
     int modifyContent(BoardDto boardDto , Integer loginId) throws IOException;
 
     // 특정 게시물을 삭제한다.
-    int removeContent(Integer boardno , Integer loginId) throws IOException;
+    int removeContent(Integer boardno , Long loginUser) throws IOException;
 
     // 최근 등록 게시물 번호를 가져온다.(매개변수 유저에 해당하는 것을 가져오는 것)
     int bringRecentRegContentNo(Integer board_userno);
@@ -38,5 +38,11 @@ public interface BoardService {
 
     // 이미지 등록을 위한 메서드
     void addImgFiles(BoardDto boardDto) throws IOException;
+
+    // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
+    List<BoardDto> SelectMyBoardService(Integer userno);
+
+    // 마이페이지 - 자신이 쓴 커뮤니티 게시글 불러오기
+    List<BoardDto> WriteMyBoardService(Integer userno);
 
 }
