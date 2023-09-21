@@ -224,12 +224,12 @@
             </th:block>
         </div>-->
     <!--댓글작성-->
-    <div class="commentbox2">
+    <div class="commentbox2 container">
         <div>
             <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
         </div>
         <div>
-            <form  method="post">
+            <form  method="post" class="m-2">
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
                     <input hidden="hidden" />
@@ -243,6 +243,7 @@
         </div>
     </div>
     <div class="fa-solid fa-user">테스트</div>
+    <i class="fas fa-reply fa-rotate-180 fa-lg"></i>
     <i class="fas fa-user"></i>
     <!-- 버튼 -->
     <th:block th:if="${loginUser} ? ${loginUser.userno} == ${boardDto.board_userno} : false ">
@@ -396,7 +397,10 @@
                             buttonCol.removeChild(Wbutton);
                             var spacer =document.createElement('div');
                             spacer.setAttribute('class','col-sm-1');
-                            contentCol.setAttribute('class','col-sm-8');
+                            var relpyIcon = document.createElement('i');
+                            relpyIcon.setAttribute('class','fas fa-reply fa-rotate-180 fa-lg');
+                            contentCol.setAttribute('class','col-sm-7');
+                            spacer.append(relpyIcon);
                             relpybox.appendChild(spacer);
                         }
 
