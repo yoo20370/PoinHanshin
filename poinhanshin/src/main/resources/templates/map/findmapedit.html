@@ -41,8 +41,8 @@
                 <!-- 지역 선택 드롭다운 필터 -->
                 <div class="mb-3">
                     <label class="form-label" for="locatin-filter">지역 선택:</label>
-                        <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
-                        <input type="text" id="locatin-filter" placeholder="지역">
+                    <input type="text" id="locatin-filter" placeholder="지역">
+                    <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
                 </div>
             </div>
         </div>
@@ -68,8 +68,10 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label" th:for="${mapboard.missingaddress}">실종/ 발견 장소를 선택해주세요:</label>
-            <input type="text" class="form-control" id="searchInput" placeholder="장소 검색">
+            <label class="form-label" for="missingaddress">실종/ 발견 장소를 선택해주세요:</label>
+            <input type="text" id="missingaddress" placeholder="장소">
+            <input type="button" class="btn btn-outline-dark" onclick="mapadd_Postcode()" value="장소 찾기">
+            <div id="map" style="width: 100%; height: 400px; display: none;"></div>
         </div>
 
         <div class="mb-3">
@@ -84,6 +86,7 @@
         </div>
     </form>
 </div>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script>
     document.querySelector('.reg-button').addEventListener('click', function () {
         if (confirm('수정하시겠습니까?')) {
@@ -145,7 +148,40 @@
 // roadname: "가로수길"
 // roadnameEnglish: "Garosu-gil"
     }
+    //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+    function mapadd_Postcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                // 주소를 입력받았을 때 실행할 코드
 
+                // 입력된 주소를 missingaddress 엘리먼트의 값으로 설정
+                document.getElementById('missingaddress').value = data.address;
+
+                // 커서를 상세주소 필드로 이동
+                document.getElementById("missingaddress").focus();
+
+                // Daum 지도 API를 사용하여 지도를 표시
+                var mapContainer = document.getElementById('map'); // 지도를 표시할 div 엘리먼트
+                var mapOption = {
+                    center: new daum.maps.LatLng(data.y, data.x), // 주소로부터 위도와 경도를 사용하여 지도 중심 설정
+                    level: 4 // 지도 확대 레벨 설정
+                };
+
+                // 지도를 생성
+                var map = new daum.maps.Map(mapContainer, mapOption);
+
+                // 마커를 생성하고 지도에 추가
+                var markerPosition = new daum.maps.LatLng(data.y, data.x);
+                var marker = new daum.maps.Marker({
+                    position: markerPosition
+                });
+                marker.setMap(map);
+
+                // 지도를 보이도록 스타일 변경
+                mapContainer.style.display = 'block';
+            }
+        }).open();
+    }
 
 
 </script>
