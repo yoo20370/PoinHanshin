@@ -48,10 +48,10 @@
     <sql id="aniCategoryChoose">
         <choose>
             <when test="ani_category == 0">
-                protectboard_ani_category = 0
+                board_ani_category = 0
             </when>
             <when test="ani_category == 1">
-                protectboard_ani_category = 1
+                board_ani_category = 1
             </when>
             <otherwise> TRUE </otherwise>
         </choose>

@@ -182,9 +182,7 @@ public class BoardController {
 
     // 커뮤니티 게시물 삭제
     @PostMapping("/remove")
-    public String boardRemove(Integer boardno ,  SearchCondition sc , RedirectAttributes redirectAttributes,  @SessionAttribute(name = "loginUser", required = false) User loginUser ) throws IOException {
-
-        System.out.println("remove post "+loginUser);
+    public String boardRemove(Integer boardno ,  SearchCondition sc , RedirectAttributes redirectAttributes, Integer loginUser ) throws IOException {
 
         // 로그인 여부 확인
         if(loginUser == null){
@@ -193,7 +191,7 @@ public class BoardController {
         }
 
         // 삭제 실패시
-        if(boardService.removeContent(boardno , loginUser.getUserno()) != 1){
+        if(boardService.removeContent(boardno , loginUser.longValue() ) != 1){
             redirectAttributes.addAttribute("loginUser" , loginUser);
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
