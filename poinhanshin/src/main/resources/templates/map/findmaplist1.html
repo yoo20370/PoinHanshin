@@ -64,28 +64,28 @@
       <th style="width: 0.5%">글 번호</th>
       <th class="mx-3" style="width: 10%;">내용</th>
     </tr>
-    <tr th:each="MapBoardDto: ${mapboardList}">
-      <td th:text="${mapboard.mapboardno}"></td>
+    <tr>
+      <td></td>
       <td>
         <ul class="post-list">
           <li class="post">
             <div class="post-header">
-              <strong class="animal-type" th:text="'품종:'${mapboard.mapboard_ani_category}">품종: </strong>
+              <strong class="animal-type">품종: </strong>
             </div>
             <div class="post-content">
               <div class="header-right">
-                <img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">
+                <img class="post-image" alt="빈이미지">
                 <img class="post-image" src="../../static/img/mbti/image-0.png" alt="Dog">
               </div>
             </div>
             <div class="post-footer" style="display: flex; flex-direction: column">
-              <span class="writertype" th:text="'실종/발견자: ' + ${mapboard.writertype}">실종/발견자: </span>
-              <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
-              <span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingdatetime}">실종/발견 날짜 및 시간: </span>
+              <span class="writertype">실종/발견자: </span>
+              <span class="missingaddress">실종/발견 장소: </span>
+              <span class="datetime">실종/발견 날짜 및 시간: </span>
             </div>
             <div class="header-right">
-              <span class="mapboard_reg_date" th:text="'작성일: ' +${mapboard.mapboard_reg_date}">작성일: </span>
-              <span class="mapboard_userno" th:text="'작성자: ' +${mapboard.mapboard_userno}">작성자: </span>
+              <span class="mapboard_reg_date">작성일: </span>
+              <span class="mapboard_userno">작성자: </span>
             </div>
           </li>
         </ul>
