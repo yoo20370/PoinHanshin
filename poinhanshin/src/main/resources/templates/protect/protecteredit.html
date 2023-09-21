@@ -74,11 +74,11 @@
                             <i class="fa fa-calendar"></i>
                             </span>
                         </span>
-                    <input  type="text" class="form-control modifyMode" name="starttime" id="startDate" readonly th:text="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}"/>
+                    <input  type="text" class="form-control modifyMode" name="starttime" id="startDate" readonly th:value="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}"/>
                     <span class="input-group-text bg-light d-block">
                             <i class="fa fa-calendar"></i>
                     </span>
-                    <input type="text" class="form-control modifyMode" name="deadline" id="endDate" readonly  th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}"/>
+                    <input type="text" class="form-control modifyMode" name="deadline" id="endDate" readonly  th:value="${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}"/>
                 </div>
             </div>
         </section>

@@ -38,7 +38,7 @@
             <input type="hidden" name="protectboard_id" th:value="${protectboard.protectboard_id}"/>
             <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}"/>
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
-            <input th:if="${protectboard.fileAttached == 0}" tpye="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
+            <input th:if="${protectboard.fileAttached == 0}" type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             <!-- 동물 카테고리 , 작성일 , 마감일 form input  -->
             <!-- 프론트가 수정 필요 -->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
@@ -55,11 +55,11 @@
         <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
         <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}|" name="deadline"> 남은날짜 : </span>
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
-
-        <div class="row ms-auto">
-            <div class="col">
-            <span><a href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
-            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #ff0000;"></i></a></span>
+        <!--        -->
+        <div class="row">
+            <div class="col-sm-12 hstack">
+            <span class="p-2 ms-auto"><a href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
+            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>
             </div>
         </div>
 
@@ -73,15 +73,19 @@
                 <label for="floatingEmptyPlaintextInput">품종</label>
             </div>
         </div>
-
-        <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly">
-
+        <div class="row p-4">
+        <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none">
+        </div>
         <!-- 이미지 출력 -->
         <div th:if="${protectboard.fileAttached == 1}">
             <!-- 이미지 파일 존재 여부 -->
             <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             <span th:each="fileName: ${protectboard.storedFileName}">
-                <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음"  width="300px" height="300px" />
+                <div class="col-sm-12">
+                  <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음"  width="300px" height="300px" />
+                    
+                </div>
+
                 <!-- 수정으로 이미지 정보 넘겨주기 위해 추가 (? 사용 안하는 것 같긴한데 일단 변경 금지 -->
                 <input type="hidden" name="storedFileName" th:value="${fileName}"/>
             </span>
