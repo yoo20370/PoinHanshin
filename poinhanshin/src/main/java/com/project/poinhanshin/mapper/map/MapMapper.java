@@ -30,4 +30,7 @@ public interface MapMapper {
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     List<MapBoardDto> SelectMyMap(Integer userno);
 
+    // 마이페이지 - 자신이 작성한 실종/발견 지도 게시글 불러오기
+    List<MapBoardDto> WriteMyMap(Integer userno);
+
 }

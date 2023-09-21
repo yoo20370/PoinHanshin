@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
     <link href="/css/commonstyle.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 
@@ -36,12 +35,11 @@
 </style>
 <body layout:fragment="content">
 <div class="page">
-    <span class="fs-6">태그</span>
 
-    <!--    고양이=1(true), 강아지=0(false)-->
+<!--    고양이=1(true), 강아지=0(false)-->
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
-
+    <input type="hidden" th:if="${loginUser != null}" th:value="${loginUser.userno}" id="loginUserNo"/>
     <!-- 제목 -->
     <div class="row">
         <div class="form-floating">
@@ -55,18 +53,23 @@
     </div>
 
     <!-- 이미지 파일 존재 여부에 따라 이미지 표시 -->
-    <div th:if="${boardDto.fileAttached == 1}">
+    <!-- <div th:if="${boardDto.fileAttached == 1}">
         <span th:each="fileName: ${boardDto.storedFileName}">
                 <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
                 <input type="hidden" name="storedFileName" th:value="${fileName}"/>
             </span>
-    </div>
+    </div> -->
     <!-- 내용 -->
     <div class="row">
         <div class="col-mb-3">
             <!--  이미지     -->
             <div class="col-sm-6" >
-                <img  class="img-fluid" alt="빈이미지" >
+                <div th:if="${boardDto.fileAttached == 1}">
+                    <span th:each="fileName: ${boardDto.storedFileName}">
+                            <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
+                            <input type="hidden" name="storedFileName" th:value="${fileName}"/>
+                        </span>
+                </div>
             </div>
             <textarea
                     type="text"
@@ -85,34 +88,68 @@
         <span th:text="|작성일 : ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')} |" >작성일:</span>
         <span th:text="|조회수 : ${boardDto.board_viewcount}|" >조회수:</span>
         <span th:text="|작성자 : ${boardDto.id}|" >작성자:</span>
+
     </div>
+    <div id="likeContainer">
+        <p>좋아요 수 : <span id="likeCnt" th:text="${boardDto.likecount}"></span></p>
+
+        <span id="likeImg"></span>
+    </div>
+    <button th:if="${loginUser != null }" type="button" id="likeBtn">좋아요 버튼</button>
 
 
-    <!--댓글출력-->
-    <!--${commentList} 댓글리스트-->
-    <div id="hiddenArea" style="display:none">
-        <div id="replyCmtContainer" style="display:none">
-            <input type="text" name="replyComment" />
-            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>
+<!--댓글출력-->
+<!--${commentList} 댓글리스트-->
+<!--    <div id="hiddenArea" style="display:none">-->
+<!--        <div id="replyCmtContainer" style="display:none">-->
+<!--            <input type="text" name="replyComment" />-->
+<!--            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div style="width:auto;display:none" id="hiddenArea">
+            <div id="replyCmtContainer" style="display:none" class="row">
+                <div class="input-group col-sm-12">
+                    <input type="hidden" name="boardcomment_userno" >
+                    <input hidden="hidden" />
+                    <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                    <input type="text"  class="form-control" name="replyComment"
+                           placeholder="1자에서 100자 이내로 입력해주세요.">
+                    <button type="button" id="replyBtn" class="btn btn-outline-dark">작성</button>
+                    <br>
+                </div>
         </div>
     </div>
 
-    <div id="commentTable">
-        <div>
-            <div class="commentbox" id="commentArea">
-                <!-- <div>
-                     <small >유저id</small>
-                     <small > 2010-11-11 10:51:03 (ex)</small>
-                     <span >내용</span>
-                     <button type="button" id="writeCommentBtn" data-bs-toggle="collapse"
-                             style="display:inline" class="btn btn-outline-primary btn-sm">답글달기
-                     </button>
-                     <button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
-                             style="display:inline" >수정
-                     </button>
-                     <button type="button"   class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button>
-                 </div>-->
+    <div class="container" id="commentTable">
+            <div>
+                <div class="commentbox row" id="commentArea">
+                   <!-- <div>
+                        <small >유저id</small>
+                        <small > 2010-11-11 10:51:03 (ex)</small>
+                        <span >내용</span>
+                        <button type="button" id="writeCommentBtn" data-bs-toggle="collapse"
+                                style="display:inline" class="btn btn-outline-primary btn-sm">답글달기
+                        </button>
+                        <button type="button" data-bs-toggle="collapse" class="btn btn-outline-primary btn-sm"
+                                style="display:inline" >수정
+                        </button>
+                        <button type="button"   class="btn btn-outline-danger btn-sm"  name="submit" value="delete">삭제</button>
+                    </div>-->
+                </div>
             </div>
+    </div>                   
+<!--        댓글수정          -->
+<!--
+
+                <div class="collapse" >
+                    <form   method="post">
+                        <div class="input-group" style="width:auto">
+                            <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                            <input type="text"   class="form-control" >
+                            <input type="hidden"  />
+                            <input type="hidden" />
+
 
             <!--        댓글수정          -->
             <!--
@@ -210,180 +247,328 @@
                     </form>
                 </div>
             </div>
-
-            <!-- 버튼 -->
-            <button type="button" class="btn btn-secondary"
-                    th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
-            </button>
-            <button type="button" class="btn btn-secondary"
-                    th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
-            </button>
-            <form id="removeForm" th:action="@{/board/remove(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}" method="post">
-                <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
+  
+                <div class="input-group" style="width:auto">
+                    <input type="hidden" name="boardcomment_userno" >
+                    <input hidden="hidden" />
+                    <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
+                    <input type="text"  class="form-control" id="content" name="comment"
+                           placeholder="1자에서 100자 이내로 입력해주세요.">
+                    <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
+                    <br>
+                </div>
             </form>
-
-            <script th:inline="javascript">
-
-
-                $(document).ready(function(){
-                    // 게시글 시작
-                    // 게시물 삭제 버튼 클릭시
-                    $('#removeBtn').on("click",function(){
-                        if(!confirm("삭제하시겠습니까 ?")) return;
-                        console.log("게시물 삭제");
-
-                        let form = $('#removeForm');
-                        form.submit();
-                    });
-                    // 게시글 끝
-
-                    // 댓글 시작
-
-                    let toTime = function(input){
-                        let time = new Date(input);
-                        let year = time.getFullYear();
-                        let month = time.getMonth() + 1;
-                        let day = time.getDate();
-                        let yoil = time.getDay();
-
-                        let hour = time.getHours();
-                        let minute = time.getMinutes();
+        </div>
+    </div>
+    <div class="fa-solid fa-user">테스트</div>
+                <i class="fas fa-user"></i>
+    <!-- 버튼 -->
+    <button type="button" class="btn btn-secondary"
+            th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
+    </button>
+    <button type="button" class="btn btn-secondary"
+            th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
+    </button>
+    <form id="removeForm" th:action="@{/board/remove(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}" method="post">
+        <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
+    </form>
+</div>
+<script th:inline="javascript">
 
 
-                        let str = ''+ year + '년' +month+'월'+day+'일' + ' ' + hour +'시'+ minute +'분';
-                        return str;
-                    }
+    $(document).ready(function(){
+        // 게시글 시작
+        // 게시물 삭제 버튼 클릭시
+        $('#removeBtn').on("click",function(){
+            if(!confirm("삭제하시겠습니까 ?")) return;
+            console.log("게시물 삭제");
 
-                    // 게시물 댓글 HTML 작성
-                    let toHtml = function(comments){
-                        let tmp = '';
-                        comments.forEach(function(comment){
-                            tmp += '<div data-commentno=' + comment.commentno;
-                            /*tmp +=' data-boardcomment_boardno='+ comment.boardcomment_boardno;*/
-                            tmp +=' data-parcommentno='+ comment.parcommentno + '>';
-                            tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
-                            tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
-                            tmp += '<span> 내용 :  ' + comment.comment+' | </span>';
-                            tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
-                            tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
-                            tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
-                            tmp += 'class="btn btn-outline-danger btn-sm" >삭제</button>';
-                            tmp += '</div>';
-                        })
-                        return tmp;
-                    }
+            let form = $('#removeForm');
+            form.submit();
+        });
+        // 게시글 끝
 
-                    // 게시물 댓글을 가져와서 화면에 출력
-                    let showList = function(boardcomment_boardno){
+        // 댓글 시작
+
+        let toTime = function(input){
+            let time = new Date(input);
+            let year = time.getFullYear();
+            let month = time.getMonth() + 1;
+            let day = time.getDate();
+            let yoil = time.getDay();
+
+            let hour = time.getHours();
+            let minute = time.getMinutes();
+
+
+            let str = ''+ year + '년' +month+'월'+day+'일' + ' ' + hour +'시'+ minute +'분';
+            return str;
+        }
+
+        // 게시물 댓글 HTML 작성
+        let toHtml = function(list){
+            list.forEach(function(comment){
+            //     tmp += '<div data-commentno=' + comment.commentno;
+            //     /*tmp +=' data-boardcomment_boardno='+ comment.boardcomment_boardno;*/
+            //     tmp +=' data-parcommentno='+ comment.parcommentno + '>';
+
+            //     tmp += '<small> 작성자 : ' + comment.boardcomment_userno+ ' | </small>';
+            //     tmp += '<small> 작성일 : '+ toTime(comment.boardcomment_reg_date) +' | </small>';
+            //     tmp += '<div> 내용 :  ' + comment.comment+' | </div>';
+
+            //     tmp += '<button type="button" name="writeCmtBtn"  id="writeCommentBtn'+ comment.commentno + '" ';
+            //     tmp += 'data-bs-toggle="collapse" style="display:inline" class="btn btn-outline-primary btn-sm">답글달기</button>';
+            //     tmp += '<button type="button" name="removeCmtBtn" id="removeCommentBtn'+ comment.commentno +'" ';
+            //     tmp += 'class="btn btn-outline-danger btn-sm" >삭제</button>';
+            //     tmp += '</div>';
+            // })
+            // return tmp;
+            //전체 박스
+            })
+        }
+        
+        // 게시물 댓글을 가져와서 화면에 출력
+        let showList = function(boardcomment_boardno){
+            $.ajax({
+                type : 'GET',
+                url : '/comments?boardcomment_boardno='+boardcomment_boardno,
+                dataType : 'json',
+                success:function(list){
+                    list.forEach(function(comment){
+                        console.log(comment);
+                        var commentWrapper = document.createElement('div');
+                        commentWrapper.setAttribute('class','card rounded-0');
+                        var relpybox = document.createElement('div');
+            relpybox.setAttribute('class','row p-2');
+            relpybox.setAttribute('data-commentno',comment.commentno);
+            relpybox.setAttribute('data-parcommentno',comment.parcommentno);
+            //댓글 컨텐츠 박스
+            var contentCol= document.createElement('div');
+            contentCol.setAttribute('class','col-sm-9');
+            //작성자
+            var writer= document.createElement('div');
+            writer.setAttribute('class','fas fa-user');
+            writer.setAttribute('style','filter: opacity(0.5) drop-shadow(0 0 0 #6F61C0);color:black;')            
+            writer.textContent = '  '+comment.boardcomment_userno;
+            //내용
+            var comments= document.createElement('div');
+            comments.textContent = comment.comment;
+            //작성일
+            var writeDate= document.createElement('div');
+            writeDate.textContent ='작성일 : '+ toTime(comment.boardcomment_reg_date);
+            writeDate.setAttribute('style', 'font-size: smaller;color:gray' );
+            writeDate.setAttribute('class', 'float-end');
+            //돔구성
+            contentCol.appendChild(writer);
+            contentCol.appendChild(comments);
+            contentCol.appendChild(writeDate);
+            //버튼공간
+            var buttonCol= document.createElement('div');
+            buttonCol.setAttribute('class','col-sm-2 float-end');
+            
+            //버튼
+            var Wbutton= document.createElement('button');
+            Wbutton.setAttribute('name','writeCmtBtn');
+            Wbutton.setAttribute('id','writeCommentBtn'+comment.commentno);
+            Wbutton.setAttribute('data-bs-toggle','collapse');
+            Wbutton.setAttribute('class','btn btn-outline');
+            Wbutton.textContent = '답글';
+            buttonCol.appendChild(Wbutton);
+            var Rbutton= document.createElement('button');
+            Rbutton.setAttribute('name','removeCmtBtn');
+            Rbutton.setAttribute('id','removeCommentBtn'+ comment.commentno);
+            Rbutton.setAttribute('data-bs-toggle','collapse');
+            Rbutton.setAttribute('class','btn btn-outline');
+            Rbutton.textContent = '삭제';
+            buttonCol.appendChild(Rbutton);
+            //대댓글 부분
+            if(comment.commentno != comment.parcommentno){
+                buttonCol.removeChild(Wbutton);
+                var spacer =document.createElement('div');
+                    spacer.setAttribute('class','col-sm-1');
+                    contentCol.setAttribute('class','col-sm-8');
+                    relpybox.appendChild(spacer);
+            }
+        
+            relpybox.appendChild(contentCol);
+            relpybox.appendChild(buttonCol);
+            commentWrapper.appendChild(relpybox);
+            document.querySelector('#commentArea').appendChild(commentWrapper);
+
+                    })
+                    
+                   // $('#commentArea').append(toHtml(list));
+                }
+            })
+        }
+
+        showList([[${boardDto.boardno}]]);
+
+
+        // 댓글 등록 버튼 ( 대댓글 X )
+        $('#insertCommentBtn').on("click" ,function(){
+            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+
+            let comment = $('input[name=comment]').val();
+            let boardcomment_boardno = [[${boardDto.boardno}]];
+
+            if(comment.trim() == ''){
+                alert("댓글을 입력해주세요.");
+                return;
+            }
+            let commentDto = {
+                boardcomment_boardno : boardcomment_boardno,
+                comment : comment,
+            }
+            $.ajax({
+               type : 'POST',
+                url : '/comments',
+                headers : {"content-type" : "application/json"},
+                dataType : 'json',
+                data : JSON.stringify(commentDto),
+                success:function(str){
+                   console.log(str)
+                    $('input[name=comment]').val("");
+                },
+                error:function(){},
+                complete:function(){
+                    $('#commentArea').empty();
+                   showList([[${boardDto.boardno}]]);
+                }
+            });
+        })
+
+        // 삭제 버튼 클릭
+        $(document).on("click", "button[name=removeCmtBtn]" ,function(){
+            if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
+
+            let commentno = $(this).parent().parent().data("commentno");
+                console.log(commentno);
+
+            $.ajax({
+                type : 'DELETE',
+                url : '/comments/'+commentno+'?boardcomment_boardno='+[[${boardDto.boardno}]],
+                success : function(str){
+                    console.log(str)
+                    
+                },
+                error : function(){},
+                complete : function(){
+                    $('#commentArea').empty();
+                    showList([[${boardDto.boardno}]]);
+                }
+
+            })
+        })
+
+        // 대댓글 버튼 클릭
+        $(document).on("click" , "button[name=writeCmtBtn]", function(){
+            $('#replyCmtContainer').appendTo($(this).parent().parent());
+            $('#replyCmtContainer').css("display","block");
+        });
+
+        // 대댓글 등록 버튼 클릭
+        $('#replyBtn').on("click" , function(){
+            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+            let comment = $('input[name=replyComment]') .val();
+            let commentno = $('#replyCmtContainer').parent().data("commentno");
+            let boardcomment_boardno = [[${boardDto.boardno}]];
+            let parcommentno = commentno;
+
+            let commentDto = {
+                parcommentno : parcommentno,
+                boardcomment_boardno : boardcomment_boardno,
+                comment : comment
+            }
+
+            $.ajax({
+               type : 'POST',
+               url : '/comments',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(commentDto),
+                success : function(str){
+                   alert(str);
+                   $('#replyCmtContainer').appendTo($('#hiddenArea'));
+                   $('#replyCmtContainer').css("display", "none");
+                   $('input[name=replyComment]').val("");
+
+                   
+
+                },
+                error : function(){},
+                complete : function(){
+                    $('#commentArea').empty();
+                    showList([[${boardDto.boardno}]])
+                }
+            });
+        });
+
+        // 댓글 끝
+        // 좋아요 기능 시작
+                    let likeboard_userno = $('#loginUserNo').val();
+
+                    if(likeboard_userno != undefined){
+                        let likeboard_boardno = [[${boardDto.boardno}]];
+
+
+                        let likeBoardDto = {
+                            likeboard_boardno : likeboard_boardno,
+                            likeboard_userno : likeboard_userno,
+                        }
+                        // 사용자의 좋아요 값 불러오기
+                        // ajax에서 넘어온 값이 0 이면 좋아요 누르기 전 , 1 이면 좋아요 누른 것
                         $.ajax({
                             type : 'GET',
-                            url : '/comments?boardcomment_boardno='+boardcomment_boardno,
+                            url : '/likeCheck?likeboard_boardno='+likeboard_boardno+'&likeboard_userno='+likeboard_userno,
                             dataType : 'json',
-                            success:function(commentList){
-                                console.log(commentList);
-                                $('#commentArea').html(toHtml(commentList));
-                            }
-                        })
+                            success : function(data){
+                                // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                                let likeImg = $('#likeImg');
+                                if(data == 1){
+                                    likeImg.text("♥");
+                                } else {
+                                    likeImg.text("♡");
+                                }
+                            },
+                            error : function(){}
+                        });
+
+                        // 좋아요 버튼 클릭시 실행
+                        $('#likeBtn').on("click" , function(){
+
+                            $.ajax({
+                                type : 'POST',
+                                url : '/likeUpdate',
+                                headers : {"content-type" : "application/json"},
+                                dataType : 'json',
+                                data : JSON.stringify(likeBoardDto),
+                                success : function(map){
+                                    // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                                    let checkNum = map.checkNum;
+                                    let likeCnt = map.likeCnt;
+
+                                    let likeImg = $('#likeImg');
+                                    let like = $('#likeCnt');
+                                    if(checkNum == 1){
+                                        likeImg.text("♥");
+                                    } else {
+                                        likeImg.text("♡");
+                                    }
+                                    like.text(likeCnt);
+
+                                },
+                                error : function(){}
+                            });
+                        });
                     }
 
-                    showList([[${boardDto.boardno}]]);
+                    // 좋아요 기능 끝
 
+    });
 
-                    // 댓글 등록 버튼 ( 대댓글 X )
-                    $('#insertCommentBtn').on("click" ,function(){
-                        if(!confirm("댓글을 등록하시겠습니까 ?")) return;
-                        let comment = $('input[name=comment]').val();
-                        let boardcomment_boardno = [[${boardDto.boardno}]];
-                        if(comment.trim() == ''){
-                            alert("댓글을 입력해주세요.");
-                            return;
-                        }
-                        let commentDto = {
-                            boardcomment_boardno : boardcomment_boardno,
-                            comment : comment,
-                        }
-                        $.ajax({
-                            type : 'POST',
-                            url : '/comments',
-                            headers : {"content-type" : "application/json"},
-                            dataType : 'text',
-                            data : JSON.stringify(commentDto),
-                            success:function(str){
-                                console.log(str)
-                                showList([[${boardDto.boardno}]]);
-                                $('input[name=comment]').val("");
-                            },
-                            error:function(){}
-                        });
-                    })
+</script>
+</div>
 
-                    // 삭제 버튼 클릭
-                    $(document).on("click", "button[name=removeCmtBtn]" ,function(){
-                        if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
-                        let commentno = $(this).parent().attr("data-commentno");
-
-                        $.ajax({
-                            type : 'DELETE',
-                            url : '/comments/'+commentno+"?boardcomment_boardno="+[[${boardDto.boardno}]],
-                            success : function(str){
-                                console.log(str)
-                                showList([[${boardDto.boardno}]]);
-                            },
-                            error : function(){}
-                        })
-                    })
-
-                    // 대댓글 버튼 클릭
-                    $(document).on("click" , "button[name=writeCmtBtn]", function(){
-                        $('#replyCmtContainer').appendTo($(this).parent());
-                        $('#replyCmtContainer').css("display","block");
-                    });
-
-                    // 대댓글 등록 버튼 클릭
-                    $('#replyBtn').on("click" , function(){
-                        if(!confirm("댓글을 등록하시겠습니까 ?")) return;
-                        let comment = $('input[name=replyComment]') .val();
-                        let commentno = $('#replyCmtContainer').parent().attr("data-commentno");
-                        let boardcomment_boardno = [[${boardDto.boardno}]];
-                        let parcommentno = commentno;
-
-                        let commentDto = {
-                            parcommentno : parcommentno,
-                            boardcomment_boardno : boardcomment_boardno,
-                            comment : comment
-                        }
-
-                        $.ajax({
-                            type : 'POST',
-                            url : '/comments',
-                            headers : {"content-type" : "application/json"},
-                            dataType : 'text',
-                            data : JSON.stringify(commentDto),
-                            success : function(str){
-                                alert(str);
-                                $('#replyCmtContainer').appendTo($('#hiddenArea'));
-                                $('#replyCmtContainer').css("display", "none");
-                                $('input[name=replyComment]').val("");
-
-                                showList([[${boardDto.boardno}]])
-
-                            },
-                            error : function(){}
-                        });
-                    });
-
-                    // 댓글 끝
-
-                });
-
-
-
-                /*<![CDATA[*/
-
-
-
-                /*]]>*/
-            </script>
-        </div>
 </body>
 </html>

@@ -57,6 +57,7 @@
         FROM users u, protectboard p
         WHERE u.userno = p.protectboard_userno AND p.protectboard_userno = #{userno}
     </select>
+
     <sql id="aniCategoryChoose">
         <choose>
             <when test="ani_category == 0">

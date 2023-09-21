@@ -3,6 +3,7 @@ package com.project.poinhanshin.mapper.board;
 import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +42,12 @@ public interface BoardMapper {
     List<BoardDto> selectViewCntTop();
 
     // 댓글 개수 업데이트
-    int updateCommentCnt(Integer boardno, Integer num);
+    int updateCommentCnt(@Param("boardno")Integer boardno, @Param("num")Integer num);
 
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     List<BoardDto> SelectMyBoard(Integer userno);
 
     // 마이페이지 - 자신이 쓴 커뮤니티 게시글 불러오기
     List<BoardDto> WriteMyBoard(Integer userno);
+
 }

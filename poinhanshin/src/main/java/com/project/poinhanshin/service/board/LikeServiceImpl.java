@@ -1,7 +1,7 @@
 package com.project.poinhanshin.service.board;
 
+import com.project.poinhanshin.domain.board.LikeBoardDto;
 import com.project.poinhanshin.mapper.board.LikeMapper;
-import com.project.poinhanshin.mapper.board.LikeMapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +11,56 @@ public class LikeServiceImpl implements LikeService {
 
     LikeMapper likeMapperImpl;
 
+
     @Autowired
     public LikeServiceImpl(LikeMapper likeMapperImpl) {
         this.likeMapperImpl = likeMapperImpl;
     }
 
+
+    @Override
+    public Integer likeCheck(LikeBoardDto likeBoardDto) {
+        return likeMapperImpl.likeCheck(likeBoardDto);
+    }
+
+    @Override
+    public Integer searchLikeCnt(Integer boardno) {
+        return likeMapperImpl.searchLikeCnt(boardno);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
+    public Integer likeFunction(LikeBoardDto likeBoardDto) throws Exception {
+        Integer result = likeMapperImpl.likeCheck(likeBoardDto);
+        // 해당 게시물에서 좋아요를 눌렀는지 확인
+        if(result == 0){
+            // 이전에 좋아요 버튼을 누른 적 없음
+
+            // 좋아요 테이블 추가
+            likeMapperImpl.addLike(likeBoardDto);
+            // 게시판의 좋아요 값 증가
+            likeMapperImpl.updateLikeCnt(likeBoardDto.getLikeboard_boardno() , 1);
+
+        } else if( result == 1){
+            // 이전에 좋아요 버튼을 누름
+
+            // 좋아요 테이블 삭제
+            likeMapperImpl.deleteLike(likeBoardDto);
+
+            // 게시판의 좋아요 값 감소
+            likeMapperImpl.updateLikeCnt(likeBoardDto.getLikeboard_boardno() , -1);
+        }
+
+        return result;
+    }
+
+
+
+
+
+
+
+   /* @Transactional(rollbackFor = Exception.class)
     @Override
     public String likeFunction(Integer userNo, Integer bno) {
         // 메시지 담을 변수
@@ -38,7 +82,7 @@ public class LikeServiceImpl implements LikeService {
             msg = "좋아요 버튼을 비활성화 합니다.";
         }
         return msg;
-    }
+    }*/
 
     /*@Transactional(rollbackFor = Exception.class)
     @Override
