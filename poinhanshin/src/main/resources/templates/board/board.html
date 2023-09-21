@@ -39,7 +39,7 @@
 <!--    고양이=1(true), 강아지=0(false)-->
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
-    <input type="hidden" th:if="${loginUser != null}" th:value="${loginUser.userno}" id="loginUserNo"/>
+
     <!-- 제목 -->
     <div class="row">
         <div class="form-floating">
@@ -230,24 +230,7 @@
                     <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
                 </div>
                 <div>
-
-                    <form  method="post">
-
-                        <div class="input-group" style="width:auto">
-                            <input type="hidden" name="boardcomment_userno" >
-                            <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                            <input type="text"  class="form-control" id="content" name="comment"
-                                   placeholder="1자에서 100자 이내로 입력해주세요.">
-                            <div class="field-error" >
-                                오류2
-                            </div>
-                            <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
-                            <br>
-                        </div>
-                    </form>
-                </div>
-            </div>
-  
+            <form  method="post">
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
                     <input hidden="hidden" />
@@ -267,25 +250,37 @@
             th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
     </button>
     <button type="button" class="btn btn-secondary"
-            th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
+            th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , board_userno = ${boardDto.board_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
     </button>
-    <form id="removeForm" th:action="@{/board/remove(boardno = ${boardDto.boardno} , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}" method="post">
+    <form id="removeForm" action="" method="">
+        <input type="hidden" name="loginUser" th:if="${loginUser != null}" th:value="${loginUser.userno}"/>
+        <input type="hidden" name="loginUser"  th:unless="${loginUser != null}" value="0"/>
+        <input type="hidden" name="boardno" th:value="${boardDto.boardno}"/>
+        <input type="hidden" name="page"th:value="${sc.getPage()}" />
+        <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
+        <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
+        <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
         <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
     </form>
 </div>
+<script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
+<script th:if="${msg} == 'FAIL_REMOVE'"> alert("삭제 실패. 작성자가 아닌 경우 해당 게시물을 삭제할 수 없습니다.")</script>
+<script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <script th:inline="javascript">
 
 
     $(document).ready(function(){
         // 게시글 시작
         // 게시물 삭제 버튼 클릭시
-        $('#removeBtn').on("click",function(){
-            if(!confirm("삭제하시겠습니까 ?")) return;
-            console.log("게시물 삭제");
 
+        $(document).on("click", "#removeBtn", function(){
+            if(!confirm("삭제하시겠습니까 ?")) return;
             let form = $('#removeForm');
+            form.attr("action", "/board/remove" );
+            form.attr("method","post");
             form.submit();
         });
+
         // 게시글 끝
 
         // 댓글 시작
@@ -349,7 +344,7 @@
             var writer= document.createElement('div');
             writer.setAttribute('class','fas fa-user');
             writer.setAttribute('style','filter: opacity(0.5) drop-shadow(0 0 0 #6F61C0);color:black;')            
-            writer.textContent = '  '+comment.boardcomment_userno;
+            writer.textContent = '  '+comment.id;
             //내용
             var comments= document.createElement('div');
             comments.textContent = comment.comment;
@@ -411,6 +406,7 @@
 
             let comment = $('input[name=comment]').val();
             let boardcomment_boardno = [[${boardDto.boardno}]];
+            var loginUser = parseInt($('#loginUserNo').val());
 
             if(comment.trim() == ''){
                 alert("댓글을 입력해주세요.");
@@ -418,6 +414,7 @@
             }
             let commentDto = {
                 boardcomment_boardno : boardcomment_boardno,
+                boardcomment_userno : loginUser,
                 comment : comment,
             }
             $.ajax({
@@ -441,13 +438,13 @@
         // 삭제 버튼 클릭
         $(document).on("click", "button[name=removeCmtBtn]" ,function(){
             if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
-
+            var loginUser = parseInt($('#loginUserNo').val());
             let commentno = $(this).parent().parent().data("commentno");
                 console.log(commentno);
 
             $.ajax({
                 type : 'DELETE',
-                url : '/comments/'+commentno+'?boardcomment_boardno='+[[${boardDto.boardno}]],
+                url : '/comments/'+commentno+'?boardcomment_boardno='+[[${boardDto.boardno}]]+'&loginUser='+loginUser,
                 success : function(str){
                     console.log(str)
                     
@@ -470,6 +467,7 @@
         // 대댓글 등록 버튼 클릭
         $('#replyBtn').on("click" , function(){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+            var loginUser = parseInt($('#loginUserNo').val());
             let comment = $('input[name=replyComment]') .val();
             let commentno = $('#replyCmtContainer').parent().data("commentno");
             let boardcomment_boardno = [[${boardDto.boardno}]];
@@ -478,6 +476,7 @@
             let commentDto = {
                 parcommentno : parcommentno,
                 boardcomment_boardno : boardcomment_boardno,
+                boardcomment_userno : loginUser,
                 comment : comment
             }
 

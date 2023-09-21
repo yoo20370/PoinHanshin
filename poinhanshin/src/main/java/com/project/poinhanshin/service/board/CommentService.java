@@ -18,6 +18,6 @@ public interface CommentService {
     // 댓글 수정하기
     int modifyComment(CommentDto commentDto);
     // 댓글 삭제하기
-    int removeComment(Integer boardcomment_boardno , Integer commentno , Integer boardcomment_userno);
+    int removeComment(Integer boardcomment_boardno , Integer commentno , Integer loginUser) ;
 
 }
