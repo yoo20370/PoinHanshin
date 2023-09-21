@@ -82,20 +82,19 @@
             ></textarea>
         </div>
     </div>
-
+<!--좋아요 버튼-->
+    <div id="likeContainer" class="vstack col-sm-2 mx-auto m-2">
+        <button th:if="${loginUser != null }" type="button" id="likeBtn" style=" border: 0; background-color: transparent;">
+            <i id="likeIcon" class="far fa-heart fa-lg" style="font-size:50px;color:#A084E8"></i>
+        </button>
+    </div>
     <!-- 작성일 , 조회수 , 작성자 -->
-    <div class="row">
-        <span th:text="|작성일 : ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')} |" >작성일:</span>
-        <span th:text="|조회수 : ${boardDto.board_viewcount}|" >조회수:</span>
-        <span th:text="|작성자 : ${boardDto.id}|" >작성자:</span>
-
+    <div class="hstack">
+        <i class="fas fa-user-edit"></i>&nbsp<span th:text="| ${boardDto.id}|" >작성자:</span>&nbsp
+        <i class="far fa-eye"></i>&nbsp<span th:text="| ${boardDto.board_viewcount}|" >조회수:</span>&nbsp
+        <i class="fas fa-heart"></i>&nbsp<span id="likeCnt" th:text="${boardDto.likecount}"></span>
+        <small class="ms-auto" th:text="| ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')} |" >작성일:</small>
     </div>
-    <div id="likeContainer">
-        <p>좋아요 수 : <span id="likeCnt" th:text="${boardDto.likecount}"></span></p>
-
-        <span id="likeImg"></span>
-    </div>
-    <button th:if="${loginUser != null }" type="button" id="likeBtn">좋아요 버튼</button>
 
 
     <!--댓글출력-->
@@ -246,13 +245,13 @@
     <div class="fa-solid fa-user">테스트</div>
     <i class="fas fa-user"></i>
     <!-- 버튼 -->
-    <button type="button" class="btn btn-secondary"
-            th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
-    </button>
+    <th:block th:if="${loginUser} ? ${loginUser.userno} == ${boardDto.board_userno} : false ">
+    <div class="vstack col-sm-2 mx-auto" >
     <button type="button" class="btn btn-secondary"
             th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , board_userno = ${boardDto.board_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
     </button>
-    <form id="removeForm" action="" method="">
+    </div>
+    <form id="removeForm" action="" method="" class="vstack col-sm-2 mx-auto">
         <input type="hidden" name="loginUser" th:value="${loginUser}"/>
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
@@ -260,8 +259,16 @@
         <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
         <input th:if="${loginUser != null }" type="hidden" name="loginUserNo" id=" " th:value="${loginUser.userno}"/>
         <input th:unless="${loginUser != null }" type="hidden" name="loginUserNo" value="0" />
-        <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
+        <button type="button" id="removeBtn"class="btn btn-danger">삭제</button>
     </form>
+    </th:block>
+    <div class="hstack gap-3">
+        <div class="p-2 ms-auto">
+            <button type="button" class="btn btn-secondary"
+                    th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
+            </button>
+        </div>
+    </div>
 </div>
 <script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
@@ -532,11 +539,14 @@
                 success : function(data){
                     console.log("success");
                     // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
-                    let likeImg = $('#likeImg');
+              
+                    let likeIcon = document.getElementById("likeIcon");
                     if(data == 1){
-                        likeImg.text("♥");
+                 
+                        likeIcon.setAttribute('class','fas fa-heart fa-lg');
                     } else {
-                        likeImg.text("♡");
+                 
+                        likeIcon.setAttribute('class','far fa-heart fa-lg');
                     }
                 },
                 error : function(){
@@ -555,13 +565,15 @@
                         // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
                         let checkNum = map.checkNum;
                         let likeCnt = map.likeCnt;
-
-                        let likeImg = $('#likeImg');
+                        let likeIcon = document.getElementById("likeIcon");
+                  
                         let like = $('#likeCnt');
                         if(checkNum == 1){
-                            likeImg.text("♥");
+                  
+                            likeIcon.setAttribute('class','fas fa-heart fa-lg');
                         } else {
-                            likeImg.text("♡");
+                       
+                            likeIcon.setAttribute('class','far fa-heart fa-lg');
                         }
                         like.text(likeCnt);
 

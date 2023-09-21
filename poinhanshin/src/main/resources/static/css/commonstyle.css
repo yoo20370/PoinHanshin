@@ -113,6 +113,22 @@
     .th_thumbnail {
         width: 100px;
     }
+    /*board*/
+    #likeBtn:focus {
+      animation: icon-change 1.0s ;
+    }
+    @keyframes icon-change {
+       from{
+          opacity: 0;
+       }
+       to{
+        opacity: 1;
+       }
+    }
+
+
+
+    }
 
     /*protectedit*/
         #att_zone{
