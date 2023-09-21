@@ -36,7 +36,7 @@ public class CommentController {
     public ResponseEntity<String> addComment(@RequestBody CommentDto commentDto ){
         // 로그인이 안 된 경우 , CommentDto.userno()이 null임 그러므로 아무것도 실행 안 하게 함
         if(commentDto.getBoardcomment_userno() == null){
-            System.out.println("");
+            System.out.println(" ㅁㅁㅁ ");
             return new ResponseEntity<String>("로그인이 필요합니다.",HttpStatus.BAD_REQUEST);
         }
         System.out.println("등록 : "+commentDto);

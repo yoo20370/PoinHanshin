@@ -45,6 +45,7 @@ public class LikeController {
     @ResponseBody
     public Map<String , Integer> likeUpdte(@RequestBody LikeBoardDto likeBoardDto) throws Exception {
 
+        System.out.println("likeUpdate 실행됨");
         // 테이블 검색한 결과 반환
         Integer checkNum = likeService.likeFunction(likeBoardDto);
 

@@ -258,6 +258,8 @@
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
+        <input th:if="${loginUser != null }" type="hidden" name="loginUserNo" id=" " th:value="${loginUser.userno}"/>
+        <input th:unless="${loginUser != null }" type="hidden" name="loginUserNo" value="0" />
         <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
     </form>
 </div>
@@ -412,7 +414,7 @@
 
             let comment = $('input[name=comment]').val();
             let boardcomment_boardno = [[${boardDto.boardno}]];
-            var loginUser = parseInt($('#loginUserNo').val());
+            var loginUser = parseInt($('input[name=loginUserNo]').val());
 
             if(comment.trim() == ''){
                 alert("댓글을 입력해주세요.");
@@ -444,7 +446,7 @@
         // 삭제 버튼 클릭
         $(document).on("click", "button[name=removeCmtBtn]" ,function(){
             if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
-            var loginUser = parseInt($('#loginUserNo').val());
+            var loginUser = parseInt($('input[name=loginUserNo]').val());
             let commentno = $(this).parent().parent().data("commentno");
                 console.log(commentno);
 
@@ -473,7 +475,7 @@
         // 대댓글 등록 버튼 클릭
         $('#replyBtn').on("click" , function(){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
-            var loginUser = parseInt($('#loginUserNo').val());
+            var loginUser = parseInt($('input[name=loginUserNo]').val());
             let comment = $('input[name=replyComment]') .val();
             let commentno = $('#replyCmtContainer').parent().data("commentno");
             let boardcomment_boardno = [[${boardDto.boardno}]];
@@ -510,65 +512,66 @@
         });
 
         // 댓글 끝
+
         // 좋아요 기능 시작
-                    let likeboard_userno = $('#loginUserNo').val();
+        let likeboard_userno = $('input[name=loginUserNo]').val();
 
-                    if(likeboard_userno != undefined){
-                        let likeboard_boardno = [[${boardDto.boardno}]];
+        if(likeboard_userno != 0){
+            let likeboard_boardno = [[${boardDto.boardno}]];
 
-
-                        let likeBoardDto = {
-                            likeboard_boardno : likeboard_boardno,
-                            likeboard_userno : likeboard_userno,
-                        }
-                        // 사용자의 좋아요 값 불러오기
-                        // ajax에서 넘어온 값이 0 이면 좋아요 누르기 전 , 1 이면 좋아요 누른 것
-                        $.ajax({
-                            type : 'GET',
-                            url : '/likeCheck?likeboard_boardno='+likeboard_boardno+'&likeboard_userno='+likeboard_userno,
-                            dataType : 'json',
-                            success : function(data){
-                                // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
-                                let likeImg = $('#likeImg');
-                                if(data == 1){
-                                    likeImg.text("♥");
-                                } else {
-                                    likeImg.text("♡");
-                                }
-                            },
-                            error : function(){}
-                        });
-
-                        // 좋아요 버튼 클릭시 실행
-                        $('#likeBtn').on("click" , function(){
-
-                            $.ajax({
-                                type : 'POST',
-                                url : '/likeUpdate',
-                                headers : {"content-type" : "application/json"},
-                                dataType : 'json',
-                                data : JSON.stringify(likeBoardDto),
-                                success : function(map){
-                                    // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
-                                    let checkNum = map.checkNum;
-                                    let likeCnt = map.likeCnt;
-
-                                    let likeImg = $('#likeImg');
-                                    let like = $('#likeCnt');
-                                    if(checkNum == 1){
-                                        likeImg.text("♥");
-                                    } else {
-                                        likeImg.text("♡");
-                                    }
-                                    like.text(likeCnt);
-
-                                },
-                                error : function(){}
-                            });
-                        });
+            let likeBoardDto = {
+                likeboard_boardno : likeboard_boardno,
+                likeboard_userno : likeboard_userno,
+            }
+            // 사용자의 좋아요 값 불러오기
+            // ajax에서 넘어온 값이 0 이면 좋아요 누르기 전 , 1 이면 좋아요 누른 것
+            $.ajax({
+                type : 'GET',
+                url : '/likeCheck?likeboard_boardno='+likeboard_boardno+'&likeboard_userno='+likeboard_userno,
+                dataType : 'json',
+                success : function(data){
+                    console.log("success");
+                    // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                    let likeImg = $('#likeImg');
+                    if(data == 1){
+                        likeImg.text("♥");
+                    } else {
+                        likeImg.text("♡");
                     }
+                },
+                error : function(){
+                    console.log("fail");
+                }
+            });
+            $('#likeBtn').on("click" , function(){
 
-                    // 좋아요 기능 끝
+                $.ajax({
+                    type : 'POST',
+                    url : '/likeUpdate',
+                    headers : {"content-type" : "application/json"},
+                    dataType : 'json',
+                    data : JSON.stringify(likeBoardDto),
+                    success : function(map){
+                        // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
+                        let checkNum = map.checkNum;
+                        let likeCnt = map.likeCnt;
+
+                        let likeImg = $('#likeImg');
+                        let like = $('#likeCnt');
+                        if(checkNum == 1){
+                            likeImg.text("♥");
+                        } else {
+                            likeImg.text("♡");
+                        }
+                        like.text(likeCnt);
+
+                    },
+                    error : function(){}
+                });
+            });
+
+        }
+        // 좋아요 기능 끝
 
     });
 
