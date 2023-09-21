@@ -29,6 +29,7 @@
     </select>
     <insert id="insertMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
         INSERT INTO mapboard
+
             (mapboard_userno , mapboard_title , mapboard_content ,  missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype, fileAttached)
         VALUES (#{mapboard_userno} , #{mapboard_title} , #{mapboard_content} , #{missingtime} , #{missingaddress} , #{latitude} , #{longitude} , now() , 0 , #{mapboard_ani_category} , #{writertype}, #{fileAttached})
     </insert>

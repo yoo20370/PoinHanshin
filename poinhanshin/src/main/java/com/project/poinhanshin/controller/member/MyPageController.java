@@ -19,7 +19,8 @@ public class MyPageController {
     }
 
     @GetMapping("/myPage")
-    public String myPage(@SessionAttribute(name = "loginUser", required = false) User loginUser) {
+    public String myPage(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
         return "members/myPage";
     }
     @GetMapping("/modifyPage")
@@ -28,7 +29,7 @@ public class MyPageController {
         return "members/myPageUpdate";
     }
 
-    @GetMapping("/dismiss")
+    @PostMapping("/dismiss")
     public String dismiss(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         myPageService.dismiss(loginUser.getUserno());
         return "redirect:/logout";
