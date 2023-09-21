@@ -89,21 +89,18 @@
             <!-- 제목 -->
             <label class="col-sm-2 col-form-label"><strong>제목</strong></label>
             <div class="col-sm-10">
-                <div class="col-sm-10">
                 <textarea
                         type="text"
                         name="protectboard_title"
                         class="form-control"
                         id="protectboard_title"
-                        th:text="${protectboard.protectboard_title}"
-                >
+                        th:text="${protectboard.protectboard_title}">
                 </textarea>
                 </label>
             </div>
                 <!-- 내용 -->
             <label class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-
                  <textarea
                          type="text"
                          name="protectboard_content"
@@ -114,7 +111,6 @@
                 </textarea>
                 </label>
             </div>
-
         </div>
 
         <!-- dropzone -->
@@ -122,15 +118,17 @@
 
         <!-- 수정 버튼  -->
         <div class="row p-5">
-            <div class="col-auto mr-auto"></div>
+            <div class="col-auto mx-auto"></div>
             <div class="d-grid col-1 mx-auto">
                 <button type="button" id="submitBtn" class="btn btn-primary submitBtn modifyMode" role="button">수정</button>
             </div>
         </div>
             <!-- 목록 버튼 -->
+        <div class="row">
         <button type="button" class="btn btn-secondary"
                 th:onclick="|location.href='@{/protectboard/list(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword})}'|">목록
         </button>
+        </div>
     </form>
 </div>
 <script type="text/javascript" src="/js/date-time-picker.js"></script>
