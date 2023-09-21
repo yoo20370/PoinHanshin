@@ -49,15 +49,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int removeComment(Integer boardcomment_boardno, Integer commentno, Integer loginUser)  {
-
-        /*int result = commentMapper.deleteComment(commentno , loginUser);
-
-        // result가 0이 아니라는 것은 댓글을 삭제했다는 의미 ( 영향을 준 테이블 개수를 반환하기 때문 )
-        System.out.println("result = " + result);
-        if(result != 0){
-            // 삭제 처리 됨, 영향을 준 만큼 개수를 감소
-            boardMapper.updateCommentCnt(boardcomment_boardno ,  -result);
-        }*/
+        
         int result = commentMapper.deleteComment(commentno , loginUser);
 
         // result가 0이 아니라는 것은 댓글을 삭제했다는 의미 ( 영향을 준 테이블 개수를 반환하기 때문 )
