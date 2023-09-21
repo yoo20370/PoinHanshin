@@ -5,8 +5,8 @@
     <select id="searchResultCnt" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="int">
         SELECT count(*)
         FROM protectboard
-        WHERE breeds LIKE concat('%' , #{keyword} ,'%') and
-        <include refid="aniCategoryChoose"/>
+        WHERE breeds LIKE concat('%' , #{keyword} ,'%')
+        and <include refid="aniCategoryChoose"/>
     </select>
     <select id="searchResultList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
         SELECT u.id, p.protectboard_userno , p.protectboardno , p.protectboard_title , p.protectboard_content , p.breeds , p.protectboard_ani_category , p.protectboard_reg_date  , p.protectstatus , p.starttime , p.deadline ,  p.fileAttached

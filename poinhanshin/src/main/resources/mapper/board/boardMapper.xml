@@ -13,6 +13,8 @@
         FROM users u, board b
         WHERE u.userno = b.board_userno and b.board_title LIKE concat('%' , #{keyword} ,'%')
         and <include refid="aniCategoryChoose"/>
+        ORDER BY b.boardno ASC
+        LIMIT #{offset}, #{pageSize}
     </select>
     <select id="boardSelectContentOne" parameterType="int" resultType="com.project.poinhanshin.domain.board.BoardDto">
         SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount ,b.likecount ,b.fileAttached
