@@ -11,7 +11,7 @@
 
     <delete id="deleteComment" parameterType="map">
         Delete From boardcomment
-        Where  boardcomment_userno = #{loginUser} and (ifnull(parcommentno , commentno) = #{commentno} or commentno = ${commentno} );
+        Where  boardcomment_userno = #{loginUser} and commentno = #{commentno}
     </delete>
 
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.board.CommentDto">
