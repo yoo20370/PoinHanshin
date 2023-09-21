@@ -5,13 +5,13 @@
     <select id="selectComment" parameterType="int" resultType="com.project.poinhanshin.domain.board.CommentDto">
         Select u.id, b.boardcomment_boardno , b.boardcomment_userno , b.commentno , ifnull(b.parcommentno , b.commentno) as parcommentno, b.comment ,boardcomment_reg_date
         From boardcomment b, users u, board board
-        Where b.boardcomment_userno = u.userno and b.boardcomment_boardno = board.board_userno and boardcomment_boardno = 1
-        ORDER BY b.parcommentno ASC , b.commentno ASC;
+        Where b.boardcomment_userno = u.userno and b.boardcomment_boardno = board.boardno and boardcomment_boardno = #{commentno}
+        ORDER BY parcommentno ASC , b.commentno ASC;
     </select>
 
     <delete id="deleteComment" parameterType="map">
         Delete From boardcomment
-        Where commentno = #{commentno} and boardcomment_userno = #{boardcomment_userno}
+        Where  boardcomment_userno = #{loginUser} and (ifnull(parcommentno , commentno) = #{commentno} or commentno = ${commentno} );
     </delete>
 
     <insert id="insertContent" parameterType="com.project.poinhanshin.domain.board.CommentDto">
