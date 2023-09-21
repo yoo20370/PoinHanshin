@@ -12,7 +12,7 @@
         <include refid="aniCategoryChoose"/>
     </select>
     <select id="selectMapList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
-        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.mapboard_imagepath , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
+        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
         FROM mapboard mb, users u
         WHERE mb.mapboard_userno = u.userno and TRUE
         and
@@ -23,18 +23,18 @@
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectMapBoardOne" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
-        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.mapboard_imagepath , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
+        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
         FROM mapboard mb, users u
         WHERE  mb.mapboard_userno = u.userno and mapboardno = #{mapboardno}
     </select>
     <insert id="insertMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
         INSERT INTO mapboard
-            (mapboard_userno ,  mapboard_content , mapboard_imagepath , missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype)
-        VALUES (#{mapboard_userno} , #{mapboard_content} , #{mapboard_mapimagepath} , #{missingtime} , #{missingaddress} , #{latitude} , #{longitude} , now() , #{mapboard_viewcount} , #{mapboard_ani_category} , #{writertype})
+            (mapboard_userno ,  mapboard_content, missingtime , missingaddress , latitude , longitude , mapboard_reg_date , mapboard_viewcount , mapboard_ani_category , writertype)
+        VALUES (#{mapboard_userno} , #{mapboard_content}  , #{missingtime} , #{missingaddress} , #{latitude} , #{longitude} , now() , #{mapboard_viewcount} , #{mapboard_ani_category} , #{writertype})
     </insert>
     <update id="updateMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
         UPDATE mapboard
-        SET mapboard_imagepath = #{mapboard_imagepath} , missingtime = #{missingtime} , missingaddress = #{missingaddress} , latitude = #{latitude} , longitude = #{longitude} , mapboard_ani_category = #{mapboard_ani_category} , writertype = #{writertype}
+        SET  missingtime = #{missingtime} , missingaddress = #{missingaddress} , latitude = #{latitude} , longitude = #{longitude} , mapboard_ani_category = #{mapboard_ani_category} , writertype = #{writertype}
         WHERE mapboard_userno = #{mapboard_userno} and mapboardno = #{mapboardno}
     </update>
     <delete id="deleteMapBoard" parameterType="map">
@@ -43,13 +43,13 @@
     </delete>
 
     <select id="SelectMyMap" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
-        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.mapboard_imagepath , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
+        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
         FROM mapboard mb, users u, mypage mp
         WHERE mp.mypage_userno = u.userno and mp.mypage_mapboardno = mb.mapboardno and mp.mypage_userno = #{userno}
     </select>
 
     <select id="WriteMyMap" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
-        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.mapboard_imagepath , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
+        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_content , mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype
         FROM mapboard mb, users u
         WHERE mb.mapboard_userno = u.userno and mb.mapboard_userno = #{userno}
     </select>
