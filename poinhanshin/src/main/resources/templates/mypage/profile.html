@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>회원정보 조회</title>
@@ -45,32 +45,33 @@
 </head>
 <body>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" id="mainContent">
-  <button class="back-button" onclick="goBack()">돌아가기</button>
+  <button class="back-button" onclick="window.location.href='/myPage'">돌아가기</button>
   <h2>회원정보 조회</h2>
   <div class="info">
     <label for="id">아이디:</label>
-    <span id="id">user123</span>
+    <span id="id" th:text="${loginUser.id}">user123</span>
   </div>
   <div class="info">
     <label for="name">이름:</label>
-    <span id="name">John</span>
+    <span id="name" th:text="${loginUser.name}">John</span>
   </div>
   <div class="info">
     <label for="age">나이:</label>
-    <span id="age">30</span>
+    <span id="age" th:text="${loginUser.age}">30</span>
   </div>
   <div class="info">
     <label for="phone">전화번호:</label>
-    <span id="phone">010-1234-5678</span>
+    <span id="phone" th:text="${loginUser.phnum}">010-1234-5678</span>
   </div>
   <div class="info">
     <label for="email">이메일:</label>
-    <span id="email">john@example.com</span>
+    <span id="email" th:text="${loginUser.mail}">john@example.com</span>
   </div>
   <div class="info">
     <label for="address">주소:</label>
-    <span id="address">서울시 강남구</span>
+    <span id="address" th:text="${loginUser.address}">서울시 강남구</span>
   </div>
+  <button class="back-button" onclick="window.location.href='/modifyPage'">회원정보수정</button>
 </main>
 <script src="profile.js"></script>
 </body>

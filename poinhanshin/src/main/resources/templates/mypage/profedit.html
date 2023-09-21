@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>회원정보 수정</title>
@@ -60,22 +60,43 @@
 <body>
 <div class="container">
     <h2>회원정보 수정</h2>
-    <form id="profileForm">
+    <form id="profileForm" action="/modifyPage" method="post">
+        <input type="hidden" name="userno" th:value="${loginUser.userno}">
+        <div class="form-group">
+            <label for="id">아이디:</label>
+            <input type="text" id="id" name="id" placeholder="아이디를 입력하세요" th:value="${loginUser.id}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호:</label>
+            <input type="text" id="password" name="password" placeholder="비밀번호를 입력하세요" th:value="${loginUser.password}" required>
+        </div>
         <div class="form-group">
             <label for="name">이름:</label>
-            <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+            <input type="text" id="name" name="name" placeholder="이름을 입력하세요" th:value="${loginUser.name}" required>
         </div>
         <div class="form-group">
-            <label for="email">이메일:</label>
-            <input type="text" id="email" name="email" placeholder="이메일을 입력하세요" required>
+            <label for="age">나이:</label>
+            <input type="text" id="age" name="age" placeholder="나이를 입력하세요" th:value="${loginUser.age}" required>
         </div>
-        <button type="submit">저장</button>
+        <div class="form-group">
+            <label for="phnum">전화번호:</label>
+            <input type="text" id="phnum" name="phnum" placeholder="전화번호를 입력하세요" th:value="${loginUser.phnum}" required>
+        </div>
+        <div class="form-group">
+            <label for="mail">이메일:</label>
+            <input type="text" id="mail" name="mail" placeholder="이메일을 입력하세요" th:value="${loginUser.mail}" required>
+        </div>
+        <div class="form-group">
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" placeholder="주소를 입력하세요" th:value="${loginUser.address}" required>
+        </div>
+        <button class="btn-primary" type="submit">저장</button>
     </form>
-    <button class="back-button" onclick="goBack()">돌아가기</button>
+    <button class="back-button" onclick="window.location.href='/profilePage'">돌아가기</button>
 </div>
 
 <script>
-    // 회원정보 수정 폼 제출 시 이벤트 처리
+/*    // 회원정보 수정 폼 제출 시 이벤트 처리
     document.getElementById('profileForm').addEventListener('submit', function (event) {
         event.preventDefault(); // 폼 제출 이벤트 중지
 
@@ -93,7 +114,7 @@
     // 돌아가기 버튼 클릭 시 브라우저 이전 페이지로 이동
     function goBack() {
         window.history.back();
-    }
+    }*/
 </script>
 </body>
 </html>

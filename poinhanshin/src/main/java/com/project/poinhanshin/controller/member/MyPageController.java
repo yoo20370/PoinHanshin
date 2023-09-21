@@ -21,12 +21,18 @@ public class MyPageController {
     @GetMapping("/myPage")
     public String myPage(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
-        return "members/myPage";
+        return "mypage/mypage";
+    }
+    @GetMapping("/profilePage")
+    public String profilePage(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/profile";
     }
     @GetMapping("/modifyPage")
     public String modifyPageForm(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
-        return "members/myPageUpdate";
+//        return "members/myPageUpdate";
+        return "mypage/profedit";
     }
 
     @PostMapping("/dismiss")
