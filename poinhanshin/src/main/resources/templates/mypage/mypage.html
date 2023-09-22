@@ -203,7 +203,7 @@
                         <ul class="nav flex-column">
                             <div class="profile_m">
                             <li class="nav-item">
-                                <img src="img/user.png" class="profile-image">
+                                <img src="/img/user.png" class="profile-image">
                                 <span class="profile-label d-flex justify-content-center my-2" th:if="${loginUser!=null}" th:text="${loginUser.id}">프로필</span>
                                 <span class="profile-label d-flex justify-content-center my-2" th:unless="${loginUser!=null}" th:text="'프로필'">프로필</span>
 
@@ -216,7 +216,6 @@
                                 <form action="/dismiss" method="post">
                                     <input type="submit" value="탈퇴하기" style="border: none; background: none; color: red; margin: 0">
                                 </form>
-
                             </div>
                             </li>
                             </div>

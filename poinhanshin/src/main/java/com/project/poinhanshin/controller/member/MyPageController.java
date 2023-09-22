@@ -54,17 +54,20 @@ public class MyPageController {
     }
 
     @GetMapping("/forumBookmark")
-    public String forumBookmark() {
+    public String forumBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
         return "mypage/boardFav";
     }
 
     @GetMapping("/temporaryBookmark")
-    public String temporaryBookmark() {
+    public String temporaryBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
         return "mypage/secureFav";
     }
 
     @GetMapping("/mapBookmark")
-    public String mapBookmark() {
-        return "redirect:/";
+    public String mapBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/findmapFav";
     }
 }
