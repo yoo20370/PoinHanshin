@@ -27,6 +27,12 @@ public interface MapMapper {
     // 맵 게시물 삭제
     int deleteMapBoard(Integer mapboard_userno , Integer mapboardno);
 
+    // 최근 맵 게시물 번호를 반환
+    int selectRecentMapBoardNo(Integer mapboard_userno);
+
+    // 파일 존재 여부 값 수정
+    int mapBoardUpdateFileAttached(Integer mapboardno , Integer fileAttached);
+
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     List<MapBoardDto> SelectMyMap(Integer userno);
 

@@ -12,22 +12,36 @@
   <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body layout:fragment="content">
  <div class="container">
   <div class="post-list">
-    <div class="post" th:each="post : ${mapboard}">
+    <div class="post" >
       <div class="post-header">
         <div class="header-left">
         <div style="display: flex; flex-direction: row;">
     <span class="animal-type">
         <!-- 고양이=1(true), 강아지=0(false) -->
-        <span th:if="${mapboard.mapboard_ani_category}" class="badge text-bg-primary">고양이</span>
-        <span th:unless="${mapboard.mapboard_ani_category}" class="badge rounded-pill text-bg-secondary">강아지</span>
+        <form id="form" action="" method="">
+            <!-- 페이지 정보 및 로그인 정보-->
+            <input type="hidden" name="page" th:value="${sc.page}"/>
+            <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
+            <input type="hidden" name="keyword" th:value="${sc.keyword}"/>
+            <input type="hidden" name="ani_category" th:value="${sc.ani_category}"/>
+            <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
+            <input type="hidden" name="loginUser" id="loginUser" th:if="${loginUser}" th:value="${loginUser.userno}"/>
+            <input type="hidden" name="loginUser" th:unless="${loginUser}" value="0"/>
+            <input type="hidden" name="mapboardno" th:value="${mapBoardDto.mapboardno}"/>
+        </form>
+
+        <span th:if="${mapBoardDto.mapboard_ani_category}" class="badge text-bg-primary">고양이</span>
+        <span th:unless="${mapBoardDto.mapboard_ani_category}" class="badge rounded-pill text-bg-secondary">강아지</span>
+
     </span>
           <span class="writertype">
-        <span th:if="${mapboard.writertype}" class="badge text-bg-danger">신고자</span>
-        <span th:unless="${mapboard.writertype}" class="badge rounded-pill text-bg-secondary">발견자</span>
+        <span th:if="${mapBoardDto.writertype}" class="badge text-bg-danger">신고자</span>
+        <span th:unless="${mapBoardDto.writertype}" class="badge rounded-pill text-bg-secondary">발견자</span>
     </span>
         </div>
           <!-- 즐겨찾기/ 신고하기 아이콘 버튼-->
@@ -41,32 +55,32 @@
           <div class="form-floating">
             <input type="text" readonly class="form-control-plaintext"
                    id="floatingEmptyPlaintextInput"
-                   th:value="${mapboard.title}">
+                   th:value="${mapBoardDto.mapboard_title}">
             <label for="floatingEmptyPlaintextInput">제목</label>
           </div>
         </div>
 <!--        <span class="title" th:text="'제목: ' + ${mapboard.missingaddress}">제목: </span>-->
-        <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
-        <span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingtime}">실종/발견 날짜 및 시간: </span>
+        <span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}">실종/발견 장소: </span>
+        <span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${mapBoardDto.missingtime}">실종/발견 날짜 및 시간: </span>
       </div>
       <div class="post-image">
-        <img th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">
+        <!--<img th:src="${mapBoardDto.}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
         <img src="../../static/img/mbti/image-0.png" alt="Dog">
       </div>
       <div class="post-content">
-        <p th:text="${mapboard.mapboard_content}">
+        <p th:text="${mapBoardDto.mapboard_content}">
           Woo woo woo woo</p>
       </div>
       <div class="footer-left">
-        <span class="mapboard_userno" th:text="'작성자: ' +${mapboard.mapboard_userno}">작성자: </span>
-        <span class="reg_date" th:text="'작성일: ' +${mapboard.mapboard_reg_date}">작성일: </span>
+        <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.id}">작성자: </span>
+        <span class="reg_date" th:text="'작성일: ' +${mapBoardDto.mapboard_reg_date}">작성일: </span>
       </div>
       <div class="footer-right">
-        <span class="view-count" th:text="'조회수: ' + ${mapboard.mapboard_viewcount}">조회수: </span>
+        <span class="view-count" th:text="'조회수: ' + ${mapBoardDto.mapboard_viewcount}">조회수: </span>
       </div>
       <div class="post-buttons">
           <button class="go-button" type="submit" value="update" onclick="location.href='findmaplist.html'">목록</button>
-        <button class="edit-button" type="submit" value="update" onclick="location.href='findmapedit.html'">수정</button>
+        <button class="edit-button" type="button" id="modifyBtn">수정</button>
 <!--        th:onclick="'javascript:location.href=\'/findmapedit?id=\' + ${mapboard.mapboard_userno}'-->
         <button class="delete-button" type="submit" value="delete">삭제</button>
       </div>
@@ -74,6 +88,13 @@
   </div>
 </div>
  <script>
+     $('#modifyBtn').on("click" ,function(){
+         let form = $('#form');
+         form.attr("action" ,"/map/modify");
+         form.attr("method" , "get");
+         form.submit();
+     });
+
    document.querySelector('.delete-button').addEventListener('click', function () {
      if (confirm('삭제하시겠습니까?')) {
        alert('삭제 버튼이 클릭되었습니다.');

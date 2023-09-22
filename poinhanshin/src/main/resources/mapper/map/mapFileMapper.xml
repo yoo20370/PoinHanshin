@@ -8,7 +8,7 @@
         WHERE mapboardno = #{mapboardno}
     </select>
 
-    <select id="boardSelectFileName" parameterType="int" resultType="String">
+    <select id="MapBoardSelectFileName" parameterType="int" resultType="String">
         SELECT stored_file_name
         FROM mapboardFile
         WHERE mapboardno = #{mapboardno}
@@ -16,7 +16,7 @@
 
     <insert id="MapBoardInsertFile" parameterType="com.project.poinhanshin.domain.map.MapBoardFileDto">
         INSERT INTO mapboardFile(mapboardno, reg_date, original_file_name, stored_file_name, fileSize)
-        VALUES (#{mapboardno}, now(), #{original_file_name}, #{stored_file_name}, #{stored_file_name}, #{fileSize})
+        VALUES (#{mapboardno}, now(), #{original_file_name}, #{stored_file_name}, #{fileSize})
     </insert>
 
     <delete id="MapBoardDeleteFile" parameterType="String">

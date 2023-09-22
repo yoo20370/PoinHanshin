@@ -67,6 +67,7 @@ public class CommentController {
     @DeleteMapping("/comments/{commentno}")
     @ResponseBody
     public ResponseEntity<String> removeComment(@PathVariable Integer commentno , Integer boardcomment_boardno , Integer loginUser) {
+
         if(loginUser == null)
             return new ResponseEntity<String>("로그인이 필요합니다." , HttpStatus.BAD_REQUEST);
 
