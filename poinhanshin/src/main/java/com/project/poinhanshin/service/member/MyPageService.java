@@ -32,4 +32,8 @@ public class MyPageService {
     public List<ProtectBoardDto> selectMyprotectboard(Integer userno) {
         return myPageMapper.selectMyprotectboard(userno);
     }
+
+    public void favoriteMyProtectBoard(Integer userno, Integer protectBoardno) {
+        myPageMapper.favoriteMyProtectBoard(userno, protectBoardno);
+    }
 }

@@ -75,10 +75,6 @@ public class MapBoardController {
         MapBoardDto mapBoardDto = mapBoardService.bringMapBoardOne(mapboardno);
 
         System.out.println(mapBoardDto);
-        if(loginUser != null){
-            if(loginUser.getUserno().equals(mapBoardDto.getMapboard_userno().longValue()))
-                m.addAttribute("WriterCheck", "OK");
-        }
 
         m.addAttribute("mapBoardDto" , mapBoardDto);
         m.addAttribute("sc",sc);

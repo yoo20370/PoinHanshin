@@ -41,4 +41,8 @@
         FROM users u, protectboard p
         WHERE u.userno = p.protectboard_userno AND p.protectboard_userno = #{userno}
     </select>
+
+    <insert id="favoriteMyProtectBoard" parameterType="Integer">
+        INSERT INTO mypage(mypage_userno, mypage_boardno,mypage_protectboardno, mypage_mapboardno) VALUES (${userno}, NULL, #{protectBoardno}, NULL);
+    </insert>
 </mapper>
