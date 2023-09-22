@@ -37,6 +37,9 @@ public class BoardController {
     @GetMapping("/list")
     public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
+        //
+        sc.setPageSize(5);
+
         if(loginUser != null){
             m.addAttribute("loginUser", loginUser); // 로그인 이식
         }

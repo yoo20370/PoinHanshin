@@ -35,6 +35,9 @@ public class ProtectBoardController {
                                     @SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
 
+        //
+        sc.setPageSize(6);
+
         m.addAttribute("loginUser", loginUser); // 로그인 이식
 
         // 모든 임보자 게시물을 읽어온다.

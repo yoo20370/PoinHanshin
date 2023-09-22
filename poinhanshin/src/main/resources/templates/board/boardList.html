@@ -23,13 +23,14 @@
 <!--인기글 상위 3개만 출력 -->
 
 <div class="row justify-content-center">
-    <th:block th:each="topBoardDto : ${topBoardDtoList}">
+    <th:block th:each="topBoardDto ,i :  ${topBoardDtoList}">
     <div class="col-sm-3 m-3" style="color:black" >
         <span class="card gap-1">
             <a th:href="@{/board/read(boardno=${topBoardDto.boardno})}">
             <div class="card-body" >
               <h5 class="card-title" th:text="${topBoardDto.board_title}">제목</h5>
               <p class="card-text" th:text="${topBoardDto.board_content}">내용</p>
+                <i class="fas fa-user-edit"></i>&nbsp<small class="card-text" th:text="${topBoardDto.id}">작성자</small>
               <div class="text-end"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                    class="bi bi-chat-right-heart-fill" viewBox="0 0 16 16">
                     <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353V2ZM8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
@@ -122,11 +123,11 @@
         <span th:if="${totalCnt == 0}">게시물이 없습니다.</span>
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group m-auto btn-group-sm" role="group" aria-label="First group">
-                <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
+                <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/board/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
                 <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-                    <button type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+                    <button type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/board/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
                 </th:block>
-                <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
+                <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/board/list'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
             </div>
 
         </div>

@@ -149,6 +149,7 @@ public class MapBoardController {
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NotEqual");
+
             return "redirect:/map/read";
         }
 
