@@ -48,18 +48,19 @@ public class MyPageController {
     }
 
     @GetMapping("/myWrittenPage")
-    public String myWrittenPage() {
-        return "redirect:/";
+    public String myWrittenPage(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/myboard";
     }
 
     @GetMapping("/forumBookmark")
     public String forumBookmark() {
-        return "redirect:/";
+        return "mypage/boardFav";
     }
 
     @GetMapping("/temporaryBookmark")
     public String temporaryBookmark() {
-        return "redirect:/";
+        return "mypage/secureFav";
     }
 
     @GetMapping("/mapBookmark")
