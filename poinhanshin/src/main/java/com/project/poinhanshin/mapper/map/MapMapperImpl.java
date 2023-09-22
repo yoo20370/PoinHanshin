@@ -53,6 +53,16 @@ public class MapMapperImpl implements MapMapper{
         return sqlSession.delete(namespace+"deleteMapBoard", hashMap);
     }
 
+    @Override
+    public int selectRecentMapBoardNo(Integer mapboard_userno) {
+        return 0;
+    }
+
+    @Override
+    public int mapBoardUpdateFileAttached(Integer mapboardno, Integer fileAttached) {
+        return 0;
+    }
+
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     @Override
     public List<MapBoardDto> SelectMyMap(Integer userno) {
