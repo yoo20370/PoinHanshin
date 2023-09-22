@@ -144,7 +144,7 @@ public class MapBoardServicelmpl implements MapBoardService{
         }
 
         // 게시물 내용 업데이트
-        mapMapper.updateMapBoard(mapBoardDto);
+        mapMapper.updateMapBoard(mapBoardDto, loginUser);
 
         return mapBoardDto.getMapboardno();
     }
