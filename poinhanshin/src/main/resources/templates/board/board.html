@@ -230,6 +230,13 @@
             </form>
         </div>
     </div>
+    <div class="hstack m-3">
+        <div class="mx-auto">
+            <button type="button" class="btn btn-secondary"
+                    th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
+            </button>
+        </div>
+    </div>
     <!-- 버튼 -->
     <th:block th:if="${loginUser} ? ${loginUser.userno} == ${boardDto.board_userno} : false ">
     <div class="vstack col-sm-2 mx-auto" >
@@ -237,8 +244,8 @@
             th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , board_userno = ${boardDto.board_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
     </button>
     <button type="button" id="removeBtn"class="btn btn-danger">삭제</button>
-    </th:block>
     </div>
+    </th:block>
     <form id="removeForm" action="" method="" class="vstack col-sm-2 mx-auto">
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
@@ -247,14 +254,6 @@
         <input th:if="${loginUser != null }" type="hidden" name="loginUserNo" id=" " th:value="${loginUser.userno}"/>
         <input th:unless="${loginUser != null }" type="hidden" name="loginUserNo" value="0" />
     </form>
-    
-    <div class="hstack gap-3">
-        <div class="p-2 ms-auto">
-            <button type="button" class="btn btn-secondary"
-                    th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
-            </button>
-        </div>
-    </div>
 </div>
 <script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>

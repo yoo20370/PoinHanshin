@@ -75,7 +75,11 @@
   }
   a {
     text-decoration-line: none;
+    color: black;
     }
+  a:hover{
+  color:#A66CFF
+  }
 /*boardlist*/
     .info_table {
         font-size: 12px
@@ -91,6 +95,7 @@
         height:150px;
         object-fit:cover;
         border-radius: 12px;
+        max-width:150px;
     }
     .th_id {
        width: 30px;
