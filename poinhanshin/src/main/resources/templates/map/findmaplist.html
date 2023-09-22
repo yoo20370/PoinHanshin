@@ -15,25 +15,31 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 </head>
+<script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
+<script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <body layout:fragment="content">
 <div class="container">
   <div class="row">
     <div class="col-md-2">
       <form id="form" action="" method="">
         <!-- 페이지 정보 및 로그인 정보-->
-
-
+        <input type="hidden" name="page" th:value="${sc.page}"/>
+        <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
+        <input type="hidden" name="keyword" th:value="${sc.keyword}"/>
+        <input type="hidden" name="loginUser" id="loginUser" th:if="${loginUser}" th:value="${loginUser.userno}"/>
+        <input type="hidden" name="loginUser" th:unless="${loginUser}" value="0"/>
         <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
       </form>
-      <!-- 드롭다운 필터 -->
-      <div class="mb-3">
-        <label class="form-label" for="animal-filter">동물 선택:</label>
-        <select class="form-select" id="animal-filter">
-          <option value="2">전체</option>
-          <option value="1">고양이</option>
-          <option value="0">강아지</option>
-        </select>
-      </div>
+      <form id="searchForm">
+        <!-- 드롭다운 필터 -->
+        <div class="mb-3">
+          <label class="form-label" for="animal-filter">동물 선택:</label>
+          <select class="form-select" id="animal-filter">
+            <option value="2">전체</option>
+            <option value="1">고양이</option>
+            <option value="0">강아지</option>
+          </select>
+        </div>
     </div>
     <div class="col-md-2">
       <!-- 신고자/발견자 선택 드롭다운 필터 -->
@@ -54,13 +60,15 @@
         <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
       </div>
     </div>
+    </form>
+
     <div class="header-right">
       <button class="icon-btn" onclick="location.href='findmapmain.html'" data-toggle="tooltip" data-placement="top" title="지도">
         <i class="fa-solid fa-map fa-2xl" style="color: #7605ff;"></i>
       </button>
-      <button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
+      <!--<button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
         <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
-      </button>
+      </button>-->
       <button class="icon-btn" type="button" id="writeBtn"   data-toggle="tooltip" data-placement="top" title="글 작성하기">
         <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
       </button>
@@ -102,7 +110,6 @@
 <!--text="${boardDto.boardno}"-->
 <script>
   $('#writeBtn').on("click",function(){
-      alert("눌렸다.")
       let form = $('#form');
       form.attr("action" , "/map/write");
       form.attr("method", "get");

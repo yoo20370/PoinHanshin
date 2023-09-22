@@ -22,7 +22,7 @@ public interface MapMapper {
     int insertMapBoard(MapBoardDto mapBoardDto);
 
     // 맵 게시물 수정
-    int updateMapBoard(MapBoardDto mapBoardDto);
+    int updateMapBoard(MapBoardDto mapBoardDto , Integer loginUser);
 
     // 맵 게시물 삭제
     int deleteMapBoard(Integer mapboard_userno , Integer mapboardno);

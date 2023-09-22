@@ -68,13 +68,10 @@ public class MapBoardController {
     @GetMapping("/read")
     public String getMapBoardOne(Integer mapboardno , SearchCondition sc, Model m  , @SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
-        System.out.println(mapboardno);
-
         m.addAttribute("loginUser" , loginUser);
 
         MapBoardDto mapBoardDto = mapBoardService.bringMapBoardOne(mapboardno);
 
-        System.out.println(mapBoardDto);
         if(loginUser != null){
             if(loginUser.getUserno().equals(mapBoardDto.getMapboard_userno().longValue()))
                 m.addAttribute("WriterCheck", "OK");
@@ -109,7 +106,7 @@ public class MapBoardController {
 
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> mapBoardWrite(@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer loginUser )
+    public ResponseEntity<Integer> mapBoardWrite(@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title  , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress ,@RequestParam(required = false)  Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer loginUser )
     throws IOException {
 
         MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , null , mapboard_title , mapboard_content , missingtime , missingAddress , 37.19357  , 127.0227 , new Date() , 0 , mapboard_ani_category , writertype ,0 );
@@ -128,11 +125,14 @@ public class MapBoardController {
         return new ResponseEntity<Integer>(result , HttpStatus.OK);
     }
     @GetMapping("/modify")
-    public String mapBoardModify(Integer mapboardno , Integer mapboard_userno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes ,@SessionAttribute(name = "loginUser", required = false) User loginUser ){
+    public String mapBoardModify(Integer mapboardno , Integer mapboard_userno  , SearchCondition sc , Model m , RedirectAttributes redirectAttributes ,@SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
         m.addAttribute("loginUser" , loginUser);
+        System.out.println(mapboardno);
+        System.out.println(mapboard_userno);
+        System.out.println(loginUser);
 
-        /*if(loginUser == null){
+        if(loginUser == null){
             // 로그인 안 함
             redirectAttributes.addAttribute("mapboardno" , mapboardno);
             redirectAttributes.addAttribute("page", sc.getPage());
@@ -141,9 +141,7 @@ public class MapBoardController {
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/map/read";
-        } else if ( ! loginUser.getUserno().equals(mapboard_userno.longValue())){
-            // 작성자와 로그인 정보가 일치하지 않음
-            redirectAttributes.addAttribute("loginUser" , loginUser);
+        } else if( !loginUser.getUserno().equals(mapboard_userno.longValue())){
             redirectAttributes.addAttribute("mapboardno" , mapboardno);
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("page", sc.getPage());
@@ -152,7 +150,7 @@ public class MapBoardController {
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NotEqual");
             return "redirect:/map/read";
-        }*/
+        }
 
         MapBoardDto mapBoardDto = mapBoardService.bringMapBoardOne(mapboardno);
 
@@ -165,7 +163,7 @@ public class MapBoardController {
 
     @PostMapping("/modify")
     @ResponseBody
-    public ResponseEntity<String> mapBoardModify( @RequestParam Integer mapboardno ,@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer fileAttached , @RequestParam Integer loginUser)
+    public ResponseEntity<String> mapBoardModify( @RequestParam Integer mapboardno ,@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false)  Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer fileAttached , @RequestParam Integer loginUser)
     throws IOException{
         MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , mapboardno , mapboard_title , mapboard_content , missingtime , missingAddress , 37.19357  , 127.0227 , new Date() , 0 , mapboard_ani_category , writertype ,fileAttached );
         mapBoardDto.setMapBoardFile(mapBoardFile);
@@ -179,4 +177,28 @@ public class MapBoardController {
     }
 
 
+    @PostMapping("/remove")
+    public String mapBoardRemove(Integer mapboardno , Integer mapboard_userno , SearchCondition sc , RedirectAttributes redirectAttributes  , String loginUser , Integer loginUserNo) throws IOException{
+
+        System.out.println(mapboard_userno);
+        System.out.println(loginUserNo);
+
+        if(loginUser == null){
+            redirectAttributes.addFlashAttribute("msg" , "NO_LOGIN");
+            return "redirect:/map/list";
+        } else if( mapboard_userno != loginUserNo){
+            redirectAttributes.addAttribute("loginUser" , loginUser);
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addAttribute("mapboardno",mapboardno);
+            redirectAttributes.addFlashAttribute("msg", "NotEqualRemove");
+            return "redirect:/map/read";
+        }
+        mapBoardService.removeMapBoard(mapboardno,loginUserNo);
+
+        redirectAttributes.addFlashAttribute("msg" , "SUCCESS_REMOVE");
+        return "redirect:/map/list";
+    }
 }

@@ -47,8 +47,6 @@ public class MapBoardDto {
 
     private Integer fileAttached;                // sqltype : longblob -> int & byte, 게시물 이미지 경로
 
-    public MapBoardDto(){}
-
     public MapBoardDto(String id, Integer mapboard_userno, Integer mapboardno, String mapboard_title, String mapboard_content, Date missingtime, String missingaddress, Double latitude, Double longitude, Date mapboard_reg_date, Integer mapboard_viewcount, boolean mapboard_ani_category, boolean writertype, Integer fileAttached) {
         this.id = id;
         this.mapboard_userno = mapboard_userno;

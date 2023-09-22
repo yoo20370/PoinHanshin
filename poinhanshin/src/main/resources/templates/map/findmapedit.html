@@ -88,7 +88,7 @@
         <!-- 드롭존 -->
         <div class="dropzone" id="my-dropzone" ></div>
         <div class="center-text">
-            <button class="reg-button" type="button" id="writeBtn" value="submit">수 </button>
+            <button class="reg-button" type="button" id="modifyBtn">수정</button>
             <button class="delete-button" type="submit" value="delete">삭제</button>
         </div>
     </form>
@@ -158,7 +158,29 @@
         // 드롭존에 이미지 불러오기
         showImgList();
 
-        document.querySelector('.reg-button').addEventListener('click', function () {
+        dropzone.on("removedfile" , function(dataURL){
+            $.ajax({
+                type : 'DELETE',
+                url : '/mapBoard/remove',
+                headers : {"content-type" : "application/json"},
+                dataType : 'text',
+                data : JSON.stringify(dataURL,["dataURL"]),
+                success: function(data){
+                    console.log(data)
+                },
+                error: function(request ,status , error){
+                    console.log("code: " + request.status)
+                    console.log("message: " + request.responseText)
+                    console.log("error: " + error);
+                }
+            })
+        })
+
+
+        $('#modifyBtn').on('click', function () {
+            if(!confirm("수정하시겠습니까 ?")) return;
+            console.log("게시물 수정 및 이미지 업로드");
+
             let mapboardno = $('#mapboardno').val();
             let mapboard_ani_category = $('#animal-filter').val();
             let writertype = $('#author-filter').val();
@@ -212,19 +234,21 @@
 
                 let form = $('#form');
 
-
-                /*form.attr("action" , "/map/write");
-                form.attr("method" , "post");
-                form.submit();*/
+                form.attr("action" , "/map/read");
+                form.attr("method" , "get");
+                form.submit();
             };
         });
     });
 
     document.querySelector('.delete-button').addEventListener('click', function () {
-        if (confirm('삭제하시겠습니까?')) {
-            alert('삭제 버튼이 클릭되었습니다.');
-            // 실제 삭제 기능을 여기에 추가
-        }
+        if(!confirm("삭제하시겠습니까 ?")) return;
+        console.log("게시물 삭제 완료");
+
+        let form = $('#form') ;
+        form.attr("action" , "/map/remove");
+        form.attr("method" , "post");
+        form.submit();
     });
 
     //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)

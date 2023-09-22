@@ -54,10 +54,11 @@ public class MapBoardServicelmpl implements MapBoardService{
     @Transactional(rollbackFor = Exception.class)
     public MapBoardDto bringMapBoardOne(Integer mapboardno) {
 
+        System.out.println("bringMapBoardOne : "+mapboardno);
         MapBoardDto mapBoardDto = mapMapper.selectMapBoardOne(mapboardno);
         System.out.println(mapBoardDto);
 
-       /* if(mapBoardDto.getFileAttached() == 0){
+        if(mapBoardDto.getFileAttached() == 0){
             // 파일 없음
             return mapBoardDto;
         } else {
@@ -79,7 +80,7 @@ public class MapBoardServicelmpl implements MapBoardService{
             mapBoardDto.setOriginalFileName(originalFileNameList);
             mapBoardDto.setStoredFileName(storedFileNameList);
 
-        }*/
+        }
 
         return mapBoardDto;
     }
@@ -144,7 +145,7 @@ public class MapBoardServicelmpl implements MapBoardService{
         }
 
         // 게시물 내용 업데이트
-        mapMapper.updateMapBoard(mapBoardDto);
+        mapMapper.updateMapBoard(mapBoardDto , loginUser);
 
         return mapBoardDto.getMapboardno();
     }
@@ -152,12 +153,12 @@ public class MapBoardServicelmpl implements MapBoardService{
     // 게시물 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeMapBoard(Integer mapboardno, Long loginUser) throws IOException {
+    public int removeMapBoard(Integer mapboardno, Integer loginUser) throws IOException {
         // 저장된 이미지 이름 목록 가져오기
         List<String> fileNameList = mapFileMapper.MapBoardSelectFileName(mapboardno);
 
         // 게시물 삭제 (확인 필요)
-        int result = mapMapper.deleteMapBoard(loginUser.intValue() , mapboardno);
+        int result = mapMapper.deleteMapBoard(loginUser , mapboardno);
 
         // 로컬 저장소에서 이미지 삭제
         if(result == 1){
@@ -181,7 +182,8 @@ public class MapBoardServicelmpl implements MapBoardService{
     // 파일 저장 여부 값 수정
     @Override
     public int updateFileAttached(Integer mapboardno, Integer fileAttached) {
-        return 0;
+
+        return mapMapper.mapBoardUpdateFileAttached(mapboardno ,fileAttached);
     }
 
     // 이미지 저장을 위해 사용하는 메서드
@@ -201,7 +203,6 @@ public class MapBoardServicelmpl implements MapBoardService{
 
             // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
             MapBoardFileDto mapBoardFileDto = new MapBoardFileDto(mapBoardDto.getMapboardno(), null , null , originalFileName ,storedFileName , mapBoardFile.getSize() );
-            System.out.println(mapBoardFileDto);
             mapFileMapper.MapBoardInsertFile(mapBoardFileDto);
         }
     }

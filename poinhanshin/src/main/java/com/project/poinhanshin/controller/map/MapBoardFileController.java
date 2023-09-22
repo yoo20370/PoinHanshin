@@ -44,9 +44,9 @@ public class MapBoardFileController {
         System.out.println(dataURL);
 
         if(dataURL.length() < 100){
-            String stored_file_name = dataURL.substring(dataURL.indexOf("/mapBoard/")+10 , dataURL.lastIndexOf('"'));
+            String stored_file_name = dataURL.substring(dataURL.indexOf("/mapboard/")+10 , dataURL.lastIndexOf('"'));
             System.out.println(stored_file_name);
-            //mapBoardFileService.MapBoardDeleteFileService(stored_file_name);
+            mapBoardFileService.MapBoardDeleteFileService(stored_file_name);
             return new ResponseEntity<String>("Remove_existing_file" , HttpStatus.OK);
         }
         return new ResponseEntity<String>("Remove_new_file" , HttpStatus.OK);

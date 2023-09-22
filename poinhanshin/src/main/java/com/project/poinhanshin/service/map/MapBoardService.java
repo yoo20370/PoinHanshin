@@ -26,7 +26,7 @@ public interface MapBoardService {
     int modifyMapBoard(MapBoardDto mapBoardDto , Integer loginUser) throws IOException;
 
     // 맵 게시물 삭제
-    int removeMapBoard(Integer mapboardno , Long loginUser) throws IOException;
+    int removeMapBoard(Integer mapboardno , Integer loginUser) throws IOException;
 
     // 최근 등록 게시물 번호 반환
     int bringRecentContentNo(Integer mapboard_userno);
