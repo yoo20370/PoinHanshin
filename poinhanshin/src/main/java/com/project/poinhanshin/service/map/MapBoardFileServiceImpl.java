@@ -63,7 +63,7 @@ public class MapBoardFileServiceImpl implements MapBoardFileService{
         int result = mapFileMapper.MapBoardDeleteFile(stored_file_name);
 
         if(result == 1){
-            String path = "/Users/yuyeong-u/fileStorage/board/";
+            String path = "/Users/yuyeong-u/fileStorage/mapBoard/";
             File file = new File(path+stored_file_name);
             if(file.exists()){
                 file.delete();

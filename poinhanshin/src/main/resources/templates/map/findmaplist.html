@@ -21,13 +21,9 @@
     <div class="col-md-2">
       <form id="form" action="" method="">
         <!-- 페이지 정보 및 로그인 정보-->
-        <input type="hidden" name="page" th:value="${sc.page}"/>
-        <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
-        <input type="hidden" name="keyword" th:value="${sc.keyword}"/>
-        <input type="hidden" name="ani_category" th:value="${sc.ani_category}"/>
+
+
         <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
-        <input type="hidden" name="loginUser" id="loginUser" th:if="${loginUser}" th:value="${loginUser.userno}"/>
-        <input type="hidden" name="loginUser" th:unless="${loginUser}" value="0"/>
       </form>
       <!-- 드롭다운 필터 -->
       <div class="mb-3">

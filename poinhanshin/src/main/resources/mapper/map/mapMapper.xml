@@ -6,26 +6,18 @@
         SELECT COUNT(*)
         FROM mapboard
         WHERE TRUE
-        and
-        <include refid="writeTypeChoose"/>
-        and
-        <include refid="aniCategoryChoose"/>
     </select>
     <select id="selectMapList" parameterType="com.project.poinhanshin.domain.etc.SearchCondition" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
         SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_title, mb.mapboard_content ,  mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype, mb.fileAttached
         FROM mapboard mb, users u
         WHERE mb.mapboard_userno = u.userno and TRUE
-        and
-        <include refid="writeTypeChoose"/>
-        and
-        <include refid="aniCategoryChoose"/>
         ORDER BY mb.mapboardno DESC
         LIMIT #{offset} , #{pageSize}
     </select>
     <select id="selectMapBoardOne" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
         SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_title, mb.mapboard_content ,  mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype, mb.fileAttached
         FROM mapboard mb, users u
-        WHERE  mb.mapboard_userno = u.userno and mapboardno = #{mapboardno}
+        WHERE  mb.mapboard_userno = u.userno and mb.mapboardno = #{mapboardno}
     </select>
     <insert id="insertMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
         INSERT INTO mapboard

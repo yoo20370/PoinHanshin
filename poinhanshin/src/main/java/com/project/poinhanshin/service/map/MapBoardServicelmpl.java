@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +46,6 @@ public class MapBoardServicelmpl implements MapBoardService{
     // 검색된 게시물 리스트 개수를 반환
     @Override
     public int getMapBoardListCnt(SearchCondition sc) {
-
-
-
         return mapMapper.selectMapCnt(sc);
     }
 
@@ -57,7 +55,9 @@ public class MapBoardServicelmpl implements MapBoardService{
     public MapBoardDto bringMapBoardOne(Integer mapboardno) {
 
         MapBoardDto mapBoardDto = mapMapper.selectMapBoardOne(mapboardno);
-        if(mapBoardDto.getFileAttached() == 0){
+        System.out.println(mapBoardDto);
+
+       /* if(mapBoardDto.getFileAttached() == 0){
             // 파일 없음
             return mapBoardDto;
         } else {
@@ -79,7 +79,8 @@ public class MapBoardServicelmpl implements MapBoardService{
             mapBoardDto.setOriginalFileName(originalFileNameList);
             mapBoardDto.setStoredFileName(storedFileNameList);
 
-        }
+        }*/
+
         return mapBoardDto;
     }
 
@@ -90,10 +91,10 @@ public class MapBoardServicelmpl implements MapBoardService{
         // 게시물 등록
         mapMapper.insertMapBoard(mapBoardDto);
 
-        Integer currentMapBoardNo = mapMapper.selectRecentMapBoardNo(mapBoardDto.getMapboardno());
+        Integer currentMapBoardNo = mapMapper.selectRecentMapBoardNo(mapBoardDto.getMapboard_userno());
 
         mapBoardDto.setMapboardno(currentMapBoardNo);
-
+        System.out.println("asd");
         // 첨부 파일 있음
         if(mapBoardDto.getFileAttached() != 0){
             addImgFiles(mapBoardDto);
@@ -150,8 +151,25 @@ public class MapBoardServicelmpl implements MapBoardService{
 
     // 게시물 삭제
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int removeMapBoard(Integer mapboardno, Long loginUser) throws IOException {
-        return 0;
+        // 저장된 이미지 이름 목록 가져오기
+        List<String> fileNameList = mapFileMapper.MapBoardSelectFileName(mapboardno);
+
+        // 게시물 삭제 (확인 필요)
+        int result = mapMapper.deleteMapBoard(loginUser.intValue() , mapboardno);
+
+        // 로컬 저장소에서 이미지 삭제
+        if(result == 1){
+            String path = "/Users/yuyeong-u/fileStorage/mapBoard/";
+            for(String fileName : fileNameList){
+                File file = new File(path+fileName);
+                if(file.exists()){
+                    file.delete();
+                }
+            }
+        }
+        return result;
     }
 
     // 최근 등록 게시물 번호 반환
@@ -183,8 +201,8 @@ public class MapBoardServicelmpl implements MapBoardService{
 
             // 파일 테이블에 데이터 저장 ( 원본 파일 , 서버에 저장할 이름 , 부모 게시물 번호 )
             MapBoardFileDto mapBoardFileDto = new MapBoardFileDto(mapBoardDto.getMapboardno(), null , null , originalFileName ,storedFileName , mapBoardFile.getSize() );
+            System.out.println(mapBoardFileDto);
             mapFileMapper.MapBoardInsertFile(mapBoardFileDto);
-
         }
     }
 

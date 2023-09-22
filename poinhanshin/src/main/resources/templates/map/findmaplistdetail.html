@@ -32,6 +32,7 @@
             <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
             <input type="hidden" name="loginUser" id="loginUser" th:if="${loginUser}" th:value="${loginUser.userno}"/>
             <input type="hidden" name="loginUser" th:unless="${loginUser}" value="0"/>
+            <input type="hidden" name="mapboardno" th:value="${mapBoardDto.mapboardno}"/>
         </form>
 
         <span th:if="${mapBoardDto.mapboard_ani_category}" class="badge text-bg-primary">고양이</span>
@@ -79,7 +80,7 @@
       </div>
       <div class="post-buttons">
           <button class="go-button" type="submit" value="update" onclick="location.href='findmaplist.html'">목록</button>
-        <button class="edit-button" type="submit" value="update" onclick="location.href='findmapedit.html'">수정</button>
+        <button class="edit-button" type="button" id="modifyBtn">수정</button>
 <!--        th:onclick="'javascript:location.href=\'/findmapedit?id=\' + ${mapboard.mapboard_userno}'-->
         <button class="delete-button" type="submit" value="delete">삭제</button>
       </div>
@@ -87,7 +88,12 @@
   </div>
 </div>
  <script>
-     $('#')
+     $('#modifyBtn').on("click" ,function(){
+         let form = $('#form');
+         form.attr("action" ,"/map/modify");
+         form.attr("method" , "get");
+         form.submit();
+     });
 
    document.querySelector('.delete-button').addEventListener('click', function () {
      if (confirm('삭제하시겠습니까?')) {

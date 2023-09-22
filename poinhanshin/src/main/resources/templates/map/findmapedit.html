@@ -9,20 +9,38 @@
     <link rel="stylesheet" type="text/css" href="css/mapst.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- 드롭존 -->
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 </head>
 <body layout:fragment="content">
 <div class="container">
     <h2>게시물 수정</h2>
-    <form method="POST" action="{{ url_for('create_post') }}">
+    <form id="form"method="POST" action="{{ url_for('create_post') }}">
+        <!-- 페이지 정보 및 로그인 정보-->
+        <input type="hidden" name="page" th:value="${sc.page}"/>
+        <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
+        <input type="hidden" name="keyword" th:value="${sc.keyword}"/>
+        <input type="hidden" name="ani_category" th:value="${sc.ani_category}"/>
+        <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
+        <input type="hidden" name="mapboardno" id="mapboardno" th:value="${mapBoardDto.mapboardno}"/>
+        <input type="hidden" name="fileAttached" id="fileAttached" th:value="${mapBoardDto.fileAttached}"/>
+        <input type="hidden" name="loginUser" id="loginUser" th:if="${loginUser != null}" th:value="${loginUser.userno}"/>
+        <!-- 임시 로그인을 위함 -->
+        <input type="hidden" name="loginUser" th:unless="${loginUser != null}" value="1"/>
+
+
         <div class="row">
             <div class="col-md-4">
                 <!-- 드롭다운 필터 -->
                 <div class="mb-3">
                     <label class="form-label" for="animal-filter">동물 선택:</label>
-                    <select class="form-select" id="animal-filter">
-                        <option value="0" th:selected="${mapboard.ani_category}==0">전체</option>
-                        <option value="1" th:selected="${mapboard.ani_category}==1">고양이</option>
-                        <option value="2" th:selected="${mapboard.ani_category}==2">강아지</option>
+                    <select class="form-select" id="animal-filter" name="mapboard_ani_category">
+                        <option value="0" th:selected="${mapBoardDto.mapboard_ani_category == false}" >강아지</option>
+                        <option value="1" th:selected="${mapBoardDto.mapboard_ani_category == true}">고양이</option>
                     </select>
                 </div>
             </div>
@@ -30,124 +48,197 @@
                 <!-- 신고자/발견자 선택 드롭다운 필터 -->
                 <div class="mb-3">
                     <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
-                    <select class="form-select" id="author-filter">
-                        <option value="all">전체</option>
-                        <option value="신고자">신고자</option>
-                        <option value="발견자">발견자</option>
+                    <select class="form-select" id="author-filter" name="writertype">
+                        <option value="0" th:selected="${mapBoardDto.writertype == false}">신고자</option>
+                        <option value="1" th:selected="${mapBoardDto.writertype == true}">발견자</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-4">
-                <!-- 지역 선택 드롭다운 필터 -->
                 <div class="mb-3">
-                    <label class="form-label" for="locatin-filter">지역 선택:</label>
-                    <input type="text" id="locatin-filter" placeholder="지역">
-                    <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+                    <label class="form-label" for="missingaddress">실종/ 발견 장소를 선택해주세요:</label>
+                    <input type="text" id="missingaddress" placeholder="장소" name="missingaddress" th:value="${mapBoardDto.missingaddress}">
+                    <input type="button" class="btn btn-outline-dark" onclick="mapadd_Postcode()" value="장소 찾기">
+                    <div id="map" style="width: 100%; height: 400px; display: none;"></div>
                 </div>
+                <!--&lt;!&ndash; 지역 선택 드롭다운 필터 &ndash;&gt;
+                <div class="mb-3">
+                  <label class="form-label" for="locatin-filter">지역 선택:</label>
+                  <input type="text" id="locatin-filter" placeholder="지역">
+                  <input type="button" class="btn btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+                </div>-->
             </div>
         </div>
 
         <div class="mb-3">
-            <label class="form-label" th:for="${mapboard.mapboard_mapimagepath}">사진:</label>
-            <input type="file" class="form-control" name="photo" required>
+            <label class="form-label">제목:</label>
+            <input type="text" class="form-control" name="mapboard_title" id="mapboard_title" th:value="${mapBoardDto.mapboard_title}" required>
         </div>
 
         <div class="mb-3">
-            <label class="form-label" th:for="${mapboard.mapboard_title}">제목:</label>
-            <input type="text" class="form-control" name="title" required>
+            <label class="form-label" >내용:</label>
+            <textarea class="form-control" style="min-height: 20vh" name="mapboard_content" id="mapboard_content" th:text`="${mapBoardDto.mapboard_content}" required></textarea>
         </div>
 
         <div class="mb-3">
-            <label class="form-label" th:for="${mapboard.mapboard_content}">내용:</label>
-            <textarea class="form-control" style="min-height: 20vh" name="content" required></textarea>
+            <label class="form-label" >발견/ 실종 시간:</label>
+            <input type="datetime-local" class="form-control" name="missingtime" id="missingtime" th:text="${mapBoardDto.missingtime}" required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label" th:for="${mapboard.missingtime}">발견/ 실종 시간:</label>
-            <input type="datetime-local" class="form-control" name="time" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label" for="missingaddress">실종/ 발견 장소를 선택해주세요:</label>
-            <input type="text" id="missingaddress" placeholder="장소">
-            <input type="button" class="btn btn-outline-dark" onclick="mapadd_Postcode()" value="장소 찾기">
-            <div id="map" style="width: 100%; height: 400px; display: none;"></div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label" th:for="${mapboard.writertype}">작성자 카테고리 선택:</label>
-            <select class="form-select" name="writertype" required>
-                <option value="보호자">보호자</option>
-                <option value="발견자">발견자</option>
-            </select>
-        </div>
+        <!-- 드롭존 -->
+        <div class="dropzone" id="my-dropzone" ></div>
         <div class="center-text">
-        <input class="reg-button btn btn-primary btn-lg" type="submit" value="수정">
+            <button class="reg-button" type="button" id="writeBtn" value="submit">수 </button>
+            <button class="delete-button" type="submit" value="delete">삭제</button>
         </div>
     </form>
 </div>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script>
-    document.querySelector('.reg-button').addEventListener('click', function () {
-        if (confirm('수정하시겠습니까?')) {
-            alert('수정되었습니다.');
-            // 실제 기능을 여기에 추가
+    // 드롭존 스크립트
+    var dropzone;
+    document.addEventListener("DOMContentLoaded" ,function(){
+        Dropzone.autoDiscover = false; // deprecated 된 옵션. false로 해놓는걸 공식문서에서 명시
 
-            window.location.href = 'findmaplistdetail.html';
+        dropzone = new Dropzone('#my-dropzone', {
+
+            url: 'http://localhost:8080/mapBoard/file', // 파일을 업로드할 서버 주소 url.
+            method: 'post', // 기본 post로 request 감. put으로도 할수있음
+
+            autoProcessQueue: false, // 자동으로 보내기. true : 파일 업로드 되자마자 서버로 요청, false : 서버에는 올라가지 않은 상태. 따로 this.processQueue() 호출시 전송
+            clickable: true, // 클릭 가능 여부
+            autoQueue: false, // 드래그 드랍 후 바로 서버로 전송
+            createImageThumbnails: true, //파일 업로드 썸네일 생성
+
+            thumbnailHeight: 120, // Upload icon size
+            thumbnailWidth: 120, // Upload icon size
+
+            maxFiles: 10, // 업로드 파일수
+            maxFilesize: 100000, // 최대업로드용량 : 100MB
+            paramName: 'file', // 서버에서 사용할 formdata 이름 설정 (default는 file)
+            parallelUploads: 1, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 넘긴다.)
+            uploadMultiple: false, // 다중업로드 기능
+            timeout: 300000, //커넥션 타임아웃 설정 -> 데이터가 클 경우 꼭 넉넉히 설정해주자
+
+            addRemoveLinks: true, // 업로드 후 파일 삭제버튼 표시 여부
+            dictRemoveFile: '삭제', // 삭제버튼 표시 텍스트
+            acceptedFiles: '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF',
+
+            init: function () {
+                // 최초 dropzone 설정시 init을 통해 호출
+                console.log('최초 실행');
+                let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
+            },
+
+        });
+    })
+</script>
+<script>
+
+    $(document).ready(function(){
+
+        let showImgList = function () {
+            $.ajax({
+                type: 'GET',
+                url: '/mapBoard/file?mapboardno=' + [[${mapBoardDto.mapboardno}]],
+                dataType: 'json',
+                success: function (mapBoardFileDtoList) {
+                    displayImg(mapBoardFileDtoList)
+                },
+                error: function () {alert("ERROR"); }
+            });
+        }
+
+        let displayImg = function(mapBoardFileDtoList){
+            mapBoardFileDtoList.forEach(function(mapBoardFileDto){
+                let mockFile = {name: mapBoardFileDto.stored_file_name , size : mapBoardFileDto.fileSize}
+                dropzone.displayExistingFile(mockFile , 'http://localhost:8080/upload/mapboard/'+mapBoardFileDto.stored_file_name);
+            });
+        }
+
+        // 드롭존에 이미지 불러오기
+        showImgList();
+
+        document.querySelector('.reg-button').addEventListener('click', function () {
+            let mapboardno = $('#mapboardno').val();
+            let mapboard_ani_category = $('#animal-filter').val();
+            let writertype = $('#author-filter').val();
+            let mapboard_title =$('#mapboard_title').val();
+            let mapboard_content = $('#mapboard_content').val();
+            let missingtime = $('#missingtime').val();
+            let missingAddress = $('#missingaddress').val();
+            let latitude;
+            let longtitude;
+            let fileAttached = $('#fileAttached').val();
+            let loginUser = $('input[name=loginUser]').val();
+
+            // 실제 기능을 여기에 추가
+            if (dropzone.getRejectedFiles().length > 0) {
+                let file = dropzone.getRejectedFiles();
+                console.log('거부된 파일이 있습니다.', file);
+            }
+
+            // 드롭존에서 파일 가져온다.
+            let files = dropzone.files;
+
+            let formData = new FormData();
+
+            // 파일이 없다면 파일을 전송하지 않음
+            if(files.length != 0) {
+                for(let i = 0 ; i < files.length ; i++){
+                    formData.append("mapBoardFile" , files[i]);
+                }
+                formData.append("mapboardno" , mapboardno )
+                formData.append("mapboard_ani_category" , mapboard_ani_category);
+                formData.append("writertype",writertype);
+                formData.append("mapboard_title" , mapboard_title);
+                formData.append("mapboard_content" , mapboard_content);
+                formData.append("missingtime" , new Date(missingtime) );
+                formData.append("missingAddress", missingAddress);
+                formData.append("loginUser" , loginUser );
+                formData.append("fileAttached" , fileAttached);
+
+
+                $.ajax({
+                    type : 'POST',
+                    url : '/map/modify',
+                    data : formData,
+                    async : false,
+                    enctype: "multipart/form-data",
+                    processData : false,
+                    contentType : false,
+                    success :function(){},
+                    error : function(){}
+                });
+
+                let form = $('#form');
+
+
+                /*form.attr("action" , "/map/write");
+                form.attr("method" , "post");
+                form.submit();*/
+            };
+        });
+    });
+
+    document.querySelector('.delete-button').addEventListener('click', function () {
+        if (confirm('삭제하시겠습니까?')) {
+            alert('삭제 버튼이 클릭되었습니다.');
+            // 실제 삭제 기능을 여기에 추가
         }
     });
-//주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
-        function map_Postcode() {
+
+    //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+    function map_Postcode() {
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-             document.getElementById('locatin-filter').value = data.bname;
+                document.getElementById('locatin-filter').value = data.bname;
                 // 커서를 상세주소 필드로 이동한다.
                 document.getElementById("locatin-filter").focus();
             }
-        }).open();
-//      반환데이터참고용
-//         postcode: ""
-// postcode1: ""
-// postcode2: ""
-// postcodeSeq: ""
-// zonecode: "06035"
-// address: "서울 강남구 가로수길 5"
-// addressEnglish: "5, Garosu-gil, Gangnam-gu, Seoul, Korea"
-// addressType: "R"
-// bcode: "1168010700"
-// bname: "신사동"
-// bnameEnglish: "Sinsa-dong"
-// bname1: ""
-// bname1English: ""
-// bname2: "신사동"
-// bname2English: "Sinsa-dong"
-// sido: "서울"
-// sidoEnglish: "Seoul"
-// sigungu: "강남구"
-// sigunguEnglish: "Gangnam-gu"
-// sigunguCode: "11680"
-// userLanguageType: "K"
-// query: "서울특별시 강남구 "
-// buildingName: ""
-// buildingCode: "1168010700105370005011918"
-// apartment: "N"
-// jibunAddress: ""
-// jibunAddressEnglish: ""
-// roadAddress: "서울 강남구 가로수길 5"
-// roadAddressEnglish: "5, Garosu-gil, Gangnam-gu, Seoul, Korea"
-// autoRoadAddress: ""
-// autoRoadAddressEnglish: ""
-// autoJibunAddress: "서울 강남구 신사동 537-5"
-// autoJibunAddressEnglish: "537-5, Sinsa-dong, Gangnam-gu, Seoul, Korea"
-// userSelectedType: "R"
-// noSelected: "N"
-// hname: ""
-// roadnameCode: "4858362"
-// roadname: "가로수길"
-// roadnameEnglish: "Garosu-gil"
-    }
+        }).open();}
+
     //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
     function mapadd_Postcode() {
         new daum.Postcode({
@@ -182,7 +273,6 @@
             }
         }).open();
     }
-
 
 </script>
 </body>

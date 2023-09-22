@@ -20,7 +20,7 @@ import java.util.List;
 public class MapBoardDto {
     private String id; // 회원 id
     private Integer mapboard_userno;    // FK, 회원번호
-    private Integer mapboardno;         // PK, 게시물내용
+    private Integer mapboardno;         // PK, 게시물번호
     private String mapboard_title;    // 게시물 제목
     private String mapboard_content;             // sqltype : Text, 게시물 내용
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
