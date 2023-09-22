@@ -237,13 +237,6 @@
             </thead>
 
             <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>제목</td>
-              <td>2023-09-17 14:22:00</td>
-              <td>2</td>
-              <td>3</td>
-            </tr>
             <tr th:each="boardDto : ${boardDtoList}">
               <td th:text="${boardDto.boardno}"></td>
               <td th:text="${boardDto.board_title}"></td>
