@@ -33,8 +33,8 @@ public class MapBoardDto {
     /*@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")*/
     private Date mapboard_reg_date;     // sqltype : date, 글 작성 시간
     private Integer mapboard_viewcount;          // 조회수
-    private boolean mapboard_ani_category;       // 강아지 0, 고양이 1
-    private boolean writertype;         // 신고자 0, 발견자 1
+    private Boolean mapboard_ani_category;       // 강아지 0, 고양이 1
+    private Boolean writertype;         // 신고자 0, 발견자 1
 
     // 이미지 저장 관련 멤버변수
     // html -> Controller 파일 담는 용도

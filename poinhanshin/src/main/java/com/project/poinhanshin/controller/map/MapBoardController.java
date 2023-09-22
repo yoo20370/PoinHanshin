@@ -104,21 +104,26 @@ public class MapBoardController {
 
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<String> mapBoardWrite(@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam List<MultipartFile> mapBoardFile , @RequestParam Integer loginUser )
+    public ResponseEntity<String> mapBoardWrite(@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer loginUser )
     throws IOException {
 
-        MapBoardDto mapBoardDto = new MapBoardDto(null , loginUser , null , mapboard_title , mapboard_content , new Date("2022-01-14 14:22") , "수원시 영통구" , 37.19357  , 127.0227 , null , 0 , false , false ,0 );
+        MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , null , mapboard_title , mapboard_content , missingtime , missingAddress , 37.19357  , 127.0227 , new Date() , 0 , mapboard_ani_category , writertype ,0 );
+        System.out.println(mapBoardDto);
         mapBoardDto.setMapBoardFile(mapBoardFile);
+
+        System.out.println("Post , wirite -mapBoardDto : "+mapBoardDto);
 
         // 이미지가 없는 경우
         if(mapBoardFile != null){
             mapBoardDto.setFileAttached(0);
         }
 
-        mapBoardService.writeMapBoard(mapBoardDto);
-
+        int result = mapBoardService.writeMapBoard(mapBoardDto);
+        System.out.println(result);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
+
+
 
     /*@PostMapping("/remove")
     public String mapBoard*/
