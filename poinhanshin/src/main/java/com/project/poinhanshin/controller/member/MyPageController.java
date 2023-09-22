@@ -47,4 +47,23 @@ public class MyPageController {
         return "redirect:/logout";
     }
 
+    @GetMapping("/myWrittenPage")
+    public String myWrittenPage() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/forumBookmark")
+    public String forumBookmark() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/temporaryBookmark")
+    public String temporaryBookmark() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/mapBookmark")
+    public String mapBookmark() {
+        return "redirect:/";
+    }
 }
