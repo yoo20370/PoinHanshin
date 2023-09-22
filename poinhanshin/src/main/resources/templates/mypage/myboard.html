@@ -243,7 +243,7 @@
               <td th:text="${boardDto.id}"></td>
               <td th:text="${boardDto.board_viewcount}"></td>
               <td th:text="${boardDto.likecount}"></td>
-              <td th:text="${boardDto.board_reg_date}"></td>
+              <td th:text="${#dates.format(boardDto.board_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             </tbody>
           </table>

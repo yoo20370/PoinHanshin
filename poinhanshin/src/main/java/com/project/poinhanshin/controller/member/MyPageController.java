@@ -2,6 +2,7 @@ package com.project.poinhanshin.controller.member;
 
 import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.member.User;
+import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.member.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,12 +62,16 @@ public class MyPageController {
     @GetMapping("/forumBookmark")
     public String forumBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
+        List<BoardDto> boardDtoList = myPageService.selectMyBoard(Math.toIntExact(loginUser.getUserno()));
+        model.addAttribute("boardDtoList", boardDtoList);
         return "mypage/boardFav";
     }
 
     @GetMapping("/temporaryBookmark")
     public String temporaryBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
+        List<ProtectBoardDto> protectBoardDtoList = myPageService.selectMyprotectboard(Math.toIntExact(loginUser.getUserno()));
+        model.addAttribute("protectBoardDtoList", protectBoardDtoList);
         return "mypage/secureFav";
     }
 
