@@ -77,20 +77,20 @@
         <tr>
           <th class="mx-3" style="width: 10%;">내용</th>
         </tr>
-        <tr th:each="mapboard: ${mapboardList}">
+        <tr>
           <td>
             <ul id="favoritesList">
               <!-- 여기에 즐겨찾기 아이템을 추가하세요 -->
               <input type="checkbox" class="map-checkbox" id="checkbox${status.index}">
               <li class="post-footer">
-                <span class="address" >실종/발견 장소: </span>
-                <span class="datetime" >실종/발견 날짜 및 시간: </span>
+                <span class="address">실종/발견 장소: </span>
+                <span class="datetime">실종/발견 날짜 및 시간: </span>
                 <div class="post-header">
-                  <span class="animal-type" >품종: </span>
+                  <span class="animal-type">품종: </span>
                 </div>
                 <div class="header-right">
-                  <span class="mapboard_reg_date" >작성일: </span>
-                  <span class="writertype" >실종/발견자: </span>
+                  <span class="mapboard_reg_date">작성일: </span>
+                  <span class="writertype">실종/발견자: </span>
                 </div>
               </li>
             </ul>
@@ -136,12 +136,14 @@
     checkboxes.forEach(function (checkbox, index) {
       if (checkbox.checked) {
         // 체크 박스가 선택되면 해당하는 마커를 selectedMarkers 배열에 추가합니다
-        var markerPosition = new kakao.maps.LatLng(
-                mapboardList[index].latitude,
-                mapboardList[index].longitude
-        );
+        if (places[index]) {
+          var markerPosition = new kakao.maps.LatLng(
+                  places[index].latitude,
+                  places[index].longitude
+          );
 
-        selectedMarkers.push(markerPosition);
+          selectedMarkers.push(markerPosition);
+        }
       }
     });
 
@@ -177,19 +179,6 @@
   }
 </script>
 <script>
-  //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
-  function map_Postcode() {
-    new daum.Postcode({
-      oncomplete: function(data) {
-        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-        document.getElementById('locatin-filter').value = data.bname;
-        // 커서를 상세주소 필드로 이동한다.
-        document.getElementById("locatin-filter").focus();
-      }
-    }).open();}
-
-
   var mapContainer = document.getElementById('map');
   var mapOption = {
     center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울)
@@ -238,8 +227,50 @@
       mapboard_ani_category:"고양이"
     },
 // 추가적인 장소 정보 추가
+    {
+      latitude: 37.5665, // 예시 위도
+      longitude: 126.9780, // 예시 경도
+      address: '서울시 중구',
+      datetime: '2023-09-23 14:30',
+      animalType: '강아지',
+      mapboard_reg_date: '2023-09-20',
+      writertype: '발견자'
+    },
+    {
+      latitude: 37.5665, // 예시 위도
+      longitude: 126.9740, // 예시 경도
+      address: '서울시 중구',
+      datetime: '2023-09-23 14:30',
+      animalType: '고양이',
+      mapboard_reg_date: '2023-09-20',
+      writertype: '발견자'
+    },
   ];
+  // 즐겨찾기 아이템을 동적으로 생성하고 목록에 추가
+  var favoritesList = document.getElementById('favoritesList');
 
+  places.forEach(function(place, index) {
+    // 아이템 요소 생성
+    var listItem = document.createElement('li');
+    listItem.className = 'post-footer';
+
+    // 위도와 경도를 포함한 아이템 내용 생성
+    listItem.innerHTML = `
+    <input type="checkbox" class="map-checkbox" id="checkbox${index}">
+    <span class="address">실종/발견 장소: ${place.address}</span>
+    <span class="datetime">실종/발견 날짜 및 시간: ${place.datetime}</span>
+    <div class="post-header">
+      <span class="animal-type">품종: ${place.animalType}</span>
+    </div>
+    <div class="header-right">
+      <span class="mapboard_reg_date">작성일: ${place.mapboard_reg_date}</span>
+      <span class="writertype">실종/발견자: ${place.writertype}</span>
+    </div>
+  `;
+
+    // 즐겨찾기 목록에 아이템 추가
+    favoritesList.appendChild(listItem);
+  });
 
   // 마커와 팝업 생성
 
