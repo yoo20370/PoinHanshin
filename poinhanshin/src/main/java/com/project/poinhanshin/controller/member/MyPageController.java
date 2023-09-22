@@ -28,12 +28,7 @@ public class MyPageController {
         return "mypage/mypage";
     }
 
-    @GetMapping("/favorite")
-    public String favoriteProtectBoard(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model, Integer protectBoardno) {
-        model.addAttribute("loginUser", loginUser);
-        myPageService.favoriteMyProtectBoard(Math.toIntExact(loginUser.getUserno()), protectBoardno);
-        return "mypage/mypage";
-    }
+
     @GetMapping("/profilePage")
     public String profilePage(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
