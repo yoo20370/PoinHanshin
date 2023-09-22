@@ -70,7 +70,7 @@
   <div class="favorites-container">
     <div style="display: flex; flex-direction: row; justify-content: space-between;">
         <h2>즐겨찾기 목록</h2>
-        <button class="btn btn-primary">경로 찾기</button>
+        <button class="btn btn-primary" id="pathbtn">경로 찾기</button>
     </div>
     <div class="favorites-list">
       <table>
@@ -81,6 +81,7 @@
           <td>
       <ul id="favoritesList">
         <!-- 여기에 즐겨찾기 아이템을 추가하세요 -->
+        <input type="checkbox" class="map-checkbox" id="checkbox${status.index}">
         <li class="post-footer">
           <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
           <span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingdatetime}">실종/발견 날짜 및 시간: </span>
@@ -119,6 +120,205 @@
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script src="../../static/js/map/map.js"></script>
 <script>
+  // "경로 찾기" 버튼에 이벤트 리스너를 추가합니다
+  var pathButton = document.getElementById('pathbtn');
+  pathButton.addEventListener('click', showSelectedMarkers);
+
+  // 선택한 마커를 지도에 표시하는 함수
+  function showSelectedMarkers() {
+    // 'map-checkbox' 클래스가 있는 모든 체크 박스를 가져옵니다
+    var checkboxes = document.querySelectorAll('.map-checkbox');
+
+    // 선택한 마커를 저장할 배열을 만듭니다
+    var selectedMarkers = [];
+
+    // 선택한 체크 박스를 찾기 위해 체크 박스를 반복합니다
+    checkboxes.forEach(function (checkbox, index) {
+      if (checkbox.checked) {
+        // 체크 박스가 선택되면 해당하는 마커를 selectedMarkers 배열에 추가합니다
+        var markerPosition = new kakao.maps.LatLng(
+                mapboardList[index].latitude,
+                mapboardList[index].longitude
+        );
+
+        selectedMarkers.push(markerPosition);
+      }
+    });
+
+    // 선택한 마커에 원을 표시합니다
+    if (selectedMarkers.length > 0) {
+      // 원을 담을 그룹을 생성합니다
+      var circleGroup = new kakao.maps.Group();
+
+      // 선택한 모든 마커 주변에 원을 그립니다
+      selectedMarkers.forEach(function (markerPosition) {
+        var circle = new kakao.maps.Circle({
+          map: map,
+          center: markerPosition,
+          radius: 500, // 원의 반지름 (원하는 크기로 변경 가능)
+          strokeWeight: 5,
+          strokeColor: '#75B8FA',
+          strokeOpacity: 1,
+          strokeStyle: 'dashed',
+          fillColor: '#CFE7FF',
+          fillOpacity: 0.7
+        });
+
+        // 그룹에 원을 추가합니다
+        circleGroup.add(circle);
+      });
+
+      // 선택한 마커 주변에 원을 표시합니다
+      circleGroup.setMap(map);
+
+      // 지도의 중심을 첫 번째 선택한 마커로 설정합니다
+      map.setCenter(selectedMarkers[0]);
+    }
+  }
+</script>
+<script>
+  //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+  function map_Postcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+        document.getElementById('locatin-filter').value = data.bname;
+        // 커서를 상세주소 필드로 이동한다.
+        document.getElementById("locatin-filter").focus();
+      }
+    }).open();}
+
+
+  var mapContainer = document.getElementById('map');
+  var mapOption = {
+    center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울)
+    level: 4 // 지도 확대 레벨
+  };
+
+  // 지도 생성
+  var map = new kakao.maps.Map(mapContainer, mapOption);
+
+  var placesList = document.getElementById('placesList');
+  var addPlaceButton = document.getElementById('addPlaceButton');
+  var newPlaceName = document.getElementById('newPlaceName');
+  var newPlaceLat = document.getElementById('newPlaceLat');
+  var newPlaceLng = document.getElementById('newPlaceLng');
+
+  // 팝업 디자인을 위한 임시코드 --------------------------------
+  var places = [
+    {
+      mapboard_title: '실종A',
+// latlng: new kakao.maps.LatLng(37.5665, 126.9780), // 예시 좌표
+      mapboard_content: '내용-------',
+      missingtime: '2021-09-01 12:00',
+      missingaddress: '서울특별시 중구 을지로 281',
+      latitude: '37.5665',
+      longitude: '126.9780',
+      mapboard_ani_category:"강아지"
+    },
+    {
+      mapboard_title : '실종B',
+// latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
+      mapboard_content : '내용-------',
+      missingtime: '2021-09-01 12:00',
+      missingaddress : '서울특별시 중구 을지로 281',
+      latitude : '37.5600',
+      longitude : '126.9700',
+      mapboard_ani_category:"강아지"
+    },
+    {
+      mapboard_title : '실종C',
+// latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
+      mapboard_content : '내용-------',
+      missingtime: '2021-09-01 12:00',
+      missingaddress : '서울특별시 중구 을지로 281',
+      latitude : '37.5630',
+      longitude : '126.9730',
+      mapboard_ani_category:"고양이"
+    },
+// 추가적인 장소 정보 추가
+  ];
+
+
+  // 마커와 팝업 생성
+
+  places.forEach(function (pos) {
+// 마커를 생성합니다
+    var markerPosition  = new kakao.maps.LatLng(pos.latitude,pos.longitude);
+    var marker = new kakao.maps.Marker({
+      map: map,
+      position: markerPosition
+    });
+
+// content HTMLElement 생성
+    var content = document.createElement('div');
+    content.setAttribute( 'class' , 'card');
+    var cardBdoy = document.createElement('div');
+    cardBdoy.setAttribute( 'class' , 'card-body');
+
+    var animalType = document.createElement('span');
+    animalType.appendChild(document.createTextNode(pos.mapboard_ani_category));
+    animalType.setAttribute( 'class' , 'badge rounded-pill text-bg-warning');
+
+    var info = document.createElement('span');
+    info.appendChild(document.createTextNode(pos.mapboard_title));
+
+    var infoText = document.createElement('div');
+    infoText.appendChild(document.createTextNode(pos.missingaddress));
+
+    var dateText = document.createElement('div');
+    dateText.appendChild(document.createTextNode(pos.missingtime));
+
+    var address = document.createElement('div');
+    address.appendChild(document.createTextNode(pos.mapboard_content));
+// 닫기 버튼 추가
+    var closeBtn = document.createElement('button');
+    closeBtn.setAttribute( 'class' , 'btn btn-dark');
+    closeBtn.appendChild(document.createTextNode('닫기'));
+// 닫기 이벤트 추가
+    closeBtn.onclick = function() {
+      overlay.setMap(null);
+    };
+    content.appendChild(cardBdoy);
+    content.appendChild(closeBtn);
+    cardBdoy.appendChild(info);
+    cardBdoy.appendChild(animalType);
+    cardBdoy.appendChild(infoText);
+    cardBdoy.appendChild(dateText);
+    cardBdoy.appendChild(address);
+
+// customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
+    var overlay = new daum.maps.CustomOverlay({
+      position: markerPosition,
+      content: content
+    });
+
+    var circle = new kakao.maps.Circle({
+      center : markerPosition,  // 원의 중심좌표 입니다
+      radius: 500, // 미터 단위의 원의 반지름입니다
+      strokeWeight: 5, // 선의 두께입니다
+      strokeColor: '#75B8FA', // 선의 색깔입니다
+      strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+      strokeStyle: 'dashed', // 선의 스타일 입니다
+      fillColor: '#CFE7FF', // 채우기 색깔입니다
+      fillOpacity: 0.7  // 채우기 불투명도 입니다
+    });
+
+
+// 지도에 원을 표시합니다
+    circle.setMap(map);
+
+// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+    kakao.maps.event.addListener(marker, 'click', function() {
+      overlay.setMap(map);
+    });
+  });
+
+  function closeOverlay() {
+    overlay.setMap(null);
+  }
+
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
     new daum.Postcode({

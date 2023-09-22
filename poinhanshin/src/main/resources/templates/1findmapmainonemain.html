@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>findmap</title>
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+  <link rel="stylesheet" type="text/css" href="/css/map/mapmain.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body layout:fragment="content">
+<div class="container">
+<div class="post-header">
+  <div class="header-right">
+    <button class="icon-btn" onclick="location.href='findmapmain.html'" data-toggle="tooltip" data-placement="top" title="지도">
+      <i class="fa-solid fa-map fa-2xl" style="color: #7605ff;"></i>
+    </button>
+    <button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
+      <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
+    </button>
+    <button class="icon-btn" onclick="location.href='findmapreg.html'" data-toggle="tooltip" data-placement="top" title="글 작성하기">
+      <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
+    </button>
+  </div>
+</div>
+
+<!-- 지도를 표시할 div 입니다 -->
+<div id="content"></div>
+  <div id="map"></div>
+  <div id="popup"></div>
+
+<div class="header-left" style="display: flex; flex-direction: row;">
+  <!-- 드롭다운 필터 -->
+  <div class="filter-container">
+    <label for="animal-filter">동물 선택:</label>
+    <select id="animal-filter">
+      <option value="0">전체</option>
+      <option value="1">고양이</option>
+      <option value="2">강아지</option>
+    </select>
+  </div>
+
+  <!-- 신고자/발견자 선택 드롭다운 필터 -->
+  <div class="filter-container">
+    <label for="author-filter">신고자/발견자 선택:</label>
+    <select id="author-filter">
+      <option value="all">전체</option>
+      <option value="신고자">신고자</option>
+      <option value="발견자">발견자</option>
+    </select>
+  </div>
+
+  <!-- 지역 선택 드롭다운 필터 -->
+  <div class="filter-container">
+    <div class="mb-3 d-flex align-items-center">
+      <label class="form-label" for="locatin-filter">지역 선택:</label>
+      <input type="text" class="form-control mx-1" style="width: 200px;" id="locatin-filter" placeholder="지역">
+      <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+    </div>
+  </div>
+</div>
+  <div class="favorites-container">
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <h2>즐겨찾기 목록</h2>
+        <button class="btn btn-primary">경로 찾기</button>
+    </div>
+    <div class="favorites-list">
+      <ul id="favoritesList">
+        <!-- 여기에 즐겨찾기 아이템을 추가하세요 -->
+        <li class="post-footer">
+          <span class="address" >실종/발견 장소: </span>
+          <span class="datetime" >실종/발견 날짜 및 시간: </span>
+          <div class="post-header">
+            <span class="animal-type" >품종: </span>
+          </div>
+          <div class="header-right">
+            <span class="mapboard_reg_date" >작성일: </span>
+            <span class="writertype" >실종/발견자: </span>
+          </div>
+        </li>
+        <!-- 추가적인 아이템들 -->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 팝업 디자인을 위한 임시코드 -->
+<div id="wishlist" style="display: none">
+  <h2>위시리스트 목록</h2>
+  <ul id="placesList">
+    <!-- 위시리스트 항목이 여기에 동적으로 추가될 예정 -->
+  </ul>
+  <div>
+    <input type="text" id="newPlaceName" placeholder="장소명">
+    <input type="text" id="newPlaceLat" placeholder="위도">
+    <input type="text" id="newPlaceLng" placeholder="경도">
+    <button id="addPlaceButton">추가</button>
+  </div>
+</div>
+<!-- 팝업 디자인을 위한 임시코드 끝 -->
+
+</div>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
+<script th:inline="javascript">
+  // dto참고용
+//   this.mapboard_userno = mapboard_userno;
+// this.mapboardno = mapboardno;
+// this.mapboard_title = mapboard_title;
+// this.mapboard_content = mapboard_content;
+// this.mapboard_imagepath = mapboard_imagepath;
+// this.missingtime = missingtime;
+// this.missingaddress = missingaddress;
+// this.latitude = latitude;
+// this.longitude = longitude;
+// this.mapboard_reg_date = mapboard_reg_date;
+// this.mapboard_viewcount = mapboard_viewcount;
+// this.mapboard_ani_category = mapboard_ani_category;
+// this.writertype = writertype;
+
+// const mapDto = [[${MapBoardDto}]];
+
+
+var mapContainer = document.getElementById('map');
+var mapOption = {
+center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울)
+level: 4 // 지도 확대 레벨
+};
+
+// 지도 생성
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var placesList = document.getElementById('placesList');
+var addPlaceButton = document.getElementById('addPlaceButton');
+var newPlaceName = document.getElementById('newPlaceName');
+var newPlaceLat = document.getElementById('newPlaceLat');
+var newPlaceLng = document.getElementById('newPlaceLng');
+
+// 팝업 디자인을 위한 임시코드 --------------------------------
+var places = [
+{
+mapboard_title: '실종A',
+// latlng: new kakao.maps.LatLng(37.5665, 126.9780), // 예시 좌표
+mapboard_content: '내용-------',
+missingtime: '2021-09-01 12:00',
+missingaddress: '서울특별시 중구 을지로 281',
+latitude: '37.5665',
+longitude: '126.9780',
+mapboard_ani_category:"강아지"
+},
+{
+mapboard_title : '실종B',
+// latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
+mapboard_content : '내용-------',
+missingtime: '2021-09-01 12:00',
+missingaddress : '서울특별시 중구 을지로 281',
+latitude : '37.5600',
+longitude : '126.9700',
+mapboard_ani_category:"강아지"
+},
+{
+mapboard_title : '실종C',
+// latlng: new kakao.maps.LatLng(37.5670, 126.9790), // 예시 좌표
+mapboard_content : '내용-------',
+missingtime: '2021-09-01 12:00',
+missingaddress : '서울특별시 중구 을지로 281',
+latitude : '37.5630',
+longitude : '126.9730',
+mapboard_ani_category:"고양이"
+},
+// 추가적인 장소 정보 추가
+];
+
+
+// 마커와 팝업 생성
+
+places.forEach(function (pos) {
+// 마커를 생성합니다
+var markerPosition  = new kakao.maps.LatLng(pos.latitude,pos.longitude);
+var marker = new kakao.maps.Marker({
+map: map,
+position: markerPosition
+});
+
+// content HTMLElement 생성
+var content = document.createElement('div');
+content.setAttribute( 'class' , 'card');
+var cardBdoy = document.createElement('div');
+cardBdoy.setAttribute( 'class' , 'card-body');
+
+var animalType = document.createElement('span');
+animalType.appendChild(document.createTextNode(pos.mapboard_ani_category));
+animalType.setAttribute( 'class' , 'badge rounded-pill text-bg-warning');
+
+var info = document.createElement('span');
+info.appendChild(document.createTextNode(pos.mapboard_title));
+
+var infoText = document.createElement('div');
+infoText.appendChild(document.createTextNode(pos.missingaddress));
+
+var dateText = document.createElement('div');
+dateText.appendChild(document.createTextNode(pos.missingtime));
+
+var address = document.createElement('div');
+address.appendChild(document.createTextNode(pos.mapboard_content));
+// 닫기 버튼 추가
+var closeBtn = document.createElement('button');
+closeBtn.setAttribute( 'class' , 'btn btn-dark');
+closeBtn.appendChild(document.createTextNode('닫기'));
+// 닫기 이벤트 추가
+closeBtn.onclick = function() {
+overlay.setMap(null);
+};
+content.appendChild(cardBdoy);
+content.appendChild(closeBtn);
+cardBdoy.appendChild(info);
+cardBdoy.appendChild(animalType);
+cardBdoy.appendChild(infoText);
+cardBdoy.appendChild(dateText);
+cardBdoy.appendChild(address);
+
+// customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
+var overlay = new daum.maps.CustomOverlay({
+position: markerPosition,
+content: content
+});
+
+var circle = new kakao.maps.Circle({
+center : markerPosition,  // 원의 중심좌표 입니다
+radius: 500, // 미터 단위의 원의 반지름입니다
+strokeWeight: 5, // 선의 두께입니다
+strokeColor: '#75B8FA', // 선의 색깔입니다
+strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+strokeStyle: 'dashed', // 선의 스타일 입니다
+fillColor: '#CFE7FF', // 채우기 색깔입니다
+fillOpacity: 0.7  // 채우기 불투명도 입니다
+});
+
+
+// 지도에 원을 표시합니다
+circle.setMap(map);
+
+// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+kakao.maps.event.addListener(marker, 'click', function() {
+overlay.setMap(map);
+});
+});
+
+function closeOverlay() {
+overlay.setMap(null);
+}
+
+  //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
+  function map_Postcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+        document.getElementById('locatin-filter').value = data.bname;
+        // 커서를 상세주소 필드로 이동한다.
+        document.getElementById("locatin-filter").focus();
+      }
+    }).open();}
+
+// 마커 생성
+// function renderPlaces() {
+//   placesList.innerHTML = '';
+//   for (var i = 0; i < places.length; i++) {
+//     var listItem = document.createElement('li');
+//     listItem.textContent = places[i].name;
+//     listItem.addEventListener('click', function() {
+//       var index = Array.from(placesList.children).indexOf(this);
+//       map.setCenter(places[index].latlng);
+//     });
+//     placesList.appendChild(listItem);
+
+//     createMarkerAndPopup(places[i]);
+//   }
+// }
+
+// // 초기 렌더링
+// renderPlaces();
+// 팝업 디자인을 위한 임시코드 -------------------------------- 끝
+
+</script>
+</body>
+</html>
