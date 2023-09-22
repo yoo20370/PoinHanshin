@@ -209,15 +209,4 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
         }
     }
 
-    @Override
-    public List<ProtectBoardDto> selectMyprotectboardService(Integer userno) {
-            List<ProtectBoardDto> selectMyprotectboardService = protectBoardMapper.selectMyprotectboard(userno);
-        return selectMyprotectboardService;
-    }
-
-    @Override
-    public List<ProtectBoardDto> writeMyprotectboardService(Integer userno) {
-        List<ProtectBoardDto> writeMyprotectboardService = protectBoardMapper.writeMyprotectboard(userno);
-        return writeMyprotectboardService;
-    }
 }

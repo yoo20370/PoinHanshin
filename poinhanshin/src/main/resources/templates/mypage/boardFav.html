@@ -228,23 +228,25 @@
           <table class="table table-striped table-sm">
             <thead>
             <tr>
-              <th scope="col">#</th>
+              <th scope="col">번호</th>
               <th scope="col">제목</th>
-              <th scope="col">작성일</th>
+              <th scope="col">작성자</th>
               <th scope="col">조회수</th>
               <th scope="col">좋아요</th>
+              <th scope="col">등록일</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>제목</td>
-              <td>2023-09-17 14:22:00</td>
-              <td>2</td>
-              <td>3</td>
+            <tbody>
+            <tr th:each="boardDto : ${boardDtoList}">
+              <td th:text="${boardDto.boardno}"></td>
+              <td  th:text="${boardDto.board_title}"></td>
+              <td th:text="${boardDto.id}"></td>
+              <td th:text="${boardDto.board_viewcount}"></td>
+              <td th:text="${boardDto.likecount}"></td>
+              <td th:text="${#dates.format(boardDto.board_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
-
             </tbody>
           </table>
         </div>

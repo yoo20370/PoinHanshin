@@ -84,13 +84,4 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
     //마이페이지 임보자 게시판 불러오기
 
 
-    @Override
-    public List<ProtectBoardDto> selectMyprotectboard(Integer userno) {
-        return sqlSession.selectList(namespace +"selectMyprotectboard", userno);
-    }
-
-    @Override
-    public List<ProtectBoardDto> writeMyprotectboard(Integer userno) {
-        return sqlSession.selectList(namespace+"writeMyprotectboard", userno);
-    }
 }

@@ -216,16 +216,4 @@ public class BoardServiceImpl implements BoardService{
     }
 
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
-    @Override
-    public List<BoardDto> SelectMyBoardService(Integer userno) {
-        List<BoardDto> SelectMyBoardService = boardMapper.SelectMyBoard(userno);
-        return SelectMyBoardService;
-    }
-
-    // 마이페이지 - 자신이 쓴 커뮤니티 게시글 불러오기
-    @Override
-    public List<BoardDto> WriteMyBoardService(Integer userno) {
-        List<BoardDto> WriteMyBoardService = boardMapper.WriteMyBoard(userno);
-        return WriteMyBoardService;
-    }
 }

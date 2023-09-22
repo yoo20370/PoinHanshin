@@ -37,10 +37,5 @@ public interface ProtectBoardService {
     // 이미지 등록을 위한 메서드
     void addImgFiles(ProtectBoardDto protectBoardDto) throws IOException;
 
-    //마이페이지 임보자 반환
-    List<ProtectBoardDto> selectMyprotectboardService(Integer userno);
-
-    //내가 쓴 글 가져오기
-    List<ProtectBoardDto> writeMyprotectboardService(Integer userno);
 
 }

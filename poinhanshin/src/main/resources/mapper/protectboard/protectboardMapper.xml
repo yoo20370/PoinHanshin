@@ -47,17 +47,6 @@
         SET fileAttached = #{fileAttached}
         WHERE protectboardno = #{protectboardno}
     </update>
-    <select id="selectMyprotectboard" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT u.id, p.protectboard_userno , p.protectboardno , p.protectboard_title , p.protectboard_content , p.breeds , p.protectboard_ani_category , p.protectboard_reg_date  , p.protectstatus , p.starttime , p.deadline ,  p.fileAttached
-        FROM users u, protectboard p, mypage m
-        WHERE u.userno = m.mypage_userno AND m.mypage_userno = #{userno} AND m.mypage_protectboardno = p.protectboardno
-    </select>
-    <select id="writeMyprotectboard" parameterType="int" resultType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
-        SELECT u.id, p.protectboard_userno , p.protectboardno , p.protectboard_title , p.protectboard_content , p.breeds , p.protectboard_ani_category , p.protectboard_reg_date  , p.protectstatus , p.starttime , p.deadline ,  p.fileAttached
-        FROM users u, protectboard p
-        WHERE u.userno = p.protectboard_userno AND p.protectboard_userno = #{userno}
-    </select>
-
     <sql id="aniCategoryChoose">
         <choose>
             <when test="ani_category == 0">
