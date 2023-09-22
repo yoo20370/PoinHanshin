@@ -1,15 +1,16 @@
 package com.project.poinhanshin.controller.member;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.member.MyPageDto;
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.member.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -81,5 +82,18 @@ public class MyPageController {
     public String mapBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
         return "mypage/findmapFav";
+    }
+
+    // 즐겨찾기
+    @PostMapping("/favoriteUpdate")
+    @ResponseBody
+    public ResponseEntity<Integer> favoriteUpdate(@RequestBody MyPageDto myPageDto){
+
+        System.out.println("favoriteUpdate : " +myPageDto );
+
+        // 0 - 추가 , 1 - 삭제
+        int checkResult = myPageService.favoriteFunc(myPageDto);
+
+        return new ResponseEntity<Integer>(checkResult , HttpStatus.OK);
     }
 }

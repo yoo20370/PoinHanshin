@@ -40,6 +40,8 @@
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
             <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}">
             <input th:if="${protectboard.fileAttached == 0}" type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
+            <input type="hidden" th:if="${loginUser != null}" name="loginUser_userno"id="loginUser_userno" th:value="${loginUser.userno}"/>
+            <input type="hidden" th:if="${loginUser != null}" name="loginUser_userno" value="0"/>
 
             <!-- 동물 카테고리 , 작성일 , 마감일 form input  -->
             <!-- 프론트가 수정 필요 -->
@@ -60,7 +62,7 @@
         <!-- 신고/즐겨찾기 -->
         <div class="row">
             <div class="col-sm-12 hstack">
-            <span class="p-2 ms-auto"><a href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
+            <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
             <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>
             </div>
         </div>
@@ -155,6 +157,42 @@ console.log([[${loginUser}]]);
         form.attr("method", "post");
         form.submit();
     });
+
+    // 즐겨찾기 기능 시작
+    let mypage_userno = $('input[name=loginUser_userno]').val();
+
+    if( mypage_userno != undefined){
+        $('#favorite').on("click" , function(){
+
+            let mypage_userno = $('input[name=loginUser_userno]').val();
+            let mypage_protectboardno = [[${protectboard.protectboardno}]];
+
+            let myPageDto = {
+                mypage_userno : mypage_userno,
+                mypage_protectboardno : mypage_protectboardno
+            }
+
+            $.ajax({
+                type : 'POST',
+                url : '/favoriteUpdate',
+                headers : {"content-type" : "application/json"},
+                dataType : 'json',
+                data : JSON.stringify(myPageDto),
+                success : function(data){
+                    if(data == 0){
+                        alert("즐겨찾기 추가");
+                    } else {
+                        alert("즐겨찾기 삭제")
+                    }
+                },
+                error : function(str){}
+            });
+
+        });
+    }
+    // 즐겨찾기 기능 끝
+
+
 
 
 //날짜계산
