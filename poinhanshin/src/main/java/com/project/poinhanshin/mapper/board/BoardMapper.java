@@ -29,7 +29,7 @@ public interface BoardMapper {
     // 게시물을 삭제한다.
     int boardDeleteContent(Integer boardno , Long loginUser);
 
-    // 최근 사용자가 등록한 게시물의 번호를 가져온다. (즐겨찾기?)
+    // 최근 사용자가 등록한 게시물의 번호를 가져온다. (자신이 등록한 글로 이동)
     int boardSelectRecentBoardNo(Integer board_userno);
 
     // 게시물의 파일 여부 값을 수정한다.
