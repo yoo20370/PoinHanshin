@@ -37,20 +37,14 @@
 <div class="page">
 
     <!--    고양이=1(true), 강아지=0(false)-->
-    <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary">강아지</span>
-    <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary">고양이</span>
+    <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary" style="font-size: 16px;">강아지</span>
+    <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary" style="font-size: 16px;">고양이</span>
 
     <!-- 제목 -->
-    <div class="row">
-        <div class="form-floating">
-            <input type="text" readonly class="form-control-plaintext"
-                   id="floatingEmptyPlaintextInput"
-                   name="board_title"
-                   th:value="${boardDto.board_title}"
-            >
-            <label for="floatingEmptyPlaintextInput">제목</label>
-        </div>
+    <div class="row m-1 p-3 rounded-0 border-bottom" id="titleWrapper">
+        <input type="text" readonly class="form-control-plaintext" id="floatingEmptyPlaintextInput" name="board_title" th:value="${boardDto.board_title}">
     </div>
+
 
     <!-- 이미지 파일 존재 여부에 따라 이미지 표시 -->
     <!-- <div th:if="${boardDto.fileAttached == 1}">
@@ -61,42 +55,35 @@
     </div> -->
     <!-- 내용 -->
     <div class="row">
-        <div class="col-mb-3">
+        
             <!--  이미지     -->
-            <div class="col-sm-6" >
+            
                 <div th:if="${boardDto.fileAttached == 1}">
-                    <span th:each="fileName: ${boardDto.storedFileName}">
-                            <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
+                    <div class="col-sm-12" th:each="fileName: ${boardDto.storedFileName}">
+                            <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" class="rounded mx-auto d-block"/>
                             <input type="hidden" name="storedFileName" th:value="${fileName}"/>
-                        </span>
+                        </div>
                 </div>
-            </div>
-            <textarea
-                    type="text"
-                    name="board_content"
-                    class="form-control"
-                    id="inputContent"
-                    th:text="${boardDto.board_content}"
-                    readonly="readonly"
-                    style="height: 300px;border:none"
-            ></textarea>
+            
+        <div class="col-mb-3">    
+            <textarea type="text"name="board_content"class="form-control"id="inputContent"th:text="${boardDto.board_content}"readonly="readonly"style="height: 50vh;border:none"></textarea>
         </div>
     </div>
-
+<!--좋아요 버튼-->
+    <div id="likeContainer" class="vstack col-sm-2 mx-auto m-2">
+        <button th:if="${loginUser != null }" type="button" id="likeBtn" style=" border: 0; background-color: transparent;">
+            <i id="likeIcon" class="far fa-heart fa-lg" style="font-size:50px;color:#A084E8"></i>
+        </button>
+    </div>
     <!-- 작성일 , 조회수 , 작성자 -->
-    <div class="row">
-        <span th:text="|작성일 : ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 HH시 mm분 ss초')} |" >작성일:</span>
-        <span th:text="|조회수 : ${boardDto.board_viewcount}|" >조회수:</span>
-        <span th:text="|작성자 : ${boardDto.id}|" >작성자:</span>
+    <div class="hstack">
+        <i class="fas fa-user-edit"></i>&nbsp<span th:text="| ${boardDto.id}|" >작성자</span>&nbsp&nbsp
+        <i class="far fa-eye"></i>&nbsp<small th:text="| ${boardDto.board_viewcount}|" >조회수</small>&nbsp
+        <i class="fas fa-heart"></i>&nbsp<small id="likeCnt" th:text="${boardDto.likecount}"></small>
+        <small class="ms-auto" th:text="| ${#dates.format(boardDto.board_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')} |" style="color:gray" >작성일</small>
 
     </div>
-    <div id="likeContainer">
-        <p>좋아요 수 : <span id="likeCnt" th:text="${boardDto.likecount}"></span></p>
-
-        <span id="likeImg"></span>
-    </div>
-    <button th:if="${loginUser != null }" type="button" id="likeBtn">좋아요 버튼</button>
-
+    <br>
 
     <!--댓글출력-->
     <!--${commentList} 댓글리스트-->
@@ -225,54 +212,59 @@
             </th:block>
         </div>-->
     <!--댓글작성-->
-    <div class="commentbox2">
+    <div class="commentbox2 container">
+        <br>
         <div>
-            <p class="comment2" th:if="${session.isEmpty()}">로그인 후 댓글을 작성할 수 있습니다.</p>
-        </div>
-        <div>
-            <form  method="post">
+            <form  method="post" class="m-2">
                 <div class="input-group" style="width:auto">
                     <input type="hidden" name="boardcomment_userno" >
                     <input hidden="hidden" />
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
-                    <input type="text"  class="form-control" id="content" name="comment"
-                           placeholder="1자에서 100자 이내로 입력해주세요.">
+                    <input th:if="${session.isEmpty()}" type="text"  class="form-control"
+                           placeholder="로그인 후 댓글을 작성할 수 있습니다.">   
+                    <input th:unless="${session.isEmpty()}" type="text"  class="form-control" id="content" name="comment"
+                           placeholder="1자에서 100자 이내로 입력해주세요.">    
                     <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
                     <br>
                 </div>
             </form>
         </div>
     </div>
-    <div class="fa-solid fa-user">테스트</div>
-    <i class="fas fa-user"></i>
+    <div class="hstack m-3">
+        <div class="mx-auto">
+            <button type="button" class="btn btn-secondary"
+                    th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
+            </button>
+        </div>
+    </div>
     <!-- 버튼 -->
-    <button type="button" class="btn btn-secondary"
-            th:onclick="|location.href='@{/board/list( page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">목록
-    </button>
+    <th:block th:if="${loginUser} ? ${loginUser.userno} == ${boardDto.board_userno} : false ">
+    <div class="vstack col-sm-2 mx-auto" >
     <button type="button" class="btn btn-secondary"
             th:onclick="|location.href='@{/board/modify(boardno = ${boardDto.boardno} , board_userno = ${boardDto.board_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
     </button>
-    <form id="removeForm" action="" method="">
-        <input type="hidden" name="loginUser" th:value="${loginUser}"/>
+    <button type="button" id="removeBtn"class="btn btn-danger">삭제</button>
+    </div>
+    </th:block>
+    <form id="removeForm" action="" method="" class="vstack col-sm-2 mx-auto">
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
         <input th:if="${loginUser != null }" type="hidden" name="loginUserNo" id=" " th:value="${loginUser.userno}"/>
         <input th:unless="${loginUser != null }" type="hidden" name="loginUserNo" value="0" />
-        <button type="button" id="removeBtn"class="btn btn-secondary">삭제</button>
     </form>
 </div>
 <script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <script th:inline="javascript">
-
+    
 
     $(document).ready(function(){
         // 게시글 시작
         // 게시물 삭제 버튼 클릭시
-
-
+        var login = parseInt($('input[name=loginUserNo]').val());
+        // console.log(login);
         $(document).on("click", "#removeBtn", function(){
             if(!confirm("삭제하시겠습니까 ?")) return;
             let form = $('#removeForm');
@@ -304,7 +296,7 @@
             let minute = time.getMinutes();
 
 
-            let str = ''+ year + '년' +month+'월'+day+'일' + ' ' + hour +'시'+ minute +'분';
+            let str = ''+ year + '-' +month+'-'+day+' ' + '(' + hour +':'+ minute +')';
             return str;
         }
 
@@ -332,22 +324,23 @@
 
         // 게시물 댓글을 가져와서 화면에 출력
         let showList = function(boardcomment_boardno){
+
             $.ajax({
                 type : 'GET',
                 url : '/comments?boardcomment_boardno='+boardcomment_boardno,
                 dataType : 'json',
-                success:function(list){
+                success:function(list){    
                     list.forEach(function(comment){
-                        console.log(comment);
+                        //console.log(comment);
                         var commentWrapper = document.createElement('div');
-                        commentWrapper.setAttribute('class','card rounded-0');
+                        commentWrapper.setAttribute('class','card rounded-0 border-0 border-top ');
                         var relpybox = document.createElement('div');
-                        relpybox.setAttribute('class','row p-2');
+                        relpybox.setAttribute('class','row p-2 ');
                         relpybox.setAttribute('data-commentno',comment.commentno);
                         relpybox.setAttribute('data-parcommentno',comment.parcommentno);
                         //댓글 컨텐츠 박스
                         var contentCol= document.createElement('div');
-                        contentCol.setAttribute('class','col-sm-9');
+                        contentCol.setAttribute('class','col-sm-10');
                         //작성자
                         var writer= document.createElement('div');
                         writer.setAttribute('class','fas fa-user');
@@ -358,9 +351,9 @@
                         comments.textContent = comment.comment;
                         //작성일
                         var writeDate= document.createElement('div');
-                        writeDate.textContent ='작성일 : '+ toTime(comment.boardcomment_reg_date);
+                        writeDate.textContent = toTime(comment.boardcomment_reg_date);
                         writeDate.setAttribute('style', 'font-size: smaller;color:gray' );
-                        writeDate.setAttribute('class', 'float-end');
+                        writeDate.setAttribute('class', 'col-sm-12 text-end');
                         //돔구성
                         contentCol.appendChild(writer);
                         contentCol.appendChild(comments);
@@ -377,6 +370,7 @@
                         Wbutton.setAttribute('class','btn btn-outline');
                         Wbutton.textContent = '답글';
                         buttonCol.appendChild(Wbutton);
+                        
                         var Rbutton= document.createElement('button');
                         Rbutton.setAttribute('name','removeCmtBtn');
                         Rbutton.setAttribute('id','removeCommentBtn'+ comment.commentno);
@@ -384,20 +378,37 @@
                         Rbutton.setAttribute('class','btn btn-outline');
                         Rbutton.textContent = '삭제';
                         buttonCol.appendChild(Rbutton);
+
                         //대댓글 부분
-                        if(comment.commentno != comment.parcommentno){
-                            buttonCol.removeChild(Wbutton);
+
+                        if(comment.commentno != comment.parcommentno){//
+                            buttonCol.removeChild(Wbutton); 
                             var spacer =document.createElement('div');
                             spacer.setAttribute('class','col-sm-1');
-                            contentCol.setAttribute('class','col-sm-8');
+                            var relpyIcon = document.createElement('i');
+                            relpyIcon.setAttribute('class','fas fa-reply fa-rotate-180 fa-lg');
+                            contentCol.setAttribute('class','col-sm-9');
+                            spacer.append(relpyIcon);
                             relpybox.appendChild(spacer);
+                            commentWrapper.setAttribute('class','card rounded-0 border-0')
                         }
 
+                   
                         relpybox.appendChild(contentCol);
                         relpybox.appendChild(buttonCol);
                         commentWrapper.appendChild(relpybox);
+
+                        if(login == 0) {//null체크 로그인이 안되있으면 버튼삭제
+                            relpybox.removeChild(buttonCol);
+                        }
+                        else if(login != comment.boardcomment_userno){  // 내글이 아니면 삭제버튼 비활성
+                            buttonCol.removeChild(Rbutton);
+                        }
+
                         document.querySelector('#commentArea').appendChild(commentWrapper);
 
+                    
+                        
                     })
 
                     // $('#commentArea').append(toHtml(list));
@@ -409,13 +420,16 @@
 
 
         // 댓글 등록 버튼 ( 대댓글 X )
+        
+            
         $('#insertCommentBtn').on("click" ,function(){
+
+        if(login != 0){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
 
             let comment = $('input[name=comment]').val();
             let boardcomment_boardno = [[${boardDto.boardno}]];
-            var loginUser = parseInt($('input[name=loginUserNo]').val());
-
+            var loginUser = login
             if(comment.trim() == ''){
                 alert("댓글을 입력해주세요.");
                 return;
@@ -441,12 +455,16 @@
                     showList([[${boardDto.boardno}]]);
                 }
             });
+        }else{
+            alert("로그인이 필요합니다.");
+        }
         })
-
+        
+           
         // 삭제 버튼 클릭
         $(document).on("click", "button[name=removeCmtBtn]" ,function(){
             if(!confirm("댓글을 삭제하시겠습니까 ?")) return;
-            var loginUser = parseInt($('input[name=loginUserNo]').val());
+            var loginUser = login
             let commentno = $(this).parent().parent().data("commentno");
             console.log(commentno);
 
@@ -475,7 +493,7 @@
         // 대댓글 등록 버튼 클릭
         $('#replyBtn').on("click" , function(){
             if(!confirm("댓글을 등록하시겠습니까 ?")) return;
-            var loginUser = parseInt($('input[name=loginUserNo]').val());
+            var loginUser = login
             let comment = $('input[name=replyComment]') .val();
             let commentno = $('#replyCmtContainer').parent().data("commentno");
             let boardcomment_boardno = [[${boardDto.boardno}]];
@@ -532,11 +550,14 @@
                 success : function(data){
                     console.log("success");
                     // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
-                    let likeImg = $('#likeImg');
+              
+                    let likeIcon = document.getElementById("likeIcon");
                     if(data == 1){
-                        likeImg.text("♥");
+                 
+                        likeIcon.setAttribute('class','fas fa-heart fa-lg');
                     } else {
-                        likeImg.text("♡");
+                 
+                        likeIcon.setAttribute('class','far fa-heart fa-lg');
                     }
                 },
                 error : function(){
@@ -555,13 +576,15 @@
                         // 1 - 좋아요 누른 상태 , 0 - 좋아요 안 누른 상태
                         let checkNum = map.checkNum;
                         let likeCnt = map.likeCnt;
-
-                        let likeImg = $('#likeImg');
+                        let likeIcon = document.getElementById("likeIcon");
+                  
                         let like = $('#likeCnt');
                         if(checkNum == 1){
-                            likeImg.text("♥");
+                  
+                            likeIcon.setAttribute('class','fas fa-heart fa-lg');
                         } else {
-                            likeImg.text("♡");
+                       
+                            likeIcon.setAttribute('class','far fa-heart fa-lg');
                         }
                         like.text(likeCnt);
 

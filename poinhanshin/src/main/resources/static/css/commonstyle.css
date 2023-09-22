@@ -1,4 +1,4 @@
-   @media (min-width: 768px) {
+   @media (min-width: 700px) {
       .page  {
         width: 600px;
       }
@@ -75,7 +75,11 @@
   }
   a {
     text-decoration-line: none;
+    color: black;
     }
+  a:hover{
+  color:#A66CFF
+  }
 /*boardlist*/
     .info_table {
         font-size: 12px
@@ -91,6 +95,7 @@
         height:150px;
         object-fit:cover;
         border-radius: 12px;
+        max-width:150px;
     }
     .th_id {
        width: 30px;
@@ -113,6 +118,22 @@
     .th_thumbnail {
         width: 100px;
     }
+    /*board*/
+    #likeBtn:focus {
+      animation: icon-change 1.0s ;
+    }
+    @keyframes icon-change {
+       from{
+          opacity: 0;
+       }
+       to{
+        opacity: 1;
+       }
+    }
+
+
+
+    }
 
     /*protectedit*/
         #att_zone{
@@ -125,8 +146,12 @@
         height: 200px;
         background-color:#BFACE2;
     }
-
-
+/*protectlist*/
+.card-img-top {
+width: 100%;
+height: 25vh;
+object-fit: contain;
+}
 
 
     /*#6F61C0 #A084E8 #8BE8E5 #D5FFE4 색팔레트  코드메모용 https://colorhunt.co/palette/6f61c0a084e88be8e5d5ffe4
