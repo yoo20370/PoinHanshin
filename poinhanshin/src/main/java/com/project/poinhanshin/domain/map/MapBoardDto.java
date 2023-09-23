@@ -7,7 +7,6 @@ import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class MapBoardDto {
 
     private Integer fileAttached;                // sqltype : longblob -> int & byte, 게시물 이미지 경로
 
-    public MapBoardDto(String id, Integer mapboard_userno, Integer mapboardno, String mapboard_title, String mapboard_content, Date missingtime, String missingaddress, Double latitude, Double longitude, Date mapboard_reg_date, Integer mapboard_viewcount, boolean mapboard_ani_category, boolean writertype, Integer fileAttached) {
+    public MapBoardDto(String id, Integer mapboard_userno, Integer mapboardno, String mapboard_title, String mapboard_content, Date missingtime, String missingaddress, Double latitude, Double longitude, Date mapboard_reg_date, Integer mapboard_viewcount, Boolean mapboard_ani_category, Boolean writertype, Integer fileAttached) {
         this.id = id;
         this.mapboard_userno = mapboard_userno;
         this.mapboardno = mapboardno;

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -104,10 +105,10 @@ public class MapBoardController {
 
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> mapBoardWrite(@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title  , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress ,@RequestParam(required = false)  Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer loginUser )
+    public ResponseEntity<Integer> mapBoardWrite(@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title  , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false) Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer loginUser )
     throws IOException {
 
-        MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , null , mapboard_title , mapboard_content , missingtime , missingAddress , 37.19357  , 127.0227 , new Date() , 0 , mapboard_ani_category , writertype ,0 );
+        MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , null , mapboard_title , mapboard_content , missingtime , missingAddress , latitude  , longitude , new Date() , 0 , mapboard_ani_category , writertype ,0 );
         System.out.println(mapBoardDto);
         mapBoardDto.setMapBoardFile(mapBoardFile);
 
@@ -164,7 +165,7 @@ public class MapBoardController {
     @ResponseBody
     public ResponseEntity<String> mapBoardModify( @RequestParam Integer mapboardno ,@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false)  Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer fileAttached , @RequestParam Integer loginUser)
     throws IOException{
-        MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , mapboardno , mapboard_title , mapboard_content , missingtime , missingAddress , 37.19357  , 127.0227 , new Date() , 0 , mapboard_ani_category , writertype ,fileAttached );
+        MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , mapboardno , mapboard_title , mapboard_content , missingtime , missingAddress , latitude  , longitude , new Date() , 0 , mapboard_ani_category , writertype ,fileAttached );
         mapBoardDto.setMapBoardFile(mapBoardFile);
 
         System.out.println("modify_post : "+mapBoardDto);

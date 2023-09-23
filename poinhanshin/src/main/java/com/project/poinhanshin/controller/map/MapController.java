@@ -36,7 +36,7 @@ public class MapController {
         // 맵 게시물 정보 가져오기
         List<MapBoardDto> mapBoardDtoList = mapBoardService.getMapBoardListService(sc);
 
-        // 즐겨찾기 값 가져오기 
+        // 즐겨찾기 값 가져오기
 
         m.addAttribute("mapBoardDtoList" , mapBoardDtoList);
         m.addAttribute("sc",sc);
