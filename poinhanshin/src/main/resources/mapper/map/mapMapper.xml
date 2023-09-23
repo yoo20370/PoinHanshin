@@ -55,11 +55,6 @@
         SET fileAttached = #{fileAttached}
         WHERE mapboardno = #{mapboardno}
     </update>
-    <select id="SelectMyMap" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
-        SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_title, mb.mapboard_content ,  mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype, mb.fileAttached
-        FROM mapboard mb, users u, mypage mp
-        WHERE mp.mypage_userno = u.userno and mp.mypage_mapboardno = mb.mapboardno and mp.mypage_userno = #{userno}
-    </select>
 
     <select id="WriteMyMap" parameterType="int" resultType="com.project.poinhanshin.domain.map.MapBoardDto">
         SELECT u.id, mb.mapboard_userno , mb.mapboardno , mb.mapboard_title, mb.mapboard_content ,  mb.missingtime , mb.missingaddress , mb.latitude , mb.longitude , mb.mapboard_reg_date , mb.mapboard_viewcount , mb.mapboard_ani_category , mb.writertype, mb.fileAttached

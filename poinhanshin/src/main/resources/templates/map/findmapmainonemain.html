@@ -70,7 +70,7 @@
   <div class="favorites-container">
     <div style="display: flex; flex-direction: row; justify-content: space-between;">
         <h2>즐겨찾기 목록</h2>
-        <button class="btn btn-primary">경로 찾기</button>
+        <button class="btn btn-primary" onclick="setMap()">경로 찾기</button>
     </div>
     <div class="favorites-list">
       <ul id="favoritesList">
@@ -232,20 +232,23 @@ position: markerPosition,
 content: content
 });
 
-var circle = new kakao.maps.Circle({
-center : markerPosition,  // 원의 중심좌표 입니다
-radius: 500, // 미터 단위의 원의 반지름입니다
-strokeWeight: 5, // 선의 두께입니다
-strokeColor: '#75B8FA', // 선의 색깔입니다
-strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-strokeStyle: 'dashed', // 선의 스타일 입니다
-fillColor: '#CFE7FF', // 채우기 색깔입니다
-fillOpacity: 0.7  // 채우기 불투명도 입니다
-});
+  var circle = new kakao.maps.Circle({
+    center : markerPosition,  // 원의 중심좌표 입니다
+    radius: 500, // 미터 단위의 원의 반지름입니다
+    strokeWeight: 5, // 선의 두께입니다
+    strokeColor: '#75B8FA', // 선의 색깔입니다
+    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: 'dashed', // 선의 스타일 입니다
+    fillColor: '#CFE7FF', // 채우기 색깔입니다
+    fillOpacity: 0.7  // 채우기 불투명도 입니다
+  });
 
 
-// 지도에 원을 표시합니다
-circle.setMap(map);
+  // 지도에 원을 표시합니다
+/*kakao.maps.event.addListener(setMap, 'click', function (){
+  circle.setMap(map);
+});*/
+
 
 // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
 kakao.maps.event.addListener(marker, 'click', function() {
@@ -253,8 +256,14 @@ overlay.setMap(map);
 });
 });
 
+  // 지도에 원을 표시합니다
+  function setMap(){
+    circle.setMap(map);
+  }
+
+
 function closeOverlay() {
-overlay.setMap(null);
+ new overlay.setMap(null);
 }
 
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
