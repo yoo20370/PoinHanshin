@@ -11,7 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
   <!--dropZone-->
-  <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js" defer></script>
+  <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 </head>
 <style>
@@ -215,6 +215,7 @@
         for(let i = 0 ; i < files.length ; i++){
           formData.append("boardFile" , files[i]);
         }
+
       }
 
       formData.append("board_userno" ,board_userno);
@@ -238,13 +239,14 @@
         processData : false,
         contentType : false,
         success :function(){},
-        error : function(){}
+        complete : function(){
+              let form = $('#form');
+          form.attr("action" , "/board/read");
+          form.attr("method","get");
+          form.submit();
+        }
       });
 
-      let form = $('#form');
-      form.attr("action" , "/board/read");
-      form.attr("method","get");
-      form.submit();
 
 
     });

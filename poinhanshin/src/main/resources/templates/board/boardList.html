@@ -6,14 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글썸네일</title>
-
- <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
-   <script
-  src="https://code.jquery.com/jquery-3.7.0.slim.js"
-  integrity="sha256-7GO+jepT9gJe9LB4XFf8snVOjX3iYNb0FHYr5LI1N5c="
-  crossorigin="anonymous"></script>
-
     <link href="/css/commonstyle.css" rel="stylesheet">
+ <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 <body layout:fragment="content">
 <script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>

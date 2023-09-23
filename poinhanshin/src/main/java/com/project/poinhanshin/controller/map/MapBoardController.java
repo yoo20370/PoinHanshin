@@ -5,6 +5,7 @@ import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.map.MapBoardDto;
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.service.map.MapBoardService;
+import com.project.poinhanshin.service.member.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,19 @@ import java.util.List;
 public class MapBoardController {
 
     MapBoardService mapBoardService;
+    MyPageService myPageService;
 
     @Autowired
-    public MapBoardController(MapBoardService mapBoardService) {
+    public MapBoardController(MapBoardService mapBoardService, MyPageService myPageService) {
         this.mapBoardService = mapBoardService;
+        this.myPageService = myPageService;
     }
 
     // 메인 페이지 호출
     @GetMapping("/main")
-    public String goToMapMain(@SessionAttribute(name = "loginUser", required = false) User loginUser){
-
+    public String goToMapMain(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model){
+        List<MapBoardDto> mapBoardDtoList = myPageService.selectMyMap(Math.toIntExact(loginUser.getUserno()));
+        model.addAttribute("mapBoardDtoList", mapBoardDtoList);
         return "/map/findmapmainonemain";
     }
 
@@ -218,5 +222,23 @@ public class MapBoardController {
         // 삭제 성공
         redirectAttributes.addFlashAttribute("msg" , "SUCCESS_REMOVE");
         return "redirect:/map/list";
+    }
+
+    @GetMapping("/searchList")
+    public String searchList(SearchCondition sc, @SessionAttribute(name = "loginUser", required = false) User loginUser, Model m) {
+
+        if(loginUser != null){
+            // 로그인 정보 전달
+            m.addAttribute("loginUser" , loginUser);
+        }
+        System.out.println(sc);
+        List<MapBoardDto> mapBoardDtoList = mapBoardService.selectMapList(sc);
+        int totalCnt = mapBoardService.getMapBoardListCnt(sc);
+        PageHandler ph = new PageHandler(totalCnt , sc);
+        m.addAttribute("mapBoardDtoList",mapBoardDtoList);
+        m.addAttribute("totalCnt" , totalCnt);
+        m.addAttribute("sc", sc);
+        m.addAttribute("ph" ,ph);
+        return "/map/findmaplist";
     }
 }

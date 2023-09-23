@@ -60,10 +60,12 @@
         <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}|" name="deadline"> 남은날짜 : </span>
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
         <!-- 신고/즐겨찾기 -->
+
         <div class="row">
             <div class="col-sm-12 hstack">
-            <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
-            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>
+                <th:block th:if="${loginUser} ? ${loginUser.userno} == ${protectboard.protectboard_userno} : false ">
+                    <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
+                </th:block>
             </div>
         </div>
 
@@ -85,10 +87,11 @@
         <div th:if="${protectboard.fileAttached == 1}">
             <!-- 이미지 파일 존재 여부 -->
             <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
-            <div th:each="fileName: ${protectboard.storedFileName}">
+            <div class="row" th:each="fileName: ${protectboard.storedFileName}">
                 <div class="col-sm-8 mx-auto">
-                  <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" class="rounded mx-auto d-block" />
-                    
+                    <figure class="figure">
+                        <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" class="figure-img img-fluid rounded" />
+                    </figure>
                 </div>
 
                 <!-- 수정으로 이미지 정보 넘겨주기 위해 추가 (? 사용 안하는 것 같긴한데 일단 변경 금지 -->

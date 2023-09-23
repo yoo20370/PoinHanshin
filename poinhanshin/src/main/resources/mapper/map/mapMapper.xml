@@ -16,7 +16,7 @@
         FROM mapboard mb, users u
         WHERE mb.mapboard_userno = u.userno
         and
-        missingaddress LIKE concat('%' , #{keyword} ,'%')
+        mb.missingaddress LIKE concat('%' , #{keyword} ,'%')
         and
         <include refid="writeTypeChoose"/>
         and

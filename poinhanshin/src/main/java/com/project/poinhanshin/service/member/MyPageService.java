@@ -1,6 +1,7 @@
 package com.project.poinhanshin.service.member;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.map.MapBoardDto;
 import com.project.poinhanshin.domain.member.MyPageDto;
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
@@ -34,10 +35,13 @@ public class MyPageService {
     public List<ProtectBoardDto> selectMyprotectboard(Integer userno) {
         return myPageMapper.selectMyprotectboard(userno);
     }
-
     public void favoriteMyProtectBoard(Integer userno, Integer protectBoardno) {
         myPageMapper.favoriteMyProtectBoard(userno, protectBoardno);
     }
+    public List<MapBoardDto> selectMyMap(Integer userno) {
+        return myPageMapper.selectMyMap(userno);
+    }
+
 
     // 즐겨찾기 여부 확인 후 값 변경
 
