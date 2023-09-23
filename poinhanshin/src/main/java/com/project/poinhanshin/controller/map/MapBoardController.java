@@ -51,6 +51,7 @@ public class MapBoardController {
             m.addAttribute("loginUser" , loginUser);
         }
 
+        // 필터에 검색된 게시물 목록 반환
         List<MapBoardDto> mapBoardDtoList = mapBoardService.getMapBoardListService(sc);
 
         System.out.println(mapBoardDtoList);
@@ -224,7 +225,7 @@ public class MapBoardController {
         return "redirect:/map/list";
     }
 
-    @GetMapping("/searchList")
+    /*@GetMapping("/searchList")
     public String searchList(SearchCondition sc, @SessionAttribute(name = "loginUser", required = false) User loginUser, Model m) {
 
         if(loginUser != null){
@@ -240,5 +241,5 @@ public class MapBoardController {
         m.addAttribute("sc", sc);
         m.addAttribute("ph" ,ph);
         return "/map/findmaplist";
-    }
+    }*/
 }

@@ -4,6 +4,7 @@ import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.map.MapBoardDto;
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.service.map.MapBoardService;
+import com.project.poinhanshin.service.member.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,14 @@ public class MapController {
 
     MapBoardService mapBoardService;
 
+    MyPageService myPageService;
+
     @Autowired
-    public MapController(MapBoardService mapBoardService) {
+    public MapController(MapBoardService mapBoardService, MyPageService myPageService) {
         this.mapBoardService = mapBoardService;
+        this.myPageService = myPageService;
     }
+
 
     // 원 그려주는 맵으로 이동 및 게시물 데이터 전송
     @GetMapping("/oneMapMain")
@@ -31,12 +36,16 @@ public class MapController {
 
         System.out.println("oneMapMain sc : "+sc);
 
-        m.addAttribute("loginUser" , loginUser);
+        if( loginUser != null)
+        {
+            m.addAttribute("loginUser" , loginUser);
+            // 즐겨찾기 값 가져오기
+            List<MapBoardDto> myMapBoardDtoList = myPageService.selectMyMap(loginUser.getUserno().intValue());
+            m.addAttribute("myMapBoardDtoList" , myMapBoardDtoList);
+        }
 
         // 맵 게시물 정보 가져오기
         List<MapBoardDto> mapBoardDtoList = mapBoardService.getMapBoardListService(sc);
-
-        // 즐겨찾기 값 가져오기
 
         m.addAttribute("mapBoardDtoList" , mapBoardDtoList);
         m.addAttribute("sc",sc);
