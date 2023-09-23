@@ -16,6 +16,7 @@
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
 </head>
 <body layout:fragment="content">
 <div class="container">
@@ -112,25 +113,32 @@
 <!-- 팝업 디자인을 위한 임시코드 끝 -->
 
 </div>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b79ca2aea74607866151a56c2889391c"></script>
 <script>
   $(document).ready(function(){
-      $('#searchFileterBtn').on("click", function(){
-          let ani_category = $('#animal-filter').val();
-          let writerType = $('#author-filter').val();
-          let keyword = $('#location-filter').val();
+    $('#searchFileterBtn').on("click", function(){
+      removeMarkers(placeArr);
 
-          $.ajax({
-            type : 'GET',
-            url : '/map/mapFileterSearch?ani_category='+encodeURI(ani_category)+"&writerType="+encodeURI(writerType)+"&keyword="+encodeURI(keyword),
-            success : function(mapBoardDtoList){
-              console.log(mapBoardDtoList);
-            },
-            error : function(){}
-          })
+      let ani_category = $('#animal-filter').val();
+      let writerType = $('#author-filter').val();
+      let keyword = $('#location-filter').val();
+
+      $.ajax({
+        type : 'GET',
+        url : '/map/mapFileterSearch?ani_category='+encodeURI(ani_category)+"&writerType="+encodeURI(writerType)+"&keyword="+encodeURI(keyword),
+        success : function(mapBoardDtoList){
+          console.log(mapBoardDtoList);
+          // 마커들 삭제
+
+          // 마커들 표시
+          makerMakeAndAdd(mapBoardDtoList);
+        },
+        error : function(){}
       })
+    })
   });
 </script>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script th:inline="javascript">
   // dto참고용
 //   this.mapboard_userno = mapboard_userno;
@@ -161,12 +169,14 @@ level: 4 // 지도 확대 레벨
 // 지도 생성
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
+
 var placesList = document.getElementById('placesList');
 var addPlaceButton = document.getElementById('addPlaceButton');
 var newPlaceName = document.getElementById('newPlaceName');
 var newPlaceLat = document.getElementById('newPlaceLat');
 var newPlaceLng = document.getElementById('newPlaceLng');
 
+var placeArr = [];
 
 let makerMakeAndAdd =  function (mapBoardDtoList) {
   mapBoardDtoList.forEach(function (mapBoardDto , index) {
@@ -187,11 +197,25 @@ let makerMakeAndAdd =  function (mapBoardDtoList) {
     });
     var coords = new daum.maps.LatLng(mapBoardDto.latitude , mapBoardDto.longitude);
 
+    // 마커 배열에 삽입
+    placeArr.push(marker);
+
+    // 마커의 위치를 지정
     marker.setPosition(coords);
 
+    // 마커 클릭 이벤트 설정
     kakao.maps.event.addListener(marker, 'click', function() {
-        alert(index);
+      alert(index);
+
     });
+
+  });
+}
+
+let removeMarkers = function(placeArr){
+  placeArr.forEach(function(place){
+      place.setMap(null);
+      console.log(place);
   });
 }
 
