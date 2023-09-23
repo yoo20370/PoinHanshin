@@ -40,6 +40,14 @@
     <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary" style="font-size: 16px;">강아지</span>
     <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary" style="font-size: 16px;">고양이</span>
 
+    <!-- 신고/즐겨찾기 -->
+    <div class="row">
+        <div class="col-sm-12 hstack">
+            <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
+            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>
+        </div>
+    </div>
+
     <!-- 제목 -->
     <div class="row m-1 p-3 rounded-0 border-bottom" id="titleWrapper">
         <input type="text" readonly class="form-control-plaintext" id="floatingEmptyPlaintextInput" name="board_title" th:value="${boardDto.board_title}">
@@ -247,15 +255,19 @@
     </div>
     </th:block>
     <form id="removeForm" action="" method="" class="vstack col-sm-2 mx-auto">
+        <input type="hidden" name="board_userno" th:value="${boardDto.board_userno}"/>
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
-        <input th:if="${loginUser != null }" type="hidden" name="loginUserNo" id=" " th:value="${loginUser.userno}"/>
-        <input th:unless="${loginUser != null }" type="hidden" name="loginUserNo" value="0" />
+        <input type="hidden" name="boardno" th:value="${boardDto.boardno}"/>
+        <input th:if="${loginUser != null }" type="hidden" name="loginUser" id=" " th:value="${loginUser.userno}"/>
+        <input th:unless="${loginUser != null }" type="hidden" name="loginUser" value="0" />
+
     </form>
 </div>
 <script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
+<script th:if="${msg} == 'FAIL_REMOVE'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <script th:inline="javascript">
     
@@ -263,7 +275,7 @@
     $(document).ready(function(){
         // 게시글 시작
         // 게시물 삭제 버튼 클릭시
-        var login = parseInt($('input[name=loginUserNo]').val());
+        var login = parseInt($('input[name=loginUser]').val());
         // console.log(login);
         $(document).on("click", "#removeBtn", function(){
             if(!confirm("삭제하시겠습니까 ?")) return;
@@ -532,7 +544,7 @@
         // 댓글 끝
 
         // 좋아요 기능 시작
-        let likeboard_userno = $('input[name=loginUserNo]').val();
+        let likeboard_userno = $('input[name=loginUser]').val();
 
         if(likeboard_userno != 0){
             let likeboard_boardno = [[${boardDto.boardno}]];
@@ -580,14 +592,11 @@
                   
                         let like = $('#likeCnt');
                         if(checkNum == 1){
-                  
                             likeIcon.setAttribute('class','fas fa-heart fa-lg');
                         } else {
-                       
                             likeIcon.setAttribute('class','far fa-heart fa-lg');
                         }
                         like.text(likeCnt);
-
                     },
                     error : function(){}
                 });
@@ -595,6 +604,41 @@
 
         }
         // 좋아요 기능 끝
+
+        // 즐겨찾기 기능 시작
+
+        let mypage_userno = $('input[name=loginUser]').val();
+
+        if( mypage_userno != undefined){
+            $('#favorite').on("click" , function(){
+
+                let mypage_userno = $('input[name=loginUser]').val();
+                let mypage_boardno = [[${boardDto.boardno}]];
+
+                let myPageDto = {
+                    mypage_userno : mypage_userno,
+                    mypage_boardno: mypage_boardno
+                }
+
+                $.ajax({
+                    type : 'POST',
+                    url : '/favoriteUpdate',
+                    headers : {"content-type" : "application/json"},
+                    dataType : 'json',
+                    data : JSON.stringify(myPageDto),
+                    success : function(data){
+                        if(data == 0){
+                            alert("즐겨찾기 추가");
+                        } else {
+                            alert("즐겨찾기 삭제")
+                        }
+                    },
+                    error : function(){}
+                });
+            });
+        }
+
+        // 즐겨찾기 기능 끝
 
     });
 

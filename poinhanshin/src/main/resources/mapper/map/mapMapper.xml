@@ -68,11 +68,11 @@
     </select>
     <sql id="writeTypeChoose">
         <choose>
-            <when test="writeType == 0">
-                writetype = 0
+            <when test="writerType == 0">
+                writertype = 0
             </when>
-            <when test="writeType == 1">
-                writeType = 1
+            <when test="writerType == 1">
+                writertype = 1
             </when>
             <otherwise>
                 TRUE

@@ -51,4 +51,43 @@
         FROM mapboard mb, users u, mypage mp
         WHERE mp.mypage_userno = u.userno and mp.mypage_mapboardno = mb.mapboardno and mp.mypage_userno = #{userno}
     </select>
+
+    <select id="checkMyBoard" parameterType="com.project.poinhanshin.domain.member.MyPageDto" resultType="int">
+        SELECT COUNT(*)
+        FROM mypage
+        WHERE mypage_userno = #{mypage_userno}
+        and
+        <choose>
+            <when test="mypage_boardno != null">
+                mypage_boardno = #{mypage_boardno}
+            </when>
+            <when test="mypage_protectboardno != null">
+                mypage_protectboardno = #{mypage_protectboardno}
+            </when>
+            <when test="mypage_mapboardno != null">
+                mypage_mapboardno = #{mypage_mapboardno}
+            </when>
+        </choose>
+    </select>
+    <insert id="insertFavorite" parameterType="com.project.poinhanshin.domain.member.MyPageDto">
+        INSERT INTO mypage (mypage_userno , mypage_boardno , mypage_protectboardno  , mypage_mapboardno , favorites)
+        VALUES (#{mypage_userno} , #{mypage_boardno} , #{mypage_protectboardno} , #{mypage_mapboardno} , #{favorites})
+    </insert>
+    <delete id="deleteFavorite" parameterType="com.project.poinhanshin.domain.member.MyPageDto">
+        DELETE
+        FROM mypage
+        WHERE mypage_userno = #{mypage_userno}
+        and
+        <choose>
+            <when test="mypage_boardno != null">
+                mypage_boardno = #{mypage_boardno}
+            </when>
+            <when test="mypage_protectboardno != null">
+                mypage_protectboardno = #{mypage_protectboardno}
+            </when>
+            <when test="mypage_mapboardno != null">
+                mypage_mapboardno = #{mypage_mapboardno}
+            </when>
+        </choose>
+    </delete>
 </mapper>

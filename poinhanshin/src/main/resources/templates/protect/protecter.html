@@ -23,6 +23,7 @@
 <script th:if="${msg} == 'FAIL_UPDATE'">alert("게시글을 수정하지 못했습니다.")</script>
 <script th:if="${msg} == 'FAIL_REMOVE'">alert("게시글을 삭제하지 못했습니다.")</script>
 <script th:if="${msg} == 'SUCCESS_INSERT'">alert("게시글을 등록했습니다.")</script>
+<script th:if="${msg} == 'NotEqual'">alert("작성자만 삭제할 수 있습니다.")</script>
 <div class="page">
 
 
@@ -31,7 +32,6 @@
         <div class="col-5 p-3" >
             <!-- input 태그는 수정 페이지로 데이터를 넘겨주기 위해 작성 , 이거 안 해주면 DB에서 불러와야 함 -->
             <!-- 페이지 정보 및 게시물 번호 , 작성자 form input-->
-
             <input type="hidden" name="page" th:value="${sc.getPage()}"/>
             <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
             <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
@@ -40,6 +40,9 @@
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
             <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}">
             <input th:if="${protectboard.fileAttached == 0}" type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
+            <input type="hidden" th:if="${loginUser != null}" name="loginUser_userno" id="loginUser_userno" th:value="${loginUser.userno}"/>
+            <input type="hidden" th:unless="${loginUser != null}" name="loginUser_userno" value="0"/>
+
             <!-- 동물 카테고리 , 작성일 , 마감일 form input  -->
             <!-- 프론트가 수정 필요 -->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
@@ -57,12 +60,14 @@
         <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}|" name="deadline"> 남은날짜 : </span>
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
         <!-- 신고/즐겨찾기 -->
-<!--        <div class="row">-->
-<!--            <div class="col-sm-12 hstack">-->
-<!--            <span class="p-2 ms-auto"><a href="/favorite" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>-->
-<!--            <span><a href="#" title="신고"><i class="fa-solid fa-triangle-exclamation fa-2xl " style="color: #ff0000;"></i></a></span>-->
-<!--            </div>-->
-<!--        </div>-->
+
+        <div class="row">
+            <div class="col-sm-12 hstack">
+                <th:block th:if="${loginUser} ? ${loginUser.userno} == ${protectboard.protectboard_userno} : false ">
+                    <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
+                </th:block>
+            </div>
+        </div>
 
 <!--        <div class="row">-->
 <!--            <div class="form-floating">-->
@@ -82,10 +87,11 @@
         <div th:if="${protectboard.fileAttached == 1}">
             <!-- 이미지 파일 존재 여부 -->
             <input type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
-            <div th:each="fileName: ${protectboard.storedFileName}">
+            <div class="row" th:each="fileName: ${protectboard.storedFileName}">
                 <div class="col-sm-8 mx-auto">
-                  <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" class="rounded mx-auto d-block" />
-                    
+                    <figure class="figure">
+                        <img th:src="@{|/upload/protectboard/${fileName}|}" alt="이미지 없음" class="figure-img img-fluid rounded" />
+                    </figure>
                 </div>
 
                 <!-- 수정으로 이미지 정보 넘겨주기 위해 추가 (? 사용 안하는 것 같긴한데 일단 변경 금지 -->
@@ -154,6 +160,42 @@ console.log([[${loginUser}]]);
         form.attr("method", "post");
         form.submit();
     });
+
+    // 즐겨찾기 기능 시작
+    let mypage_userno = $('input[name=loginUser_userno]').val();
+
+    if( mypage_userno != undefined){
+        $('#favorite').on("click" , function(){
+
+            let mypage_userno = $('input[name=loginUser_userno]').val();
+            let mypage_protectboardno = [[${protectboard.protectboardno}]];
+
+            let myPageDto = {
+                mypage_userno : mypage_userno,
+                mypage_protectboardno : mypage_protectboardno
+            }
+
+            $.ajax({
+                type : 'POST',
+                url : '/favoriteUpdate',
+                headers : {"content-type" : "application/json"},
+                dataType : 'json',
+                data : JSON.stringify(myPageDto),
+                success : function(data){
+                    if(data == 0){
+                        alert("즐겨찾기 추가");
+                    } else {
+                        alert("즐겨찾기 삭제")
+                    }
+                },
+                error : function(str){}
+            });
+
+        });
+    }
+    // 즐겨찾기 기능 끝
+
+
 
 
 //날짜계산
