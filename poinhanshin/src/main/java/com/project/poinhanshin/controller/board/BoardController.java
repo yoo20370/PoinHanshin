@@ -127,7 +127,7 @@ public class BoardController {
     public String boardModifyPage(Integer boardno , Integer board_userno ,SearchCondition sc , Model m , RedirectAttributes redirectAttributes, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
         System.out.println("modify : get");
-        System.out.println("boardno : "+boardno);
+        System.out.println("boardno : "+ boardno);
         System.out.println("board_userno : "+ board_userno);
         System.out.println("loginUser : " + loginUser);
 
