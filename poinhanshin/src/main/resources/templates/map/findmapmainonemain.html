@@ -130,6 +130,20 @@
       })
   });
 </script>
+<script>
+  $(document).ready(function(){
+      $.ajax({
+        type : 'GET',
+        url : "/findmapmainonemain",
+        success : function(mapBoardDtoList){
+          alert(mapBoardDtoList);
+        },
+        error : function(){
+          alert("error");
+        }
+      })
+    });
+</script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
 <script th:inline="javascript">
   // dto참고용
@@ -161,11 +175,52 @@ level: 4 // 지도 확대 레벨
 // 지도 생성
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
+  var positions = [ // 맵볻
+    {
+      title: '카카오',
+      latlng: new kakao.maps.LatLng(37.58338, 126.97403)
+    },
+    {
+      title: '생태연못',
+      latlng: new kakao.maps.LatLng(37.60538, 127.00903)
+    },
+    {
+      title: '텃밭',
+      latlng: new kakao.maps.LatLng(37.50038, 127.00903)
+    },
+    {
+      title: '근린공원',
+      latlng: new kakao.maps.LatLng(37.50038, 127.10903)
+    },
+    {
+      title: '공원',
+      latlng: new kakao.maps.LatLng(37.58338, 126.97403)
+    }
+  ];
+
+  for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+      map: map, // 마커를 표시할 지도
+      position: positions[i].latlng, // 마커를 표시할 위치
+      title : positions[i].title // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+    });
+  }
+
 var placesList = document.getElementById('placesList');
 var addPlaceButton = document.getElementById('addPlaceButton');
 var newPlaceName = document.getElementById('newPlaceName');
 var newPlaceLat = document.getElementById('newPlaceLat');
 var newPlaceLng = document.getElementById('newPlaceLng');
+
+  for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+      map: map, // 마커를 표시할 지도
+      position: positions[i].latlng, // 마커를 표시할 위치
+      title : positions[i].title // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+    });
+  }
 
 // 팝업 디자인을 위한 임시코드 --------------------------------
 /*var places = [
@@ -207,11 +262,11 @@ mapboard_ani_category:"고양이"
 
 places.forEach(function (pos) {
 // 마커를 생성합니다
-var markerPosition  = new kakao.maps.LatLng(pos.latitude,pos.longitude);
+/*var markerPosition  = new kakao.maps.LatLng(pos.latitude,pos.longitude);
 var marker = new kakao.maps.Marker({
 map: map,
 position: markerPosition
-});
+});*/
 
 // content HTMLElement 생성
 var content = document.createElement('div');
