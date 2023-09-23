@@ -35,11 +35,14 @@ public class ProtectBoardController {
                                     @SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
 
+        //
+        sc.setPageSize(6);
+
         m.addAttribute("loginUser", loginUser); // 로그인 이식
 
-        System.out.println(sc);
         // 모든 임보자 게시물을 읽어온다.
         List<ProtectBoardDto> list = protectBoardService.searchResultList(sc);
+
         int totalCnt = protectBoardService.searchResultCnt(sc);
 
         PageHandler ph = new PageHandler(totalCnt ,sc);
@@ -60,20 +63,16 @@ public class ProtectBoardController {
 
         m.addAttribute("loginUser", loginUser);
 
-        // 로그인
-        //Integer LoginId = loginUser.id;
-
-        // 임시 로그인
-        Integer LoginId = 1;
-
         // 임보자 게시물 하나를 가져온다.
         ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
 
-        // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
-        if(LoginId.equals(protectBoardDto.getProtectboard_userno()))
-            m.addAttribute("WriterCheck", "OK");
+        // 로그인 한 경우
+        /*if(loginUser != null){
+            // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
+            if(loginUser.getUserno().equals(protectBoardDto.getProtectboard_userno().longValue()))
+                m.addAttribute("WriterCheck", "OK");
+        }*/
 
-        m.addAttribute("LoginId", LoginId);
         m.addAttribute("protectboard" , protectBoardDto);
         m.addAttribute("sc",sc);
         m.addAttribute("msg" , msg);
@@ -88,14 +87,7 @@ public class ProtectBoardController {
 
         m.addAttribute("loginUser", loginUser);
         // 로그인
-        //Integer LoginId = loginUser.id;
-
-        // 임시 로그인
-        Integer LoginId = 1;
-
-        // 로그인 확인 (나중에 loginUser == null로 변경
-        // 로그인이 안 된 경우 임보자 게시물 리스트로 이동 ( 로그인 페이지로 이동시키면 좋을 것 )
-        if(LoginId == null) {
+        if(loginUser == null) {
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
@@ -104,7 +96,6 @@ public class ProtectBoardController {
             return "redirect:/protectboard/list";
         }
         m.addAttribute("sc",sc);
-        m.addAttribute("LoginId", LoginId);
         m.addAttribute("msg" , msg);
         return "protect/protecterreg";
     }
@@ -112,46 +103,52 @@ public class ProtectBoardController {
     // 임보자 게시물 및 이미지 등록
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> protectBoardWrite(@RequestParam(required = false) String protectboard_id , @RequestParam(required = false) Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> protectBoardWrite( @RequestParam(required = false) Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                                                      @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                                                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached
     ) throws IOException {
-        ProtectBoardDto protectboardDto = new ProtectBoardDto(protectboard_id, protectboard_userno , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+        ProtectBoardDto protectboardDto = new ProtectBoardDto(null , protectboard_userno , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectboardDto.setProtectboardFile(protectboardFile);
-        // 첨부 파일이 있는 경우 fileAttached 값을 변경해준다.
+
+        // 이미지 ,  있는 경우
         if(protectboardDto.getProtectboardFile() != null){
             protectboardDto.setFileAttached(1);
         }
+
         Integer currentPbn = protectBoardService.insertProductBoard(protectboardDto);
         return new ResponseEntity<Integer> ( currentPbn , HttpStatus.OK);
     }
 
     // 임보자 게시물 수정 상세페이지로 이동
     @GetMapping("/modify")
-    public String ProtectBoardModifyMove(Integer protectboardno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes
+    public String ProtectBoardModifyMove(Integer protectboardno , Integer protectboard_userno , SearchCondition sc , Model m , RedirectAttributes redirectAttributes
                                          ,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
-
+        System.out.println("protectboard_userno : "+ protectboard_userno);
         m.addAttribute("loginUser", loginUser);
-        //Integer LoginId = loginUser.id;
-
-        // 임시 로그인
-        Integer LoginId = 1;
 
         // 로그인 확인 (나중에 loginUser == null로 변경
-        if(LoginId == null) {
+        if(loginUser == null) {
+            redirectAttributes.addAttribute("protectboardno" , protectboardno);
             redirectAttributes.addAttribute("page", sc.getPage());
             redirectAttributes.addAttribute("pageSize", sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
-            return "redirect:/protectboard/list";
+            return "redirect:/protectboard/read";
+        } else if( !loginUser.getUserno().equals(protectboard_userno.longValue())){
+            redirectAttributes.addAttribute("protectboardno" , protectboardno);
+            redirectAttributes.addAttribute("page", sc.getPage());
+            redirectAttributes.addAttribute("pageSize", sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            return "redirect:/protectboard/read";
         }
 
         ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
 
         System.out.println(protectBoardDto);
-        m.addAttribute("LoginId" ,LoginId);
         m.addAttribute("protectboard" , protectBoardDto);
         m.addAttribute("sc",sc);
         return "/protect/protecteredit";
@@ -160,33 +157,45 @@ public class ProtectBoardController {
     // 임보자 게시물 수정
     @PostMapping("/modify")
     @ResponseBody
-    public ResponseEntity<Integer> protectBoardModify(@RequestParam(required = false) String protectboard_id , @RequestParam Integer protectboard_userno , @RequestParam Integer protectboardno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> protectBoardModify(@RequestParam Integer protectboard_userno , @RequestParam Integer protectboardno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                                                       @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
-                                                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached) throws IOException {
-        ProtectBoardDto protectBoardDto = new ProtectBoardDto(protectboard_id, protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+                                                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached , Integer loginUser) throws IOException {
+        ProtectBoardDto protectBoardDto = new ProtectBoardDto(null, protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectBoardDto.setProtectboardFile(protectboardFile);
 
         // 로그인 연결 시 수정 필요 
-        protectBoardService.updateProductBoard(protectBoardDto);
+        protectBoardService.updateProductBoard(protectBoardDto , loginUser);
         return new ResponseEntity<Integer>( protectboardno , HttpStatus.OK);
 
     }
     // 임보자 게시물 삭제
     @PostMapping("/remove")
-    public String protectBoardRemove(Integer protectboardno , SearchCondition sc , RedirectAttributes redirectAttributes
+    public String protectBoardRemove(Integer protectboardno , Integer protectboard_userno  , Integer loginUser_userno  ,SearchCondition sc , RedirectAttributes redirectAttributes
                                      //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
-        // 임시 로그인
-        Integer LoginId = 1;
+        System.out.println("protectboardno : "+protectboardno);
+        System.out.println("loginUser : " + loginUser_userno);
+        System.out.println("protectboard_userno : "+protectboard_userno);
 
         // 로그인 여부 확인
-        if(LoginId == null) {
+        if(loginUser_userno == 0) {
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/protectboard/list";
+        } else if( !protectboard_userno.equals(loginUser_userno)){
+            // 작성자와 로그인 유저가 일치하지 않는 경우
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addAttribute("protectboardno",protectboardno);
+            redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            return "redirect:/protectboard/read";
         }
-        // 삭제 실패했을 때
-        if(protectBoardService.deleteProductBoard(protectboardno , LoginId) != 1){
+        // DB 삭제
+        int result = protectBoardService.deleteProductBoard(protectboardno , loginUser_userno);
 
+        // 삭제 실패시 ( DB 삭제 여부 )
+        if(result == 0){
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());

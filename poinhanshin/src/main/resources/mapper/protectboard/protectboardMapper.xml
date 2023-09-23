@@ -26,10 +26,10 @@
             (protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , protectboard_reg_date , protectstatus , starttime , deadline ,  fileAttached)
         VALUES (#{protectboard_userno} , #{protectboardno} , #{protectboard_title} , #{protectboard_content} , #{breeds} , #{protectboard_ani_category}  , now() , #{protectstatus} , now() ,#{deadline} ,  #{fileAttached}  )
     </insert>
-    <update id="updateContent" parameterType="com.project.poinhanshin.domain.protectboard.ProtectBoardDto">
+    <update id="updateContent" parameterType="map">
         UPDATE protectboard
-        SET protectboard_title = #{protectboard_title} , protectboard_content = #{protectboard_content} ,  breeds = #{breeds} , protectboard_ani_category = #{protectboard_ani_category} , protectstatus = #{protectstatus} , starttime = #{starttime} , deadline = #{deadline} , fileAttached = #{fileAttached}
-        WHERE protectboard_userno = #{protectboard_userno} and protectboardno = #{protectboardno}
+        SET protectboard_title = #{protectBoardDto.protectboard_title} , protectboard_content = #{protectBoardDto.protectboard_content} ,  breeds = #{protectBoardDto.breeds} , protectboard_ani_category = #{protectBoardDto.protectboard_ani_category} , protectstatus = #{protectBoardDto.protectstatus} , starttime = #{protectBoardDto.starttime} , deadline = #{protectBoardDto.deadline} , fileAttached = #{protectBoardDto.fileAttached}
+        WHERE protectboard_userno = #{protectBoardDto.protectboard_userno} and protectboardno = #{loginUser}
     </update>
     <delete id="deleteContent" parameterType="map">
         DELETE FROM protectboard

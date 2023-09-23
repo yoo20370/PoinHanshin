@@ -28,6 +28,7 @@
                                 <li><a class="dropdown-item" href="/board/list">게시판</a></li>
                                 <li><a class="dropdown-item" href="/protectboard/list">임시보호자</a></li>
                                 <li><a class="dropdown-item" href="/api/ShelterList">보호소</a></li>
+                                <li><a class="dropdown-item" href="/api/AnimalList">유기동물</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -35,8 +36,10 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">실종신고/발견</a>
+                            <a class="nav-link" href="/map/oneMapMain">실종신고/발견</a>
                         </li>
+
+
 
                     </ul>
                     <ul class="nav">
@@ -49,7 +52,8 @@
                         </li>
 
                         <li class="nav-item" th:unless="${session.isEmpty()}">
-                            <a class="nav-link" href="/myPage" aria-current="page" th:text="|${loginUser.id}님|">내정보</a>
+                            <a class="nav-link" href="/myPage" aria-current="page" th:if="${loginUser!=null}" th:text="|${loginUser.id}님|">내정보</a>
+                            <a class="nav-link" href="/myPage" aria-current="page" th:if="${loginUser==null}" th:text="'사용자'">내정보</a>
                         </li>
                         <li class="nav-item" th:unless="${session.isEmpty()}">
                             <a class="nav-link" href="/logout" aria-current="page">로그아웃</a>

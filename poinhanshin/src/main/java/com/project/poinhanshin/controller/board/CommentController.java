@@ -28,6 +28,7 @@ public class CommentController {
         List<CommentDto> list = commentService.getCommentList(boardcomment_boardno);
         System.out.println(list);
         // 댓글 반환
+        System.out.println("댓글목록 : "+list);
         return new ResponseEntity<List<CommentDto>>(list , HttpStatus.OK);
     }
     // 댓글 추가
@@ -67,6 +68,7 @@ public class CommentController {
     @DeleteMapping("/comments/{commentno}")
     @ResponseBody
     public ResponseEntity<String> removeComment(@PathVariable Integer commentno , Integer boardcomment_boardno , Integer loginUser) {
+
         if(loginUser == null)
             return new ResponseEntity<String>("로그인이 필요합니다." , HttpStatus.BAD_REQUEST);
 

@@ -22,7 +22,7 @@ public interface ProtectBoardMapper {
     int insertContent(ProtectBoardDto protectBoardDto);
 
     // 임보자 게시물을 수정한다.
-    int updateContent(ProtectBoardDto protectBoardDto);
+    int updateContent(ProtectBoardDto protectBoardDto , Integer loginUser);
 
     // 임보자 게시물을 삭제한다.( 사용자 )
     int deleteContent(Integer protectboardno, Integer protectboard_userno);
