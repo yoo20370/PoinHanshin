@@ -21,7 +21,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-2">
-      <form id="form" action="" method="">
+      <form id="form" action="/map/list" method="get">
         <!-- 페이지 정보 및 로그인 정보-->
         <input type="hidden" name="page" th:value="${sc.page}"/>
         <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
@@ -30,25 +30,27 @@
         <input type="hidden" name="loginUser" th:unless="${loginUser}" value="0"/>
         <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
       </form>
-      <form id="searchForm">
+    </div>
+      <form id="filterForm" action="/map/list" method="get">
+        <input type="hidden" name="page" th:value="${sc.page}"/>
+        <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
         <!-- 드롭다운 필터 -->
         <div class="mb-3">
           <label class="form-label" for="animal-filter">동물 선택:</label>
-          <select class="form-select" id="animal-filter">
-            <option value="2">전체</option>
-            <option value="1">고양이</option>
-            <option value="0">강아지</option>
+          <select class="form-select" id="animal-filter" name="ani_category" >
+            <option value="2" th:selected="${sc.ani_category == 2}">전체</option>
+            <option value="1" th:selected="${sc.ani_category == 1}">고양이</option>
+            <option value="0" th:selected="${sc.ani_category == 0}">강아지</option>
           </select>
         </div>
-    </div>
     <div class="col-md-2">
       <!-- 신고자/발견자 선택 드롭다운 필터 -->
       <div class="mb-3">
         <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
-        <select class="form-select" id="author-filter">
-          <option value="2">전체</option>
-          <option value="0">신고자</option>
-          <option value="1">발견자</option>
+        <select class="form-select" id="author-filter" name="writerType">
+          <option value="2" th:selected="${sc.writerType == 2}">전체</option>
+          <option value="1" th:selected="${sc.writerType == 1}">발견자</option>
+          <option value="0" th:selected="${sc.writerType == 0}">신고자</option>
         </select>
       </div>
     </div>
@@ -57,9 +59,10 @@
       <label class="form-label" for="locatin-filter">지역 선택:</label>
       <div class="mb-3 d-flex align-items-center">
         <input type="text" class="form-control" style="width: 300px;" id="locatin-filter" placeholder="지역">
-        <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+        <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기" id="searchBtn" name="keyword" th:value="${sc.keyword}">
       </div>
     </div>
+    <button type="button" id="filterSearchBtn">검색</button>
     </form>
 
     <div class="header-right">
@@ -115,6 +118,22 @@
       form.attr("method", "get");
       form.submit();
   });
+
+  /*// 동물 드롭다운 클릭시
+  $('input[name=ani_category]').on("click",function(){
+    let form = $('#form');
+    form.submit();
+  });
+  $('#author-filter').on("click" , function(){
+    let form = $('#form')
+    form.submit();
+  })
+*/
+  $('#filterSearchBtn').on("click", function (){
+    alert("필터 클릭");
+    let from = $('#filterForm');
+    from.submit();
+  })
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
     new daum.Postcode({

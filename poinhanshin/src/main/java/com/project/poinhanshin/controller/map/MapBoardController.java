@@ -40,6 +40,7 @@ public class MapBoardController {
     @GetMapping("/list")
     public String getMapBoardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg,  @SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
+        System.out.println( "read sc : "+sc );
 
         //m.addAttribute("loginUser" , loginUser);
         // 로그인 여부
@@ -67,6 +68,8 @@ public class MapBoardController {
     // 맵 보드 게시물 상세 페이지
     @GetMapping("/read")
     public String getMapBoardOne(Integer mapboardno , SearchCondition sc, Model m  , @SessionAttribute(name = "loginUser", required = false) User loginUser ){
+
+
 
         m.addAttribute("loginUser" , loginUser);
 
