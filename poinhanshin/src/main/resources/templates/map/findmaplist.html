@@ -30,11 +30,11 @@
         <input type="hidden" name="loginUser" th:unless="${loginUser}" value="0"/>
         <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
       </form>
-      <form id="searchForm">
+      <form id="searchForm" method="get" action="/searchList">
         <!-- 드롭다운 필터 -->
         <div class="mb-3">
           <label class="form-label" for="animal-filter">동물 선택:</label>
-          <select class="form-select" id="animal-filter">
+          <select class="form-select" id="animal-filter" name="mapboard_ani_category">
             <option value="2">전체</option>
             <option value="1">고양이</option>
             <option value="0">강아지</option>
@@ -45,7 +45,7 @@
       <!-- 신고자/발견자 선택 드롭다운 필터 -->
       <div class="mb-3">
         <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
-        <select class="form-select" id="author-filter">
+        <select class="form-select" id="author-filter" name="writertype">
           <option value="2">전체</option>
           <option value="0">신고자</option>
           <option value="1">발견자</option>
@@ -56,8 +56,9 @@
       <!-- 지역 선택 드롭다운 필터 -->
       <label class="form-label" for="locatin-filter">지역 선택:</label>
       <div class="mb-3 d-flex align-items-center">
-        <input type="text" class="form-control" style="width: 300px;" id="locatin-filter" placeholder="지역">
+        <input type="text" class="form-control" style="width: 300px;" id="locatin-filter" placeholder="지역" name="missingaddress">
         <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
+        <input type="submit" class="btn mx-1 btn-primary" value="검색">
       </div>
     </div>
     </form>

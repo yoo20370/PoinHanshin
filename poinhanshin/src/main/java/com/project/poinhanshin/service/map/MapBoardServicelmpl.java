@@ -221,4 +221,9 @@ public class MapBoardServicelmpl implements MapBoardService{
         List<MapBoardDto> WriteMyMapService = mapMapper.WriteMyMap(userno);
         return WriteMyMapService;
     }
+
+    @Override
+    public List<MapBoardDto> selectMapList(SearchCondition sc) {
+        return mapMapper.selectMapList(sc);
+    }
 }

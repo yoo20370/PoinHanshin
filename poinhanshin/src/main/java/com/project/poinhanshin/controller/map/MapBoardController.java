@@ -202,4 +202,22 @@ public class MapBoardController {
         redirectAttributes.addFlashAttribute("msg" , "SUCCESS_REMOVE");
         return "redirect:/map/list";
     }
+
+    @GetMapping("/searchList")
+    public String searchList(SearchCondition sc, @SessionAttribute(name = "loginUser", required = false) User loginUser, Model m) {
+
+        if(loginUser != null){
+            // 로그인 정보 전달
+            m.addAttribute("loginUser" , loginUser);
+        }
+        System.out.println(sc);
+        List<MapBoardDto> mapBoardDtoList = mapBoardService.selectMapList(sc);
+        int totalCnt = mapBoardService.getMapBoardListCnt(sc);
+        PageHandler ph = new PageHandler(totalCnt , sc);
+        m.addAttribute("mapBoardDtoList",mapBoardDtoList);
+        m.addAttribute("totalCnt" , totalCnt);
+        m.addAttribute("sc", sc);
+        m.addAttribute("ph" ,ph);
+        return "/map/findmaplist";
+    }
 }
