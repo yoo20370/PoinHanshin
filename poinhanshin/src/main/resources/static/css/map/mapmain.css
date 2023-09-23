@@ -49,12 +49,12 @@ body {
     margin-bottom: 20px;
 }
 
-ul {
+.ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-li {
+.li {
     margin-bottom: 10px;
     cursor: pointer;
     padding: 5px;
