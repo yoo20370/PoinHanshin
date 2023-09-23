@@ -1,7 +1,9 @@
 package com.project.poinhanshin.controller.member;
 
 import com.project.poinhanshin.domain.board.BoardDto;
+import com.project.poinhanshin.domain.map.MapBoardDto;
 import com.project.poinhanshin.domain.member.MyPageDto;
+
 import com.project.poinhanshin.domain.member.User;
 import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.member.MyPageService;
@@ -81,6 +83,8 @@ public class MyPageController {
     @GetMapping("/mapBookmark")
     public String mapBookmark(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
+        List<MapBoardDto> mapBoardDtoList = myPageService.selectMyMap(Math.toIntExact(loginUser.getUserno()));
+        model.addAttribute("mapBoardDtoList", mapBoardDtoList);
         return "mypage/findmapFav";
     }
 
