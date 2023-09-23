@@ -255,15 +255,19 @@
     </div>
     </th:block>
     <form id="removeForm" action="" method="" class="vstack col-sm-2 mx-auto">
+        <input type="hidden" name="board_userno" th:value="${boardDto.board_userno}"/>
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
         <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
-        <input th:if="${loginUser != null }" type="hidden" name="loginUserNo" id=" " th:value="${loginUser.userno}"/>
-        <input th:unless="${loginUser != null }" type="hidden" name="loginUserNo" value="0" />
+        <input type="hidden" name="boardno" th:value="${boardDto.boardno}"/>
+        <input th:if="${loginUser != null }" type="hidden" name="loginUser" id=" " th:value="${loginUser.userno}"/>
+        <input th:unless="${loginUser != null }" type="hidden" name="loginUser" value="0" />
+
     </form>
 </div>
 <script th:if="${msg} == 'NotEqual'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
+<script th:if="${msg} == 'FAIL_REMOVE'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <script th:inline="javascript">
     
@@ -271,7 +275,7 @@
     $(document).ready(function(){
         // 게시글 시작
         // 게시물 삭제 버튼 클릭시
-        var login = parseInt($('input[name=loginUserNo]').val());
+        var login = parseInt($('input[name=loginUser]').val());
         // console.log(login);
         $(document).on("click", "#removeBtn", function(){
             if(!confirm("삭제하시겠습니까 ?")) return;
@@ -540,7 +544,7 @@
         // 댓글 끝
 
         // 좋아요 기능 시작
-        let likeboard_userno = $('input[name=loginUserNo]').val();
+        let likeboard_userno = $('input[name=loginUser]').val();
 
         if(likeboard_userno != 0){
             let likeboard_boardno = [[${boardDto.boardno}]];
@@ -603,12 +607,12 @@
 
         // 즐겨찾기 기능 시작
 
-        let mypage_userno = $('input[name=loginUserNo]').val();
+        let mypage_userno = $('input[name=loginUser]').val();
 
         if( mypage_userno != undefined){
             $('#favorite').on("click" , function(){
 
-                let mypage_userno = $('input[name=loginUserNo]').val();
+                let mypage_userno = $('input[name=loginUser]').val();
                 let mypage_boardno = [[${boardDto.boardno}]];
 
                 let myPageDto = {

@@ -40,9 +40,6 @@ public class MapBoardController {
     @GetMapping("/list")
     public String getMapBoardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg,  @SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
-        System.out.println( "read sc : "+sc );
-
-        //m.addAttribute("loginUser" , loginUser);
         // 로그인 여부
         if(loginUser != null){
             // 로그인 정보 전달
@@ -68,8 +65,6 @@ public class MapBoardController {
     // 맵 보드 게시물 상세 페이지
     @GetMapping("/read")
     public String getMapBoardOne(Integer mapboardno , SearchCondition sc, Model m  , @SessionAttribute(name = "loginUser", required = false) User loginUser ){
-
-
 
         m.addAttribute("loginUser" , loginUser);
 
@@ -182,15 +177,19 @@ public class MapBoardController {
 
 
     @PostMapping("/remove")
-    public String mapBoardRemove(Integer mapboardno , Integer mapboard_userno , SearchCondition sc , RedirectAttributes redirectAttributes  , String loginUser , Integer loginUserNo) throws IOException{
+    public String mapBoardRemove(Integer mapboardno , Integer mapboard_userno ,  Integer loginUserNo ,SearchCondition sc , RedirectAttributes redirectAttributes  , String loginUser) throws IOException{
 
+        System.out.println(mapboardno);
         System.out.println(mapboard_userno);
         System.out.println(loginUserNo);
 
-        if(loginUser == null){
+        //
+        if(loginUserNo == 0){
             redirectAttributes.addFlashAttribute("msg" , "NO_LOGIN");
+            System.out.println("로그인 안 해서 리스트로 전송");
             return "redirect:/map/list";
         } else if( mapboard_userno != loginUserNo){
+            // 작성자와 로그인 유저가 일치하지 않는 경우
             redirectAttributes.addAttribute("loginUser" , loginUser);
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
@@ -200,8 +199,22 @@ public class MapBoardController {
             redirectAttributes.addFlashAttribute("msg", "NotEqualRemove");
             return "redirect:/map/read";
         }
-        mapBoardService.removeMapBoard(mapboardno,loginUserNo);
 
+        // DB 삭제
+        int result = mapBoardService.removeMapBoard(mapboardno,loginUserNo);
+
+        // 삭제 실패시 (DB 삭제 여부)
+        if(result == 0){
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addAttribute("mapboardno",mapboardno);
+            redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
+            return "redirect:/mapboard/read";
+        }
+
+        // 삭제 성공
         redirectAttributes.addFlashAttribute("msg" , "SUCCESS_REMOVE");
         return "redirect:/map/list";
     }
