@@ -262,8 +262,8 @@
             // 지도 중심을 변경한다.
             map.setCenter(coords);
 
-            $('#longitude').val(result.y);
-            $('#latitude').val(result.x);
+            $('#longitude').val(result.x);
+            $('#latitude').val(result.y);
 
             // 마커를 결과값으로 받은 위치로 옮긴다.
             marker.setPosition(coords)
@@ -299,6 +299,7 @@
     $('#latitude').val(latlng.getLat());
 
     marker.setPosition(latlng);
+
   });
 
 

@@ -167,6 +167,36 @@ var newPlaceName = document.getElementById('newPlaceName');
 var newPlaceLat = document.getElementById('newPlaceLat');
 var newPlaceLng = document.getElementById('newPlaceLng');
 
+
+let makerMakeAndAdd =  function (mapBoardDtoList) {
+  mapBoardDtoList.forEach(function (mapBoardDto , index) {
+    var place = {
+      mapboard_content: mapBoardDto.mapboard_content,
+      missingtime: mapBoardDto.missingtime,
+      missingaddress: mapBoardDto.missingaddress,
+      mapboard_reg_date: mapBoardDto.mapboard_reg_date,
+      latitude: mapBoardDto.latitude,
+      longitude: mapBoardDto.longitude,
+      mapboard_ani_category: mapBoardDto.mapboard_ani_category
+    }
+
+    var markerPosition = new kakao.maps.LatLng(mapBoardDto.latitude, mapBoardDto.longitude);
+    var marker = new kakao.maps.Marker({
+      map: map,
+      position: markerPosition
+    });
+    var coords = new daum.maps.LatLng(mapBoardDto.latitude , mapBoardDto.longitude);
+
+    marker.setPosition(coords);
+
+    kakao.maps.event.addListener(marker, 'click', function() {
+        alert(index);
+    });
+  });
+}
+
+makerMakeAndAdd([[${mapBoardDtoList}]]);
+
 // 팝업 디자인을 위한 임시코드 --------------------------------
 var places = [
 {
