@@ -6,7 +6,6 @@
 </head>
 <body>
 <h1>회원정보수정</h1>
-PK: <span th:text="${loginUser.userno}"></span><br>
 아이디: <span th:text="${loginUser.id}"></span><br>
 비밀번호: <span th:text="${loginUser.password}"></span><br>
 이름: <span th:text="${loginUser.name}"></span><br>
@@ -16,7 +15,6 @@ PK: <span th:text="${loginUser.userno}"></span><br>
 주소: <span th:text="${loginUser.address}"></span><br>
 <br><br><br><br><br>
 <form method="post" th:action>
-    <input type="hidden" name="userno" th:value="${loginUser.userno}">
     아이디: <input type="text" name="id" th:value="${loginUser.id}"><br>
     비밀번호: <input type="password" name="password" th:value="${loginUser.password}"><br>
     이름: <input type="text" name="name" th:value="${loginUser.name}"><br>

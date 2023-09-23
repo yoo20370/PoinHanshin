@@ -35,6 +35,9 @@ public class ProtectBoardController {
                                     @SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
 
+        //
+        sc.setPageSize(6);
+
         m.addAttribute("loginUser", loginUser); // 로그인 이식
 
         // 모든 임보자 게시물을 읽어온다.
@@ -64,12 +67,11 @@ public class ProtectBoardController {
         ProtectBoardDto protectBoardDto = protectBoardService.bringBoardOne(protectboardno);
 
         // 로그인 한 경우
-        if(loginUser != null){
+        /*if(loginUser != null){
             // 로그인 아이디와 작성자가 같은 경우 Mode WRITER
             if(loginUser.getUserno().equals(protectBoardDto.getProtectboard_userno().longValue()))
                 m.addAttribute("WriterCheck", "OK");
-
-        }
+        }*/
 
         m.addAttribute("protectboard" , protectBoardDto);
         m.addAttribute("sc",sc);
@@ -168,18 +170,32 @@ public class ProtectBoardController {
     }
     // 임보자 게시물 삭제
     @PostMapping("/remove")
-    public String protectBoardRemove(Integer protectboardno , SearchCondition sc , RedirectAttributes redirectAttributes , Integer loginUser
+    public String protectBoardRemove(Integer protectboardno , Integer protectboard_userno  , Integer loginUser_userno  ,SearchCondition sc , RedirectAttributes redirectAttributes
                                      //,@SessionAttribute(name = "loginUser", required = false) User loginUser
     ){
-        System.out.println("remove POST : loginUser :" + loginUser);
+        System.out.println("protectboardno : "+protectboardno);
+        System.out.println("loginUser : " + loginUser_userno);
+        System.out.println("protectboard_userno : "+protectboard_userno);
+
         // 로그인 여부 확인
-        if(loginUser == null) {
+        if(loginUser_userno == 0) {
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/protectboard/list";
+        } else if( !protectboard_userno.equals(loginUser_userno)){
+            // 작성자와 로그인 유저가 일치하지 않는 경우
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addAttribute("protectboardno",protectboardno);
+            redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            return "redirect:/protectboard/read";
         }
+        // DB 삭제
+        int result = protectBoardService.deleteProductBoard(protectboardno , loginUser_userno);
 
-        // 삭제 실패했을 때
-        if(protectBoardService.deleteProductBoard(protectboardno , loginUser) != 1){
+        // 삭제 실패시 ( DB 삭제 여부 )
+        if(result == 0){
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());

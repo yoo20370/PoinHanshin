@@ -37,6 +37,9 @@ public class BoardController {
     @GetMapping("/list")
     public String boardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg, @SessionAttribute(name = "loginUser", required = false) User loginUser){
 
+        //
+        sc.setPageSize(5);
+
         if(loginUser != null){
             m.addAttribute("loginUser", loginUser); // 로그인 이식
         }
@@ -66,10 +69,10 @@ public class BoardController {
 
         BoardDto boardDto = boardService.bringBoardOne(boardno);
 
-        if(loginUser != null){
+        /*if(loginUser != null){
             if(loginUser.getUserno().equals(boardDto.getBoard_userno().longValue()))
                 m.addAttribute("WriterCheck", "OK");
-        }
+        }*/
 
         m.addAttribute("boardDto" , boardDto);
         m.addAttribute("sc",sc);
@@ -184,17 +187,31 @@ public class BoardController {
 
     // 커뮤니티 게시물 삭제
     @PostMapping("/remove")
-    public String boardRemove(Integer boardno ,  SearchCondition sc , RedirectAttributes redirectAttributes, Integer loginUser ) throws IOException {
+    public String boardRemove(Integer boardno , Integer board_userno , Integer loginUser   , SearchCondition sc , RedirectAttributes redirectAttributes ) throws IOException {
+
+        System.out.println("boardno : " + boardno);
+        System.out.println("loginUser : "+loginUser);
+        System.out.println("board_userno : " + board_userno);
 
         // 로그인 여부 확인
-        if(loginUser == null){
+        if(loginUser == 0){
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
             return "redirect:/board/list";
+        } else if ( ! board_userno.equals(loginUser) ){
+            redirectAttributes.addAttribute("page" , sc.getPage());
+            redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
+            redirectAttributes.addAttribute("keyword", sc.getKeyword());
+            redirectAttributes.addAttribute("ani_category", sc.getAni_category());
+            redirectAttributes.addAttribute("boardno",boardno);
+            redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            return "redirect:/board/read";
         }
 
-        // 삭제 실패시
-        if(boardService.removeContent(boardno , loginUser.longValue() ) != 1){
-            redirectAttributes.addAttribute("loginUser" , loginUser);
+        // DB 삭제
+        int result = boardService.removeContent(boardno , loginUser.longValue());
+
+        // 삭제 실패시 ( DB 삭제 여부 )
+        if(result == 0){
             redirectAttributes.addAttribute("page" , sc.getPage());
             redirectAttributes.addAttribute("pageSize" , sc.getPageSize());
             redirectAttributes.addAttribute("keyword", sc.getKeyword());
@@ -204,6 +221,7 @@ public class BoardController {
             return "redirect:/board/read";
         }
 
+        // 삭제 성공
         redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
         return "redirect:/board/list";
     }

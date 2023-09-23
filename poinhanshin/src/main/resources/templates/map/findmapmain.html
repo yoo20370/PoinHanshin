@@ -76,14 +76,14 @@
       <ul id="favoritesList">
         <!-- 여기에 즐겨찾기 아이템을 추가하세요 -->
         <li class="post-footer">
-          <span class="address" th:text="'실종/발견 장소: ' + ${mapboard.missingaddress}">실종/발견 장소: </span>
-          <span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${mapboard.missingdatetime}">실종/발견 날짜 및 시간: </span>
+          <span class="address" >실종/발견 장소: </span>
+          <span class="datetime" >실종/발견 날짜 및 시간: </span>
           <div class="post-header">
-            <span class="animal-type" th:text="'품종:'${mapboard.mapboard_ani_category}">품종: </span>
+            <span class="animal-type">품종: </span>
           </div>
           <div class="header-right">
-            <span class="mapboard_reg_date" th:text="'작성일: ' +${mapboard.mapboard_reg_date}">작성일: </span>
-            <span class="writertype" th:text="'실종/발견자: ' + ${mapboard.writertype}">실종/발견자: </span>
+            <span class="mapboard_reg_date" >작성일: </span>
+            <span class="writertype" >실종/발견자: </span>
           </div>
         </li>
         <!-- 추가적인 아이템들 -->
@@ -109,7 +109,7 @@
 
 </div>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
-<script src="../map/js/map.js"></script>
+<script src="../../static/js/map/map.js"></script>
 <script>
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
