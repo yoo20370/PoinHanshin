@@ -18,12 +18,13 @@ public class SearchCondition {
     // 사용자 타입 0 - 신고자 , 1 - 발견자 , 2 - 모두
     private Integer writerType = 2;
     private String missingAddress ="";
+    private String kind="";
     // 지역
     // private String region = "";
 
     public SearchCondition(){}
 
-    public SearchCondition(Integer page, Integer pageSize, String keyword, String option, Integer ani_category, Integer writerType, String missingAddress) {
+    public SearchCondition(Integer page, Integer pageSize, String keyword, String option, Integer ani_category, Integer writerType, String missingAddress, String kind) {
         this.page = page;
         this.pageSize = pageSize;
         this.keyword = keyword;
@@ -31,6 +32,7 @@ public class SearchCondition {
         this.ani_category = ani_category;
         this.writerType = writerType;
         this.missingAddress = missingAddress;
+        this.kind = kind;
     }
 
     public String getQueryString(){
@@ -45,6 +47,7 @@ public class SearchCondition {
                 .queryParam("ani_category" , ani_category)
                 .queryParam("writerType" , writerType)
                 .queryParam("missingAddress" , missingAddress)
+                .queryParam("kind" , kind)
                 .build().toString();
     }
     public int getOffset() {

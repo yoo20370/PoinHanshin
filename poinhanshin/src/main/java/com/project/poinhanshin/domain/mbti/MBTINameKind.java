@@ -8,9 +8,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MBTINameKind {
-    private String kindCd; // 품종번호
-    private String animalname; // 품종 이름
-    private String MBTIcategory; // MBTI 유형
+    private String kindCd = ""; // 품종번호
+    private String animalname = ""; // 품종 이름
+    private String MBTIcategory = ""; // MBTI 유형
 
     public MBTINameKind(String kindCd, String animalname, String MBTIcategory) {
         this.kindCd = kindCd;

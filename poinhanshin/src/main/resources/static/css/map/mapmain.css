@@ -33,14 +33,14 @@ body {
     height: 100%;
     width: 100%;
     overflow-y: auto;
+    margin : 2px;
     /*flex-grow: 1;*/
 }
 
 #favoritesList {
     overflow-y: auto;
     list-style-type: none;
-    padding: 20px;
-    margin-bottom: 20px;
+    border : 1px solid #ccc;
 }
 
 #map {
@@ -49,12 +49,12 @@ body {
     margin-bottom: 20px;
 }
 
-ul {
+.ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-li {
+.li {
     margin-bottom: 10px;
     cursor: pointer;
     padding: 5px;

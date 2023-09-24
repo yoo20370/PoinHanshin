@@ -40,12 +40,16 @@ public class MapController {
         {
             m.addAttribute("loginUser" , loginUser);
             // 즐겨찾기 값 가져오기
-            List<MapBoardDto> myMapBoardDtoList = myPageService.selectMyMap(loginUser.getUserno().intValue());
+            /*List<MapBoardDto> myMapBoardDtoList = myPageService.selectMyMap(loginUser.getUserno().intValue());*/
+            List<MapBoardDto> myMapBoardDtoList = mapBoardService.SelectMyMapService(loginUser.getUserno().intValue());
             m.addAttribute("myMapBoardDtoList" , myMapBoardDtoList);
+            System.out.println("myMapBoardDtoList : "+ myMapBoardDtoList);
         }
 
         // 맵 게시물 정보 가져오기
         List<MapBoardDto> mapBoardDtoList = mapBoardService.getMapBoardListService(sc);
+
+
 
         m.addAttribute("mapBoardDtoList" , mapBoardDtoList);
         m.addAttribute("sc",sc);

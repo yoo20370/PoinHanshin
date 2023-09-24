@@ -33,7 +33,27 @@ public class ApiController {
     }
 
     @GetMapping("/AnimalList")
-    public String AnimalList(SearchCondition sc , String kind , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
+    public String AnimalList(SearchCondition sc , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
+        System.out.println("실행 됨" + sc + " " + sc.getKind());
+        m.addAttribute("loginUser", loginUser);
+
+        if(sc.getPage() == null) sc.setPage(1);
+        if(sc.getKind() == null) sc.setKind("");
+        // 품종 검색을 위한 삼항연산자
+        Abandoned_animal abandoned_animal[] = apiExplorer.SearchAnimalList("","","",sc.getKind(),"","","","","",sc.getPage().toString(),"8");
+
+        int totalCnt = Integer.parseInt(abandoned_animal[0].getTotalCount());
+        PageHandler ph = new PageHandler(totalCnt , sc);
+        m.addAttribute("kind" , sc.getKind());
+        m.addAttribute("totalCnt",totalCnt);
+        m.addAttribute("ph",ph);
+        m.addAttribute("AAArr",abandoned_animal);
+
+        return "api/AnimalList";
+    }
+
+    /*@GetMapping("/AnimalListForKind")
+    public String AnimalListForKind(SearchCondition sc , String kind , Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {
         System.out.println("실행 됨" + sc + " " + kind);
         m.addAttribute("loginUser", loginUser);
 
@@ -49,7 +69,7 @@ public class ApiController {
         m.addAttribute("AAArr",abandoned_animal);
 
         return "api/AnimalList";
-    }
+    }*/
 
     @GetMapping("/ShelterList")
     public String ShelterList(SearchCondition sc, Model m, @SessionAttribute(name = "loginUser", required = false) User loginUser) throws IOException, ParseException {

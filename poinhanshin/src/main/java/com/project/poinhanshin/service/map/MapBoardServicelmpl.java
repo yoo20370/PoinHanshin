@@ -33,6 +33,7 @@ public class MapBoardServicelmpl implements MapBoardService{
     @Transactional(rollbackFor = Exception.class)
     public List<MapBoardDto> getMapBoardListService(SearchCondition sc) {
 
+
         List<MapBoardDto> mapBoardDtoList = mapMapper.selectMapList(sc);
 
         for(MapBoardDto mapBoardDto : mapBoardDtoList){
@@ -210,8 +211,18 @@ public class MapBoardServicelmpl implements MapBoardService{
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     @Override
     public List<MapBoardDto> SelectMyMapService(Integer userno) {
-        List<MapBoardDto> SelectMyMapService = mapMapper.SelectMyMap(userno);
-        return SelectMyMapService;
+        List<MapBoardDto> selectMyMapService = mapMapper.SelectMyMap(userno);
+
+        /*for(MapBoardDto mapBoardDto : mapBoardDtoList){
+            List<String> storedFileName = mapFileMapper.MapBoardSelectFileName(mapBoardDto.getMapboardno());
+            mapBoardDto.setStoredFileName(storedFileName);
+        }*/
+        for(MapBoardDto mapBoardDto : selectMyMapService){
+            List<String> storedFileName = mapFileMapper.MapBoardSelectFileName(mapBoardDto.getMapboardno());
+            mapBoardDto.setStoredFileName(storedFileName);
+        }
+
+        return selectMyMapService;
     }
 
 

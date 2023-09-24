@@ -73,19 +73,21 @@
   <button type="button" id="searchFileterBtn">검색</button>
 </div>
   <div class="favorites-container">
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-        <h2 th:text="myMapBoardDtoList">즐겨찾기 목록</h2>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-3">
+        <h2>즐겨찾기 목록</h2>
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
     </div>
     <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
       <ul id="favoritesList">
-        <!-- 여기에 즐겨찾기 아이템을 추가하세요 -->
+        <!-- 이미지 값 불러와야 함  -->
+        <img class="post-image" alt="Dog">
         <li class="post-footer">
           <span class="address">실종/발견 장소: </span><span th:text="${myMapBoardDto.missingaddress}"></span>
           <span class="datetime" >실종/발견 날짜 및 시간: </span><span th:text="${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}"></span>
           <div class="post-header">
             <span class="animal-type" >품종: </span><span th:text="${myMapBoardDto.mapboard_ani_category}"></span>
           </div>
+
           <div class="header-right">
             <span class="mapboard_reg_date" >작성일: </span><span th:text="${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
             <span class="writertype" >실종/발견자: </span><span th:text="${myMapBoardDto.writertype}"></span>
@@ -199,7 +201,7 @@ var customOverlayArr = [];
     content.appendChild(link);
     link.appendChild(img);
     link.appendChild(cardBdoy);
-    link.appendChild(closeBtn);
+    content.appendChild(closeBtn);
     cardBdoy.appendChild(info);
     cardBdoy.appendChild(animalType);
     cardBdoy.appendChild(infoText);
@@ -227,8 +229,17 @@ var customOverlayArr = [];
 // 마커 추가를 위한 메서드
 let makerMakeAndAdd =  function (mapBoardDtoList , num) {
   mapBoardDtoList.forEach(function (mapBoardDto) {
+
+    let anicategory;
+    if(mapBoardDto.mapboard_ani_category == false){
+      anicategory = "강아지";
+    } else {
+      anicategory = "고양이";
+    }
+
     var place = {
       mapboardno : mapBoardDto.mapboardno,
+      mapboard_title : mapBoardDto.mapboard_title,
       mapboard_content: mapBoardDto.mapboard_content,
       storedFileName : mapBoardDto.storedFileName[0],
       missingtime: mapBoardDto.missingtime,
@@ -236,7 +247,7 @@ let makerMakeAndAdd =  function (mapBoardDtoList , num) {
       mapboard_reg_date: mapBoardDto.mapboard_reg_date,
       latitude: mapBoardDto.latitude,
       longitude: mapBoardDto.longitude,
-      mapboard_ani_category: mapBoardDto.mapboard_ani_category
+      mapboard_ani_category: anicategory
     }
 
     var markerPosition = new kakao.maps.LatLng(mapBoardDto.latitude, mapBoardDto.longitude);
