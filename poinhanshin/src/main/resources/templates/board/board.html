@@ -55,23 +55,17 @@
     </div>
 
 
-    <!-- 이미지 파일 존재 여부에 따라 이미지 표시 -->
-    <!-- <div th:if="${boardDto.fileAttached == 1}">
-        <span th:each="fileName: ${boardDto.storedFileName}">
-                <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" />
-                <input type="hidden" name="storedFileName" th:value="${fileName}"/>
-            </span>
-    </div> -->
+
     <!-- 내용 -->
     <div class="row">
-
             <!--  이미지     -->
-
                 <div th:if="${boardDto.fileAttached == 1}">
-                    <div class="col-sm-12" th:each="fileName: ${boardDto.storedFileName}">
-                            <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" class="rounded mx-auto d-block"/>
+                    <div class="col-sm-8 mx-auto" th:each="fileName: ${boardDto.storedFileName}">
+                        <figure class="figure">
+                            <img th:src="@{|/upload/board/${fileName}|}" alt="이미지 없음" class="figure-img img-fluid rounded" />
                             <input type="hidden" name="storedFileName" th:value="${fileName}"/>
-                        </div>
+                        </figure>
+                    </div>
                 </div>
             
         <div class="col-mb-3">    
@@ -94,14 +88,7 @@
     </div>
     <br>
 
-    <!--댓글출력-->
-    <!--${commentList} 댓글리스트-->
-    <!--    <div id="hiddenArea" style="display:none">-->
-    <!--        <div id="replyCmtContainer" style="display:none">-->
-    <!--            <input type="text" name="replyComment" />-->
-    <!--            <button type="button" id="replyBtn" class="btn btn-outline-danger btn-sm" >등록</button>-->
-    <!--        </div>-->
-    <!--    </div>-->
+
 
     <div style="width:auto;display:none" id="hiddenArea">
         <div id="replyCmtContainer" style="display:none" class="row">
@@ -146,9 +133,9 @@
                     <input hidden="hidden" />
                     <label for="content" class="form-label mt-4" hidden>댓글 작성</label>
                     <input th:if="${session.isEmpty()}" type="text"  class="form-control"
-                           placeholder="로그인 후 댓글을 작성할 수 있습니다.">   
+                           placeholder="로그인 후 댓글을 작성할 수 있습니다." autocomplete="off">
                     <input th:unless="${session.isEmpty()}" type="text"  class="form-control" id="content" name="comment"
-                           placeholder="1자에서 100자 이내로 입력해주세요.">    
+                           placeholder="1자에서 100자 이내로 입력해주세요." autocomplete="off">
                     <button type="button" id="insertCommentBtn" class="btn btn-outline-dark">작성</button>
                     <br>
                 </div>
@@ -354,7 +341,7 @@
         $('#insertCommentBtn').on("click" ,function(){
 
         if(login != 0){
-            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+
 
             let comment = $('input[name=comment]').val();
             let boardcomment_boardno = [[${boardDto.boardno}]];
@@ -382,6 +369,7 @@
                 complete:function(){
                     $('#commentArea').empty();
                     showList([[${boardDto.boardno}]]);
+                    $('input[name=comment]').val("")='';
                 }
             });
         }else{
@@ -421,7 +409,7 @@
 
         // 대댓글 등록 버튼 클릭
         $('#replyBtn').on("click" , function(){
-            if(!confirm("댓글을 등록하시겠습니까 ?")) return;
+
             var loginUser = login
             let comment = $('input[name=replyComment]') .val();
             let commentno = $('#replyCmtContainer').parent().data("commentno");
@@ -442,7 +430,7 @@
                 dataType : 'text',
                 data : JSON.stringify(commentDto),
                 success : function(str){
-                    alert(str);
+                    console.log(str);
                     $('#replyCmtContainer').appendTo($('#hiddenArea'));
                     $('#replyCmtContainer').css("display", "none");
                     $('input[name=replyComment]').val("");
