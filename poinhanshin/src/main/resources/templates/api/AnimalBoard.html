@@ -14,66 +14,13 @@
   }
 </style>
 <body layout:fragment="content">
-<div class="card text-center">
-  <div class="card-header">
-
-  </div>
-
-  <div class="card-body">
-
-      <div class="row grid gap-3 ">
-
-        <div class="card text-bg-success mb-3 mx-auto" style="max-width: 25rem;">
-          <div class="card-header">시설정보</div>
-          <div class="card-body">
-
-          </div>
-        </div>
-
-        <div class="card text-bg-primary mb-3 mx-auto" style="max-width: 25rem;">
-          <div class="card-header">운영시간</div>
-          <div class="card-body">
-            <p class="card-text" th:text="'휴무일 : '+${shelter.closeDay}">휴무일 :</p>
-          </div>
-        </div>
-
-        </div>
-
-      <div class="row grid gap-3">
-
-        <div class="card text-bg-warning mb-3 mx-auto" style="max-width: 25rem;">
-          <div class="card-header">위치정보</div>
-          <div class="card-body">
-
-          </div>
-        </div>
-
-        <div class="card text-bg-Light mb-3 mx-auto" style="max-width: 25rem;">
-          <div class="card-body">
-            <div id="map" style="width:100%;height:350px;">
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-
-    <div class="card-footer text-body-secondary">
-      <p th:text="'데이터기준일자 : '+${shelter.dataStdDt}">데이터기준일자 :</p>
-    </div>
-  </div>
-</div>
-
-//
   <fieldset>
-    <legend>상세정보</legend>
-    <Table class="contentTable" >
+    <legend align="center">상세정보</legend>
+    <Table class="contentTable" align="center">
       <tr>
         <td>
           <p th:text="'유기번호 :' + ${aban_ani.desertionNo}"></p>
             <img th:src="${aban_ani.popfile}"><br>
-
         </td>
         <td>
           <p th:text="'접수일자 : '+ ${aban_ani.happenDt}"></p>
@@ -99,7 +46,5 @@
       </tr>
     </Table>
   </fieldset>
-  </table>
-</div>
 </body>
 </html>
