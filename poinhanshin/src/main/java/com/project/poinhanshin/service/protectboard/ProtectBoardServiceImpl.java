@@ -153,13 +153,13 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 임보자 게시물을 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int deleteProductBoard(Integer bno, Integer LoginId) {
+    public int deleteProductBoard(Integer protectboardno, Integer loginUser) {
 
         // 저장된 이미지 이름 목록 가져오기
-        List<String> filesName = protectBoardFileMapper.selectFilesName(bno);
+        List<String> filesName = protectBoardFileMapper.selectFilesName(protectboardno);
 
         // 게시물 삭제 ( 게시물 먼저 삭제하면 DB 데이터 사라짐 )
-        int result = protectBoardMapper.deleteContent(bno ,LoginId);
+        int result = protectBoardMapper.deleteContent(protectboardno ,loginUser);
 
         // 로컬 저장소에서 이미지 파일 삭제
         if( result == 1){

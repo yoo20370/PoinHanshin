@@ -52,15 +52,18 @@ public class ProtectBoardMapperImpl implements ProtectBoardMapper{
     // 임보자 게시물을 수정한다.
     @Override
     public int updateContent(ProtectBoardDto protectBoardDto , Integer loginUser) {
-        return sqlSession.update(namespace+"updateContent",protectBoardDto);
+        HashMap hashMap = new HashMap();
+        hashMap.put("protectBoardDto" , protectBoardDto);
+        hashMap.put("loginUser" , loginUser);
+        return sqlSession.update(namespace+"updateContent",hashMap);
     }
 
     // 임보자 게시물을 삭제한다.
     @Override
-    public int deleteContent(Integer protectboardno, Integer protectboard_userno) {
+    public int deleteContent(Integer protectboardno, Integer loginUser) {
         HashMap<String , Integer> hashMap = new HashMap<>();
         hashMap.put("protectboardno" , protectboardno);
-        hashMap.put("protectboard_userno", protectboard_userno );
+        hashMap.put("loginUser", loginUser );
         return sqlSession.delete(namespace+"deleteContent", hashMap);
 
     }

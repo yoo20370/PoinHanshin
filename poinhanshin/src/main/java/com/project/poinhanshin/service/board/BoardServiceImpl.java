@@ -167,7 +167,7 @@ public class BoardServiceImpl implements BoardService{
     // 특정 게시물을 삭제한다.
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeContent(Integer boardno, Long loginUser) throws IOException {
+    public int removeContent(Integer boardno, Integer loginUser) throws IOException {
         // 저장된 이미지 이름 목록 가져오기
         List<String> fileNameList = boardFileMapper.boardSelectFileName(boardno);
 

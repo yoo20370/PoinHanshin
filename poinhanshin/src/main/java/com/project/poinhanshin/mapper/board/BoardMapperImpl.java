@@ -55,11 +55,11 @@ public class BoardMapperImpl implements BoardMapper {
 
     // 게시물을 삭제한다.
     @Override
-    public int boardDeleteContent(Integer boardno, Long loginUser) {
+    public int boardDeleteContent(Integer boardno, Integer loginUser) {
         HashMap hashMap = new HashMap();
         hashMap.put("boardno" , boardno);
         hashMap.put("loginUser",loginUser);
-        return sqlSession.delete(namespace+"boardDeleteContent");
+        return sqlSession.delete(namespace+"boardDeleteContent",hashMap);
     }
 
     // 최근 등록한 게시물의 번호를 가져온다.
