@@ -192,7 +192,7 @@ public class MapBoardController {
         //
         if(loginUserNo == 0){
             redirectAttributes.addFlashAttribute("msg" , "NO_LOGIN");
-            System.out.println("로그인 안 해서 리스트로 전송");
+            System.out.println("로그인 안 해서 loginUserNo == "+loginUserNo);
             return "redirect:/map/list";
         } else if( mapboard_userno != loginUserNo){
             // 작성자와 로그인 유저가 일치하지 않는 경우
@@ -203,6 +203,7 @@ public class MapBoardController {
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addAttribute("mapboardno",mapboardno);
             redirectAttributes.addFlashAttribute("msg", "NotEqualRemove");
+            System.out.println("게시물 작성자 = "+mapboard_userno + " | 로그인 정보 = "+ loginUserNo);
             return "redirect:/map/read";
         }
 

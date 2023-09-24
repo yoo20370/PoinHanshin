@@ -196,6 +196,7 @@ public class BoardController {
         // 로그인 여부 확인
         if(loginUser == 0){
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            System.out.println("로그인 유저 == 0");
             return "redirect:/board/list";
         } else if ( ! board_userno.equals(loginUser) ){
             redirectAttributes.addAttribute("page" , sc.getPage());
@@ -204,6 +205,7 @@ public class BoardController {
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addAttribute("boardno",boardno);
             redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            System.out.println("로그인 유저와 ");
             return "redirect:/board/read";
         }
 
