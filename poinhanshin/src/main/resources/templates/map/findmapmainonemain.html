@@ -74,7 +74,7 @@
 </div>
   <div class="favorites-container">
     <div style="display: flex; flex-direction: row; justify-content: space-between;">
-        <h2>즐겨찾기 목록</h2>
+        <h2 th:text="myMapBoardDtoList">즐겨찾기 목록</h2>
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
     </div>
     <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
@@ -114,37 +114,6 @@
 
 </div>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b79ca2aea74607866151a56c2889391c"></script>
-<script>
-
-  $('#myMapBtn').on("click" , function(){
-      removeMarkers(placeArr);
-    makerMakeAndAdd()
-  });
-
-  $(document).ready(function(){
-    $('#searchFileterBtn').on("click", function(){
-      removeMarkers(placeArr);
-
-      let ani_category = $('#animal-filter').val();
-      let writerType = $('#author-filter').val();
-      let keyword = $('#location-filter').val();
-
-      $.ajax({
-        type : 'GET',
-        url : '/map/mapFileterSearch?ani_category='+encodeURI(ani_category)+"&writerType="+encodeURI(writerType)+"&keyword="+encodeURI(keyword),
-        success : function(mapBoardDtoList){
-          console.log(mapBoardDtoList);
-          // 마커들 삭제
-
-          // 마커들 표시
-          makerMakeAndAdd(mapBoardDtoList);
-        },
-        error : function(){}
-      })
-    })
-  });
-</script>
 <script th:inline="javascript">
   // dto참고용
 //   this.mapboard_userno = mapboard_userno;
@@ -175,7 +144,6 @@ level: 4 // 지도 확대 레벨
 // 지도 생성
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
-
 var placesList = document.getElementById('placesList');
 var addPlaceButton = document.getElementById('addPlaceButton');
 var newPlaceName = document.getElementById('newPlaceName');
@@ -186,6 +154,60 @@ var newPlaceLng = document.getElementById('newPlaceLng');
 var placeArr = [];
 // 서클들을 저장할 배열 ( 삭제할 때 사용 )
 var circleArr = [];
+// 커스텀 오버레이들을 저장할 배열 ( 삭제할 때 사용 )
+var customOverlayArr = [];
+
+  let createCustomOverlay = function(place , markerPosition , map , marker ) {
+    var content = document.createElement('div');
+    content.setAttribute('class', 'card');
+    var cardBdoy = document.createElement('div');
+    cardBdoy.setAttribute('class', 'card-body');
+
+    var animalType = document.createElement('span');
+    animalType.appendChild(document.createTextNode(place.mapboard_ani_category));
+    animalType.setAttribute('class', 'badge rounded-pill text-bg-warning');
+
+    var info = document.createElement('span');
+    info.appendChild(document.createTextNode(place.mapboard_title));
+
+    var infoText = document.createElement('div');
+    infoText.appendChild(document.createTextNode(place.missingaddress));
+
+    var dateText = document.createElement('div');
+    dateText.appendChild(document.createTextNode(place.missingtime));
+
+    var address = document.createElement('div');
+    address.appendChild(document.createTextNode(place.mapboard_content));
+
+    // 닫기 버튼 추가
+    var closeBtn = document.createElement('button');
+    closeBtn.setAttribute('class', 'btn btn-dark');
+    closeBtn.appendChild(document.createTextNode('닫기'));
+
+    content.appendChild(cardBdoy);
+    content.appendChild(closeBtn);
+    cardBdoy.appendChild(info);
+    cardBdoy.appendChild(animalType);
+    cardBdoy.appendChild(infoText);
+    cardBdoy.appendChild(dateText);
+    cardBdoy.appendChild(address);
+
+    var overlay = new daum.maps.CustomOverlay({
+      position: markerPosition,
+      content: content
+    });
+
+    // 각 마커 클릭 이벤트 설정
+    kakao.maps.event.addListener(marker, 'click', function() {
+      overlay.setMap(map);
+    });
+
+    // 닫기 이벤트 추가
+    closeBtn.onclick = function() {
+      overlay.setMap(null);
+    };
+  }
+
 // 마커 추가를 위한 메서드
 let makerMakeAndAdd =  function (mapBoardDtoList) {
   mapBoardDtoList.forEach(function (mapBoardDto , index) {
@@ -218,6 +240,9 @@ let makerMakeAndAdd =  function (mapBoardDtoList) {
       fillOpacity: 0.7  // 채우기 불투명도 입니다
     });
 
+    // 원 배열에 삽입
+    circleArr.push(circle);
+
     // 지도에 원을 표시합니다
     circle.setMap(map);
 
@@ -227,14 +252,13 @@ let makerMakeAndAdd =  function (mapBoardDtoList) {
     // 마커의 위치를 지정
     marker.setPosition(coords);
 
-    // 마커 클릭 이벤트 설정
-    kakao.maps.event.addListener(marker, 'click', function() {
-      alert(index);
-
-    });
+    // 커스텀 오버레이 삽입
+    createCustomOverlay(place , markerPosition , map , marker);
 
   });
 }
+
+
 // 마커 삭제를 위한 메서드
 let removeMarkers = function(placeArr){
   placeArr.forEach(function(place){
@@ -243,7 +267,56 @@ let removeMarkers = function(placeArr){
   });
 }
 
+// 원 삭제를 위한 메서드
+let removeCircles = function(circleArr){
+  circleArr.forEach(function(circle){
+      circle.setMap(null);
+  })
+}
+
+// 커스텀 오버레이 삭제
+let removeCustomOverlay = function(customOverlayArr){
+    customOverlayArr.forEach(function(customOverlay){
+      customOverlay.setMap(null);
+    });
+}
+
 makerMakeAndAdd([[${mapBoardDtoList}]]);
+
+
+  $('#myMapBtn').on("click" , function(){
+    removeMarkers(placeArr);
+    removeCircles(circleArr);
+    //removeCustomOverlay(customOverlayArr);
+    makerMakeAndAdd([[${myMapBoardDtoList}]]);
+  });
+
+  $(document).ready(function () {
+    $('#searchFileterBtn').on("click", function () {
+
+      let ani_category = $('#animal-filter').val();
+      let writerType = $('#author-filter').val();
+      let keyword = $('#location-filter').val();
+
+      $.ajax({
+        type: 'GET',
+        url: '/map/mapFileterSearch?ani_category=' + encodeURI(ani_category) + "&writerType=" + encodeURI(writerType) + "&keyword=" + encodeURI(keyword),
+        success: function (mapBoardDtoList) {
+          console.log(mapBoardDtoList);
+
+          // 마커들 삭제
+          removeMarkers(placeArr);
+          removeCircles(circleArr);
+          //removeCustomOverlay(customOverlayArr);
+
+          // 마커들 표시
+          makerMakeAndAdd(mapBoardDtoList);
+        },
+        error: function () {
+        }
+      })
+    })
+  });
 
 // 팝업 디자인을 위한 임시코드 --------------------------------
 
@@ -256,7 +329,7 @@ makerMakeAndAdd([[${mapBoardDtoList}]]);
 
 
 // content HTMLElement 생성
-var content = document.createElement('div');
+/*var content = document.createElement('div');
 content.setAttribute( 'class' , 'card');
 var cardBdoy = document.createElement('div');
 cardBdoy.setAttribute( 'class' , 'card-body');
@@ -307,7 +380,7 @@ overlay.setMap(map);
 
 function closeOverlay() {
 overlay.setMap(null);
-}
+}*/
 
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
