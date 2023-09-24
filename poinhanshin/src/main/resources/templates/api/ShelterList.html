@@ -92,8 +92,7 @@
         <button class="btn btn-secondary" th:unless="${ph.showPrev}">&lt;&lt;</button>
         <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;&lt;</button>
         <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-
-            <button type="button" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+            <button th:if="${i !=0}" type="button" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
         </th:block>
         <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;&gt;</button>
     </div>
