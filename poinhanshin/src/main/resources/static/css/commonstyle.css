@@ -48,6 +48,16 @@
 
    }
 
+.cardScaleUp:hover{
+      z-index: 999;
+      transform: scale(1.2);
+      transition-duration: 0.5s;
+}
+.cardScaleUp:not(:hover) {
+  transform: scale(1);
+  transition-duration: 0.5s;
+  z-index: 10;
+}
 
  /*nav-bar헤더*/
   #navbarSupportedContent{
@@ -134,7 +144,6 @@
 
 
     }
-
     /*protectedit*/
         #att_zone{
         margin:0;
