@@ -65,9 +65,13 @@
       <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
     </div>
   </div>-->
-  <span>지역 찾기</span>
-  <input type="text" name="keyword" id="location-filter"/>
-  <button type="button" id="searchFileterBtn">검색</button>
+  <div class="filter-container">
+    <div class="mb-sm-4 d-flex align-items-center">
+  <label class="form-label">지역 찾기</label>
+  <input type="text"  class="form-control mx-sm-4" name="keyword" id="location-filter"/>
+  <button type="button" class="btn btn-outline-dark" id="searchFileterBtn">검색</button>
+    </div>
+  </div>
 </div>
   <div class="favorites-container">
     <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-3">
@@ -75,22 +79,29 @@
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
     </div>
     <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
-      <ul id="favoritesList">
+      <ul class="post">
         <!-- 이미지 값 불러와야 함  -->
-        <img class="post-image" alt="Dog">
-        <li class="post-footer">
-          <span class="address">실종/발견 장소: </span><span th:text="${myMapBoardDto.missingaddress}"></span>
-          <span class="datetime" >실종/발견 날짜 및 시간: </span><span th:text="${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-          <div class="post-header">
-            <span class="animal-type" >품종: </span><span th:text="${myMapBoardDto.mapboard_ani_category}"></span>
+        <li style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="flex: 1;">
+            <div class="post-header">
+              <span class="animal-type"></span><span th:text="'품종: '+ ${myMapBoardDto.mapboard_ani_category}"></span>
+            </div>
+          <div class="post-footer">
+          <span class="address"></span><span th:text="'실종/발견 장소: '+ ${myMapBoardDto.missingaddress}"></span>
+          <span class="datetime" ></span><span th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}"></span>
           </div>
-
-          <div class="header-right">
-            <span class="mapboard_reg_date" >작성일: </span><span th:text="${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
-            <span class="writertype" >실종/발견자: </span><span th:text="${myMapBoardDto.writertype}"></span>
+          </div>
+          <div class="post-content">
+            <div class="header-right">
+              <!--<img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
+              <img class="post-image" src="/img/empty.PNG" alt="Dog">
+            </div>
           </div>
         </li>
-        <!-- 추가적인 아이템들 -->
+        <div class="header-right" style="padding-right: 10px;">
+          <span class="mapboard_reg_date" ></span><span th:text="'작성일: '+ ${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+          <span class="writertype" ></span><span th:text="'실종/발견자: '+ ${myMapBoardDto.writertype}"></span>
+        </div>
       </ul>
     </div>
   </div>
