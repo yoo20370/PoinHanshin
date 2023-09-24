@@ -36,8 +36,8 @@
     </insert>
     <update id="updateMapBoard" parameterType="com.project.poinhanshin.domain.map.MapBoardDto">
         UPDATE mapboard
-        SET mapboard_title = #{mapboard_title} , mapboard_content = #{mapboard_content} , missingtime = #{missingtime} , missingaddress = #{missingaddress} , latitude = #{latitude} , longitude = #{longitude} , mapboard_ani_category = #{mapboard_ani_category} , writertype = #{writertype} , fileAttached = #{fileAttached}
-        WHERE mapboard_userno = #{mapboard_userno} and mapboardno = #{loginUser}
+        SET mapboard_title = #{mapBoardDto.mapboard_title} , mapboard_content = #{mapBoardDto.mapboard_content} , missingtime = #{mapBoardDto.missingtime} , missingaddress = #{mapBoardDto.missingaddress} , latitude = #{mapBoardDto.latitude} , longitude = #{mapBoardDto.longitude} , mapboard_ani_category = #{mapBoardDto.mapboard_ani_category}  ,writertype = #{mapBoardDto.writertype} , fileAttached = #{mapBoardDto.fileAttached}
+        WHERE mapboard_userno = #{loginUser} and mapboardno = #{mapBoardDto.mapboardno}
     </update>
     <delete id="deleteMapBoard" parameterType="map">
         DELETE FROM mapboard
