@@ -185,9 +185,9 @@ public class MapBoardController {
     @PostMapping("/remove")
     public String mapBoardRemove(Integer mapboardno , Integer mapboard_userno ,  Integer loginUserNo ,SearchCondition sc , RedirectAttributes redirectAttributes  , String loginUser) throws IOException{
 
-        System.out.println(mapboardno);
-        System.out.println(mapboard_userno);
-        System.out.println(loginUserNo);
+        System.out.println("mapboardno : "+mapboardno);
+        System.out.println("mapboard_userno : "+mapboard_userno);
+        System.out.println("loginUserNo : " + loginUserNo);
 
         //
         if(loginUserNo == 0){
