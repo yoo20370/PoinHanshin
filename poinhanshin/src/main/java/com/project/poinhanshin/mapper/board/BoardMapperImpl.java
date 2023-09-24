@@ -90,6 +90,11 @@ public class BoardMapperImpl implements BoardMapper {
     }
 
     @Override
+    public List<BoardDto> selectLikeCntTop() {
+        return sqlSession.selectList(namespace+"selectLikeCntTop");
+    }
+
+    @Override
     public int updateCommentCnt(Integer boardno, Integer num) {
         HashMap hashMap = new HashMap();
         hashMap.put("boardno",boardno);

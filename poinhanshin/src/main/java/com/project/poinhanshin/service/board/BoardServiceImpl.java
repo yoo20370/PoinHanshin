@@ -40,7 +40,8 @@ public class BoardServiceImpl implements BoardService{
     public HashMap bringBoardList(SearchCondition sc) {
         // 리스트 목록을 가져온다.
         List<BoardDto> boardDtoList = boardMapper.boardSearchResultList(sc);
-        List<BoardDto> topBoardDtoList = boardMapper.selectViewCntTop();
+        //List<BoardDto> topBoardDtoList = boardMapper.selectViewCntTop();
+        List<BoardDto> topBoardDtoList = boardMapper.selectLikeCntTop();
 
         // 각 게시물의 이미지들을 가져와 boardDto에 저장
         for(BoardDto boardDto : boardDtoList ){
@@ -51,6 +52,10 @@ public class BoardServiceImpl implements BoardService{
             List<String> storedFileName = boardFileMapper.boardSelectFileName(boardDto.getBoardno());
             boardDto.setStoredFileName(storedFileName);
         }
+        /*for(BoardDto boardDto : topBoardDtoList){
+            List<String> storedFileName = boardFileMapper.boardSelectFileName(boardDto.getBoardno());
+            boardDto.setStoredFileName(storedFileName);
+        }*/
 
         HashMap hashMap = new HashMap();
         hashMap.put("boardDtoList" , boardDtoList);

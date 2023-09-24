@@ -41,6 +41,9 @@ public interface BoardMapper {
     // 조회수 Top3
     List<BoardDto> selectViewCntTop();
 
+    // 좋아요 수 Top 3
+    List<BoardDto> selectLikeCntTop();
+
     // 댓글 개수 업데이트
     int updateCommentCnt(@Param("boardno")Integer boardno, @Param("num")Integer num);
 
