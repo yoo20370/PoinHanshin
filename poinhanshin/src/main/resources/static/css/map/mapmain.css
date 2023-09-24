@@ -140,3 +140,18 @@ select option:checked {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding-right: 20px;
 }
+
+.container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background-color: rgb(246, 246, 246);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+/*팝업스타일*/
+
