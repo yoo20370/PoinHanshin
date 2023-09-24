@@ -77,7 +77,7 @@
     <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
       <ul id="favoritesList">
         <!-- 이미지 값 불러와야 함  -->
-        <img class="post-image" alt="Dog">
+        <img class="post-image" th:src="@{|/upload/mapboard/${myMapBoardDto.storedFileName[0]}|}" height="150" width="150"  alt="Dog">
         <li class="post-footer">
           <span class="address">실종/발견 장소: </span><span th:text="${myMapBoardDto.missingaddress}"></span>
           <span class="datetime" >실종/발견 날짜 및 시간: </span><span th:text="${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}"></span>
