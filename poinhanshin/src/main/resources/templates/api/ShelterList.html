@@ -23,24 +23,7 @@
 
 <div class="page">
     <div class="container">
-    <br><div><h1> 보호소 목록 </h1></div><br><br><br>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end p-3">
-        <form action="" method="" name="searchForm" id="searchForm">
-            <div class="input-group">
-                <div class="input-group-text" id="btnGroupAddon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                    </svg>
-                </div>
-                <input type="hidden" name="page" th:value="${ph.sc.getPage()}"/>
-                <input type="hidden" name="pageSize" th:value="${ph.sc.getPageSize()}"/>
-                <input type="text" name="keyword" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-                <input type="button" id="searchBtn" class="btn btn-outline-primary" value="검색">
-            </div>
-        </form>
-        <div class="btn-group" role="group"aria-label="Basic outlined example">
-        </div>
-    </div>
+    <br><div><h1><span class="badge bg-primary">보호소 목록</span></h1></div><br><br>
 
         <div class="row">
             <div class="col-md-4 p-3" th:each="shelterList :${ShelterList}">
@@ -53,7 +36,6 @@
                             <p class="card-text" th:text="${shelterList.careNm}"></p>
                         </div>
                     </div>
-
 
                 </a>
             </div>
@@ -90,11 +72,11 @@
 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
     <div class="btn-group" role="group" aria-label="First group">
         <button class="btn btn-secondary" th:unless="${ph.showPrev}">&lt;&lt;</button>
-        <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;&lt;</button>
+        <button type="button" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
         <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
             <button th:if="${i !=0}" type="button" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
         </th:block>
-        <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;&gt;</button>
+        <button type="button" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/api/ShelterList'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
     </div>
 </div>
 </div>
