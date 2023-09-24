@@ -158,6 +158,18 @@ var circleArr = [];
 var customOverlayArr = [];
 
   let createCustomOverlay = function(place , markerPosition , map , marker , customOverlayArr) {
+
+    var content = document.createElement('div');
+    content.setAttribute('class', 'card');
+
+    var link = document.createElement('a');
+    link.setAttribute('href','/map/read?mapboardno='+place.mapboardno);
+
+    var img = document.createElement('img')
+    img.setAttribute('src','/upload/mapBoard/'+place.storedFileName);
+    img.setAttribute('width','50px');
+    img.setAttribute('height','50px');
+
     var content = document.createElement('div');
     content.setAttribute('class', 'card');
     var cardBdoy = document.createElement('div');
@@ -184,8 +196,10 @@ var customOverlayArr = [];
     closeBtn.setAttribute('class', 'btn btn-dark');
     closeBtn.appendChild(document.createTextNode('닫기'));
 
-    content.appendChild(cardBdoy);
-    content.appendChild(closeBtn);
+    content.appendChild(link);
+    link.appendChild(img);
+    link.appendChild(cardBdoy);
+    link.appendChild(closeBtn);
     cardBdoy.appendChild(info);
     cardBdoy.appendChild(animalType);
     cardBdoy.appendChild(infoText);
@@ -214,7 +228,9 @@ var customOverlayArr = [];
 let makerMakeAndAdd =  function (mapBoardDtoList , num) {
   mapBoardDtoList.forEach(function (mapBoardDto) {
     var place = {
+      mapboardno : mapBoardDto.mapboardno,
       mapboard_content: mapBoardDto.mapboard_content,
+      storedFileName : mapBoardDto.storedFileName[0],
       missingtime: mapBoardDto.missingtime,
       missingaddress: mapBoardDto.missingaddress,
       mapboard_reg_date: mapBoardDto.mapboard_reg_date,
