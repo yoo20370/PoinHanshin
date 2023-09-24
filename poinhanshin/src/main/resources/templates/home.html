@@ -6,6 +6,7 @@
 <head>
   <meta charset="utf-8">
  <link href="/css/commonstyle.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
@@ -16,7 +17,7 @@
 </script>
 <body layout:fragment="content">
 <div class="page">
-<div class="container mt-3 mx-auto">
+    <div class="container col-sm-8 mx-auto">
     <div class="shadow-lg p-3 mb-5 bg-body rounded" th:text="|Today animals :|"> Today animals : 0</div>
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -41,13 +42,13 @@
     </div>
 
 
-</div>
+    </div>
 
     <div class="card-group mt-3">
 
         <div class="card cardScaleUp">
           <a th:href="@{/board/list}" style="color:black">
-            <img src="/img/board_img_black200.gif" class="card-img-top object-fit-contain border rounded" alt="커뮤니티img">
+            <img src="/img/board_static.png" data-animated="/img/board_img_black200.gif" data-static="/img/board_static.png" class="card-img-top object-fit-contain border rounded  hov-anim" alt="커뮤니티img">
               <div class="card-body">
                 <h5 class="card-title text-center">커뮤니티</h5>
               </div>
@@ -74,115 +75,17 @@
 
 </div>
 
-  <script th:inline="javascript">
-  /*<![CDATA[*/
-var daily = /*[[ ${data_daily} ]]*/[];     // 당일 (api)데이터
-var week = /*[[ ${data_week} ]]*/[];      // 일주일단위 (api)
-var finder = /*[[ ${data_finder} ]]*/[]; // 실종신고 그래프 (일주일)
-var lost = /*[[ ${data_lost} ]]*/[];    // 당일 유기견/묘 등록 현황
+<script th:inline="javascript">
 
-var ctxA = document.getElementById("myChartDaily").getContext('2d');
 
-var dailyChart = new Chart(ctxA, {
-    type: 'doughnut',
-    data: {
-        labels: ["강아지", "고양이"],
-        datasets: [{
-            data: daily, // Specify the data values array
-
-            borderColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color border
-            backgroundColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color background (Points and Fill)
-            borderWidth: 1 // Specify bar border width
-        }]},
-    options: {
-      responsive: true, // Instruct chart js to respond nicely.
-      maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
-    }
+//버튼 gif 재생 애니메이션
+  $(".hov-anim").mouseover(function() {
+  $(this).attr("src", $(this).data("animated"))
+}),
+$(".hov-anim").mouseout(function() {
+  $(this).attr("src", $(this).data("static"))
 });
 
-
-var ctxB = document.getElementById("myChartWeek").getContext("2d");
-
-var weekChart = new Chart(ctxB, {
-      type: "line",
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
-        datasets: [{
-          label: "주간",
-          data: week // [10, 20, 30, 40, 50, 60]
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
-         aspectRatio : 1,
-        title: {
-          text: "My Chart"
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    });
-
-
-
-var ctxC = document.getElementById("myChartFinder").getContext("2d");
-
-var finderChart = new Chart(ctxC, {
-      type: "line",
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
-        datasets: [{
-          label: "주간(실종)",
-          data: finder // [10, 20, 30, 40, 50, 60]
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
-        aspectRatio : 1,
-        title: {
-          text: "My Chart"
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    });
-
-var ctxD = document.getElementById("myChartLost").getContext("2d");
-
-var lostChart = new Chart(ctxD, {
-      type: "doughnut",
-      data: {
-        labels: ["유기견", "유기묘"],
-        datasets: [{
-          label: "당일",
-          data: lost, // [10, 20]
-            borderColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color border
-            backgroundColor: ['#2196f38c', '#f443368c', '#3f51b570', '#00968896'], // Add custom color background (Points and Fill)
-            borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
-        title: {
-          text: "My Chart"
-        },
-        tooltips: {
-          enabled: true
-        }
-      }
-    });
-
-
-
-
-    /*]]>*/
   </script>
-  </div>
-</div>
 </body>
 </html>
