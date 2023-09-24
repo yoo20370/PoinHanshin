@@ -1,4 +1,4 @@
- //date-time-picker
+ //date-time-picker-range
     $(document).ready(function() {
         range_date();
         range_date2();
