@@ -157,7 +157,7 @@ var circleArr = [];
 // 커스텀 오버레이들을 저장할 배열 ( 삭제할 때 사용 )
 var customOverlayArr = [];
 
-  let createCustomOverlay = function(place , markerPosition , map , marker ) {
+  let createCustomOverlay = function(place , markerPosition , map , marker , customOverlayArr) {
     var content = document.createElement('div');
     content.setAttribute('class', 'card');
     var cardBdoy = document.createElement('div');
@@ -197,6 +197,8 @@ var customOverlayArr = [];
       content: content
     });
 
+    customOverlayArr.push(overlay);
+
     // 각 마커 클릭 이벤트 설정
     kakao.maps.event.addListener(marker, 'click', function() {
       overlay.setMap(map);
@@ -209,8 +211,8 @@ var customOverlayArr = [];
   }
 
 // 마커 추가를 위한 메서드
-let makerMakeAndAdd =  function (mapBoardDtoList) {
-  mapBoardDtoList.forEach(function (mapBoardDto , index) {
+let makerMakeAndAdd =  function (mapBoardDtoList , num) {
+  mapBoardDtoList.forEach(function (mapBoardDto) {
     var place = {
       mapboard_content: mapBoardDto.mapboard_content,
       missingtime: mapBoardDto.missingtime,
@@ -228,23 +230,26 @@ let makerMakeAndAdd =  function (mapBoardDtoList) {
     });
     var coords = new daum.maps.LatLng(mapBoardDto.latitude , mapBoardDto.longitude);
 
-    // 마커 원 속성값 정의
-    var circle = new kakao.maps.Circle({
-      center : markerPosition,  // 원의 중심좌표 입니다
-      radius: 500, // 미터 단위의 원의 반지름입니다
-      strokeWeight: 5, // 선의 두께입니다
-      strokeColor: 'rgba(136,53,189,0.29)', // 선의 색깔입니다
-      strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-      strokeStyle: 'solid', // 선의 스타일 입니다
-      fillColor: 'rgba(79,127,175,0.29)', // 채우기 색깔입니다
-      fillOpacity: 0.7  // 채우기 불투명도 입니다
-    });
+    // 즐겨찾기 - 0 , 기본 - 1
+    if( num == 0 ){
+      // 마커 원 속성값 정의
+      var circle = new kakao.maps.Circle({
+        center : markerPosition,  // 원의 중심좌표 입니다
+        radius: 500, // 미터 단위의 원의 반지름입니다
+        strokeWeight: 5, // 선의 두께입니다
+        strokeColor: 'rgba(136,53,189,0.29)', // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: 'solid', // 선의 스타일 입니다
+        fillColor: 'rgba(79,127,175,0.29)', // 채우기 색깔입니다
+        fillOpacity: 0.7  // 채우기 불투명도 입니다
+      });
 
-    // 원 배열에 삽입
-    circleArr.push(circle);
+      // 원 배열에 삽입
+      circleArr.push(circle);
 
-    // 지도에 원을 표시합니다
-    circle.setMap(map);
+      // 지도에 원을 표시합니다
+      circle.setMap(map);
+    }
 
     // 마커 배열에 삽입
     placeArr.push(marker);
@@ -253,7 +258,7 @@ let makerMakeAndAdd =  function (mapBoardDtoList) {
     marker.setPosition(coords);
 
     // 커스텀 오버레이 삽입
-    createCustomOverlay(place , markerPosition , map , marker);
+    createCustomOverlay(place , markerPosition , map , marker , customOverlayArr );
 
   });
 }
@@ -281,14 +286,16 @@ let removeCustomOverlay = function(customOverlayArr){
     });
 }
 
-makerMakeAndAdd([[${mapBoardDtoList}]]);
+makerMakeAndAdd([[${mapBoardDtoList}]] , 1 );
 
 
   $('#myMapBtn').on("click" , function(){
     removeMarkers(placeArr);
-    removeCircles(circleArr);
-    //removeCustomOverlay(customOverlayArr);
-    makerMakeAndAdd([[${myMapBoardDtoList}]]);
+    if(circleArr[0] != null)
+      removeCircles(circleArr);
+    removeCustomOverlay(customOverlayArr);
+
+    makerMakeAndAdd([[${myMapBoardDtoList}]] , 0);
   });
 
   $(document).ready(function () {
@@ -306,11 +313,12 @@ makerMakeAndAdd([[${mapBoardDtoList}]]);
 
           // 마커들 삭제
           removeMarkers(placeArr);
-          removeCircles(circleArr);
-          //removeCustomOverlay(customOverlayArr);
+          if(circleArr[0] != null)
+            removeCircles(circleArr);
+          removeCustomOverlay(customOverlayArr);
 
           // 마커들 표시
-          makerMakeAndAdd(mapBoardDtoList);
+          makerMakeAndAdd(mapBoardDtoList , 1);
         },
         error: function () {
         }
