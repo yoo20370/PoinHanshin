@@ -181,12 +181,13 @@ var customOverlayArr = [];
     content.setAttribute('class', 'card');
 
     var link = document.createElement('a');
+    link.setAttribute('style','color:black;text-decoration-line: none;');
     link.setAttribute('href','/map/read?mapboardno='+place.mapboardno);
 
     var img = document.createElement('img')
     img.setAttribute('src','/upload/mapBoard/'+place.storedFileName);
-    img.setAttribute('width','50px');
-    img.setAttribute('height','50px');
+    img.setAttribute('width','127px');
+    img.setAttribute('height','127px');
 
     var content = document.createElement('div');
     content.setAttribute('class', 'card');
@@ -194,12 +195,16 @@ var customOverlayArr = [];
     var cardBdoy = document.createElement('div');
     cardBdoy.setAttribute('class', 'card-body');
 
+    var stack = document.createElement('div');
+    stack.setAttribute('class', 'hstack');
+
     var animalType = document.createElement('span');
     animalType.appendChild(document.createTextNode(place.mapboard_ani_category));
     animalType.setAttribute('class', 'badge rounded-pill text-bg-warning');
 
     var info = document.createElement('span');
-    info.appendChild(document.createTextNode('제목: '+place.mapboard_title));
+    info.setAttribute('style','font-size:25px');
+    info.appendChild(document.createTextNode(' '+place.mapboard_title));
 
     var infoText = document.createElement('div');
     infoText.appendChild(document.createTextNode('실종/발견 장소: '+place.missingaddress));
@@ -213,15 +218,17 @@ var customOverlayArr = [];
 
     // 닫기 버튼 추가
     var closeBtn = document.createElement('button');
-    closeBtn.setAttribute('class', 'btn btn-dark');
+    closeBtn.setAttribute('class', 'btn btn-outline');
+    closeBtn.setAttribute('style', 'background-color:#9C9EFE;');
     closeBtn.appendChild(document.createTextNode('닫기'));
 
     content.appendChild(link);
-    link.appendChild(img);
-    link.appendChild(cardBdoy);
+    link.appendChild(stack);
+    stack.appendChild(img);
+    stack.appendChild(cardBdoy);
     content.appendChild(closeBtn);
-    cardBdoy.appendChild(info);
     cardBdoy.appendChild(animalType);
+    cardBdoy.appendChild(info);
     cardBdoy.appendChild(infoText);
     cardBdoy.appendChild(dateText);
     cardBdoy.appendChild(address);
