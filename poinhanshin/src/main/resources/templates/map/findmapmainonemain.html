@@ -79,7 +79,7 @@
 </div>
 
 <!-- 비회원 조회불가-->
-  <div class="favorites-container" th:if="${loginUser != 0}">
+  <div class="favorites-container" th:if="${loginUser}">
     <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-4">
         <h2>즐겨찾기 목록 <i class="fa-solid fa-star" style="color: #ffdd00;"></i></h2>
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
