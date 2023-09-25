@@ -62,7 +62,7 @@
       <!-- 지역 선택 드롭다운 필터 -->
       <label class="form-label" for="locatin-filter">지역 선택:</label>
       <div style="display: flex; flex-direction: row;">
-        <input type="text" class="form-control" style="width: 150px;" id="locatin-filter" placeholder="지역">
+        <input type="text" class="form-control" style="width: 150px;" name="keyword" th:value="${sc.keyword}" id="locatin-filter" placeholder="지역">
 <!--        <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기" id="searchBtn" name="keyword" th:value="${sc.keyword}">-->
         <button type="button" class="btn mx-1 btn-outline-dark" id="filterSearchBtn">검색</button>
       </div>
@@ -89,25 +89,26 @@
       <div class="post-header">
         <a th:href="@{/map/read(mapboardno=${mapBoardDto.mapboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">임시 링크</a>
         <!--<strong class="animal-type" th:text="'품종:'${mapBoardDto.mapboard_ani_category}">품종: </strong>-->
-        <i class="fa-solid fa-paw" style="color: #fff200;"><span th:if="${mapBoardDto.mapboard_ani_category}" th:text="|강아지|" style="color: #000000;"></span></i>
-        <i class="fa-solid fa-paw" style="color: #4c1dc2;"><span th:if="${mapBoardDto.mapboard_ani_category}" th:text="|고양이|" style="color: #000000;"></span></i>
+        <i class="fa-solid fa-paw" style="color: #fff200;"><span th:if="${mapBoardDto.mapboard_ani_category == false}" th:text="|강아지|" style="color: #000000;"></span></i>
+        <i class="fa-solid fa-paw" style="color: #4c1dc2;"><span th:unless="${mapBoardDto.mapboard_ani_category == false}" th:text="|고양이|" style="color: #000000;"></span></i>
       </div>
       <div class="post-footer" style="display: flex; flex-direction: column">
-        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:text="'실종/발견자: ' + ${mapBoardDto.writertype}">실종/발견자: </span></i>
+        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:unless="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 신고자 |">실종/발견자: </span></i>
+        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:if="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 발견자 |">실종/발견자: </span></i>
         <i class="fa-solid fa-location-dot"><span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #3c3c7e;">실종/발견 장소: </span></i>
-        <i class="fa-solid fa-calendar-days"><span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${mapBoardDto.missingtime}" style="color: #3c3c7e;">실종/발견 날짜 및 시간: </span></i>
+        <i class="fa-solid fa-calendar-days"><span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #3c3c7e;">실종/발견 날짜 및 시간: </span></i>
       </div>
       </div>
       <div class="post-content">
         <div class="header-right">
           <!--<img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
-          <img class="post-image" src="/img/empty.PNG" alt="Dog">
+          <img class="post-image" th:src="@{|/upload/mapboard/${mapBoardDto.storedFileName[0]}|}" alt="Dog">
         </div>
       </div>
     </li>
     <div class="header-right">
-      <span class="mapboard_reg_date" th:text="'작성일: ' +${mapBoardDto.mapboard_reg_date}">작성일: </span>
-      <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.mapboard_userno}">작성자: </span>
+      <span class="mapboard_reg_date" th:text="'작성일: ' +${#dates.format(mapBoardDto.mapboard_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}">작성일: </span>
+        <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.id}">작성자: </span>
     </div>
   </ul>
 </div>
@@ -138,7 +139,6 @@
   })
 */
   $('#filterSearchBtn').on("click", function (){
-    alert("필터 클릭");
     let from = $('#filterForm');
     from.submit();
   })

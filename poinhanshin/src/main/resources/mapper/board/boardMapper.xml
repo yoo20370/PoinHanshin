@@ -70,6 +70,13 @@
         ORDER BY board_viewcount DESC
         LIMIT 3
     </select>
+    <select id="selectLikeCntTop">
+        SELECT u.id , b.board_userno , b.boardno , b.board_title , b.board_content , b.board_ani_category , b.board_reg_date , b.board_viewcount , b.commentcount , b.likecount , b.fileAttached
+        FROM users u , board b
+        WHERE u.userno = b.board_userno
+        ORDER BY b.likecount DESC , b.commentcount DESC
+        LIMIT 3
+    </select>
     <update id="updateCommentCnt" parameterType="map">
         Update board
         SET commentcount = commentcount + #{num}

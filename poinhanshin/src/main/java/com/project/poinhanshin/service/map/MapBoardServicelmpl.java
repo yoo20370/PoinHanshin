@@ -159,7 +159,7 @@ public class MapBoardServicelmpl implements MapBoardService{
         List<String> fileNameList = mapFileMapper.MapBoardSelectFileName(mapboardno);
 
         // 게시물 삭제 (확인 필요)
-        int result = mapMapper.deleteMapBoard(loginUser , mapboardno);
+        int result = mapMapper.deleteMapBoard( mapboardno, loginUser);
 
         // 로컬 저장소에서 이미지 삭제
         if(result == 1){

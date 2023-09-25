@@ -25,7 +25,7 @@ public interface MapMapper {
     int updateMapBoard(MapBoardDto mapBoardDto , Integer loginUser);
 
     // 맵 게시물 삭제
-    int deleteMapBoard(Integer mapboard_userno , Integer mapboardno);
+    int deleteMapBoard(Integer mapboardno  , Integer loginUser);
 
     // 최근 맵 게시물 번호를 반환
     int selectRecentMapBoardNo(Integer mapboard_userno);

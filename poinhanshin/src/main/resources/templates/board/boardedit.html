@@ -146,15 +146,16 @@
 
   let bno = [[${boardDto.boardno}]]
   let showImgList = function () {
-    $.ajax({
-      type: 'GET',
-      url: '/board/file?board_boardno=' + bno,
-      dataType: 'json',
-      success: function (boardFileDtoList) {
-        displayImg(boardFileDtoList)
-      },
-      error: function () {alert("ERROR"); }
-    });
+      $.ajax({
+        type: 'GET',
+        url: '/board/file?board_boardno=' + bno,
+        dataType: 'json',
+        success: function (boardFileDtoList) {
+          console.log('이미지조회성공');
+          displayImg(boardFileDtoList)
+        },
+        error: function () {alert("ERROR"); }
+      });
   }
 
   let displayImg = function(boardFileDtoList){
@@ -164,9 +165,10 @@
     });
   }
 
-  showImgList();
+
 
   $(document).ready(function(){
+    showImgList();
 
     dropzone.on("removedfile" , function(dataURL){
       $.ajax({
@@ -211,14 +213,22 @@
       let formData = new FormData();
 
 
-
-      // 파일이 없다면 파일을 전송하지 않음
       if(files.length != 0) {
-        for(let i = 0 ; i < files.length ; i++){
-          formData.append("boardFile" , files[i]);
+        for (let i = 0; i < files.length; i++) {
+          formData.append("boardFile", files[i]);
         }
-
       }
+
+      /*
+      //수정시 조건을 이미지가 없는(fileAttached =0)  게시판으로 보내서 처리
+      if(files.length != null || files.length != undefined || files.length != NaN) {
+            for(let i = 0 ; i < files.length ; i++){
+              formData.append("boardFile" , files[i]);
+              formData.append("fileAttached" , 0 );
+            };
+      }else{
+        formData.append("fileAttached" , 1 );
+      }*/
 
       formData.append("board_userno" ,board_userno);
       formData.append("boardno", boardno);
@@ -242,11 +252,13 @@
         contentType : false,
         success :function(){},
         complete : function(){
-              let form = $('#form');
+
+          let form = $('#form');
           form.attr("action" , "/board/read");
           form.attr("method","get");
           form.submit();
         }
+
       });
 
 

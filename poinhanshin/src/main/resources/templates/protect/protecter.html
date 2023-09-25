@@ -47,18 +47,18 @@
             <!-- 프론트가 수정 필요 -->
             <input type="hidden" name="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
 
-            <input type="date" name="protectboard_reg_date" th:value="${#dates.format(protectboard.protectboard_reg_date, 'yyyy-MM-dd HH:ss')}" id="reg_date" readonly="readonly " hidden="hidden"/>
+            <input type="text" name="protectboard_reg_date" th:value="${#dates.format(protectboard.protectboard_reg_date, 'yyyy-MM-dd HH:ss')}" id="reg_date" readonly="readonly " hidden="hidden"/>
 <!--            <input type="date" name="starttime" th:value="${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:mm:ss')}"id="starttime" readonly="readonly" hidden="hidden"/>-->
 <!--            <input type="date" name="deadline" th:value="${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}"id="deadline" readonly="readonly" hidden="hidden"/>-->
 
         </div>
 
         <!--태그-->
-        <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:text="${protectboard.breeds}" >품종</span>
-        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
-        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
-        <span class="badge rounded-pill text-bg-warning"th:text="|남은날짜 :${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}|" name="deadline"> 남은날짜 : </span>
-        <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일"></span>
+        <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:text="${protectboard.breeds}" style="font-size: 16px;">품종</span>
+        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>
+        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info "style="font-size: 16px;">공고중</span>
+        <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일" style="font-size: 16px;"></span>
+        <span class="badge rounded-pill text-bg-warning"th:text="|공고기간 : ${#dates.format(protectboard.starttime, 'yyyy-MM-dd')} ~ ${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}|" name="deadline" style="font-size: 16px;"></span>
         <!-- 신고/즐겨찾기 -->
 
         <div class="row">
@@ -69,16 +69,7 @@
             </div>
         </div>
 
-<!--        <div class="row">-->
-<!--            <div class="form-floating">-->
-<!--                <input type="text" readonly="readonly" class="form-control-plaintext"-->
-<!--                       name="breeds"-->
-<!--                       id="floatingEmptyPlaintextInput"-->
-<!--                       placeholder="boardtitle"-->
-<!--                       th:value="${protectboard.breeds}">-->
-<!--                <label for="floatingEmptyPlaintextInput">품종</label>-->
-<!--            </div>-->
-<!--        </div>-->
+
         <div class="row m-2 p-3 rounded-0 border-bottom" id="titleWrapper">
                  <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none;outline:none;">
 
@@ -136,11 +127,8 @@
     </form>
 </div>
 <script th:inline="javascript">
-/*<![CDATA[*/
 
 const list = [[${protectboard}]];
-console.log(list);
-console.log([[${loginUser}]]);
 
     // 수정 버튼 클릭시 수정 페이지로 이동
     $("#modifyBtn").on("click",function(){
@@ -200,13 +188,12 @@ console.log([[${loginUser}]]);
 
 //날짜계산
 
-/*const d_day = document.querySelector('#D_day');
-function D-Day({
 
+let D_Day = function(){
 
-    const start_date= new Date([[${#dates.format(protectboard.starttime, 'yyyy-MM-dd')}]]);
-    const end_date= new Date([[${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}]]);
-
+    let start_Date = new Date( [[${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}]] );
+    let end_date= new Date([[${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}]]);
+    const d_day = document.querySelector(`#D_day`);
 
     const now = new Date(); //현재시간 추출용
     const formattedDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;//yyyy-MM-dd 형식
@@ -219,18 +206,18 @@ function D-Day({
 
     let diffDay = Math.floor(diff / (1000*60*60*24));
 
-    //남은 날짜가 음수인경우 0
-        if(diffDay < 0) {
-            diffDay = "0";
-            d_day.innerText=`D-${diffDay}일`;
-        }else{
-            d_day.innerText=`D-${diffDay}일`;
-        }
-    console.log(diffDay);
-    }
-    D-Day();*/
 
-/*]]>*/
+        //남은 날짜가 음수인경우 0
+            if(diffDay < 0) {
+                diffDay = "0";
+                d_day.innerText=`D-${diffDay}일`;
+            }else{
+                d_day.innerText=`D-${diffDay}일`;
+            }
+    console.log(diffDay);
+};
+    D_Day();
+
 </script>
 </body>
 </html>

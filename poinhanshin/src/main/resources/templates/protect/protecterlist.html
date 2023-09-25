@@ -68,27 +68,22 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
-
         <div class="row">
             <div class="col-md-4 p-2" th:each="protectboard : ${list}">
                 <div class="card" id="pcard">
                     <a th:href="@{/protectboard/read(protectboardno=${protectboard.protectboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">
                         <div class="card-header">
-                            <img th:if="${protectboard.fileAttached == 1}" th:src="@{|/upload/protectboard/${protectboard.storedFileName[0]}|}" class="card-img-top" width="150px" height="150">
+                            <img th:if="${protectboard.fileAttached == 1 ? protectboard.storedFileName[0] != null : false}" th:src="@{|/upload/protectboard/${protectboard.storedFileName[0]}|}" class="card-img-top" width="150px" height="150">
                             <img th:unless="${protectboard.fileAttached == 1}" src="/img/empty.png" class="card-img-top">
-                            <!--<img th:if="${#strings.isEmpty(protectboard.fileAttached)}" src="/img/empty.png" class="card-img-top">
-                                <img  th:unless="${#strings.isEmpty(protectboard.fileAttached)}" src="/img/empty.png" class="card-img-top">-->
                         </div>
                         <div class="card-body">
-                            <span class="badge rounded-pill text-bg-primary card-text" th:text="${protectboard.breeds}">강아지</span>
-                            <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success ">완료</span>
-                            <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info ">공고중</span>
-                            <span class="badge rounded-pill text-bg-warning" th:text="${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}"> 남은날짜 : 2023-08-01</span>
-                            <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}">D-1일</span>
-                            <p class="card-text" th:text="|${protectboard.protectboard_title}|">제목</p>
+                            <span class="badge rounded-pill text-bg-primary card-text" th:text="${protectboard.breeds}" style="font-size: 16px;">강아지</span>
+                            <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>
+                            <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info " style="font-size: 16px;">공고중</span>
+                            <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}" style="font-size: 16px;">D-1일</span>
+                            <span class="badge rounded-pill text-bg-warning" th:text="|${#dates.format(protectboard.starttime, 'MM-dd')} ~ ${#dates.format(protectboard.deadline, 'MM-dd')}|"> 남은날짜 : 2023-08-01</span>
+                            <p class="card-text" th:text="${#strings.abbreviate(protectboard.protectboard_title,10)}">제목</p>
                             <!--<p class="card-text" th:text="${protectboard.protectboard_content}">내용</p>-->
                         </div>
                     </a>
@@ -96,13 +91,13 @@
             </div>
 
         </div>
-
     <div class="ph-wrapper">
+        <div class="text-center" th:if="${totalCnt == 0}">게시물이 없습니다.</div>
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group m-auto btn-group-sm" role="group" aria-label="First group">
                 <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
                 <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
-                    <button type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+                    <button th:if="${i !=0}" type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
                 </th:block>
                 <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/protectboard/list'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
             </div>

@@ -25,10 +25,10 @@ public interface BoardService {
     int writeContent(BoardDto boardDto) throws IOException;
 
     // 특정 게시물을 수정한다.
-    int modifyContent(BoardDto boardDto , Integer loginId) throws IOException;
+    int modifyContent(BoardDto boardDto , Integer loginUser) throws IOException;
 
     // 특정 게시물을 삭제한다.
-    int removeContent(Integer boardno , Long loginUser) throws IOException;
+    int removeContent(Integer boardno , Integer loginUser) throws IOException;
 
     // 최근 등록 게시물 번호를 가져온다.(매개변수 유저에 해당하는 것을 가져오는 것)
     int bringRecentRegContentNo(Integer board_userno);

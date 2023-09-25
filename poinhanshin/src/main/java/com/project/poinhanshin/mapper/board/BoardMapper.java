@@ -27,7 +27,7 @@ public interface BoardMapper {
     int boardUpdateContent(BoardDto boardDto , Integer loginUser);
 
     // 게시물을 삭제한다.
-    int boardDeleteContent(Integer boardno , Long loginUser);
+    int boardDeleteContent(Integer boardno , Integer loginUser);
 
     // 최근 사용자가 등록한 게시물의 번호를 가져온다. (즐겨찾기?)
     int boardSelectRecentBoardNo(Integer board_userno);
@@ -40,6 +40,9 @@ public interface BoardMapper {
 
     // 조회수 Top3
     List<BoardDto> selectViewCntTop();
+
+    // 좋아요 수 Top 3
+    List<BoardDto> selectLikeCntTop();
 
     // 댓글 개수 업데이트
     int updateCommentCnt(@Param("boardno")Integer boardno, @Param("num")Integer num);

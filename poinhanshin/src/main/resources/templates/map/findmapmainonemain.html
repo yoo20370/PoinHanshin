@@ -87,7 +87,8 @@
         <li style="display: flex; justify-content: space-between; align-items: center;">
           <div style="flex: 1;">
             <div class="post-header">
-              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:text="'품종: '+ ${myMapBoardDto.mapboard_ani_category}"></span></i>
+              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span></i>
+              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |"></span></i>
             </div>
           <div class="post-footer">
             <i class="fa-solid fa-location-dot"><span class="address"></span><span th:text="'실종/발견 장소: '+ ${myMapBoardDto.missingaddress}" style="color: #3c3c7e;"></span></i>
@@ -97,13 +98,16 @@
           <div class="post-content">
             <div class="header-right">
               <!--<img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
+              <img class="post-image" th:src="@{|/upload/mapboard/${myMapBoardDto.storedFileName[0]}|}" height="150" width="150"  alt="Dog">
               <img class="post-image" src="/img/empty.PNG" alt="Dog">
             </div>
           </div>
         </li>
         <div class="header-right" style="padding-right: 10px;">
           <span class="mapboard_reg_date" ></span><span th:text="'작성일: '+ ${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
-          <span class="writertype" ></span><span th:text="'실종/발견자: '+ ${myMapBoardDto.writertype}"></span>
+          <span class="writertype" ></span>
+          <span th:if="${myMapBoardDto.writertype == false}" th:text="| 발견자 |"></span>
+          <span th:unless="${myMapBoardDto.writertype == false}" th:text="| 신고자 |"></span>
         </div>
       </ul>
     </div>
@@ -367,69 +371,7 @@ makerMakeAndAdd([[${mapBoardDtoList}]] , 1 );
     })
   });
 
-// 팝업 디자인을 위한 임시코드 --------------------------------
 
-// 추가적인 장소 정보 추가
-
-
-
-// 마커와 팝업 생성
-
-
-
-// content HTMLElement 생성
-/*var content = document.createElement('div');
-content.setAttribute( 'class' , 'card');
-var cardBdoy = document.createElement('div');
-cardBdoy.setAttribute( 'class' , 'card-body');
-
-var animalType = document.createElement('span');
-animalType.appendChild(document.createTextNode(pos.mapboard_ani_category));
-animalType.setAttribute( 'class' , 'badge rounded-pill text-bg-warning');
-
-var info = document.createElement('span');
-info.appendChild(document.createTextNode(pos.mapboard_title));
-
-var infoText = document.createElement('div');
-infoText.appendChild(document.createTextNode(pos.missingaddress));
-
-var dateText = document.createElement('div');
-dateText.appendChild(document.createTextNode(pos.missingtime));
-
-var address = document.createElement('div');
-address.appendChild(document.createTextNode(pos.mapboard_content));
-// 닫기 버튼 추가
-var closeBtn = document.createElement('button');
-closeBtn.setAttribute( 'class' , 'btn btn-dark');
-closeBtn.appendChild(document.createTextNode('닫기'));
-// 닫기 이벤트 추가
-closeBtn.onclick = function() {
-overlay.setMap(null);
-};
-content.appendChild(cardBdoy);
-content.appendChild(closeBtn);
-cardBdoy.appendChild(info);
-cardBdoy.appendChild(animalType);
-cardBdoy.appendChild(infoText);
-cardBdoy.appendChild(dateText);
-cardBdoy.appendChild(address);
-
-// customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
-var overlay = new daum.maps.CustomOverlay({
-position: markerPosition,
-content: content
-});
-
-
-// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-kakao.maps.event.addListener(marker, 'click', function() {
-overlay.setMap(map);
-});
-
-
-function closeOverlay() {
-overlay.setMap(null);
-}*/
 
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
