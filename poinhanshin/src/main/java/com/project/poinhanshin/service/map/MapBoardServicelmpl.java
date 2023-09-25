@@ -106,42 +106,23 @@ public class MapBoardServicelmpl implements MapBoardService{
 
     // 게시물 수정
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int modifyMapBoard(MapBoardDto mapBoardDto, Integer loginUser) throws IOException {
 
         int imgCnt = mapFileMapper.MapBoardSelectCnt(mapBoardDto.getMapboardno());
 
-        // 이미지가 있는 게시물을 수정할 때
-        if(mapBoardDto.getFileAttached() == 1){
-            System.out.println("이미지가 있는 게시물 수정");
-            if(imgCnt == 0){
-                // 기존 이미지를 모두 삭제하고 이미지를 추가하지 않은 경우
-                System.out.println("기존 이미지 X , 이미지 추가 X");
+        if(mapBoardDto.getMapBoardFile() != null){
+            // 추가된 이미지가 있는 경우
+            mapBoardDto.setFileAttached(1);
+            addImgFiles(mapBoardDto);
+        } else {
+            // 추가된 이미지가 없는 경우
+            if(imgCnt== 0){
+                // 기존 이미지가 없는 경우 ( 바로바로 삭제되기 떄문에 모두 삭제했다면 기존 이미지는 없을 것이다. )
                 mapBoardDto.setFileAttached(0);
             } else {
-                // 이미지가 하나라도 남아 있는 경우
-                System.out.println("이미지가 하나라도 존재하는 경우");
-                if(mapBoardDto.getMapBoardFile() != null){
-                    // 추가 이미지가 있는 경우
-                    System.out.println("이미지를 추가하는 경우");
-                    // 이미지 저장
-                    addImgFiles(mapBoardDto);
-                } else {
-                    // 추가 이미지가 없는 경우
-                    System.out.println("이미지를 추가하지 않는 경우");
-                }
-            }
-        } else {
-            // 이미지가 없는 게시물을 수정할 때
-            System.out.println("이미지가 없는 게시물 수정시");
-            if(mapBoardDto.getMapBoardFile() != null){
-                // 이미지를 추가하는 경우
-                System.out.println("이미지를 추가하는 경우");
+                // 기존 이미지가 있는 경우
                 mapBoardDto.setFileAttached(1);
-                // 이미지 저장
-                addImgFiles(mapBoardDto);
-            } else {
-                // 이미지를 추가하지 않는 경우
-                System.out.println("이미지를 추가하지 않는 경우");
             }
         }
 
@@ -189,6 +170,7 @@ public class MapBoardServicelmpl implements MapBoardService{
 
     // 이미지 저장을 위해 사용하는 메서드
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addImgFiles(MapBoardDto mapBoardDto) throws IOException {
         for (MultipartFile mapBoardFile : mapBoardDto.getMapBoardFile()) {
 
@@ -210,6 +192,7 @@ public class MapBoardServicelmpl implements MapBoardService{
 
     // 마이페이지 - 자신의 게시판 즐겨찾기 리스트 불러오기
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<MapBoardDto> SelectMyMapService(Integer userno) {
         List<MapBoardDto> selectMyMapService = mapMapper.SelectMyMap(userno);
 

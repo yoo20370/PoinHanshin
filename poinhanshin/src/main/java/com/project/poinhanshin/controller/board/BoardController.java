@@ -113,7 +113,6 @@ public class BoardController {
         boardDto.setBoardFile(boardFile);
 
         System.out.println("write post loginUserNo : "+loginUserNo);
-        //System.out.println("write post ");
 
         // 이미지가 있는 경우
         if(boardFile != null){

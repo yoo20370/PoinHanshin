@@ -106,7 +106,8 @@
       <div class="post-content">
         <div class="header-right">
           <!--<img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
-          <img class="post-image" th:src="@{|/upload/mapboard/${mapBoardDto.storedFileName[0]}|}" alt="Dog">
+          <img class="post-image" th:if="${mapBoardDto.fileAttached == 1}" th:src="@{|/upload/mapboard/${mapBoardDto.storedFileName[0]}|}" alt="Dog">
+          <img class="post-image" th:unless="${mapBoardDto.fileAttached == 1}" src="/img/empty.png"  alt="빈 이미지">
         </div>
       </div>
     </div>
@@ -121,7 +122,7 @@
 <div class="btn-group" role="group" aria-label="First group">
   <button class="btn btn-outline-secondary">&lt;&lt;</button>
   <button type="button" class="btn btn-primary" onclick="location.href=''">1</button>
-  <button type="button" class="btn btn-outline-secondary" onclick="location.href='/api/ShelterList?page=11&amp;pageSize=10&amp;keyword=&amp;option=&amp;ani_category=2&amp;writeType=2'">&gt;&gt;</button>
+  <button type="button" class="btn btn-outline-secondary" onclick="location.href='/map/list?page=11&amp;pageSize=10&amp;keyword=&amp;option=&amp;ani_category=2&amp;writeType=2'">&gt;&gt;</button>
 </div>
 </div>
 <!--text="${boardDto.boardno}"-->
