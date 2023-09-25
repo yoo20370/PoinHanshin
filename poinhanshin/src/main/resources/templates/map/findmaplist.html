@@ -104,11 +104,11 @@
       </div>
       <div class="post-footer" style="display: flex; flex-direction: column">
         <i class="fa-solid fa-street-view" style="color: #3c3c7e;">
-          <span class="writertype mb-1" th:unless="${mapBoardDto.writertype == true}" th:text="| 신고/발견자 : 신고자 |">신고/발견자: </span>
-          <span class="writertype mb-1" th:if="${mapBoardDto.writertype == true}" th:text="| 신고/발견자 : 발견자 |">신고/발견자: </span>
+          <span class="writertype mb-1 lh-base" th:unless="${mapBoardDto.writertype == true}" th:text="| 신고/발견자 : 신고자 |">신고/발견자: </span>
+          <span class="writertype mb-1 lh-base" th:if="${mapBoardDto.writertype == true}" th:text="| 신고/발견자 : 발견자 |">신고/발견자: </span>
         </i>
-        <i class="fa-solid fa-location-dot"><span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #3c3c7e;">실종/발견 장소: </span></i>
-        <i class="fa-solid fa-calendar-days"><span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #3c3c7e;">실종/발견 날짜 및 시간: </span></i>
+        <i class="fa-solid fa-location-dot"><span class="address lh-base" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #3c3c7e;">실종/발견 장소: </span></i>
+        <i class="fa-solid fa-calendar-days"><span class="datetime lh-base" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #3c3c7e;">실종/발견 날짜 및 시간: </span></i>
       </div>
       </div>
       <div class="post-content">
