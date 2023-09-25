@@ -134,17 +134,26 @@
       form.submit();
   });
 
-  /*// 동물 드롭다운 클릭시
-  $('input[name=ani_category]').on("click",function(){
+/*  // 동물 드롭다운 클릭시
+  $('#animal-filter').on("click",function(){
     let form = $('#form');
     form.submit();
   });
   $('#author-filter').on("click" , function(){
     let form = $('#form')
     form.submit();
-  })
-*/
-  $('#filterSearchBtn').on("click", function (){
+  })*/
+
+  $('#filterSearchBtn').on("click", function (){// 동물 드롭다운 클릭시
+    $('#animal-filter').on("click",function(){
+      let form = $('#form');
+      form.submit();
+    });
+    $('#author-filter').on("click" , function(){
+      let form = $('#form')
+      form.submit();
+    })
+
     let from = $('#filterForm');
     from.submit();
   })
