@@ -68,8 +68,8 @@
           </div>
         </div>
 <!--        <span class="title" th:text="'제목: ' + ${mapboard.missingaddress}">제목: </span>-->
-          <i class="fa-solid fa-location-dot"><span class="address my-2" th:text="' 실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #4d4d9a;">실종/발견 장소: </span></i>
-          <i class="fa-solid fa-calendar-days"><span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #4d4d9a;">실종/발견 날짜 및 시간: </span></i>
+          <i class="fa-solid fa-location-dot"><span class="address my-2 lh-base" th:text="' 실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #4d4d9a;">실종/발견 장소: </span></i>
+          <i class="fa-solid fa-calendar-days"><span class="time lh-base" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #4d4d9a;">실종/발견 날짜 및 시간: </span></i>
       </div>
         <!-- 즐겨찾기/ 신고하기 아이콘 버튼-->
         <div class="header-right mb-2"  th:if="${loginUser}">
