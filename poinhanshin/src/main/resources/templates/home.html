@@ -7,28 +7,23 @@
   <meta charset="utf-8">
  <link href="/css/commonstyle.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 
 </head>
-<script th:inline="javascript">
-    const msg = [[${#httpServletRequest.getAttribute('msg')}]];
-    if (msg === "LOGIN_OK") alert("환영합니다");
-</script>
 <body layout:fragment="content">
 <div class="page">
     <div class="container col-sm-8 mx-auto">
     <div class="shadow-lg p-3 mb-5 bg-body rounded" th:text="|Today animals :|"> Today animals : 0</div>
+
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="/img/empty.png" class="d-block w-100" alt="...">
+            <div class="carousel-item active" data-bs-interval="5000">
+                <img src="/img/slider_img_1.jpg"  class="carousel-img" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="/img/map.png" class="d-block w-100" alt="...">
+                <img src="/img/map.png" class="carousel-img"  alt="...">
             </div>
             <div class="carousel-item">
-                <img src="/img/empty.png" class="d-block w-100" alt="...">
+                <img src="/img/slider_img_cat.jpg" class="carousel-img" alt="...">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -76,7 +71,8 @@
 </div>
 
 <script th:inline="javascript">
-
+    const msg = [[${#httpServletRequest.getAttribute('msg')}]];
+    if (msg === "LOGIN_OK") alert("환영합니다");
 
 //버튼 gif 재생 애니메이션
   $(".hov-anim").mouseover(function() {
@@ -85,6 +81,25 @@
 $(".hov-anim").mouseout(function() {
   $(this).attr("src", $(this).data("static"))
 });
+
+
+    let animalList = function () {
+      $.ajax({
+        type: 'GET',
+        url: '/api/AnimalList',
+        success: function (AAArr) {
+          console.log('이미지조회성공');
+          console.log(AAArr);
+        const regex = /<img[^>]*id="ani"[^>]*src="(.*?)"[^>]*>/gi;
+        const imgs = AAArr.matchAll(regex);
+        const srcs = Array.from(imgs).map((img) => img[1]);
+        console.log(srcs);
+
+        },
+        error: function () {alert("ERROR"); }
+      });
+  }
+    animalList();
 
   </script>
 </body>
