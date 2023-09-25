@@ -93,12 +93,20 @@
             <label for="address">주소:</label>
             <input type="text" id="address" name="address" placeholder="주소를 입력하세요" th:value="${loginUser.address}" required>
         </div>
-        <button class="btn-primary mb-1" style="display: block; margin: 0 auto;"  type="submit">저장</button>
     </form>
+    <button class="btn-primary mb-1" style="display: block; margin: 0 auto;" id="formbtn"  type="button">저장</button>
     <button class="back-button" onclick="window.location.href='/profilePage' ">돌아가기</button>
 </div>
 
 <script>
+    $('#formbtn').on("click",function(){
+        if(!confirm("회원 정보를 수정하시겠습니까 ?")) {
+            //event.preventDefault()
+            return;
+        }
+        let form = $('#profileForm');
+        form.submit();
+    });
 </script>
 </body>
 </html>
