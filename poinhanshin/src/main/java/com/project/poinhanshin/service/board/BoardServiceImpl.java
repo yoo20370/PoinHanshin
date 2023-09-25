@@ -195,8 +195,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public int updateFileAttached(Integer protectboardno, Integer fileAttached) {
-        return boardMapper.boardUpdateFileAttached(protectboardno , fileAttached);
+    public int updateFileAttached(Integer boardno, Integer fileAttached) {
+        return boardMapper.boardUpdateFileAttached(boardno , fileAttached);
     }
 
 

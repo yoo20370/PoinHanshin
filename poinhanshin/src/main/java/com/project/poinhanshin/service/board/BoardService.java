@@ -34,7 +34,7 @@ public interface BoardService {
     int bringRecentRegContentNo(Integer board_userno);
 
     // 파일 존재 여부 값 수정
-    int updateFileAttached(Integer protectboardno , Integer fileAttached);
+    int updateFileAttached(Integer boardno , Integer fileAttached);
 
     // 이미지 등록을 위한 메서드
     void addImgFiles(BoardDto boardDto) throws IOException;
