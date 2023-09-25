@@ -83,8 +83,11 @@
       <!--<button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
         <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
       </button>-->
-      <button class="icon-btn" type="button" id="writeBtn" onclick="location.href='/map/write'"  data-toggle="tooltip" data-placement="top" title="글 작성하기">
+      <button class="icon-btn" type="button" id="writeBtn" onclick="location.href='/map/write'"  data-toggle="tooltip" data-placement="top" title="글 작성하기" th:if="${loginUser}">
         <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
+      </button>
+        <button class="icon-btn" type="button" id="alertmap1" data-toggle="tooltip" data-placement="top" title="글 작성하기" th:unless="${loginUser}">
+          <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
       </button>
     </div>
   </div>
@@ -182,6 +185,11 @@
     }).open();
   }
 
+  document.getElementById('alertmap1').addEventListener('click', function () {
+    // 수정 페이지로 이동
+
+    alert('로그인이 필요합니다.');
+  });
 </script>
 </body>
 </html>

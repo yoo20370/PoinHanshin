@@ -24,7 +24,10 @@
     <button class="icon-btn" onclick="location.href='/map/list'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
       <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
     </button>
-    <button class="icon-btn" onclick="location.href='/map/write'" data-toggle="tooltip" data-placement="top" title="글 작성하기">
+    <button class="icon-btn" onclick="location.href='/map/write'" data-toggle="tooltip" data-placement="top" title="글 작성하기" th:if="${loginUser}">
+      <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
+    </button>
+    <button class="icon-btn" id="alertmap1" data-toggle="tooltip" data-placement="top" title="글 작성하기" th:unless="${loginUser}">
       <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
     </button>
   </div>
@@ -82,9 +85,9 @@
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
     </div>
     <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
-      <ul class="post">
+      <div class="post">
         <!-- 이미지 값 불러와야 함  -->
-        <li style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
           <div style="flex: 1;">
             <div class="post-header">
               <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span>
@@ -102,14 +105,14 @@
               <img class="post-image" th:unless="${myMapBoardDto.fileAttached == 1}"src="/img/empty.PNG" alt="Dog">
             </div>
           </div>
-        </li>
+        </div>
         <div class="header-right" style="padding-right: 10px;">
           <span class="mapboard_reg_date" ></span><span th:text="'작성일: '+ ${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
           <span class="writertype" ></span>
           <span th:if="${myMapBoardDto.writertype == false}" th:text="| 발견자 |"></span>
           <span th:unless="${myMapBoardDto.writertype == false}" th:text="| 신고자 |"></span>
         </div>
-      </ul>
+      </div>
     </div>
   </div>
 <!--  비로그인시 표시되는 화면-->
@@ -117,7 +120,7 @@
     <div class="favorites-container">
     <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-4">
      <h2>즐겨찾기 목록 <i class="fa-solid fa-star" style="color: #ffdd00;"></i></h2>
-      <button class="btn btn-primary" id="alertmap" onclick="alertmap()">범위 찾기</button>
+      <button class="btn btn-primary" id="alertmap">범위 찾기</button>
     </div>
       <div class="container1">
       <span style="text-align: center;">로그인하여 사용해보세요!</span>
@@ -408,6 +411,12 @@ makerMakeAndAdd([[${mapBoardDtoList}]] , 1 );
 // 팝업 디자인을 위한 임시코드 -------------------------------- 끝
   //범위찾기 비로그인 시 경고창 출력
   document.getElementById('alertmap').addEventListener('click', function () {
+    // 수정 페이지로 이동
+
+    alert('로그인이 필요합니다.');
+  });
+
+  document.getElementById('alertmap1').addEventListener('click', function () {
     // 수정 페이지로 이동
 
     alert('로그인이 필요합니다.');
