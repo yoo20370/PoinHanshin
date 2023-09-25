@@ -16,7 +16,6 @@
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:800" rel="stylesheet">
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-
 </head>
 <body layout:fragment="content">
 <div class="container">
@@ -65,62 +64,67 @@
       <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기">
     </div>
   </div>-->
-  <span>지역 찾기</span>
-  <input type="text" name="keyword" id="location-filter"/>
-  <button type="button" id="searchFileterBtn">검색</button>
+  <div class="filter-container">
+    <div class="mb-sm-4 d-flex align-items-center">
+  <label class="form-label">지역 찾기:</label>
+      <div style="display: flex; flex-direction: row;">
+  <input type="text"  class="form-control" style="width: 150px;" name="keyword" id="location-filter"/>
+  <button type="button" class="btn btn-outline-dark mx-1" id="searchFileterBtn">검색</button>
+      </div>
+    </div>
+  </div>
 </div>
-  <div class="favorites-container">
-    <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-3">
-        <h2>즐겨찾기 목록</h2>
+
+<!-- 비회원 조회불가-->
+  <div class="favorites-container" th:if="${loginUser}">
+    <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-4">
+        <h2>즐겨찾기 목록 <i class="fa-solid fa-star" style="color: #ffdd00;"></i></h2>
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
     </div>
     <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
-      <ul id="favoritesList">
+      <ul class="post">
         <!-- 이미지 값 불러와야 함  -->
-        <img class="post-image" th:src="@{|/upload/mapboard/${myMapBoardDto.storedFileName[0]}|}" height="150" width="150"  alt="Dog">
-        <li class="post-footer">
-          <div class="address">실종/발견 장소:
-            <span th:text="${myMapBoardDto.missingaddress}"></span>
-          </div>
-          <div class="datetime" >실종/발견 날짜 및 시간:
-            <span th:text="${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-          </div>
-          <div class="post-header">
-            <div class="animal-type" >품종:
-              <span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span>
-              <span th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |">
-            </span>
+        <li style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="flex: 1;">
+            <div class="post-header">
+              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span></i>
+              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |"></span></i>
             </div>
+          <div class="post-footer">
+            <i class="fa-solid fa-location-dot"><span class="address"></span><span th:text="'실종/발견 장소: '+ ${myMapBoardDto.missingaddress}" style="color: #3c3c7e;"></span></i>
+            <i class="fa-solid fa-calendar-days"><span class="datetime" ></span><span th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}" style="color: #3c3c7e;"></span></i>
           </div>
-
-          <div class="header-right">
-            <span class="mapboard_reg_date" >작성일: </span><span th:text="${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
-            <div class="writertype">실종/발견자 :
-              <span th:if="${myMapBoardDto.writertype == false}" th:text="| 발견자 |"></span>
-              <span th:unless="${myMapBoardDto.writertype == false}" th:text="| 신고자 |"></span>
+          </div>
+          <div class="post-content">
+            <div class="header-right">
+              <!--<img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
+              <img class="post-image" th:src="@{|/upload/mapboard/${myMapBoardDto.storedFileName[0]}|}" height="150" width="150"  alt="Dog">
+              <img class="post-image" src="/img/empty.PNG" alt="Dog">
             </div>
           </div>
         </li>
-        <!-- 추가적인 아이템들 -->
+        <div class="header-right" style="padding-right: 10px;">
+          <span class="mapboard_reg_date" ></span><span th:text="'작성일: '+ ${#dates.format(myMapBoardDto.mapboard_reg_date, 'yyyy-MM-dd HH:mm:ss')}"></span>
+          <span class="writertype" ></span>
+          <span th:if="${myMapBoardDto.writertype == false}" th:text="| 발견자 |"></span>
+          <span th:unless="${myMapBoardDto.writertype == false}" th:text="| 신고자 |"></span>
+        </div>
       </ul>
     </div>
   </div>
-</div>
-
-<!-- 팝업 디자인을 위한 임시코드 -->
-<div id="wishlist" style="display: none">
-  <h2>위시리스트 목록</h2>
-  <ul id="placesList">
-    <!-- 위시리스트 항목이 여기에 동적으로 추가될 예정 -->
-  </ul>
-  <div>
-    <input type="text" id="newPlaceName" placeholder="장소명">
-    <input type="text" id="newPlaceLat" placeholder="위도">
-    <input type="text" id="newPlaceLng" placeholder="경도">
-    <button id="addPlaceButton">추가</button>
+<!--  비로그인시 표시되는 화면-->
+  <div class="container" th:unless="${loginUser}">
+    <div class="favorites-container">
+    <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-4">
+     <h2>즐겨찾기 목록 <i class="fa-solid fa-star" style="color: #ffdd00;"></i></h2>
+      <button class="btn btn-primary" id="alertmap" onclick="alertmap()">범위 찾기</button>
+    </div>
+      <div class="container1">
+      <span style="text-align: center;">로그인하여 사용해보세요!</span>
+      </div>
+  </div>
   </div>
 </div>
-<!-- 팝업 디자인을 위한 임시코드 끝 -->
 
 </div>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c4fc6b86f6659d02a7d040b2f3536a81&libraries=services"></script>
@@ -147,7 +151,8 @@
 
 var mapContainer = document.getElementById('map');
 var mapOption = {
-center: new kakao.maps.LatLng(37.19357, 127.0227), // 지도 중심 좌표 (서울)
+// center: new kakao.maps.LatLng(37.19357, 127.0227), // 지도 중심 좌표 (서울)
+  center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도 중심 좌표 (서울)
 level: 4 // 지도 확대 레벨
 };
 
@@ -168,6 +173,8 @@ var circleArr = [];
 var customOverlayArr = [];
 
   let createCustomOverlay = function(place , markerPosition , map , marker , customOverlayArr) {
+    var overlayContainer = document.createElement('div');
+    overlayContainer.classList.add('custom-overlay-container');
 
     var content = document.createElement('div');
     content.setAttribute('class', 'card');
@@ -182,6 +189,7 @@ var customOverlayArr = [];
 
     var content = document.createElement('div');
     content.setAttribute('class', 'card');
+
     var cardBdoy = document.createElement('div');
     cardBdoy.setAttribute('class', 'card-body');
 
@@ -190,16 +198,17 @@ var customOverlayArr = [];
     animalType.setAttribute('class', 'badge rounded-pill text-bg-warning');
 
     var info = document.createElement('span');
-    info.appendChild(document.createTextNode(place.mapboard_title));
+    info.appendChild(document.createTextNode('제목: '+place.mapboard_title));
 
     var infoText = document.createElement('div');
-    infoText.appendChild(document.createTextNode(place.missingaddress));
+    infoText.appendChild(document.createTextNode('실종/발견 장소: '+place.missingaddress));
 
     var dateText = document.createElement('div');
-    dateText.appendChild(document.createTextNode(place.missingtime));
+    dateText.appendChild(document.createTextNode('실종/발견 날짜: '+place.missingtime));
 
     var address = document.createElement('div');
     address.appendChild(document.createTextNode(place.mapboard_content));
+
 
     // 닫기 버튼 추가
     var closeBtn = document.createElement('button');
@@ -215,6 +224,7 @@ var customOverlayArr = [];
     cardBdoy.appendChild(infoText);
     cardBdoy.appendChild(dateText);
     cardBdoy.appendChild(address);
+
 
     var overlay = new daum.maps.CustomOverlay({
       position: markerPosition,
@@ -361,69 +371,7 @@ makerMakeAndAdd([[${mapBoardDtoList}]] , 1 );
     })
   });
 
-// 팝업 디자인을 위한 임시코드 --------------------------------
 
-// 추가적인 장소 정보 추가
-
-
-
-// 마커와 팝업 생성
-
-
-
-// content HTMLElement 생성
-/*var content = document.createElement('div');
-content.setAttribute( 'class' , 'card');
-var cardBdoy = document.createElement('div');
-cardBdoy.setAttribute( 'class' , 'card-body');
-
-var animalType = document.createElement('span');
-animalType.appendChild(document.createTextNode(pos.mapboard_ani_category));
-animalType.setAttribute( 'class' , 'badge rounded-pill text-bg-warning');
-
-var info = document.createElement('span');
-info.appendChild(document.createTextNode(pos.mapboard_title));
-
-var infoText = document.createElement('div');
-infoText.appendChild(document.createTextNode(pos.missingaddress));
-
-var dateText = document.createElement('div');
-dateText.appendChild(document.createTextNode(pos.missingtime));
-
-var address = document.createElement('div');
-address.appendChild(document.createTextNode(pos.mapboard_content));
-// 닫기 버튼 추가
-var closeBtn = document.createElement('button');
-closeBtn.setAttribute( 'class' , 'btn btn-dark');
-closeBtn.appendChild(document.createTextNode('닫기'));
-// 닫기 이벤트 추가
-closeBtn.onclick = function() {
-overlay.setMap(null);
-};
-content.appendChild(cardBdoy);
-content.appendChild(closeBtn);
-cardBdoy.appendChild(info);
-cardBdoy.appendChild(animalType);
-cardBdoy.appendChild(infoText);
-cardBdoy.appendChild(dateText);
-cardBdoy.appendChild(address);
-
-// customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
-var overlay = new daum.maps.CustomOverlay({
-position: markerPosition,
-content: content
-});
-
-
-// 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-kakao.maps.event.addListener(marker, 'click', function() {
-overlay.setMap(map);
-});
-
-
-function closeOverlay() {
-overlay.setMap(null);
-}*/
 
   //주소 검색 카카오(다음)api(활용시 주소 검색후 map으로 다시 검색후 경도/위도 반환 가능)
   function map_Postcode() {
@@ -457,6 +405,12 @@ overlay.setMap(null);
 // // 초기 렌더링
 // renderPlaces();
 // 팝업 디자인을 위한 임시코드 -------------------------------- 끝
+  //범위찾기 비로그인 시 경고창 출력
+  document.getElementById('alertmap').addEventListener('click', function () {
+    // 수정 페이지로 이동
+
+    alert('로그인이 필요합니다.');
+  });
 
 </script>
 </body>

@@ -58,8 +58,9 @@ h2 {
 
 .post-content {
     border-top: 1px solid #ddd;
-    padding-top: 10px;
-    margin-top: 10px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
 }
 
 .post-content p {
@@ -83,7 +84,7 @@ h2 {
     flex-wrap: wrap;
     flex-direction: column;
     margin-top: 10px;
-    border-top: 1px solid #ddd;
+    border-top: 5px solid #ddd;
 }
 
 .footer-left span {
@@ -102,20 +103,6 @@ h2 {
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-}
-
-.edit-button, .delete-button, .go-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.delete-button {
-    background-color: #dc3545;
-    margin-left: 10px;
 }
 
 .go-button {
@@ -138,4 +125,10 @@ h2 {
     border: #ffef93 3px solid;
     border-radius: 20px;
     padding: 5px;
+}
+
+.main-text {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
 }

@@ -31,10 +31,13 @@
         <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
       </form>
     </div>
+    <div class="header-left">
       <form id="filterForm" action="/map/list" method="get">
+        <div class="row">
         <input type="hidden" name="page" th:value="${sc.page}"/>
         <input type="hidden" name="pageSize" th:value="${sc.pageSize}"/>
         <!-- 드롭다운 필터 -->
+        <div class="col-md-3">
         <div class="mb-3">
           <label class="form-label" for="animal-filter">동물 선택:</label>
           <select class="form-select" id="animal-filter" name="ani_category" >
@@ -43,48 +46,58 @@
             <option value="0" th:selected="${sc.ani_category == 0}">강아지</option>
           </select>
         </div>
-    <div class="col-md-2">
+        </div>
+    <div class="col-md-3">
       <!-- 신고자/발견자 선택 드롭다운 필터 -->
       <div class="mb-3">
         <label class="form-label" for="author-filter">신고자/발견자 선택:</label>
-
         <select class="form-select" id="author-filter" name="writerType">
           <option value="2" th:selected="${sc.writerType == 2}">전체</option>
           <option value="1" th:selected="${sc.writerType == 1}">발견자</option>
           <option value="0" th:selected="${sc.writerType == 0}">신고자</option>
-
         </select>
       </div>
     </div>
-    <div class="col-md-2">
+    <div class="col">
       <!-- 지역 선택 드롭다운 필터 -->
       <label class="form-label" for="locatin-filter">지역 선택:</label>
-      <div class="mb-3 d-flex align-items-center">
-        <input type="text" class="form-control" style="width: 300px;" name="keyword" th:value="${sc.keyword}" id="locatin-filter" placeholder="지역">
+      <div style="display: flex; flex-direction: row;">
+        <input type="text" class="form-control" style="width: 150px;" name="keyword" th:value="${sc.keyword}" id="locatin-filter" placeholder="지역">
+<!--        <input type="button" class="btn mx-1 btn-outline-dark" onclick="map_Postcode()" value="지역 찾기" id="searchBtn" name="keyword" th:value="${sc.keyword}">-->
+        <button type="button" class="btn mx-1 btn-outline-dark" id="filterSearchBtn">검색</button>
       </div>
     </div>
-    <button type="button" id="filterSearchBtn">검색</button>
+        </div>
     </form>
+    </div>
 
-    <div class="header-right">
-      <button class="icon-btn" onclick="location.href='findmapmain.html'" data-toggle="tooltip" data-placement="top" title="지도">
+    <div class="header-right my-4">
+      <button class="icon-btn" onclick="location.href='/map/oneMapMain'" data-toggle="tooltip" data-placement="top" title="지도">
         <i class="fa-solid fa-map fa-2xl" style="color: #7605ff;"></i>
       </button>
       <!--<button class="icon-btn" onclick="location.href='findmaplist.html'" data-toggle="tooltip" data-placement="top" title="리스트뷰">
         <i class="fa-solid fa-list-ul fa-2xl" style="color: #7605ff;"></i>
       </button>-->
-      <button class="icon-btn" type="button" id="writeBtn"   data-toggle="tooltip" data-placement="top" title="글 작성하기">
+      <button class="icon-btn" type="button" id="writeBtn" onclick="location.href='/map/write'"  data-toggle="tooltip" data-placement="top" title="글 작성하기">
         <i class="fa-regular fa-pen-to-square fa-2xl" style="color: #7605ff;"></i>
       </button>
     </div>
   </div>
-  <ul class="post-list" th:each="mapBoardDto : ${mapBoardDtoList}">
-    <li class="post">
+  <ul class="post" th:each="mapBoardDto : ${mapBoardDtoList}">
+    <li style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="flex: 1;">
       <div class="post-header">
         <a th:href="@{/map/read(mapboardno=${mapBoardDto.mapboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">임시 링크</a>
         <!--<strong class="animal-type" th:text="'품종:'${mapBoardDto.mapboard_ani_category}">품종: </strong>-->
-        <span th:if="${mapBoardDto.mapboard_ani_category == false}" th:text="|강아지|"></span>
-        <span th:unless="${mapBoardDto.mapboard_ani_category == false}" th:text="|고양이|"></span>
+        <i class="fa-solid fa-paw" style="color: #fff200;"><span th:if="${mapBoardDto.mapboard_ani_category == false}" th:text="|강아지|" style="color: #000000;"></span></i>
+        <i class="fa-solid fa-paw" style="color: #4c1dc2;"><span th:unless="${mapBoardDto.mapboard_ani_category == false}" th:text="|고양이|" style="color: #000000;"></span></i>
+      </div>
+      <div class="post-footer" style="display: flex; flex-direction: column">
+        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:unless="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 신고자 |">실종/발견자: </span></i>
+        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:if="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 발견자 |">실종/발견자: </span></i>
+        <i class="fa-solid fa-location-dot"><span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #3c3c7e;">실종/발견 장소: </span></i>
+        <i class="fa-solid fa-calendar-days"><span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #3c3c7e;">실종/발견 날짜 및 시간: </span></i>
+      </div>
       </div>
       <div class="post-content">
         <div class="header-right">
@@ -92,18 +105,11 @@
           <img class="post-image" th:src="@{|/upload/mapboard/${mapBoardDto.storedFileName[0]}|}" alt="Dog">
         </div>
       </div>
-      <div class="post-footer" style="display: flex; flex-direction: column">
-        <span class="writertype" th:if="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 발견자 |">실종/발견자: </span>
-        <span class="writertype" th:unless="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 신고자 |">실종/발견자: </span>
-
-        <span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}">실종/발견 장소: </span>
-        <span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}">실종/발견 날짜 및 시간: </span>
-      </div>
-      <div class="header-right">
-        <span class="mapboard_reg_date" th:text="'작성일: ' +${#dates.format(mapBoardDto.mapboard_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}">작성일: </span>
-        <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.id}">작성자: </span>
-      </div>
     </li>
+    <div class="header-right">
+      <span class="mapboard_reg_date" th:text="'작성일: ' +${#dates.format(mapBoardDto.mapboard_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}">작성일: </span>
+        <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.id}">작성자: </span>
+    </div>
   </ul>
 </div>
 <div class="d-flex justify-content-center">
