@@ -159,6 +159,30 @@ level: 4 // 지도 확대 레벨
 // 지도 생성
 var map = new kakao.maps.Map(mapContainer, mapOption);
 
+  // 현재 위치로 지도 자동으로 이동시켜 준다.
+  // 시작
+  if (navigator.geolocation) {
+
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+      var lat = position.coords.latitude, // 위도
+              lon = position.coords.longitude; // 경도
+
+      var moveLocation = new kakao.maps.LatLng(lat , lon);
+
+      map.setCenter(moveLocation);
+    });
+
+  } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+    var locPosition = new kakao.maps.LatLng(37.19357, 127.0227),
+            message = 'geolocation을 사용할수 없어요..'
+
+    displayMarker(locPosition, message);
+  }
+  // 끝
+
 var placesList = document.getElementById('placesList');
 var addPlaceButton = document.getElementById('addPlaceButton');
 var newPlaceName = document.getElementById('newPlaceName');
@@ -305,6 +329,8 @@ let makerMakeAndAdd =  function (mapBoardDtoList , num) {
     // 커스텀 오버레이 삽입
     createCustomOverlay(place , markerPosition , map , marker , customOverlayArr );
 
+
+    map.setCenter(coords);
   });
 }
 
