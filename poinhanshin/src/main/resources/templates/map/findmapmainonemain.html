@@ -76,12 +76,12 @@
 </div>
 
 <!-- 비회원 조회불가-->
-  <div class="favorites-container" th:if="${loginUser}">
+  <div class="favorites-container" th:if="${loginUser != 0}">
     <div style="display: flex; flex-direction: row; justify-content: space-between;" class="my-4">
         <h2>즐겨찾기 목록 <i class="fa-solid fa-star" style="color: #ffdd00;"></i></h2>
         <button class="btn btn-primary" id="myMapBtn">범위 찾기</button>
     </div>
-    <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}">
+    <div class="favorites-list" th:each="myMapBoardDto : ${myMapBoardDtoList}" th:onclick="|location.href='@{/map/read(mapboardno=${myMapBoardDto.mapboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}'|" style="cursor:pointer;">
       <ul class="post">
         <!-- 이미지 값 불러와야 함  -->
         <li style="display: flex; justify-content: space-between; align-items: center;">
@@ -109,6 +109,7 @@
           <span th:if="${myMapBoardDto.writertype == false}" th:text="| 발견자 |"></span>
           <span th:unless="${myMapBoardDto.writertype == false}" th:text="| 신고자 |"></span>
         </div>
+        <a th:href="@{/map/read(mapboardno=${myMapBoardDto.mapboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}"></a>
       </ul>
     </div>
   </div>
