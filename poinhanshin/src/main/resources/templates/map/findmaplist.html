@@ -83,18 +83,22 @@
       </button>
     </div>
   </div>
-  <ul class="post" th:each="mapBoardDto : ${mapBoardDtoList}">
-    <li style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="post" th:each="mapBoardDto : ${mapBoardDtoList}">
+    <a th:href="@{/map/read(mapboardno=${mapBoardDto.mapboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}" style="text-decoration: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
       <div style="flex: 1;">
       <div class="post-header">
-        <a th:href="@{/map/read(mapboardno=${mapBoardDto.mapboardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()} )}">임시 링크</a>
         <!--<strong class="animal-type" th:text="'품종:'${mapBoardDto.mapboard_ani_category}">품종: </strong>-->
-        <i class="fa-solid fa-paw" style="color: #fff200;"><span th:if="${mapBoardDto.mapboard_ani_category == false}" th:text="|강아지|" style="color: #000000;"></span></i>
-        <i class="fa-solid fa-paw" style="color: #4c1dc2;"><span th:unless="${mapBoardDto.mapboard_ani_category == false}" th:text="|고양이|" style="color: #000000;"></span></i>
+        <i class="fa-solid fa-paw" style="color: #4c1dc2;">
+          <span th:if="${mapBoardDto.mapboard_ani_category == false}" th:text="|강아지|" style="color: #000000;"></span>
+       <span th:unless="${mapBoardDto.mapboard_ani_category == false}" th:text="|고양이|" style="color: #000000;"></span>
+        </i>
       </div>
       <div class="post-footer" style="display: flex; flex-direction: column">
-        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:unless="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 신고자 |">실종/발견자: </span></i>
-        <i class="fa-solid fa-street-view" style="color: #3c3c7e;"><span class="writertype mb-1" th:if="${mapBoardDto.writertype == true}" th:text="| 실종/발견자 : 발견자 |">실종/발견자: </span></i>
+        <i class="fa-solid fa-street-view" style="color: #3c3c7e;">
+          <span class="writertype mb-1" th:unless="${mapBoardDto.writertype == true}" th:text="| 신고/발견자 : 신고자 |">신고/발견자: </span>
+          <span class="writertype mb-1" th:if="${mapBoardDto.writertype == true}" th:text="| 신고/발견자 : 발견자 |">신고/발견자: </span>
+        </i>
         <i class="fa-solid fa-location-dot"><span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #3c3c7e;">실종/발견 장소: </span></i>
         <i class="fa-solid fa-calendar-days"><span class="datetime" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #3c3c7e;">실종/발견 날짜 및 시간: </span></i>
       </div>
@@ -105,12 +109,13 @@
           <img class="post-image" th:src="@{|/upload/mapboard/${mapBoardDto.storedFileName[0]}|}" alt="Dog">
         </div>
       </div>
-    </li>
+    </div>
+    </a>
     <div class="header-right">
       <span class="mapboard_reg_date" th:text="'작성일: ' +${#dates.format(mapBoardDto.mapboard_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}">작성일: </span>
         <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.id}">작성자: </span>
     </div>
-  </ul>
+  </div>
 </div>
 <div class="d-flex justify-content-center">
 <div class="btn-group" role="group" aria-label="First group">
