@@ -120,9 +120,17 @@
 </div>
 <div class="d-flex justify-content-center">
 <div class="btn-group" role="group" aria-label="First group">
-  <button class="btn btn-outline-secondary">&lt;&lt;</button>
-  <button type="button" class="btn btn-primary" onclick="location.href=''">1</button>
-  <button type="button" class="btn btn-outline-secondary" onclick="location.href='/map/list?page=11&amp;pageSize=10&amp;keyword=&amp;option=&amp;ani_category=2&amp;writeType=2'">&gt;&gt;</button>
+  <div class="ph-wrapper">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group m-auto btn-group-sm" role="group" aria-label="First group">
+        <button type="button" style="width:30px;height:40px;" class="btn btn-primary" th:if="${ph.showPrev}" th:onclick="|location.href='@{'/map/list'+${ph.sc.getQueryString(ph.beginPage - 1)}}'|">&lt;</button>
+        <th:block th:if="${not #strings.isEmpty(ph.totalCnt)}" th:each="i : ${#numbers.sequence(ph.beginPage,ph.endPage)}">
+          <button th:if="${i !=0}" type="button" style="width:30px;height:40px" class="btn btn-secondary" th:class="${ph.sc.page == i ? 'btn btn-primary' : 'btn btn-secondary'}" th:onclick="|location.href='@{'/map/list'+${ph.sc.getQueryString(i)}}'|" th:text="${i}"></button>
+        </th:block>
+        <button type="button" style="width:30px;height:40px" class="btn btn-primary" th:if="${ph.showNext}" th:onclick="|location.href='@{'/map/list'+${ph.sc.getQueryString(ph.endPage + 1)}}'|">&gt;</button>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 <!--text="${boardDto.boardno}"-->
@@ -134,17 +142,26 @@
       form.submit();
   });
 
-  /*// 동물 드롭다운 클릭시
-  $('input[name=ani_category]').on("click",function(){
+/*  // 동물 드롭다운 클릭시
+  $('#animal-filter').on("click",function(){
     let form = $('#form');
     form.submit();
   });
   $('#author-filter').on("click" , function(){
     let form = $('#form')
     form.submit();
-  })
-*/
-  $('#filterSearchBtn').on("click", function (){
+  })*/
+
+  $('#filterSearchBtn').on("click", function (){// 동물 드롭다운 클릭시
+    $('#animal-filter').on("click",function(){
+      let form = $('#form');
+      form.submit();
+    });
+    $('#author-filter').on("click" , function(){
+      let form = $('#form')
+      form.submit();
+    })
+
     let from = $('#filterForm');
     from.submit();
   })

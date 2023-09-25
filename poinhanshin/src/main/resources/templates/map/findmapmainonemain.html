@@ -98,8 +98,8 @@
           <div class="post-content">
             <div class="header-right">
               <!--<img class="post-image" th:src="${mapboard.mapboard_imagepath}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
-              <img class="post-image" th:src="@{|/upload/mapboard/${myMapBoardDto.storedFileName[0]}|}" height="150" width="150"  alt="Dog">
-              <img class="post-image" src="/img/empty.PNG" alt="Dog">
+              <img class="post-image" th:if="${myMapBoardDto.fileAttached == 1}" th:src="@{|/upload/mapboard/${myMapBoardDto.storedFileName[0]}|}" height="150" width="150"  alt="Dog">
+              <img class="post-image" th:unless="${myMapBoardDto.fileAttached == 1}"src="/img/empty.PNG" alt="Dog">
             </div>
           </div>
         </li>
