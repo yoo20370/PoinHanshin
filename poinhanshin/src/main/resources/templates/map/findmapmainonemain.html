@@ -68,8 +68,8 @@
     <div class="mb-sm-4 d-flex align-items-center">
   <label class="form-label">지역 찾기:</label>
       <div style="display: flex; flex-direction: row;">
-  <input type="text"  class="form-control" style="width: 150px;" name="keyword" id="location-filter"/>
-  <button type="button" class="btn btn-outline-dark mx-1" id="searchFileterBtn">검색</button>
+  <input type="text"  class="form-control" style="width: 100px;" name="keyword" id="location-filter"/>
+  <button type="button" class="btn btn-outline-dark mx-3" id="searchFileterBtn">검색</button>
       </div>
     </div>
   </div>
@@ -87,8 +87,8 @@
         <li style="display: flex; justify-content: space-between; align-items: center;">
           <div style="flex: 1;">
             <div class="post-header">
-              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span></i>
-              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |"></span></i>
+              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span>
+            <span class="animal-type"></span><span th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |"></span></i>
             </div>
           <div class="post-footer">
             <i class="fa-solid fa-location-dot"><span class="address"></span><span th:text="'실종/발견 장소: '+ ${myMapBoardDto.missingaddress}" style="color: #3c3c7e;"></span></i>
