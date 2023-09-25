@@ -5,7 +5,6 @@ import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.PageHandler;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.member.User;
-import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.board.BoardService;
 import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
