@@ -104,7 +104,6 @@
                         &nbsp&nbsp<span class="info_table" th:text="|${#dates.format(boardDto.board_reg_date, 'yyyy-MM-dd (HH:mm:ss)')}|"> 등록일 : 2019-05-14</span>
                     </div>
                 </td>
-                </a>
                 <td  class="vstack">
                         <!-- 썸네일 이미지  -->
                         <img th:if="${boardDto.fileAttached == 1 ? boardDto.storedFileName[0] != null : false}" class="thumbnail_wrapper mx-auto" th:src="@{|/upload/board/${boardDto.storedFileName[0]}|}" width="150px" height="150" />

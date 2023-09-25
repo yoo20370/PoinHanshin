@@ -82,9 +82,10 @@
                         </div>
                         <div class="card-body">
                             <span class="badge rounded-pill text-bg-primary card-text" th:text="${protectboard.breeds}" style="font-size: 16px;">강아지</span>
-                            <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>
-                            <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info " style="font-size: 16px;">공고중</span>
-                            <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}" style="font-size: 16px;">D-1일</span>
+<!--                            <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>-->
+<!--                            <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info " style="font-size: 16px;">공고중</span>-->
+                            <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}" style="font-size: 16px;"></span>
+                            <span class="badge rounded-pill text-bg-success" th:id="E + ${protectboard.protectboardno}" style="font-size: 16px;"></span>
                             <span class="badge rounded-pill text-bg-warning" th:text="|${#dates.format(protectboard.starttime, 'MM-dd')} ~ ${#dates.format(protectboard.deadline, 'MM-dd')}|"> 남은날짜 : 2023-08-01</span>
                             <p class="card-text" th:text="${#strings.abbreviate(protectboard.protectboard_title,10)}">제목</p>
                             <!--<p class="card-text" th:text="${protectboard.protectboard_content}">내용</p>-->
@@ -133,6 +134,7 @@ boardList.forEach(function(board){
        const count_id = board.protectboardno;
 
         const d_day = document.querySelector(`#D${count_id}`);
+        const d_stat = document.querySelector(`#E${count_id}`);
 
         const formatted_End_Date = deadline.slice(0,10);//ISO 8601타입 뒷부분 자르기용
         const end_date = new Date(formatted_End_Date);
@@ -153,9 +155,10 @@ boardList.forEach(function(board){
         //남은 날짜가 음수인경우 0
             if(diffDay < 0) {
                 diffDay = "0";
-                d_day.innerText=`D-${diffDay}일`;
+                d_day.innerText=`공고완료`;
             }else{
                 d_day.innerText=`D-${diffDay}일`;
+                d_stat.innerText=`공고 중`;
             }
 
 <!--            console.log(deadline.slice(0,10));-->

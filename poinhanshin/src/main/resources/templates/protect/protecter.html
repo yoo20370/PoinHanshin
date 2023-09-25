@@ -57,9 +57,10 @@
 
         <!--태그-->
         <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:text="${protectboard.breeds}" style="font-size: 16px;">품종</span>
-        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>
-        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info "style="font-size: 16px;">공고중</span>
+<!--        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>-->
+<!--        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info "style="font-size: 16px;">공고중</span>-->
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일" style="font-size: 16px;"></span>
+        <span class="badge rounded-pill text-bg-success" id="D_stat"style="font-size: 16px;"></span>
         <span class="badge rounded-pill text-bg-warning"th:text="|공고기간 : ${#dates.format(protectboard.starttime, 'yyyy-MM-dd')} ~ ${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}|" name="deadline" style="font-size: 16px;"></span>
         <!-- 신고/즐겨찾기 -->
 
@@ -195,7 +196,9 @@ let D_Day = function(){
 
     let start_Date = new Date( [[${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}]] );
     let end_date= new Date([[${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}]]);
+
     const d_day = document.querySelector(`#D_day`);
+    const d_stat = document.querySelector(`#D_stat`);
 
     const now = new Date(); //현재시간 추출용
     const formattedDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;//yyyy-MM-dd 형식
@@ -212,9 +215,10 @@ let D_Day = function(){
         //남은 날짜가 음수인경우 0
             if(diffDay < 0) {
                 diffDay = "0";
-                d_day.innerText=`D-${diffDay}일`;
+                d_day.innerText=`공고완료`;
             }else{
                 d_day.innerText=`D-${diffDay}일`;
+                d_stat.innerText= `공고중`;
             }
     console.log(diffDay);
 };
