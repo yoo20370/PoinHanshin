@@ -27,10 +27,7 @@
               <h5 class="card-title" th:text="${#strings.abbreviate(topBoardDto.board_title,17)}">제목</h5>
               <p class="card-text" th:text="${#strings.abbreviate(topBoardDto.board_content,15)}">내용</p>
                 <i class="fas fa-user-edit"></i>&nbsp<small class="card-text" th:text="${topBoardDto.id}">작성자</small>
-              <div class="text-end"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                   class="bi bi-chat-right-heart-fill" viewBox="0 0 16 16">
-                    <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353V2ZM8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
-              </svg><small class="card-subtitle sm-1" th:text="${topBoardDto.likecount}"></small>
+              <div class="text-end"><i class="fas fa-heart"></i>&nbsp<small class="card-subtitle sm-1" th:text="${topBoardDto.likecount}"></small>
               </div>
             </div>
             </a>
@@ -45,13 +42,13 @@
         <div class="col-sm-5">
             <div class="btn-group" role="group">
                 <input type="radio" name="ani_category" value="2" class="btn-check" id="all-check" autocomplete="off" th:checked="${sc.ani_category eq 2}">
-                <label class="btn btn-outline-dark" for="all-check">전체</label>
+                <label class="btn btn-outline" for="all-check" style="background-color:#9C9EFE;">전체</label>
 
                 <input type="radio" name="ani_category" value="0" class="btn-check" id="dog-check" autocomplete="off" th:checked="${sc.ani_category eq 0}">
-                <label class="btn btn-outline-dark" for="dog-check">강아지</label>
+                <label class="btn btn-outline" for="dog-check" style="background-color:#9C9EFE;">강아지</label>
 
                 <input type="radio" name="ani_category" value="1" class="btn-check" id="cat-check" autocomplete="off" th:checked="${sc.ani_category eq 1}">
-                <label class="btn btn-outline-dark" for="cat-check">고양이</label>
+                <label class="btn btn-outline" for="cat-check" style="background-color:#9C9EFE;">고양이</label>
             </div>
         </div>
         <div class="col-sm-3" id="spacer"></div>
@@ -68,14 +65,14 @@
                 <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}"/>
 
                 <input type="text" name="keyword" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
-                <input type="button" id="searchBtn" class="btn btn-outline-primary" value="검색">
+                <input type="button" id="searchBtn" class="btn btn-outline" style="background-color:#9C9EFE;" value="검색">
             </div>
 
         </div>
     </form>
     <div class="row">
         <div class="col-sm-12 hstack">
-            <button type="button" class="btn btn-dark ms-auto"
+            <button type="button" class="btn btn-outline ms-auto" style="background-color:#9C9EFE;"
                     th:onclick="|location.href='@{/board/write(page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword})}'|">
                 글작성</button>
         </div>
@@ -95,13 +92,15 @@
                 <td style="cursor:pointer;" th:onClick="|location.href='@{/board/read(boardno=${boardDto.boardno}, page=${sc.getPage()} , pageSize=${sc.getPageSize()} , keyword=${sc.getKeyword()})}'|">
                     <br>
                     <div>
-                        &nbsp<h5 th:text="${#strings.abbreviate(boardDto.board_title,50)}" style="color:black">----제목---</h5>
+                        <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">강아지</span>
+                        <span th:if="${boardDto.board_ani_category == true}"class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">고양이</span><h5 th:text="${#strings.abbreviate(boardDto.board_title,40)}" style="color:black">----제목---</h5>
                     </div>
                     <br>
                     <div class="m-1">
                         <!-- Controller에서 따로 LoginID 전달해서 수정해야 함 , 로그인 연결 후 진행 -->
                         <i class="fas fa-user-edit"></i>&nbsp<span class="info_table" th:text="${boardDto.id}"> 유저id : 12312314</span>
                         <i class="far fa-eye"></i>&nbsp<span class="info_table" th:text="${boardDto.board_viewcount}" > 조회수 : 42</span>
+                        <i class="fas fa-heart"></i>&nbsp<small id="likeCnt" th:text="${boardDto.likecount}"></small>
                         &nbsp&nbsp<span class="info_table" th:text="|${#dates.format(boardDto.board_reg_date, 'yyyy-MM-dd (HH:mm:ss)')}|"> 등록일 : 2019-05-14</span>
                     </div>
                 </td>

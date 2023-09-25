@@ -29,8 +29,8 @@
 
     <form id="form" action="" method="post">
         <div class="m-1">
-            <span th:if="${protectboard.protectboard_ani_category == false}" class="badge rounded-pill text-bg-primary" style="font-size: 16px;">강아지</span>
-            <span th:if="${protectboard.protectboard_ani_category == true}"class="badge rounded-pill text-bg-primary" style="font-size: 16px;">고양이</span></div>
+            <span th:if="${protectboard.protectboard_ani_category == false}" class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">강아지</span>
+            <span th:if="${protectboard.protectboard_ani_category == true}"class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">고양이</span></div>
         <div class="col-5 p-3" >
             <!-- input 태그는 수정 페이지로 데이터를 넘겨주기 위해 작성 , 이거 안 해주면 DB에서 불러와야 함 -->
             <!-- 페이지 정보 및 게시물 번호 , 작성자 form input-->
@@ -73,7 +73,7 @@
 
 
         <div class="row m-2 p-3 rounded-0 border-bottom" id="titleWrapper">
-                 <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none;outline:none;">
+                 <h5><input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none;outline:none;"></h5>
 
         </div>
         <!-- 이미지 출력 -->
@@ -101,7 +101,7 @@
                         id="inputContent"
                         th:text="${protectboard.protectboard_content}"
                         readonly="readonly"
-                        style="height: 300px;border:none;outline:none;"></textarea>
+                        style="height:25vh;border:none;outline:none;"></textarea>
             </div>
         </div>
 
