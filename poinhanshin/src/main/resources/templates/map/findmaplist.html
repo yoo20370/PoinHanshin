@@ -15,8 +15,13 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 </head>
-<script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
-<script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
+<script th:inline="javascript">
+  const msg = [[${#httpServletRequest.getAttribute('msg')}]];
+  if (msg == "SUCCESS_REMOVE") alert("게시글을 삭제했습니다.");
+  if (msg == "NO_LOGIN") alert("로그인이 필요합니다.");
+</script>
+<!--<script th:if="${msg} == 'SUCCESS_REMOVE'">alert("게시글을 삭제했습니다.")</script>
+<script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>-->
 <body layout:fragment="content">
 <div class="container">
   <div class="row">

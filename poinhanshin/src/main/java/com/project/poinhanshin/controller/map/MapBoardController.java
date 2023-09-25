@@ -43,9 +43,11 @@ public class MapBoardController {
 
     // 맵 게시물 목록 불러오기
     @GetMapping("/list")
-    public String getMapBoardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg,  @SessionAttribute(name = "loginUser", required = false) User loginUser ){
+    public String getMapBoardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg ,  @SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
         System.out.println("map list sc : " + sc);
+
+        sc.setPageSize(6);
         // 로그인 여부
         if(loginUser != null){
             // 로그인 정보 전달

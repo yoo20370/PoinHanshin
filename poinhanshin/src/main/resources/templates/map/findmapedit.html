@@ -331,6 +331,19 @@
         });
 
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+
+            // 마커 클릭한 위치의 도로명 주소를 일겅와 missingaddress input의 값으로 설정 , 주소가 없는 경우 빈 문자열로 대치
+            searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    try {
+                        $('#missingaddress').val(result[0].road_address.address_name);
+                        console.log("정상 출력 확인 : " + $('#missingaddress').val());
+                    } catch (exception) {
+                        $('#missingaddress').val("");
+                        console.log("에러 출력 확인 : " + $('#missingaddress').val());
+                    }
+                }
+            });
             var latlng = mouseEvent.latLng;
 
             $('#longitude').val(latlng.getLng());
@@ -339,6 +352,11 @@
             marker.setPosition(latlng);
 
         });
+
+        function searchDetailAddrFromCoords(coords, callback) {
+            // 좌표로 법정동 상세 주소 정보를 요청합니다
+            geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+        }
 
 </script>
 </body>

@@ -5,6 +5,7 @@ import com.project.poinhanshin.mapper.protectboard.ProtectBoardFileMapper;
 import com.project.poinhanshin.mapper.protectboard.ProtectBoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class ProtectBoardFileServiceImpl implements ProtectBoardFileService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int insetFile(MultipartFile[] multipartFile, Integer protectboard_userno) throws IOException {
         if(multipartFile == null)
             return 0;
