@@ -28,7 +28,9 @@
 
 
     <form id="form" action="" method="post">
-
+        <div class="m-1">
+            <span th:if="${protectboard.protectboard_ani_category == false}" class="badge rounded-pill text-bg-primary" style="font-size: 16px;">강아지</span>
+            <span th:if="${protectboard.protectboard_ani_category == true}"class="badge rounded-pill text-bg-primary" style="font-size: 16px;">고양이</span></div>
         <div class="col-5 p-3" >
             <!-- input 태그는 수정 페이지로 데이터를 넘겨주기 위해 작성 , 이거 안 해주면 DB에서 불러와야 함 -->
             <!-- 페이지 정보 및 게시물 번호 , 작성자 form input-->
@@ -63,7 +65,7 @@
 
         <div class="row">
             <div class="col-sm-12 hstack">
-                <th:block th:if="${loginUser =! null}">
+                <th:block th:if="${not #strings.isEmpty(loginUser)}">
                     <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
                 </th:block>
             </div>

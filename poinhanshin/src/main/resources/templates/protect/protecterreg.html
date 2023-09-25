@@ -49,20 +49,25 @@
         <!-- 필수 전송 데이터  -->
         <input type="hidden" name="protectboardno" id="protectboardno"/>
         <!-- anicategory 없음  -->
-        <input type="hidden" name="protectboard_ani_category" id="protectboard_ani_category" value="false"/>
+        <input type="hidden" name="protectboard_ani_category" id="protectboard_ani_category" value="1"/>
         <input type="hidden" name="protectstatus" id="protectstatus" value="false"/>
         <input type="hidden" name="fileAttached" id="fileAttached" value="0"/>
 
         <!-- 품종 -->
         <section class="container">
             <div class="row p-2">
+                <div class="col-sm-2">
+                    <select name="protectboard_ani_category" class="form-select">
+                        <option value="true">고양이</option>
+                        <option value="false">강아지</option>
+                    </select>
+                </div>
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text" id="inputGroup-sizing-sm">품종</span>
                         <input  type="text" name="breeds" id="breeds" class="form-control"  placeholder="품종을 입력해주세요" >
                     </div>
                 </div>
-                </label>
             </div>
             <!-- 시작일 마감일 -->
             <div class="row">
@@ -221,7 +226,7 @@
             let protectboard_title = $('#protectboard_title').val();
             let protectboard_content = $('#protectboard_content').val();
             let breeds = $('#breeds').val();
-            let protectboard_ani_category = $('#protectboard_ani_category').val();
+            let protectboard_ani_category = $('select[name=protectboard_ani_category] option:selected').val();
             let protectstatus = $('#protectstatus').val();
             let starttime = $('#startDate').val();
             let deadline = $('#endDate').val();
@@ -244,6 +249,7 @@
                 for(let i = 0 ; i < files.length ; i++){
                     formData.append("protectboardFile" , files[i]);
                 }
+
             }
             // 폼 데이터 등록
             formData.append("loginUser" , loginUser);

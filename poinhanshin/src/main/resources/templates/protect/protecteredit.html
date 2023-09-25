@@ -56,6 +56,12 @@
         <!-- 품종 -->
         <section class="container">
             <div class="row">
+                <div class="col-sm-2">
+                    <select class="form-select" name="protectboard_ani_category">
+                        <option value="true" th:selected="${protectboard.protectboard_ani_category == true}">고양이</option>
+                        <option value="false" th:selected="${protectboard.protectboard_ani_category == false}">강아지</option>
+                    </select>
+                </div>
                 <label class="col-sm-2 col-form-label"></label>
                 <div class="col">
                     <div class="input-group">
@@ -63,8 +69,8 @@
                         <input type="text" name="breeds" id="breeds" class="form-control"  placeholder="품종을 입력해주세요" th:value="${protectboard.breeds}" >
                     </div>
                 </div>
-                </label>
             </div>
+
             <!-- 시작일 , 마감일 -->
             <div class="row">
                 <div class="input-group date">
@@ -255,7 +261,7 @@
             let protectboard_title = $('#protectboard_title').val();
             let protectboard_content = $('#protectboard_content').val();
             let breeds = $('#breeds').val();
-            let protectboard_ani_category = $('#protectboard_ani_category').val();
+            let protectboard_ani_category = $('select[name=protectboard_ani_category] option:selected').val();
             let protectstatus = $('#protectstatus').val();
             let starttime = $('#startDate').val();
             let deadline = $('#endDate').val();

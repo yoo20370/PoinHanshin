@@ -110,7 +110,7 @@
         <input type="hidden" name="page"th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
-        <input type="hidden" name="ani_category" th:value="${sc.ani_category}" />
+        <input type="hidden" name="board_ani_category" th:value="${sc.ani_category}" />
         <input type="hidden" name="loginUserNo" id="loginUserNo" th:value="${loginUser.userno}"/>
         <input type="hidden" th:if="${loginUser != null}" name="loginUser" th:value="${loginUser}"/>
         <input type="hidden" th:unless="${loginUser != null}" name="loginUser" th:value="0"/>
@@ -128,25 +128,14 @@
         <div class="form-group row p-2">
             <label for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
             <div class="col-sm-10">
-                <input
-                        type="text"
-                        name="board_title"
-                        class="form-control"
-                        id="inputTitle"
-                />
+                <input type="text" name="board_title" class="form-control" id="inputTitle"/>
             </div>
         </div>
         <!-- 내용 -->
         <div class="form-group row p-2">
             <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-              <textarea
-                      type="text"
-                      name="content"
-                      class="form-control"
-                      id="inputContent"
-                      style="height: 300px;"
-              ></textarea>
+              <textarea type="text" name="content" class="form-control" id="inputContent" style="height: 300px;"></textarea>
             </div>
         </div>
 
@@ -240,7 +229,7 @@
         formData.append("loginUserNo" , loginUserNo);
         formData.append("board_title", board_title);
         formData.append("board_content" , board_content);
-        formData.append("board_ani_category" , board_ani_category );
+        formData.append("board_ani_category" , board_ani_category);
 
         console.log("게시물 등록")
         $.ajax({
