@@ -25,6 +25,7 @@
                                 <span class="profile-label d-flex justify-content-center my-2" th:if="${loginUser!=null}" th:text="${loginUser.id}">프로필</span>
                                 <span class="profile-label d-flex justify-content-center my-2" th:unless="${loginUser!=null}" th:text="'프로필'">프로필</span>
 
+
                                 <div class="container">
                                     <!-- "회원정보조회" 버튼 -->
                                     <a href="/profilePage" style="text-decoration: none; color: gray;">회원정보조회</a>
@@ -88,7 +89,6 @@
         </div>
     </div>
 </div>
-
 <script>
     alert("테스트");
     $('#submitBtn').on("click",function(){
