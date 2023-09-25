@@ -80,7 +80,7 @@
         <p th:text="${mapBoardDto.mapboard_content}">
           Woo</p>
       </div>
-        <div class="post-image" th:if="${mapBoardDto.fileAttached == 1}" th:each="fileName : ${mapBoardDto.storedFileName}">
+        <div class="figure" th:if="${mapBoardDto.fileAttached == 1}" th:each="fileName : ${mapBoardDto.storedFileName}">
             <!--<img th:src="${mapBoardDto.}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
             <img th:src="@{|/upload/mapBoard/${fileName}|}" alt="Dog">
         </div>

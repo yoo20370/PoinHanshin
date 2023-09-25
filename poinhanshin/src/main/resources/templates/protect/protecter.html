@@ -40,7 +40,7 @@
             <input type="hidden" name="protectboard_id" th:value="${protectboard.protectboard_id}"/>
             <input type="hidden" name="protectboardno" th:value="${protectboard.protectboardno}"/>
             <input type="hidden" name="protectstatus" th:value="${protectboard.protectstatus}"/>
-            <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}">
+            <input type="hidden" name="protectboard_userno" th:value="${protectboard.protectboard_userno}"/>
             <input th:if="${protectboard.fileAttached == 0}" type="hidden" name="fileAttached" th:value="${protectboard.fileAttached}"/>
             <input type="hidden" th:if="${loginUser != null}" name="loginUser_userno" id="loginUser_userno" th:value="${loginUser.userno}"/>
             <input type="hidden" th:unless="${loginUser != null}" name="loginUser_userno" value="0"/>
