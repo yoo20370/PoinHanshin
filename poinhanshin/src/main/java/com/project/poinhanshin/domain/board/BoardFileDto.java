@@ -14,8 +14,8 @@ import java.util.Date;
 @EqualsAndHashCode
 public class BoardFileDto {
 
-    private Integer boardno;
-    private Integer boardfileno;
+    private Integer boardno;    // 게시판 번호 FK
+    private Integer boardfileno;    // 게시판 이미지 번호 PK
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reg_date;
     private String original_file_name;
