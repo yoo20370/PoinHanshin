@@ -40,7 +40,7 @@ public class BoardFileServiceImpl implements BoardFileService {
 
         // 이미지 파일 제거 성공시
         if(result == 1){
-            String path = "/Users/yuyeong-u/fileStorage/board/";
+            String path = "C:/Users/신종하/Pictures/Screenshots/fileStorage/board/";
             File file = new File(path + stored_file_name);
             if (file.exists()) {
                 file.delete();
@@ -69,7 +69,8 @@ public class BoardFileServiceImpl implements BoardFileService {
 
             String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
 
-            String savePath = "/Users/yuyeong-u/fileStorage/board/" + storedFileName;
+            String savePath = "C:/Users/신종하/Pictures/Screenshots/fileStorage/board/" + storedFileName;
+
 
             multipartFile[i].transferTo(new File(savePath));
 
