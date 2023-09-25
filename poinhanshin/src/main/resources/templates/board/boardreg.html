@@ -225,9 +225,15 @@
         let formData = new FormData();
 
         // 파일이 없다면 파일을 전송하지 않음
-        if(files.length != null || files.length != undefined || files.length != NaN) {
+        /*if(files.length != null || files.length != undefined || files.length != NaN) {
             for(let i = 0 ; i < files.length ; i++){
                 formData.append("boardFile" , files[i]);
+            }
+        }
+*/
+        if(files.length != 0) {
+            for (let i = 0; i < files.length; i++) {
+                formData.append("boardFile", files[i]);
             }
         }
 

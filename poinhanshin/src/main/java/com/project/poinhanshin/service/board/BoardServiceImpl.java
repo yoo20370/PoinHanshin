@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,8 +108,11 @@ public class BoardServiceImpl implements BoardService{
 
         // 게시물 등록
         boardMapper.boardInsertContent(boardDto);
+        System.out.println("BoardServiceImpl writeContent boardDto : "+boardDto);
 
         Integer currentBoardno = boardMapper.boardSelectRecentBoardNo(boardDto.getBoard_userno());
+        System.out.println("BoardServiceImpl writeContent currentBoardno : "+currentBoardno);
+
         // 게시물 객체에 등록된 게시물 번호 설정
         boardDto.setBoardno(currentBoardno);
         // 첨부 파일 있음
@@ -120,44 +124,30 @@ public class BoardServiceImpl implements BoardService{
 
     // 특정 게시물을 수정한다.
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int modifyContent(BoardDto boardDto, Integer loginUser) throws IOException {
 
         int imgCnt = boardFileMapper.boardSelectCnt(boardDto.getBoardno());
 
-        // 이미지가 있는 게시물을 수정할 때
-        if(boardDto.getFileAttached() == 1){
-            System.out.println("이미지가 있는 게시물 수정");
-            if(imgCnt == 0){
-                // 기존 이미지를 모두 삭제하고 이미지를 추가하지 않은 경우
-                System.out.println("기존 이미지 X , 이미지 추가 X");
+        System.out.println("BoardService boardDto : " + boardDto);
+        System.out.println("BoardService loginUser : "+ loginUser);
+        System.out.println("BoardService imgCnt : "+ imgCnt);
+
+        if(boardDto.getBoardFile() != null){
+            // 추가된 이미지가 있는 경우
+            boardDto.setFileAttached(1);
+            addImgFiles(boardDto);
+        } else {
+            // 추가된 이미지가 없는 경우
+            if(imgCnt== 0){
+                // 기존 이미지가 없는 경우 ( 바로바로 삭제되기 떄문에 모두 삭제했다면 기존 이미지는 없을 것이다. )
                 boardDto.setFileAttached(0);
             } else {
-                // 이미지가 하나라도 남아 있는 경우
-                System.out.println("이미지가 하나라도 존재하는 경우");
-                if(boardDto.getBoardFile() != null){
-                    // 추가 이미지가 있는 경우
-                    System.out.println("이미지를 추가하는 경우");
-                    // 이미지 저장
-                    addImgFiles(boardDto);
-                } else {
-                    // 추가 이미지가 없는 경우
-                    System.out.println("이미지를 추가하지 않는 경우");
-                }
-            }
-        } else {
-            // 이미지가 없는 게시물을 수정할 때
-            System.out.println("이미지가 없는 게시물 수정시");
-            if(boardDto.getBoardFile() != null){
-                // 이미지를 추가하는 경우
-                System.out.println("이미지를 추가하는 경우");
+                // 기존 이미지가 있는 경우
                 boardDto.setFileAttached(1);
-                // 이미지 저장
-                addImgFiles(boardDto);
-            } else {
-                // 이미지를 추가하지 않는 경우
-                System.out.println("이미지를 추가하지 않는 경우");
             }
         }
+
         // 게시물 내용 업데이트
         boardMapper.boardUpdateContent(boardDto , loginUser);
 
@@ -202,7 +192,9 @@ public class BoardServiceImpl implements BoardService{
 
     // 이미지 등록을 위한 메서드
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addImgFiles(BoardDto boardDto) throws IOException {
+        System.out.println("BoardService addImgFiles boardDto : " + boardDto);
         for (MultipartFile boardFile : boardDto.getBoardFile()) {
 
             // 파일 이름 저장 (서버 이름 X)
