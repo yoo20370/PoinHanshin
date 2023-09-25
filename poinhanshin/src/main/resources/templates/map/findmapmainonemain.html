@@ -89,13 +89,13 @@
         <!-- 이미지 값 불러와야 함  -->
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div style="flex: 1;">
-            <div class="post-header">
-              <i class="fa-solid fa-paw"><span class="animal-type"></span><span th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span>
-            <span class="animal-type"></span><span th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |"></span></i>
+            <div class="post-header m-1">
+              <i class="fa-solid fa-paw"><span class="animal-type"></span><span class="lh-base" th:if="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 강아지 |"></span>
+            <span class="animal-type"></span><span class="lh-base"  th:unless="${myMapBoardDto.mapboard_ani_category == false}" th:text="| 고양이 |"></span></i>
             </div>
           <div class="post-footer">
-            <i class="fa-solid fa-location-dot"><span class="address"></span><span th:text="'실종/발견 장소: '+ ${myMapBoardDto.missingaddress}" style="color: #3c3c7e;"></span></i>
-            <i class="fa-solid fa-calendar-days"><span class="datetime" ></span><span th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}" style="color: #3c3c7e;"></span></i>
+            <i class="fa-solid fa-location-dot"><span class="address"></span><span class="lh-base" th:text="'실종/발견 장소: '+ ${myMapBoardDto.missingaddress}" style="color: #3c3c7e;"></span></i>
+            <i class="fa-solid fa-calendar-days"><span class="datetime" ></span><span class="lh-base" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(myMapBoardDto.missingtime, 'yyyy-MM-dd HH:mm:ss')}" style="color: #3c3c7e;"></span></i>
           </div>
           </div>
           <div class="post-content">
