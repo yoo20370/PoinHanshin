@@ -5,7 +5,6 @@ import com.project.poinhanshin.domain.board.BoardDto;
 import com.project.poinhanshin.domain.etc.PageHandler;
 import com.project.poinhanshin.domain.etc.SearchCondition;
 import com.project.poinhanshin.domain.member.User;
-import com.project.poinhanshin.domain.protectboard.ProtectBoardDto;
 import com.project.poinhanshin.service.board.BoardService;
 import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,12 +105,14 @@ public class BoardController {
     // 커뮤니티 게시물 작성 데이터 DB에 저장
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) Integer board_userno , @RequestParam String board_title ,
+    public ResponseEntity<Integer> boardWrite(@RequestParam(required = false) Integer loginUserNo , @RequestParam String board_title ,
                                               @RequestParam String board_content , @RequestParam Boolean board_ani_category ,
                                               @RequestParam(required = false) List<MultipartFile> boardFile) throws IOException {
 
-        BoardDto boardDto = new BoardDto(null, board_userno , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
+        BoardDto boardDto = new BoardDto(null, loginUserNo , null , board_title , board_content , board_ani_category , null , 0 , 0 , 0 ,0);
         boardDto.setBoardFile(boardFile);
+
+        System.out.println("write post loginUserNo : "+loginUserNo);
 
         // 이미지가 있는 경우
         if(boardFile != null){
@@ -119,7 +120,7 @@ public class BoardController {
             System.out.println(boardFile);
         }
 
-        System.out.println(boardDto);
+        System.out.println("write post boardDto : "+ boardDto);
         int result = boardService.writeContent(boardDto);
 
         return new ResponseEntity<Integer>( result , HttpStatus.OK);
@@ -177,8 +178,9 @@ public class BoardController {
 
         BoardDto boardDto = new BoardDto(null, board_userno , boardno , board_title , board_content , board_ani_category , null , null , null , null , fileAttached );
         boardDto.setBoardFile(boardFile);
-        System.out.println("modify_post : "+boardDto);
-        System.out.println("modify_post: "+loginUser);
+        System.out.println("modify_post boardDto : "+boardDto);
+        System.out.println("modify_post board_userno : "+board_userno);
+        System.out.println("modify_post loginUser : "+loginUser);
 
         // Login 연결 시 수정 필요
         boardService.modifyContent(boardDto , loginUser);
@@ -189,13 +191,14 @@ public class BoardController {
     @PostMapping("/remove")
     public String boardRemove(Integer boardno , Integer board_userno , Integer loginUser   , SearchCondition sc , RedirectAttributes redirectAttributes ) throws IOException {
 
-        System.out.println("boardno : " + boardno);
-        System.out.println("loginUser : "+loginUser);
-        System.out.println("board_userno : " + board_userno);
+        System.out.println("remove boardno : " + boardno);
+        System.out.println("remove loginUser : "+loginUser);
+        System.out.println("remove board_userno : " + board_userno);
 
         // 로그인 여부 확인
         if(loginUser == 0){
             redirectAttributes.addFlashAttribute("msg", "NO_LOGIN");
+            System.out.println("로그인 유저 == 0");
             return "redirect:/board/list";
         } else if ( ! board_userno.equals(loginUser) ){
             redirectAttributes.addAttribute("page" , sc.getPage());
@@ -204,11 +207,12 @@ public class BoardController {
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addAttribute("boardno",boardno);
             redirectAttributes.addFlashAttribute("msg", "NotEqual");
+            System.out.println("로그인 유저와 ");
             return "redirect:/board/read";
         }
 
         // DB 삭제
-        int result = boardService.removeContent(boardno , loginUser.longValue());
+        int result = boardService.removeContent(boardno , loginUser);
 
         // 삭제 실패시 ( DB 삭제 여부 )
         if(result == 0){
@@ -220,7 +224,6 @@ public class BoardController {
             redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
             return "redirect:/board/read";
         }
-
         // 삭제 성공
         redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
         return "redirect:/board/list";

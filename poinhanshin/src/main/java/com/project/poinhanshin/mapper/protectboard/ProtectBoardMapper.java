@@ -25,7 +25,7 @@ public interface ProtectBoardMapper {
     int updateContent(ProtectBoardDto protectBoardDto , Integer loginUser);
 
     // 임보자 게시물을 삭제한다.( 사용자 )
-    int deleteContent(Integer protectboardno, Integer protectboard_userno);
+    int deleteContent(Integer protectboardno, Integer loginUser);
 
     // 최근 사용자가 등록한 게시물 번호를 반환.
     int selectRecentBoardno(Integer protectboardno);

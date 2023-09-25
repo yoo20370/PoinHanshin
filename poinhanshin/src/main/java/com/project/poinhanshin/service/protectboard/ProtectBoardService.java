@@ -25,7 +25,7 @@ public interface ProtectBoardService {
     int updateProductBoard(ProtectBoardDto protectBoardDto , Integer loginUser) throws IOException;
 
     // 임보자 게시물을 삭제한다.
-    int deleteProductBoard(Integer bno , Integer LoginId);
+    int deleteProductBoard(Integer protectboardno , Integer loginUser);
 
 
     // 최근 등록한 임보자 게시물의 번호를 반환

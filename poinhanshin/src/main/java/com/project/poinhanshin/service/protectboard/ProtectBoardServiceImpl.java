@@ -109,37 +109,18 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
          // 기존 이미지 수 가져오기
         int imgCnt = protectBoardFileMapper.selectCnt(protectBoardDto.getProtectboardno());
 
-        // 이미지가 있는 게시물을 수정할 때
-        if(protectBoardDto.getFileAttached() == 1){
-            System.out.println("이미지가 있는 게시물 수정");
-            if(imgCnt == 0){
-                // 기존 이미지를 모두 삭제하고 이미지를 추가하지 않은 경우
-                System.out.println("기존 이미지 X , 이미지 추가 X");
+        if(protectBoardDto.getProtectboardFile() != null){
+            // 추가된 이미지가 있는 경우
+            protectBoardDto.setFileAttached(1);
+            addImgFiles(protectBoardDto);
+        } else {
+            // 추가된 이미지가 없는 경우
+            if(imgCnt== 0){
+                // 기존 이미지가 없는 경우 ( 바로바로 삭제되기 떄문에 모두 삭제했다면 기존 이미지는 없을 것이다. )
                 protectBoardDto.setFileAttached(0);
             } else {
-                // 이미지가 하나라도 남아 있는 경우
-                System.out.println("이미지가 하나라도 존재하는 경우");
-                if(protectBoardDto.getProtectboardFile() != null){
-                    // 추가 이미지가 있는 경우
-                    System.out.println("이미지를 추가하는 경우");
-                    addImgFiles(protectBoardDto);
-                } else {
-                    // 추가 이미지가 없는 경우
-                    System.out.println("이미지를 추가하지 않는 경우");
-                }
-
-            }
-        } else {
-            // 이미지가 없는 게시물을 수정할 때
-            System.out.println("이미지가 없는 게시물 수정시");
-            if(protectBoardDto.getProtectboardFile() != null){
-                // 이미지를 추가하는 경우
-                System.out.println("이미지를 추가하는 경우");
+                // 기존 이미지가 있는 경우
                 protectBoardDto.setFileAttached(1);
-                addImgFiles(protectBoardDto);
-            } else {
-                // 이미지를 추가하지 않는 경우
-                System.out.println("이미지를 추가하지 않는 경우");
             }
         }
 
@@ -153,13 +134,13 @@ public class ProtectBoardServiceImpl implements ProtectBoardService{
     // 임보자 게시물을 삭제
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int deleteProductBoard(Integer bno, Integer LoginId) {
+    public int deleteProductBoard(Integer protectboardno, Integer loginUser) {
 
         // 저장된 이미지 이름 목록 가져오기
-        List<String> filesName = protectBoardFileMapper.selectFilesName(bno);
+        List<String> filesName = protectBoardFileMapper.selectFilesName(protectboardno);
 
         // 게시물 삭제 ( 게시물 먼저 삭제하면 DB 데이터 사라짐 )
-        int result = protectBoardMapper.deleteContent(bno ,LoginId);
+        int result = protectBoardMapper.deleteContent(protectboardno ,loginUser);
 
         // 로컬 저장소에서 이미지 파일 삭제
         if( result == 1){

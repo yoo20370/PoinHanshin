@@ -213,7 +213,13 @@
       let formData = new FormData();
 
 
+      if(files.length != 0) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("boardFile", files[i]);
+        }
+      }
 
+      /*
       //수정시 조건을 이미지가 없는(fileAttached =0)  게시판으로 보내서 처리
       if(files.length != null || files.length != undefined || files.length != NaN) {
             for(let i = 0 ; i < files.length ; i++){
@@ -222,14 +228,14 @@
             };
       }else{
         formData.append("fileAttached" , 1 );
-      }
+      }*/
 
       formData.append("board_userno" ,board_userno);
       formData.append("boardno", boardno);
       formData.append("board_title" , board_title);
       formData.append("board_content", board_content);
       formData.append("board_ani_category",board_ani_category);
-      
+      formData.append("fileAttached" , fileAttached);
       formData.append("loginUser" , loginUser);
 
 

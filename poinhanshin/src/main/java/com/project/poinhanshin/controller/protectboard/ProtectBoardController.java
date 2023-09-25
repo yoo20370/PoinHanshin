@@ -103,17 +103,20 @@ public class ProtectBoardController {
     // 임보자 게시물 및 이미지 등록
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Integer> protectBoardWrite( @RequestParam(required = false) Integer protectboard_userno , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
+    public ResponseEntity<Integer> protectBoardWrite( @RequestParam(required = false) Integer loginUser , @RequestParam String protectboard_title , @RequestParam String protectboard_content , @RequestParam String breeds ,
                                                      @RequestParam Boolean protectboard_ani_category , @RequestParam Boolean protectstatus , @RequestParam Date starttime , @RequestParam Date deadline ,
                                                      @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached
     ) throws IOException {
-        ProtectBoardDto protectboardDto = new ProtectBoardDto(null , protectboard_userno , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
+        ProtectBoardDto protectboardDto = new ProtectBoardDto(null , loginUser , null , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectboardDto.setProtectboardFile(protectboardFile);
 
         // 이미지 ,  있는 경우
         if(protectboardDto.getProtectboardFile() != null){
             protectboardDto.setFileAttached(1);
         }
+        System.out.println("post write protectboardDto : "+protectboardDto);
+        System.out.println("post write loginUser : "+loginUser);
+
 
         Integer currentPbn = protectBoardService.insertProductBoard(protectboardDto);
         return new ResponseEntity<Integer> ( currentPbn , HttpStatus.OK);
@@ -162,7 +165,10 @@ public class ProtectBoardController {
                                                       @RequestParam(required = false) List<MultipartFile> protectboardFile , @RequestParam Integer fileAttached , Integer loginUser) throws IOException {
         ProtectBoardDto protectBoardDto = new ProtectBoardDto(null, protectboard_userno , protectboardno , protectboard_title , protectboard_content , breeds , protectboard_ani_category , null , protectstatus , starttime ,deadline , fileAttached );
         protectBoardDto.setProtectboardFile(protectboardFile);
-
+        System.out.println("post modify protectBoardDto : "+protectBoardDto);
+        System.out.println("post modify protectboard_userno : "+ protectboard_userno);
+        System.out.println("post midify protectboardno : "+protectboardno);
+        System.out.println("post modify loginUser : "+loginUser);
         // 로그인 연결 시 수정 필요 
         protectBoardService.updateProductBoard(protectBoardDto , loginUser);
         return new ResponseEntity<Integer>( protectboardno , HttpStatus.OK);
@@ -204,7 +210,6 @@ public class ProtectBoardController {
             redirectAttributes.addFlashAttribute("msg", "FAIL_REMOVE");
             return "redirect:/protectboard/read";
         }
-
         // 삭제 성공
         redirectAttributes.addFlashAttribute("msg", "SUCCESS_REMOVE");
         return "redirect:/protectboard/list";

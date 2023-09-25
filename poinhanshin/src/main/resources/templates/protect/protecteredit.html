@@ -43,10 +43,10 @@
         <input type="hidden" name="page" th:value="${sc.getPage()}" />
         <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
         <input type="hidden" name="keyword" th:value="${sc.getKeyword()}"/>
-        <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:value="${protectboard.protectboard_userno}" />
-        <input type="hidden" name="protectboard_userno" id="loginUser" th:value="${loginUser.userno}" />
 
         <!-- 필수 전송 데이터  -->
+        <input type="hidden" name="loginUser" id="loginUser" th:value="${loginUser.userno}" />
+        <input type="hidden" name="protectboard_userno" id="protectboard_userno" th:value="${protectboard.protectboard_userno}" />
         <input type="hidden" name="protectboardno" id="protectboardno"th:value="${protectboard.protectboardno}"/>
         <input type="hidden" name="protectboard_ani_category" id="protectboard_ani_category" th:value="${protectboard.protectboard_ani_category}"/>
         <input type="hidden" name="protectboard_reg_date" id="protectboard_reg_date" th:value="${#dates.format(protectboard.protectboard_reg_date, 'yyyy-MM-dd HH:ss')}"/>
@@ -274,6 +274,13 @@
             // 전송할 폼 객체 생성
             let formData = new FormData();
 
+            if(files.length != 0) {
+                for (let i = 0; i < files.length; i++) {
+                    formData.append("protectboardFile", files[i]);
+                }
+            }
+
+            /*
             //수정시 조건을 이미지가 없는(fileAttached =0)  게시판으로 보내서 처리
              if(files.length != null || files.length != undefined || files.length != NaN) {
                 for(let i = 0 ; i < files.length ; i++){
@@ -283,6 +290,7 @@
               }else{
                 formData.append("fileAttached" , 1 );
               }
+              */
 
             // 폼 데이터 등록
             formData.append("protectboard_userno" , protectboard_userno);

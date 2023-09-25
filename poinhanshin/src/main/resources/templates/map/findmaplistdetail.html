@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>상세 게시물 보기</title>
-  <link rel="stylesheet" type="text/css" href="css/mapdetail.css">
+  <link rel="stylesheet" type="text/css" href="/css/map/mapdetail.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
@@ -35,7 +35,7 @@
             <input th:if="${loginUser != null}" type="hidden" name="loginUserNo" id="loginUser" th:value="${loginUser.userno}"/>
             <input th:unless="${loginUser != null}" type="hidden" name="loginUserNo"  value="0"/>-->
             <!--<input type="hidden" name="missingAddress" th:value="${sc.ani_category}"/>-->
-            <!--<input type="hidden" name="loginNo" th:value="${loginUser}"/>-->\
+            <!--<input type="hidden" name="loginNo" th:value="${loginUser}"/>-->
             <input type="hidden" name="loginUser" th:value="${loginUser}"/>
             <input type="hidden" name="page" th:value="${sc.getPage()}" />
             <input type="hidden" name="pageSize" th:value="${sc.getPageSize()}" />
@@ -57,33 +57,33 @@
         <span th:unless="${mapBoardDto.writertype}" class="badge rounded-pill text-bg-secondary">발견자</span>
     </span>
         </div>
-          <!-- 즐겨찾기/ 신고하기 아이콘 버튼-->
-          <div class="header-right">
-          <button class="icon-btn" data-toggle="tooltip" data-placement="top" title="즐겨찾기" id="favorite"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></button>
-          <button class="icon-btn" data-toggle="tooltip" data-placement="top" title="신고하기"><i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #ff0000;"></i></button>
-          </div>
         </div>
 <!--        <strong class="animal-type" th:text="${mapboard.mapboard_ani_category}"></strong>-->
         <div class="row">
-          <div class="form-floating">
-            <input type="text" readonly class="form-control-plaintext"
+          <div class="form-floating mb-3">
+            <input type="text" readonly class="form-control-plaintext main-text"
                    id="floatingEmptyPlaintextInput"
                    th:value="${mapBoardDto.mapboard_title}">
-            <label for="floatingEmptyPlaintextInput">제목</label>
+            <label for="floatingEmptyPlaintextInput"></label>
           </div>
         </div>
 <!--        <span class="title" th:text="'제목: ' + ${mapboard.missingaddress}">제목: </span>-->
-        <span class="address" th:text="'실종/발견 장소: ' + ${mapBoardDto.missingaddress}">실종/발견 장소: </span>
-        <span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${mapBoardDto.missingtime}">실종/발견 날짜 및 시간: </span>
+          <i class="fa-solid fa-location-dot"><span class="address my-2" th:text="' 실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #4d4d9a;">실종/발견 장소: </span></i>
+          <i class="fa-solid fa-calendar-days"><span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #4d4d9a;">실종/발견 날짜 및 시간: </span></i>
       </div>
-      <div class="post-image">
-        <!--<img th:src="${mapBoardDto.}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
-        <img src="../../static/img/mbti/image-0.png" alt="Dog">
-      </div>
+        <!-- 즐겨찾기/ 신고하기 아이콘 버튼-->
+        <div class="header-right mb-2"  th:if="${loginUser}">
+            <button class="icon-btn" data-toggle="tooltip" data-placement="top" title="즐겨찾기" id="favorite"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></button>
+            <!--          <button class="icon-btn" data-toggle="tooltip" data-placement="top" title="신고하기"><i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #ff0000;"></i></button>-->
+        </div>
       <div class="post-content">
         <p th:text="${mapBoardDto.mapboard_content}">
-          Woo woo woo woo</p>
+          Woo</p>
       </div>
+        <div class="post-image">
+            <!--<img th:src="${mapBoardDto.}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
+            <img src="../../static/img/mbti/image-0.png" alt="Dog">
+        </div>
       <div class="footer-left">
         <span class="mapboard_userno" th:text="'작성자: ' +${mapBoardDto.id}">작성자: </span>
         <span class="reg_date" th:text="'작성일: ' +${mapBoardDto.mapboard_reg_date}">작성일: </span>
@@ -91,12 +91,13 @@
       <div class="footer-right">
         <span class="view-count" th:text="'조회수: ' + ${mapBoardDto.mapboard_viewcount}">조회수: </span>
       </div>
-        <button type="button" class="btn btn-secondary"
-                th:onclick="|location.href='@{/map/modify(mapboardno = ${mapBoardDto.mapboardno} , mapboard_userno = ${mapBoardDto.mapboard_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
-        </button>
       <div class="post-buttons">
-        <button class="edit-button" type="button" id="modifyBtn">수정</button>
-        <button class="delete-button" type="button" id="removeBtn" value="delete">삭제</button>
+          <button class="btn btn-secondary" onclick="window.location.href='/map/list'">목록</button>
+          <button type="button" class="btn btn-primary"
+                  th:if="${loginUser}"
+                  th:onclick="|location.href='@{/map/modify(mapboardno = ${mapBoardDto.mapboardno} , mapboard_userno = ${mapBoardDto.mapboard_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
+          </button>
+        <button class="btn btn-danger" type="button" id="removeBtn" value="delete" th:if="${loginUser}">삭제</button>
       </div>
     </div>
   </div>
@@ -123,6 +124,9 @@
          form.attr("action" ,"/map/remove");
          form.attr("method" , "POST");
          form.submit();
+
+         //게시물 삭제 후 지도리스트 페이지로 이동
+         window.location.href = "/map/list";
      });
 
 

@@ -45,6 +45,7 @@ public class MapBoardController {
     @GetMapping("/list")
     public String getMapBoardList(SearchCondition sc , Model m , @ModelAttribute("msg") String msg,  @SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
+        System.out.println("map list sc : " + sc);
         // 로그인 여부
         if(loginUser != null){
             // 로그인 정보 전달
@@ -132,9 +133,6 @@ public class MapBoardController {
     public String mapBoardModify(Integer mapboardno , Integer mapboard_userno  , SearchCondition sc , Model m , RedirectAttributes redirectAttributes ,@SessionAttribute(name = "loginUser", required = false) User loginUser ){
 
         m.addAttribute("loginUser" , loginUser);
-        System.out.println(mapboardno);
-        System.out.println(mapboard_userno);
-        System.out.println(loginUser);
 
         if(loginUser == null){
             // 로그인 안 함
@@ -168,13 +166,15 @@ public class MapBoardController {
 
     @PostMapping("/modify")
     @ResponseBody
-    public ResponseEntity<String> mapBoardModify( @RequestParam Integer mapboardno ,@RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingAddress , @RequestParam(required = false)  Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer fileAttached , @RequestParam Integer loginUser)
+    public ResponseEntity<String> mapBoardModify( @RequestParam Integer mapboardno , @RequestParam Integer mapboard_userno , @RequestParam Boolean mapboard_ani_category , @RequestParam Boolean writertype , @RequestParam String mapboard_title , @RequestParam String mapboard_content , @RequestParam Date missingtime , @RequestParam String missingaddress , @RequestParam(required = false)  Double latitude , @RequestParam(required = false)  Double longitude , @RequestParam(required = false) List<MultipartFile> mapBoardFile , @RequestParam Integer fileAttached , @RequestParam Integer loginUser)
     throws IOException{
-        MapBoardDto mapBoardDto = new MapBoardDto("" , loginUser , mapboardno , mapboard_title , mapboard_content , missingtime , missingAddress , latitude  , longitude , new Date() , 0 , mapboard_ani_category , writertype ,fileAttached );
-        mapBoardDto.setMapBoardFile(mapBoardFile);
 
-        System.out.println("modify_post : "+mapBoardDto);
-        System.out.println("modify_post: "+loginUser);
+        MapBoardDto mapBoardDto = new MapBoardDto("" , mapboard_userno  , mapboardno , mapboard_title , mapboard_content , missingtime , missingaddress , latitude  , longitude , new Date() , 0 , mapboard_ani_category , writertype ,fileAttached );
+        mapBoardDto.setMapBoardFile(mapBoardFile);
+        System.out.println("modify_post mapboardno : "+mapboardno);
+        System.out.println("modify_post mapBoardDto : "+mapBoardDto);
+        System.out.println("modify_post mapboard_userno : "+mapboard_userno);
+        System.out.println("modify_post loginUser : "+loginUser);
 
         mapBoardService.modifyMapBoard(mapBoardDto , loginUser);
 
@@ -185,14 +185,14 @@ public class MapBoardController {
     @PostMapping("/remove")
     public String mapBoardRemove(Integer mapboardno , Integer mapboard_userno ,  Integer loginUserNo ,SearchCondition sc , RedirectAttributes redirectAttributes  , String loginUser) throws IOException{
 
-        System.out.println(mapboardno);
-        System.out.println(mapboard_userno);
-        System.out.println(loginUserNo);
+        System.out.println("mapboardno : "+mapboardno);
+        System.out.println("mapboard_userno : "+mapboard_userno);
+        System.out.println("loginUserNo : " + loginUserNo);
 
         //
         if(loginUserNo == 0){
             redirectAttributes.addFlashAttribute("msg" , "NO_LOGIN");
-            System.out.println("로그인 안 해서 리스트로 전송");
+            System.out.println("로그인 안 해서 loginUserNo == "+loginUserNo);
             return "redirect:/map/list";
         } else if( mapboard_userno != loginUserNo){
             // 작성자와 로그인 유저가 일치하지 않는 경우
@@ -203,6 +203,7 @@ public class MapBoardController {
             redirectAttributes.addAttribute("ani_category", sc.getAni_category());
             redirectAttributes.addAttribute("mapboardno",mapboardno);
             redirectAttributes.addFlashAttribute("msg", "NotEqualRemove");
+            System.out.println("게시물 작성자 = "+mapboard_userno + " | 로그인 정보 = "+ loginUserNo);
             return "redirect:/map/read";
         }
 
