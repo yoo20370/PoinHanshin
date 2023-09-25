@@ -46,7 +46,7 @@
 
         <div class="card" style="background-color:#9C9EFE;" >
           <div class="card-body" >
-              <div id="mapLost" style="height:200px;">실종위치</div>
+              <div id="mapLost" style="height:200px;"></div>
           </div>
             <div class="card-footer" style="color:white">
                 <p th:text="'공고번호 : '+${aban_ani.noticeNo}"></p>
@@ -74,7 +74,7 @@
 
         <div class="card text-bg-Light">
           <div class="card-body">
-            <div id="map" style="height:100%;">지도
+            <div id="map" style="height:300px;width:100%;">지도
 
             </div>
           </div>
@@ -130,7 +130,7 @@ geocoder.addressSearch(careAddr, function(result, status) {
             content: `<div style="width:150px;text-align:center;padding:6px 0;">${careNm}</div>`
         });
         infowindow.open(map, marker);
-
+        console.log(status);
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         map.setCenter(coords);
     }
@@ -155,9 +155,12 @@ geocoder.addressSearch(happenPlace, function(result, status) {
             content: '<div style="width:150px;text-align:center;padding:6px 0;">발견위치</div>'
         });
         infowindow2.open(map2, marker2);
-
+        console.log(status);
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         map2.setCenter(coords2);
+    }else{
+               mapContainer2.style.display = "none";
+           mapContainer2.textContent = "검색 결과가 없습니다.";
     }
 });
 
