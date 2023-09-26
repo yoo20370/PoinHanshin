@@ -87,7 +87,7 @@
                             <span class="badge rounded-pill text-danger" th:id="D + ${protectboard.protectboardno}" style="font-size: 16px;"></span>
                             <span class="badge rounded-pill text-bg-success" th:id="E + ${protectboard.protectboardno}" style="font-size: 16px;"></span>
                             <span class="badge rounded-pill text-bg-warning" th:text="|${#dates.format(protectboard.starttime, 'MM-dd')} ~ ${#dates.format(protectboard.deadline, 'MM-dd')}|"> 남은날짜 : 2023-08-01</span>
-                            <p class="card-text" th:text="${#strings.abbreviate(protectboard.protectboard_title,10)}">제목</p>
+                            <p class="card-text" th:text="${#strings.abbreviate(protectboard.protectboard_title,25)}">제목</p>
                             <!--<p class="card-text" th:text="${protectboard.protectboard_content}">내용</p>-->
                         </div>
                     </a>
