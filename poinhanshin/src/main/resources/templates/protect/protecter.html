@@ -28,7 +28,9 @@
 
 
     <form id="form" action="" method="post">
-
+        <div class="m-1">
+            <span th:if="${protectboard.protectboard_ani_category == false}" class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">강아지</span>
+            <span th:if="${protectboard.protectboard_ani_category == true}"class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">고양이</span></div>
         <div class="col-5 p-3" >
             <!-- input 태그는 수정 페이지로 데이터를 넘겨주기 위해 작성 , 이거 안 해주면 DB에서 불러와야 함 -->
             <!-- 페이지 정보 및 게시물 번호 , 작성자 form input-->
@@ -55,15 +57,16 @@
 
         <!--태그-->
         <span th:if="${protectboard.breeds != null}" class="badge text-bg-primary" th:text="${protectboard.breeds}" style="font-size: 16px;">품종</span>
-        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>
-        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info "style="font-size: 16px;">공고중</span>
+<!--        <span th:if="${#bools.isTrue(protectboard.protectstatus)}" class="badge rounded-pill text-bg-success " style="font-size: 16px;">완료</span>-->
+<!--        <span th:if="${#bools.isFalse(protectboard.protectstatus)}" class="badge rounded-pill text-bg-info "style="font-size: 16px;">공고중</span>-->
         <span class="badge rounded-pill text-bg-danger" id="D_day" text="남은일" style="font-size: 16px;"></span>
+        <span class="badge rounded-pill text-bg-success" id="D_stat"style="font-size: 16px;"></span>
         <span class="badge rounded-pill text-bg-warning"th:text="|공고기간 : ${#dates.format(protectboard.starttime, 'yyyy-MM-dd')} ~ ${#dates.format(protectboard.deadline, 'yyyy-MM-dd')}|" name="deadline" style="font-size: 16px;"></span>
         <!-- 신고/즐겨찾기 -->
 
         <div class="row">
             <div class="col-sm-12 hstack">
-                <th:block th:if="${loginUser} ? ${loginUser.userno} == ${protectboard.protectboard_userno} : false ">
+                <th:block th:if="${not #strings.isEmpty(loginUser)}">
                     <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
                 </th:block>
             </div>
@@ -71,7 +74,7 @@
 
 
         <div class="row m-2 p-3 rounded-0 border-bottom" id="titleWrapper">
-                 <input type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none;outline:none;">
+                 <h5><input class="col-sm-12" type="text" name="protectboard_title" id="protectboard_title" th:value="${protectboard.protectboard_title}" readonly="readonly" style="border:none;outline:none;"></h5>
 
         </div>
         <!-- 이미지 출력 -->
@@ -99,7 +102,7 @@
                         id="inputContent"
                         th:text="${protectboard.protectboard_content}"
                         readonly="readonly"
-                        style="height: 300px;border:none;outline:none;"></textarea>
+                        style="height:25vh;border:none;outline:none;"></textarea>
             </div>
         </div>
 
@@ -193,7 +196,9 @@ let D_Day = function(){
 
     let start_Date = new Date( [[${#dates.format(protectboard.starttime, 'yyyy-MM-dd HH:ss')}]] );
     let end_date= new Date([[${#dates.format(protectboard.deadline, 'yyyy-MM-dd HH:ss')}]]);
+
     const d_day = document.querySelector(`#D_day`);
+    const d_stat = document.querySelector(`#D_stat`);
 
     const now = new Date(); //현재시간 추출용
     const formattedDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;//yyyy-MM-dd 형식
@@ -210,9 +215,10 @@ let D_Day = function(){
         //남은 날짜가 음수인경우 0
             if(diffDay < 0) {
                 diffDay = "0";
-                d_day.innerText=`D-${diffDay}일`;
+                d_day.innerText=`공고완료`;
             }else{
                 d_day.innerText=`D-${diffDay}일`;
+                d_stat.innerText= `공고중`;
             }
     console.log(diffDay);
 };

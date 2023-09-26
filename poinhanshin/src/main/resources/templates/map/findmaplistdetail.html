@@ -68,8 +68,8 @@
           </div>
         </div>
 <!--        <span class="title" th:text="'제목: ' + ${mapboard.missingaddress}">제목: </span>-->
-          <i class="fa-solid fa-location-dot"><span class="address my-2" th:text="' 실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #4d4d9a;">실종/발견 장소: </span></i>
-          <i class="fa-solid fa-calendar-days"><span class="time" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #4d4d9a;">실종/발견 날짜 및 시간: </span></i>
+          <i class="fa-solid fa-location-dot"><span class="address my-2 lh-base" th:text="' 실종/발견 장소: ' + ${mapBoardDto.missingaddress}" style="color: #4d4d9a;">실종/발견 장소: </span></i>
+          <i class="fa-solid fa-calendar-days"><span class="time lh-base" th:text="'실종/발견 날짜 및 시간: ' + ${#dates.format(mapBoardDto.missingtime, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}" style="color: #4d4d9a;">실종/발견 날짜 및 시간: </span></i>
       </div>
         <!-- 즐겨찾기/ 신고하기 아이콘 버튼-->
         <div class="header-right mb-2"  th:if="${loginUser}">
@@ -80,7 +80,7 @@
         <p th:text="${mapBoardDto.mapboard_content}">
           Woo</p>
       </div>
-        <div class="post-image" th:if="${mapBoardDto.fileAttached == 1}" th:each="fileName : ${mapBoardDto.storedFileName}">
+        <div class="figure" th:if="${mapBoardDto.fileAttached == 1}" th:each="fileName : ${mapBoardDto.storedFileName}">
             <!--<img th:src="${mapBoardDto.}" th:alt="${mapboard.animalType}" alt="빈이미지">-->
             <img th:src="@{|/upload/mapBoard/${fileName}|}" alt="Dog">
         </div>
@@ -90,15 +90,16 @@
         <span class="reg_date" th:text="'작성일: ' +${#dates.format(mapBoardDto.mapboard_reg_date, 'yyyy년 MM월 dd일 (HH:mm:ss) ')}">작성일: </span>
       </div>
       <div class="footer-right">
-        <span class="view-count" th:text="'조회수: ' + ${mapBoardDto.mapboard_viewcount}">조회수: </span>
       </div>
       <div class="post-buttons">
           <button class="btn btn-secondary" onclick="window.location.href='/map/list'">목록</button>
+          <th:block th:if="${loginUser} ? ${loginUser.userno} == ${mapBoardDto.mapboard_userno} : false ">
           <button type="button" class="btn btn-primary"
                   th:if="${loginUser}"
                   th:onclick="|location.href='@{/map/modify(mapboardno = ${mapBoardDto.mapboardno} , mapboard_userno = ${mapBoardDto.mapboard_userno}  , page = ${sc.getPage} , pageSize = ${sc.getPageSize} , keyword=${sc.getKeyword} , ani_category = ${sc.getAni_category} )}'|">수정
           </button>
         <button class="btn btn-danger" type="button" id="removeBtn" value="delete" th:if="${loginUser}">삭제</button>
+          </th:block>
       </div>
     </div>
   </div>

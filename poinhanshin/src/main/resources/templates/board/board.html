@@ -38,20 +38,19 @@
 <div class="page">
 
     <!--    고양이=1(true), 강아지=0(false)-->
-    <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill text-bg-secondary" style="font-size: 16px;">강아지</span>
-    <span th:if="${boardDto.board_ani_category == true}"class="badge text-bg-primary" style="font-size: 16px;">고양이</span>
-
+    <span th:if="${boardDto.board_ani_category == false}" class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">강아지</span>
+    <span th:if="${boardDto.board_ani_category == true}"class="badge rounded-pill" style="font-size: 16px;background-color:#AFB4FF;">고양이</span>
     <!-- 신고/즐겨찾기 -->
     <div class="row">
         <div class="col-sm-12 hstack">
-            <th:block th:if="${loginUser} ? ${loginUser.userno} == ${boardDto.board_userno} : false ">
+            <th:block th:if="${not #strings.isEmpty(loginUser)}">
                 <span class="p-2 ms-auto"><a id="favorite"  href="#" title="즐겨찾기"><i class="fa-solid fa-star fa-2xl" style="color: #ffdd00;"></i></a></span>
             </th:block>
         </div>
     </div>
     <!-- 제목 -->
     <div class="row m-1 p-3 rounded-0 border-bottom" id="titleWrapper">
-        <input type="text" readonly class="form-control-plaintext" id="floatingEmptyPlaintextInput" name="board_title" th:value="${boardDto.board_title}">
+        <h5><input type="text" readonly class="form-control-plaintext" id="floatingEmptyPlaintextInput" name="board_title" th:value="${boardDto.board_title}"></h5>
     </div>
 
 
@@ -69,12 +68,12 @@
                 </div>
             
         <div class="col-mb-3">    
-            <textarea type="text"name="board_content"class="form-control"id="inputContent"th:text="${boardDto.board_content}"readonly="readonly"style="height: 50vh;border:none"></textarea>
+            <textarea type="text"name="board_content"class="form-control"id="inputContent"th:text="${boardDto.board_content}"readonly="readonly"style="height: 25vh;border:none"></textarea>
         </div>
     </div>
 <!--좋아요 버튼-->
     <div id="likeContainer" class="vstack col-sm-2 mx-auto m-2">
-        <button th:if="${loginUser != null }" type="button" id="likeBtn" style=" border: 0; background-color: transparent;">
+        <button th:if="${loginUser != null}" type="button" id="likeBtn" style=" border: 0; background-color: transparent;">
             <i id="likeIcon" class="far fa-heart fa-lg" style="font-size:50px;color:#A084E8"></i>
         </button>
     </div>
@@ -174,6 +173,7 @@
 <script th:if="${msg} == 'FAIL_REMOVE'"> alert("작성자만 게시글을 수정할 수 있습니다.")</script>
 <script th:if="${msg} == 'NO_LOGIN'"> alert("로그인이 필요합니다.")</script>
 <script th:inline="javascript">
+console.log([[${boardDto}]]);
     
 
     $(document).ready(function(){

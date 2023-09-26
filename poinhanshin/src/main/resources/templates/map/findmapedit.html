@@ -62,8 +62,7 @@
             <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label" for="missingaddress">실종/ 발견 장소를 선택해주세요:</label>
-                    <input type="text" id="missingaddress" placeholder="장소" name="missingaddress" th:value="${mapBoardDto.missingaddress}">
-                    <input type="button" class="btn btn-outline-dark" onclick="mapadd_Postcode()" value="장소 찾기">
+                    <input type="text" id="missingaddress" placeholder="클릭시 주소 찾기" name="missingaddress" th:value="${mapBoardDto.missingaddress}" onclick="mapadd_Postcode()" readonly>
                     <div id="map" style="width: 100%; height: 400px; display: none;"></div>
                     <input type="hidden" name="latitude" id="latitude" th:value="${mapBoardDto.latitude}"/>
                     <input type="hidden" name="longitude" id="longitude" th:value="${mapBoardDto.longitude}"/>
@@ -88,7 +87,7 @@
             <textarea class="form-control" style="min-height: 20vh" name="mapboard_content" id="mapboard_content" th:text="${mapBoardDto.mapboard_content}" required></textarea>
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+            <span class="input-group" id="basic-addon1"><i class="fa fa-calendar"></i></span>
 
             <input type="text" class="form-control" name="time" id="missingtime" th:value="${#dates.format(mapBoardDto.missingtime, 'yyyy-MM-dd HH:ss')}" aria-describedby="basic-addon1" required autocomplete="off">
 
@@ -98,7 +97,6 @@
         <div class="dropzone" id="my-dropzone" ></div>
         <div class="center-text">
             <button class="reg-button" type="button" id="modifyBtn">수정</button>
-            <button class="delete-button" type="submit" value="delete">삭제</button>
         </div>
     </form>
 </div>
