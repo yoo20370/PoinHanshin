@@ -43,7 +43,7 @@
 <br/>
 
 ## 아키텍처 
-<img alt="포인한신 아키텍처" src="https://github.com/user-attachments/assets/4be0ae88-cc95-4927-85bc-27749b11913d"/>
+<img alt="포인한신 아키텍처" src="https://github.com/user-attachments/assets/35ae5fc6-645a-49ae-94e7-d8b65ad9260b"/>
 <br/>
 <br/>
 
